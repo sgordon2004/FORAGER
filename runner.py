@@ -57,7 +57,8 @@ def get_llm_response(prompt):
                 "messages": [
                     {"role": "user",
                      "content": prompt}
-                ]
+                ],
+                "temperature": 0 # forces no creativity
             },
             timeout = 10
         )
