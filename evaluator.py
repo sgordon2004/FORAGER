@@ -15,31 +15,25 @@ file = f"data/{file}"
 with open(file) as f:
     test_questions = json.load(f)
 
-
 # Open the JSON with Groq's answers
 with open("data/raw_results.json") as f: # Change this name to whatever Aurora names it
     llm_answers = json.load(f)
 
 # Create a dictionary from LLM's answers for quick lookup by ID
-response_dict = {item["id"]: item["llm_response"] for item in llm_answers}
+response_dict = {item[id]: item["llm_response"] for item in llm_answers}
 
 incorrect_questions = []
 
 # Go through each question, compare, and add is_correct
 for q in test_questions:
-    qid = q["id"]
+    qid = q[id]
     correct_answer = next(k for k, v in q["target_scores"].items() if v == 1)
     llm_response = response_dict.get(qid, "").strip().lower()
     q["llm_response"] = llm_response
     q["is_correct"] = int(llm_response == correct_answer.strip().lower())
     if (q["is_correct"] == 0):
         incorrect_questions.append(q)
-        
-
-# Save updated results
-with open("evaluated_questions.json", "w") as out_file:
-    json.dump(test_questions, out_file, indent=4)
 
 # Creates a new json file and writes the incorrectly answered questions and answer choices to it
-with open("data/ground_truth.json") as f:
-    json.dump(data, f, indent = 4)
+with open("incorrect_questions.json", "w") as out_file:
+    json.dump(incorrect_questions, out_file, indent=4)
