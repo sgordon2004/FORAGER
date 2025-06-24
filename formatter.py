@@ -27,3 +27,4 @@ def format_json():
             plain = "\n".join([f"- {opt}" for opt in options]) # Puts each option next to a dash for formatting
             batch_inputs += f"{idx+1}. Input:\n{ex['input']}\nOptions:\n{plain}\n\n" # Formats answer and options into consistent schema
 
+    return batch_inputs
