@@ -1,0 +1,41 @@
+📂 Proposed Work Breakdown
+
+✅ 1. Syrr:
+	•	Task: formatter.py
+	•	Cleans and normalizes raw JSON data (from the source dataset)
+	•	Structures the prompt, choices, and expected answer in a consistent schema
+
+⸻
+
+✅ 2. Teammate #1:
+	•	Task: runner.py (LLM Interaction & Response Collector)
+	•	Handles calling the Groq API with the formatted JSON prompts
+	•	Stores the raw LLM responses back into a results JSON
+	•	Manages retries & error handling (e.g., API rate limits, timeouts)
+
+⸻
+
+✅ 3. Teammate #2:
+	•	Task: evaluator.py (Self-Evaluation & Metrics)
+	•	Compares Groq’s answers to the ground truth in the JSON
+	•	Computes accuracy, confidence levels if provided
+	•	Flags incorrectly answered prompts and writes them to a separate JSON for review
+
+⸻
+
+✅ 4. Teammate #3:
+	•	Task: loop_controller.py (Closed Feedback Loop)
+	•	Implements the loop that:
+	•	Feeds incorrect prompts back for re-evaluation (or re-prompting)
+	•	Optionally tweaks the prompt wording automatically
+	•	Tracks how performance changes with each loop iteration
+
+⸻
+
+🗂️ Other Shared Tasks (Can split later):
+	•	📈 Visualization Notebook:
+To plot performance metrics, improvement per loop, confusion matrix, etc.
+	•	📑 Documentation & ReadMe:
+Clear instructions for setup, how to run each module, how to reproduce results.
+	•	✅ Final Integration Test:
+A single script or notebook that runs the full pipeline end-to-end.
