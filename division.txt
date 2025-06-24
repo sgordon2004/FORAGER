@@ -7,7 +7,7 @@
 
 ⸻
 
-✅ 2. Teammate #1:
+✅ 2. Aurora:
 	•	Task: runner.py (LLM Interaction & Response Collector)
 	•	Handles calling the Groq API with the formatted JSON prompts
 	•	Stores the raw LLM responses back into a results JSON
@@ -15,7 +15,7 @@
 
 ⸻
 
-✅ 3. Teammate #2:
+✅ 3. Mitchell:
 	•	Task: evaluator.py (Self-Evaluation & Metrics)
 	•	Compares Groq’s answers to the ground truth in the JSON
 	•	Computes accuracy, confidence levels if provided
@@ -23,7 +23,7 @@
 
 ⸻
 
-✅ 4. Teammate #3:
+✅ 4. Aurora:
 	•	Task: loop_controller.py (Closed Feedback Loop)
 	•	Implements the loop that:
 	•	Feeds incorrect prompts back for re-evaluation (or re-prompting)
