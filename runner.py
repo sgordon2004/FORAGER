@@ -4,6 +4,7 @@ import json
 from dotenv import load_dotenv
 load_dotenv()
 from formatter import format_json 
+import re
 
 # Load API key from environment
 load_dotenv()
@@ -72,11 +73,28 @@ def main():
 
     # Loop through batched questions
     for i, questions_batch in enumerate(questions, 1):
+        print(f"Working on Batch #{i}/{len(questions)} total batches...\n")
         prompt = build_prompt(questions_batch)
-        answer = get_llm_response(prompt)
+        raw_answer = get_llm_response(prompt)
+
+        try:
+            # Extract JSON block safely using regex
+            match = re.search(r"\{[\s\S]*\}", raw_answer)
+            if match:
+                parsed_answer = json.loads(match.group(0))
+            else:
+                print(f"Warning: No valid JSON found for Batch #{i}")
+                parsed_answer = {}
+        except json.JSONDecodeError:
+            print(f"Warning: could not parse answer for Batch_{i}")
+            parsed_answer = {}
+
+        # Attach answers directly to each question
+        for idx, q in enumerate(questions_batch, 1):
+            q["answer"] = parsed_answer.get(str(idx), None)
+
         results[f"Batch_{i}"] = {
-            "prompt": prompt,
-            "answer": answer
+            "questions": questions_batch,
         }
 
     # Save responses to a JSON file
