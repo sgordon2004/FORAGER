@@ -5,17 +5,23 @@
 	•	Flags incorrectly answered prompts and writes them to a separate JSON for review
 """
 
-import formatter
 import json
 
-with open("raw_results.json") as f: # These are Groq's answers - change this to whatever Aurora names it
-    raw_results = json.load(f)
+# Ask user which JSON test file was being used
+file = input("Enter the path/name of file that was used to test Groq: ")
+file = f"data/{file}"
 
-for i in range(0,5):
-    print(formatter.format_json())
+# Open this file
+with open(file) as f:
+    data = json.load(f)
 
-# data = {#incorrectly answered questions here}
+
+# Open the JSON with Groq's answers
+with open("data/raw_results.json") as f: # Change this name to whatever Aurora names it
+    llm_answers = json.load(f)
+
+
 
 # Creates a new json file and writes the incorrectly answered questions and answer choices to it
-# with open("data/ground_truth.json") as f:
-#     json.dump(data, f, indent = 4)
+with open("data/ground_truth.json") as f:
+    json.dump(data, f, indent = 4)
