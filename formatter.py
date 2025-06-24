@@ -12,12 +12,12 @@ file = f"data/{file}"
 with open(file) as f:
     data = json.load(f)
 
-# Set batch size
-batch_size = 5
+# # Set batch size
+# batch_size = 5
 
 # Creates batches of 5 questions each
 
-def format_json():
+def format_json(batch_size=5):
     batches = []
     for i in range(0, len(data), batch_size):
         batch = data[i:i+batch_size] # Holds 5 input-target pairs
