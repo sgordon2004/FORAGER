@@ -17,7 +17,7 @@ with open(file) as f:
 
 
 # Open the JSON with Groq's answers
-with open("data/raw_results.json") as f: # Change this name to whatever Aurora names it
+with open("data/llm_responses.json") as f: # Change this name to whatever Aurora names it
     llm_answers = json.load(f)
 
 # Create a dictionary from LLM's answers for quick lookup by ID
