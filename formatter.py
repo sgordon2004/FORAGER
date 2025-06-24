@@ -36,5 +36,3 @@ def format_json(batch_size=5):
         batches.append(formatted_batch)
     
     return batches
-
-print(format_json()[0])
