@@ -1,6 +1,9 @@
 # FORAGER
 
 Instructions on running formatter.py:
-import the format_json() method into the file you're working on that needs the data
-format_json() returns all the questions in the JSON in a formatted version
-Slice return by 5 so that you only feed 5 questions to Groq at a time (to avoid token timeout)
+1. Import the format_json() method into the file you're working on that needs the data
+2. format_json() returns a dictionary of all the questions
+    - Each entry in the dictionary holds 5 questions
+    - Each key is the input
+    - Each value holds the answer choices
+3. Feed format_json() into Groq one index at a time (since each index holds 5 questions)
