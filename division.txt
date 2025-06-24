@@ -7,7 +7,7 @@
 
 ⸻
 
-✅ 2. Teammate #1:
+✅ 2. Aurora:
 	•	Task: runner.py (LLM Interaction & Response Collector)
 	•	Handles calling the Groq API with the formatted JSON prompts
 	•	Stores the raw LLM responses back into a results JSON
