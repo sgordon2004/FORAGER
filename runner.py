@@ -3,6 +3,7 @@ import os
 import json
 from dotenv import load_dotenv
 load_dotenv()
+from formatter import format_json 
 
 #load API key from environment
 load_dotenv()
@@ -19,14 +20,10 @@ HEADERS = {
 os.makedirs("data", exist_ok=True) #ensure data directory exists
 
 #loading prompts from data folder 
-def load_prompts(path = "data/4_distractors.json", limit=5):
-    try:
-        with open(path, "r") as f:
-            all_prompts = json.load(f)
-            return all_prompts[:limit]
-    except Exception as e:
-        print(f"Error loading prompts: {e}")
-        return []
+with open("data", "r") as f:
+    raw_data = json.load(f)
+batches = format_json(raw_data)
+
 
 #sending 5 to Groq
 def get_llm_response(prompt):
