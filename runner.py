@@ -5,57 +5,81 @@ from dotenv import load_dotenv
 load_dotenv()
 from formatter import format_json 
 
-#load API key from environment
+# Load API key from environment
 load_dotenv()
 API_KEY = os.getenv("GROQ_API_KEY")
 
-#Groq API setup
-Groq_Endpoint = "https://api.groq.com/openai/v1/chat/completions"
+# Groq API setup
+groq_endpoint = "https://api.groq.com/openai/v1/chat/completions"
 model_name = "llama3-8b-8192"
+
+# HTTP headers for the request (used for auth. + content type)
 HEADERS = {
-    "Authorization":f"Bearer {API_KEY}"
+    "Authorization": f"Bearer {API_KEY}",
+    "Content-Type": "application/json"
 }
 
+# Load questions from formatter.py
+questions = format_json()
 
-os.makedirs("data", exist_ok=True) #ensure data directory exists
+# Batches questions into 5 at a time to build combined prompt
+def build_prompt(formatted_batch):
+    prompt = (
+        "You are a helpful assistant. Answer the following questions clearly and concisely. Provide only the final answer for each question, labeled by its number.\n\n"
+        "Questions:\n"
+    )
 
-#loading prompts from data folder 
-with open("data", "r") as f:
-    raw_data = json.load(f)
-batches = format_json(raw_data)
+    for idx, question in enumerate(formatted_batch, 1):
+        prompt += f"\n{idx}) {question['input']}\nOptions:\n"
+        for opt in question["options"]:
+            prompt += f"{opt}\n"
+    prompt += """
+Format your response as JSON with this structure:
+{
+    "1": "...",
+    "2": "...",
+    ...
+}
+    """
+    return prompt
 
+# print(build_prompt(questions[0]))
 
-#sending 5 to Groq
+# Sends requests to Groq
 def get_llm_response(prompt):
     try:
         response = requests.post(
-            Groq_Endpoint,
+            groq_endpoint,
             headers = HEADERS,
             json = {
-                "model": model_name,
-                "messages": [{"role": "user", "content": prompt}]
+                "model": "llama3-8b-8192",
+                "messages": [
+                    {"role": "user",
+                     "content": prompt}
+                ]
             },
             timeout = 10
         )
+        # Raises HTTP error, if one occured
         response.raise_for_status()
-        return response.json()["choice"][0]["message"]["content"]
+        return response.json()["choices"][0]["message"]["content"]
     except requests.exceptions.RequestException as e:
         print(f"Error fetching response: {e}")
         return str(e)
 
 def main():
-    prompts = load_prompts()
     results = {}
 
-    for i, prompt in enumerate(prompts, 1):
-        print(f"{i}: {prompt}")
+    # Loop through batched questions
+    for i, questions_batch in enumerate(questions, 1):
+        prompt = build_prompt(questions_batch)
         answer = get_llm_response(prompt)
-        results[f"Q{i}"] = {
+        results[f"Batch_{i}"] = {
             "prompt": prompt,
             "answer": answer
         }
 
-#saving responses to a JSON file
+    # Save responses to a JSON file
     output_path = os.path.join("data", "llm_responses.json")
     with open(output_path, "w") as f:
         json.dump(results, f, indent=4)
