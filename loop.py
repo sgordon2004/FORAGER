@@ -22,7 +22,7 @@ def prompt_lock_loop():
 
         # Call to Groq 
         response = requests.post(
-            "https://api.openai.com/v1/chat/completions",
+            "https://api.groq.com/openai/v1/chat/completions",
             headers={
                 "Authorization": f"Bearer {API_KEY}"
             },
