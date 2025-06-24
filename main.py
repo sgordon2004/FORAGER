@@ -8,5 +8,5 @@ API_KEY = os.getenv("GROQ_API_KEY")
 print(f"Using API key: {API_KEY[:8]}")
 
 # Entry point
-if __name__ == "__main __":
+if __name__ == "__main__":
     prompt_lock_loop()
