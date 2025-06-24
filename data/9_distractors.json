@@ -660,18 +660,18 @@
     }
   },
   {
-    "input": "Which of the following is not a benefit or trend associated with heterogeneous integration?",
+    "input": "Which of the following is a benefit or trend associated with heterogeneous integration?",
     "target_scores": {
-      "Flexibility in using different process nodes for each function": 0,
-      "Improved performance per watt": 0,
-      "Lower thermal resistance in passive inductors": 0,
-      "Higher bandwidth and lower latency": 0,
-      "Increased transistor count per chip": 1,
-      "Smaller form factors": 0,
-      "Greater scalability through chip disaggregation": 0,
-      "Improved RF signal isolation": 0,
-      "Better analog-digital separation": 0,
-      "Streamlined prototyping using fewer masks": 0
+      "Eliminating the need for any form of thermal management in high-performance systems": 0,
+      "Replacing the need for advanced packaging with legacy wire bonding techniques": 0,
+      "Standardizing all semiconductor devices to use a single process node": 0,
+      "Removing the need for analog circuitry in mixed-signal applications": 0,
+      "Allowing chips to function independently without communication interfaces": 0,
+      "Reducing the cost of DRAM by using monolithic memory integration exclusively": 0,
+      "Reducing the system size and the number of components and peripherals needed": 1,
+      "IPhasing out chiplets in favor of single-die SoC designs for all applications": 0,
+      "Eliminating the use of interposers in high-bandwidth applications": 0,
+      "Enabling CPUs to operate without cache memory for lower latency": 0
     }
   },
   {
