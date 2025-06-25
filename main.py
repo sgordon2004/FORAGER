@@ -1,3 +1,19 @@
+"""
+main.py
+
+Entry point for the FORAGER system.
+
+This script initiates the complete workflow:
+- Loads and formats question batches
+- Sends them to Groq's LLM
+- Stores the LLM’s responses
+- Evaluates the accuracy of responses
+- Saves incorrectly answered questions for review
+
+To run the full pipeline, execute this file directly:
+    python main.py
+"""
+
 from dotenv import load_dotenv
 import os
 from loop import prompt_lock_loop

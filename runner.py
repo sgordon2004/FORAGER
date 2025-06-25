@@ -1,3 +1,15 @@
+"""
+This module coordinates the full evaluation workflow for FORAGER.
+
+It loads and formats batched question sets, sends them to the Groq LLM for processing,
+saves the LLM's responses to a JSON file, and initiates the evaluation process to
+identify incorrect answers.
+
+Key Functions:
+- initial_run(): Orchestrates the full prompt → response → evaluation pipeline.
+- rerun_incorrect(): Allows targeted re-evaluation of previously incorrect questions.
+"""
+
 import requests
 import os
 import json

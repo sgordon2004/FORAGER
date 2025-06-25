@@ -1,5 +1,14 @@
 """
-This module handles all the formatting of our JSON data.
+formatter.py
+
+This module loads the original JSON dataset and formats it into question batches
+for LLM processing. Each batch contains a fixed number of questions with clearly
+structured input and multiple-choice options.
+
+Key Functions:
+- load_json(): Loads the raw JSON data from file.
+- format_json(): Splits the questions into batches and standardizes their format.
+- write_formatted_json(): Saves the formatted batches to disk for LLM input.
 """
 
 import json
@@ -18,6 +27,15 @@ with open(file) as f:
 # Creates batches of 5 questions each
 
 def format_json(batch_size=5):
+    """
+    Splits the loaded JSON data into batches and formats each question with its options.
+    
+    Args:
+        batch_size (int): Number of questions per batch. Defaults to 5.
+
+    Returns:
+        list: A list of batches, where each batch is a list of formatted question dictionaries.
+    """
     batches = []
     for i in range(0, len(data), batch_size):
         batch = data[i:i+batch_size] # Holds 5 input-target pairs

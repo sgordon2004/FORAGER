@@ -1,11 +1,8 @@
 """
-loop_controller.py
-
-Controls the closed feedback loop:
-- Loads incorrectly answered prompts from runner.py
-- Optionally modifies/rephrases prompts
-- Feeds them back through the runner
-- Tracks performance over multiple loops
+This module controls the closed feedback loop:
+Loads incorrectly answered prompts from runner.py.
+Modifies/rephrases the prompt and feeds them back to Groq through runner.py.
+Tracks performance over multiple loops.
 """
 
 import json
