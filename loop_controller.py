@@ -14,17 +14,17 @@ import time
 INCORRECT_FILE = "incorrect_questions.json"  # update if different
 GROUND_TRUTH_FILE = "4_distractors.json"
 
-# Load incorrect prompts
+# Load incorrectly answered questions
 with open(INCORRECT_FILE, "r") as f:
     incorrect_data = json.load(f)
 
-print(f"Loaded {len(incorrect_data)} incorrect prompts.")
+print(f"Loaded {len(incorrect_data)} incorrectly answered questions.")
 
 # Load ground truth
 with open(GROUND_TRUTH_FILE, "r") as f:
     ground_truth_data = json.load(f)
 
-print(f"Loaded {len(ground_truth_data)} ground truth entries.")
+print(f"Loaded {len(ground_truth_data)} given questions.")
 
 # Later: Replace these placeholder functions with actual imports once available
     # from runner import run_llm
