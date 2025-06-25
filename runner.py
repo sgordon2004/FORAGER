@@ -38,6 +38,15 @@ questions = format_json()
 
 # Batches questions into 5 at a time to build combined prompt
 def build_prompt(formatted_batch):
+    """
+    Builds a prompt string from a batch of formatted questions for LLM input.
+
+    Args:
+        formatted_batch (list): A list of dictionaries, each containing a question and its options.
+
+    Returns:
+        str: A complete prompt formatted for Groq's LLM with JSON instructions.
+    """
     prompt = (
         "You are a helpful assistant. Answer the following questions clearly and concisely. Provide only the final answer for each question, labeled by its number.\n\n"
         "Questions:\n"
@@ -57,10 +66,17 @@ Format your response as JSON with this structure:
     """
     return prompt
 
-# print(build_prompt(questions[0]))
-
-# Sends requests to Groq
 def get_llm_response(prompt, max_retries=3):
+    """
+    Sends a prompt to the Groq LLM and retrieves the JSON response.
+
+    Args:
+        prompt (str): The input prompt to send to the LLM.
+        max_retries (int, optional): Number of retry attempts if the request fails. Defaults to 3.
+
+    Returns:
+        str: The LLM's raw response content or error message if all retries fail.
+    """
     for attempt in range(1, max_retries + 1):
         try:
             response = requests.post(
@@ -90,6 +106,13 @@ def get_llm_response(prompt, max_retries=3):
                 return str(e)
 
 def initial_run():
+    """
+    Executes the full LLM evaluation pipeline:
+    - Builds prompts from formatted question batches
+    - Sends prompts to the LLM and collects responses
+    - Parses and attaches answers to each question
+    - Saves all results to a JSON file in the data directory
+    """
     results = {}
 
     # Loop through batched questions
