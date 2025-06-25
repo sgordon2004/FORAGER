@@ -98,6 +98,6 @@ for ex in failed_prompts:
 
 # Save final retry results
 with open("data/retry_results.json", "w") as f:
-    json.dump(retry_results, f, indent=2)
+    json.dump(retry_results, f, indent=2) 
 
 print("Loop complete. Results written to data/retry_results.json")
