@@ -3,7 +3,7 @@ import os
 import json
 from dotenv import load_dotenv
 load_dotenv()
-from formatter import format_json 
+from formatter import format_json
 import re
 
 # Load API key from environment
@@ -69,7 +69,7 @@ def get_llm_response(prompt):
         print(f"Error fetching response: {e}")
         return str(e)
 
-def main():
+def initial_run():
     results = {}
 
     # Loop through batched questions
@@ -107,7 +107,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    initial_run()
 
 
 

@@ -6,49 +6,66 @@
 """
 
 import json
+from formatter import file
 
-# Ask user which JSON test file was being used
-file = input("Enter the path/name of file that was used to test Groq: ")
-file = f"data/{file}"
+def load_files():
+    # Ask user which JSON test file was being used if file is NULL
+	global file
+	if file == None:
+		file = input("Enter the path/name of file that was used to test Groq: ")
+		file = f"data/{file}"
+	else:
+		file = f"{file}"
+	# Open test file
+	with open(file) as f:
+		global test_questions
+		test_questions = json.load(f)
+          
+	# Open the JSON with Groq's responses
+	with open("data/llm_responses.json") as f: # Change this name to whatever Aurora names it
+		global llm_answers
+		llm_answers = json.load(f)
 
-# Open this file
-with open(file) as f:
-    test_questions = json.load(f)
+def evaluate():
+	# Create dictionary to store correct answers from original JSON (answer_key)
+	# Format: Question # : Correct Answer
+	correct_answers = {}
+	answer_key = {}
+	for idx, question in enumerate(test_questions, 1): # idx is the index of the input-target score pairs (there are 3)
+		correct_answers = [k for k, v in question["target_scores"].items() if v == 1]
+		# print(f"Q{idx}: {question['input']}")
+		# print(f"Correct answer: {correct_answers}\n")
+		answer_key[idx] = correct_answers
 
+	# Compare LLM response to correct answers
+	responses = {}
 
-# Open the JSON with Groq's answers
-with open("data/llm_responses.json") as f: # Change this name to whatever Aurora names it
-    llm_answers = json.load(f)
+	i = 1
+	for k, v in llm_answers.items(): # k = batch, v = dictionary representing batch
+		# Right now, each v is a dictionary of all the questions in the batch
+		# We have to access the "answer" field in v now
+		for key, question_set in v.items():
+			for question in question_set:
+				responses[i] = question["answer"]
+				i += 1
 
-# Create dictionary to store correct answers from original JSON (answer_key)
-# Format: Question # : Correct Answer
-correct_answers = {}
-answer_key = {}
-for idx, question in enumerate(test_questions, 1): # idx is the index of the input-target score pairs (there are 3)
-    correct_answers = [k for k, v in question["target_scores"].items() if v == 1]
-    # print(f"Q{idx}: {question['input']}")
-    # print(f"Correct answer: {correct_answers}\n")
-    answer_key[idx] = correct_answers
+	global incorrect_questions
+	incorrect_questions = {}
 
-# Compare LLM response to correct answers
-responses = {}
+	# Go through each question, compare, and add is_correct
+	for entry, value in answer_key.items():
+		if value[0] != responses[entry]:
+			incorrect_questions[entry] = responses[entry]
 
-i = 1
-for k, v in llm_answers.items(): # k = batch, v = dictionary representing batch
-    # Right now, each v is a dictionary of all the questions in the batch
-    # We have to access the "answer" field in v now
-    for key, question_set in v.items():
-        for question in question_set:
-            responses[i] = question["answer"]
-            i += 1
+def store_results():
+	# Save updated results
+	with open("data/incorrect_questions.json", "w") as out_file:
+		json.dump(incorrect_questions, out_file, indent=4)
 
-incorrect_questions = {}
+def run_eval_process():
+	load_files()
+	evaluate()
+	store_results()
 
-# Go through each question, compare, and add is_correct
-for entry, value in answer_key.items():
-    if value[0] != responses[entry]:
-        incorrect_questions[entry] = responses[entry]
-
-# Save updated results
-with open("data/incorrect_questions.json", "w") as out_file:
-    json.dump(incorrect_questions, out_file, indent=4)
+if __name__ == "__main__":
+    run_eval_process()
