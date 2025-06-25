@@ -13,7 +13,7 @@ Key Functions:
 """
 
 import json
-from formatter import file
+from .formatter import get_input_file
 import os
 
 def load_files():
@@ -21,12 +21,11 @@ def load_files():
 	Opens the JSON files containing the original questions and LLM responses.
 	"""
     # Ask user which JSON test file was being used if file is NULL
-	global file
-	if file == None:
+	# global file
+	file = get_input_file()
+	if not file:
 		file = input("Enter the path/name of file that was used to test Groq: ")
 		file = f"data/{file}"
-	else:
-		file = f"{file}"
 	# Open test file
 	with open(file) as f:
 		global test_questions

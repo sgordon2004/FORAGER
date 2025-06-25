@@ -13,20 +13,30 @@ Key Functions:
 
 import json
 
-# Ask user which file to upload
-file = input("Enter the path/name of file to be uploaded to Groq: ")
-file = f"data/{file}"
+def get_input_file():
+    """
+    Prompts the user to enter the path or filename to be uploaded to Groq.
 
-# Open JSON
-with open(file) as f:
-    data = json.load(f)
+    Returns:
+        str: A valid path to the input JSON file.
+    """
+    filename = input("Enter the path/name of file to be uploaded to Groq: ")
+    return f"data/{filename}"
+
+def load_json():
+    """
+    Opens the input JSON to be used.
+    """
+    file = get_input_file()
+    with open(file) as f:
+        return json.load(f)
 
 # # Set batch size
 # batch_size = 5
 
 # Creates batches of 5 questions each
 
-def format_json(batch_size=5):
+def format_json(data, batch_size=5):
     """
     Splits the loaded JSON data into batches and formats each question with its options.
     
