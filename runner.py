@@ -103,7 +103,7 @@ def main():
     with open(output_path, "w") as f:
         json.dump(results, f, indent=4)
 
-    print(output_path)
+    print(f"Saved LLM responses to {output_path}!")
 
 
 if __name__ == "__main__":
