@@ -10,74 +10,21 @@ Controls the closed feedback loop:
 
 import json
 import time
-from runner import run_groq # feeds incorrect questions to loop_controller one at a time for checking
+from runner import get_llm_response
 
-INCORRECT = "incorrect.json"  # placeholder name for when runner makes the JSON file
-GROUND_TRUTH = "4_distractors.json" # will have to change later
+INCORRECT = "incorrect_questions.json"
+GROUND_TRUTH = "4_distractors.json"
 
-<<<<<<< HEAD
-# load incorrect prompts
-with open(INCORRECT, "r") as f:
-    incorrect_data = json.load(f)
-print(f"Loaded {len(incorrect_data)} incorrect prompts.")
-
-# load ground truth
-with open(GROUND_TRUTH, "r") as f:
-    ground_truth_data = json.load(f)
-print(f"Loaded {len(ground_truth_data)} ground truth entries.")
-
-# helper function for grabbing correct answer for a given id
-def get_correct_answer(qid):
-    for i in ground_truth_data:
-        if i["id"] == qid:
-            return next(k for k, v in i["target_scores"].items() if v == 1)
-    return None
-
-# check if model's answer matches correct answer
-def is_correct(response, correct):
-    return response.strip().lower() == correct.strip().lower()
-
-# optionally rephrase prompt
-def tweak_prompt(prompt):
-    return prompt + " That is incorrect. Please check your answer again and be more accurate." # this needs to change in a way
-
-# retry loop parameters
-attempts = 3
-retry_results = []
-
-# prompt-lock loop
-for ex in incorrect_data:
-    qid = ex["id"]
-    correct_answer = get_correct_answer(qid)
-    if not correct_answer:
-        print(f"Warning: No ground truth found for ID {qid}")
-        continue
-
-    # start with original prompt
-    prompt_dict = ex.copy()
-
-    for attempt in range(1, attempts + 1):
-        response = run_groq(prompt_dict)
-        print(f"[{qid}] Attempt {attempt}: {response}")
-
-        if is_correct(response, correct_answer):
-=======
 if __name__ == "__main__":
     # Load incorrectly answered questions
-    with open(INCORRECT_FILE, "r") as f:
+    with open("data/incorrect_questions.json") as f:
         incorrect_data = json.load(f)
-
     print(f"Loaded {len(incorrect_data)} incorrectly answered questions.")
 
     # Load ground truth
-    with open(GROUND_TRUTH_FILE, "r") as f:
+    with open(GROUND_TRUTH, "r") as f:
         ground_truth_data = json.load(f)
-
     print(f"Loaded {len(ground_truth_data)} given questions.")
-
-    # Later: Replace these placeholder functions with actual imports once available
-        # from runner import run_llm
-        # from evaluator import is_correct
 
     # Mock LLM function that simulates what runner.py will do (send the prompt to Groq and get a response)
     # Right now it always returns "improved response here" just for testing
@@ -137,16 +84,14 @@ if __name__ == "__main__":
 
         # If the LLM still didn’t get it right after all attempts, log the final try and label the status as "still incorrect"
         else:
->>>>>>> d2a65a8dc75ebcb2cc8303b75955f569e4d19710
             retry_results.append({
-                "id": qid,
+                "id": ex.get("id", None),
                 "input": ex["input"],
-                "final_prompt": prompt_dict["input"],
+                "final_prompt": prompt,
                 "response": response,
                 "attempts": attempts,
                 "status": "still incorrect"
             })
-<<<<<<< HEAD
             break
 
         # tweak for second/third attempts
@@ -170,11 +115,3 @@ with open("data/retry_results.json", "w") as f:
     json.dump(retry_results, f, indent=2)
 
 print("Loop complete. Results written to data/retry_results.json")
-=======
-
-    # Save final retry results
-    with open("data/retry_results.json", "w") as f:
-        json.dump(retry_results, f, indent=2) 
-
-    print("Loop complete. Results written to data/retry_results.json")
->>>>>>> d2a65a8dc75ebcb2cc8303b75955f569e4d19710
