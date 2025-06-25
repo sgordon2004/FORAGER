@@ -1,11 +1,24 @@
-import requests
-import os
-import json
-from dotenv import load_dotenv
-load_dotenv()
-from formatter import format_json
-import re
-import time
+"""
+LLM Interaction & Response Collector
+	•	Handles calling the Groq API with the formatted JSON prompts
+	•	Stores the raw LLM responses back into a results JSON
+	•	Manages retries & error handling (e.g., API rate limits, timeouts)
+
+Iterate through 5 questions only and get the output from the LLM then 
+Store output in a new JSON
+Format it
+Then put that file in the Data folder
+
+"""
+
+import requests                             # Makes HTTP requests (like to Groq)
+import os                                   # To interact with env variables and OS
+import json                                 # To encode/decode JSON data 
+from dotenv import load_dotenv              # To load env variable from .env file into OS env
+load_dotenv()                               # Calls to load the function 
+from formatter import format_json           # To reformat prompts 
+import re                                   # To use regular expressions (replace, search, pattern matching)
+import time                                 # To use time related functions like delays 
 
 # Load API key from environment
 load_dotenv()
@@ -25,13 +38,13 @@ HEADERS = {
 questions = format_json()
 
 # Batches questions into 5 at a time to build combined prompt
-def build_prompt(formatted_batch):
+def build_prompt(formatted_batch): # Parameter imported from formatter.py
     prompt = (
         "You are a helpful assistant. Answer the following questions clearly and concisely. Provide only the final answer for each question, labeled by its number.\n\n"
         "Questions:\n"
     )
 
-    for idx, question in enumerate(formatted_batch, 1):
+    for idx, question in enumerate(formatted_batch, 1):             #Formatting response 
         prompt += f"\n{idx}) {question['input']}\nOptions:\n"
         for opt in question["options"]:
             prompt += f"{opt}\n"
@@ -118,8 +131,3 @@ if __name__ == "__main__":
     initial_run()
 
 
-
-
-    #Iterate through 5 questions only and get the output from the LLM then 
-    #Store output in a new JSON
-    #Then put that file in the Data folder
