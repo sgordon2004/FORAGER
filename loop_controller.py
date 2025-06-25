@@ -11,9 +11,24 @@ Controls the closed feedback loop:
 import json
 import time
 
+INCORRECT_FILE = "incorrect_questions.json"  # update if different
+GROUND_TRUTH_FILE = "4_distractors.json"
+
+# Load incorrect prompts
+with open(INCORRECT_FILE, "r") as f:
+    incorrect_data = json.load(f)
+
+print(f"Loaded {len(incorrect_data)} incorrect prompts.")
+
+# Load ground truth
+with open(GROUND_TRUTH_FILE, "r") as f:
+    ground_truth_data = json.load(f)
+
+print(f"Loaded {len(ground_truth_data)} ground truth entries.")
+
 # Later: Replace these placeholder functions with actual imports once available
-# from runner import run_llm
-# from evaluator import is_correct
+    # from runner import run_llm
+    # from evaluator import is_correct
 
 # Mock LLM function that simulates what runner.py will do (send the prompt to Groq and get a response)
 # Right now it always returns "improved response here" just for testing
@@ -21,11 +36,11 @@ def run_llm(prompt):
     print(f"[RUNNER] Prompt sent: {prompt}")
     return "improved response here"  # Mocked improved response
 
-# Simulates the evaluator -- checks whether the model’s output matches the true answer (ignoring case and extra spaces)
+# Simulates the evaluator: checks whether the model’s output matches the true answer (ignoring case and extra spaces)
 def is_correct(response, ground_truth):
     return response.strip().lower() == ground_truth.strip().lower()
 
-# This function optionally rephrases a prompt to help the LLM give a better answer on the next attempt
+# Optionally rephrases a prompt to help the LLM give a better answer on the next attempt
 def tweak_prompt(prompt):
     return prompt + " Please be specific and accurate."
 
