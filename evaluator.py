@@ -22,7 +22,6 @@ with open("data/llm_responses.json") as f: # Change this name to whatever Aurora
 
 # Create dictionary to store correct answers from original JSON (answer_key)
 # Format: Question # : Correct Answer
-
 correct_answers = {}
 answer_key = {}
 for idx, question in enumerate(test_questions, 1): # idx is the index of the input-target score pairs (there are 3)
@@ -34,10 +33,6 @@ for idx, question in enumerate(test_questions, 1): # idx is the index of the inp
 # Compare LLM response to correct answers
 responses = {}
 
-# for idx, question in enumerate(llm_answers, 1): # idx is the index of the input-target score pairs (there are 3)
-#     print(question)
-
-
 i = 1
 for k, v in llm_answers.items(): # k = batch, v = dictionary representing batch
     # Right now, each v is a dictionary of all the questions in the batch
@@ -48,10 +43,8 @@ for k, v in llm_answers.items(): # k = batch, v = dictionary representing batch
             i += 1
 
 incorrect_questions = {}
-# print(answer_key)
-# print(responses)
+
 # Go through each question, compare, and add is_correct
-i = 1
 for entry, value in answer_key.items():
     if value[0] != responses[entry]:
         incorrect_questions[entry] = responses[entry]
