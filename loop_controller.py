@@ -11,7 +11,7 @@ Controls the closed feedback loop:
 import json
 import time
 
-INCORRECT_FILE = "incorrect.json"  # update if different
+INCORRECT_FILE = "incorrect_questions.json"  # update if different
 GROUND_TRUTH_FILE = "4_distractors.json"
 
 # Load incorrect prompts
