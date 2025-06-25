@@ -1,8 +1,11 @@
 """
-This module controls the closed feedback loop:
-Loads incorrectly answered prompts from runner.py.
-Modifies/rephrases the prompt and feeds them back to Groq through runner.py.
-Tracks performance over multiple loops.
+loop_controller.py
+
+Controls the closed feedback loop:
+- Loads incorrectly answered prompts from runner.py
+- Optionally modifies/rephrases prompts
+- Feeds them back through the runner
+- Tracks performance over multiple loops
 """
 
 import json
@@ -95,6 +98,6 @@ for ex in failed_prompts:
 
 # Save final retry results
 with open("data/retry_results.json", "w") as f:
-    json.dump(retry_results, f, indent=2)
+    json.dump(retry_results, f, indent=2) 
 
 print("Loop complete. Results written to data/retry_results.json")
