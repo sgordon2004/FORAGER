@@ -107,7 +107,7 @@ def initial_run():
             else:
                 print(f"Warning: No valid JSON found for Batch #{i}")
                 parsed_answer = {}
-        except json.JSONDecodeError:
+        except json.JSONDecodeError:    # Meaning: If a JSON decoding error occurs, handle it here 
             print(f"Warning: could not parse answer for Batch_{i}")
             parsed_answer = {}
 
