@@ -118,8 +118,6 @@ if __name__ == "__main__":
     initial_run()
 
 
-
-
     #Iterate through 5 questions only and get the output from the LLM then 
     #Store output in a new JSON
     #Then put that file in the Data folder
