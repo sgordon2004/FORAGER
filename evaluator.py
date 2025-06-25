@@ -7,6 +7,7 @@
 
 import json
 from formatter import file
+import os
 
 def load_files():
     # Ask user which JSON test file was being used if file is NULL
@@ -61,6 +62,9 @@ def store_results():
 	# Save updated results
 	with open("data/incorrect_questions.json", "w") as out_file:
 		json.dump(incorrect_questions, out_file, indent=4)
+	
+	output_path = os.path.join("data", "incorrect_questions.json")
+	print(f"Successfully saved evaluation results to {output_path}!")
 
 def run_eval_process():
 	load_files()
