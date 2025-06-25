@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 from formatter import format_json
 import re
+import time
 
 # Load API key from environment
 load_dotenv()
@@ -47,27 +48,34 @@ Format your response as JSON with this structure:
 # print(build_prompt(questions[0]))
 
 # Sends requests to Groq
-def get_llm_response(prompt):
-    try:
-        response = requests.post(
-            groq_endpoint,
-            headers = HEADERS,
-            json = {
-                "model": "llama3-8b-8192",
-                "messages": [
-                    {"role": "user",
-                     "content": prompt}
-                ],
-                "temperature": 0 # forces no creativity
-            },
-            timeout = 10
-        )
-        # Raises HTTP error, if one occured
-        response.raise_for_status()
-        return response.json()["choices"][0]["message"]["content"]
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching response: {e}")
-        return str(e)
+def get_llm_response(prompt, max_retries=3):
+    for attempt in range(1, max_retries + 1):
+        try:
+            response = requests.post(
+                groq_endpoint,
+                headers = HEADERS,
+                json = {
+                    "model": "llama3-8b-8192",
+                    "messages": [
+                        {"role": "user",
+                        "content": prompt}
+                    ],
+                    "temperature": 0 # forces no creativity
+                },
+                timeout = 10
+            )
+            # Raises HTTP error, if one occured
+            response.raise_for_status()
+            return response.json()["choices"][0]["message"]["content"]
+        
+        except (requests.exceptions.Timeout, requests.exceptions.ConnectionError, requests.exceptions.HTTPError) as e:
+            print(f"Attempt #{attempt} failed: {e}")
+            if attempt < max_retries:
+                print("Retrying in 8 seconds...\n")
+                time.sleep(8)
+            else:
+                print("Max retries reached. Returning error message.")
+                return str(e)
 
 def initial_run():
     results = {}
