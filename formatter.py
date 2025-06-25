@@ -2,7 +2,7 @@
 This module handles all the formatting of our JSON data.
 """
 
-import json
+import json             # To encode/decode JSON data 
 
 # Ask user which file to upload
 file = input("Enter the path/name of file to be uploaded to Groq: ")
