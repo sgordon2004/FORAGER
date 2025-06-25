@@ -1,23 +1,51 @@
 """
-This module handles all the formatting of our JSON data.
+formatter.py
+
+This module loads the original JSON dataset and formats it into question batches
+for LLM processing. Each batch contains a fixed number of questions with clearly
+structured input and multiple-choice options.
+
+Key Functions:
+- load_json(): Loads the raw JSON data from file.
+- format_json(): Splits the questions into batches and standardizes their format.
+- write_formatted_json(): Saves the formatted batches to disk for LLM input.
 """
 
 import json
 
-# Ask user which file to upload
-file = input("Enter the path/name of file to be uploaded to Groq: ")
-file = f"data/{file}"
+def get_input_file():
+    """
+    Prompts the user to enter the path or filename to be uploaded to Groq.
 
-# Open JSON
-with open(file) as f:
-    data = json.load(f)
+    Returns:
+        str: A valid path to the input JSON file.
+    """
+    filename = input("Enter the path/name of file to be uploaded to Groq: ")
+    return f"data/{filename}"
+
+def load_json():
+    """
+    Opens the input JSON to be used.
+    """
+    file = get_input_file()
+    with open(file) as f:
+        return json.load(f)
 
 # # Set batch size
 # batch_size = 5
 
 # Creates batches of 5 questions each
 
-def format_json(batch_size=5):
+def format_json(data, batch_size=5):
+    """
+    Splits the loaded JSON data into batches and formats each question with its options.
+    
+    Args:
+        batch_size (int): Number of questions per batch. Defaults to 5.
+
+    Returns:
+        list: A list of batches, where each batch is a list of formatted question dictionaries.
+    """
     batches = []
     for i in range(0, len(data), batch_size):
         batch = data[i:i+batch_size] # Holds 5 input-target pairs

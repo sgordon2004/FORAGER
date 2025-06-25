@@ -1,18 +1,29 @@
 """
-	•	Task: evaluator.py (Self-Evaluation & Metrics)
-	•	Compares Groq's answers to the ground truth in the JSON
-	•	Computes accuracy, confidence levels if provided (this part has not been implemented yet)
-	•	Flags incorrectly answered prompts and writes them to a separate JSON for review
+evaluator.py
+
+This module evaluates the performance of Groq's LLM by comparing its responses
+against ground-truth answers. It computes accuracy metrics, flags incorrect answers,
+and saves them for further review.
+
+Key Functions:
+- load_files(): Loads both the original question file and LLM responses.
+- evaluate(): Compares LLM answers to the answer key and identifies mismatches.
+- store_results(): Writes incorrect responses to a separate JSON file.
+- run_eval_process(): Executes the full evaluation workflow.
 """
 
 import json
-from formatter import file
+from .formatter import get_input_file
 import os
 
 def load_files():
+	"""
+	Opens the JSON files containing the original questions and LLM responses.
+	"""
     # Ask user which JSON test file was being used if file is NULL
-	global file
-	if file == None:
+	# global file
+	file = get_input_file()
+	if not file:
 		file = input("Enter the path/name of file that was used to test Groq: ")
 		file = f"data/{file}"
 	else:
@@ -28,6 +39,13 @@ def load_files():
 		llm_answers = json.load(f)
 
 def evaluate():
+	"""
+	Creates three new dictionaries:
+	1. answer_key - holds the orignal questions matched with their correct answers
+	2. responses - holds the LLM responses in order
+	3. incorrect_questions - stores only the questions the LLM answered incorrectly
+	Compares the data in answer_key and incorrect_questions to evaluate the LLMs accruacy.
+	"""
 	# Create dictionary to store correct answers from original JSON (answer_key)
 	# Format: Question # : Correct Answer
 	correct_answers = {}
@@ -61,6 +79,9 @@ def evaluate():
 			incorrect_questions[entry] = responses[entry]
 
 def store_results():
+	"""
+	Stores the incorrect answers in a new JSON file.
+	"""
 	# Save updated results
 	with open("data/incorrect_questions.json", "w") as out_file:
 		json.dump(incorrect_questions, out_file, indent=4)
@@ -69,6 +90,9 @@ def store_results():
 	print(f"Successfully saved evaluation results to {output_path}!")
 
 def run_eval_process():
+	"""
+	Runs the entire evaluation pipeline, from loading the files to storing the final results.
+	"""
 	load_files()
 	evaluate()
 	store_results()
