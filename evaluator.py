@@ -20,26 +20,42 @@ with open(file) as f:
 with open("data/llm_responses.json") as f: # Change this name to whatever Aurora names it
     llm_answers = json.load(f)
 
-# Create a dictionary from LLM's answers for quick lookup by ID
-response_dict = {item["id"]: item["llm_response"] for item in llm_answers}
+# Create dictionary to store correct answers from original JSON (answer_key)
+# Format: Question # : Correct Answer
 
-incorrect_questions = []
+correct_answers = {}
+answer_key = {}
+for idx, question in enumerate(test_questions, 1): # idx is the index of the input-target score pairs (there are 3)
+    correct_answers = [k for k, v in question["target_scores"].items() if v == 1]
+    # print(f"Q{idx}: {question['input']}")
+    # print(f"Correct answer: {correct_answers}\n")
+    answer_key[idx] = correct_answers
 
+# Compare LLM response to correct answers
+responses = {}
+
+# for idx, question in enumerate(llm_answers, 1): # idx is the index of the input-target score pairs (there are 3)
+#     print(question)
+
+
+i = 1
+for k, v in llm_answers.items(): # k = batch, v = dictionary representing batch
+    # Right now, each v is a dictionary of all the questions in the batch
+    # We have to access the "answer" field in v now
+    for key, question_set in v.items():
+        for question in question_set:
+            responses[i] = question["answer"]
+            i += 1
+
+incorrect_questions = {}
+# print(answer_key)
+# print(responses)
 # Go through each question, compare, and add is_correct
-for q in test_questions:
-    qid = q["id"]
-    correct_answer = next(k for k, v in q["target_scores"].items() if v == 1)
-    llm_response = response_dict.get(qid, "").strip().lower()
-    q["llm_response"] = llm_response
-    q["is_correct"] = int(llm_response == correct_answer.strip().lower())
-    if (q["is_correct"] == 0):
-        incorrect_questions.append(q)
-        
+i = 1
+for entry, value in answer_key.items():
+    if value[0] != responses[entry]:
+        incorrect_questions[entry] = responses[entry]
 
 # Save updated results
-with open("evaluated_questions.json", "w") as out_file:
-    json.dump(test_questions, out_file, indent=4)
-
-# Creates a new json file and writes the incorrectly answered questions and answer choices to it
-with open("data/ground_truth.json") as f:
-    json.dump(data, f, indent = 4)
+with open("data/incorrect_questions.json", "w") as out_file:
+    json.dump(incorrect_questions, out_file, indent=4)
