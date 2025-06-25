@@ -1,7 +1,7 @@
 """
 	•	Task: evaluator.py (Self-Evaluation & Metrics)
-	•	Compares Groq’s answers to the ground truth in the JSON
-	•	Computes accuracy, confidence levels if provided
+	•	Compares Groq's answers to the ground truth in the JSON
+	•	Computes accuracy, confidence levels if provided (this part has not been implemented yet)
 	•	Flags incorrectly answered prompts and writes them to a separate JSON for review
 """
 
@@ -17,13 +17,13 @@ def load_files():
 		file = f"data/{file}"
 	else:
 		file = f"{file}"
-	# Open test file
+	# Open the JSON file used to test Groq
 	with open(file) as f:
 		global test_questions
 		test_questions = json.load(f)
           
-	# Open the JSON with Groq's responses
-	with open("data/llm_responses.json") as f: # Change this name to whatever Aurora names it
+	# Open the JSON file with Groq's responses
+	with open("data/llm_responses.json") as f:
 		global llm_answers
 		llm_answers = json.load(f)
 
@@ -33,6 +33,7 @@ def evaluate():
 	correct_answers = {}
 	answer_key = {}
 	for idx, question in enumerate(test_questions, 1): # idx is the index of the input-target score pairs (there are 3)
+		# For each question, the answer choice (key) with a value of 1, i.e. the correct answer, is selected
 		correct_answers = [k for k, v in question["target_scores"].items() if v == 1]
 		# print(f"Q{idx}: {question['input']}")
 		# print(f"Correct answer: {correct_answers}\n")
@@ -50,10 +51,11 @@ def evaluate():
 				responses[i] = question["answer"]
 				i += 1
 
+	# Dictionary to store questions that Groq got incorrect and its answers
 	global incorrect_questions
 	incorrect_questions = {}
 
-	# Go through each question, compare, and add is_correct
+	# Go through each question, compare, and add incorrect questions to the new dictionary
 	for entry, value in answer_key.items():
 		if value[0] != responses[entry]:
 			incorrect_questions[entry] = responses[entry]
