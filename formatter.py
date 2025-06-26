@@ -12,6 +12,7 @@ Key Functions:
 """
 
 import json
+import re
 
 filename = None
 
@@ -76,3 +77,31 @@ def format_json(data, batch_size=5):
         batches.append(formatted_batch)
     
     return batches
+
+def clean_restructured_prompts(data):
+    """
+    Cleans a dictionary of restructured prompt strings into a structured format
+    with separate 'question' and 'options' fields.
+
+    Args:
+        data (dict): Keys are question IDs, values are raw prompt strings.
+
+    Returns:
+        dict: Reformatted dictionary where each value is a dict with 'question' and 'options'.
+    """
+    cleaned = {}
+
+    for qid, raw in data.items():
+        # Extract question and options using regex patterns
+        question_match = re.search(r'Question:\s*(.*?)(?:Options:|$)', raw, re.DOTALL | re.IGNORECASE)
+        options_match = re.findall(r'^[A-D]\)\s*(.*)', raw, re.MULTILINE)
+
+        question = question_match.group(1).strip() if question_match else raw.strip()
+        options = [opt.strip() for opt in options_match]
+
+        cleaned[qid] = {
+            "question": question,
+            "options": options
+        }
+
+        return cleaned
