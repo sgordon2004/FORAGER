@@ -127,7 +127,7 @@ def initial_run():
         prompt = build_prompt(questions_batch)
         raw_answer = get_llm_response(prompt)
 
-        # Save individual prompts for each questino in this batch
+        # Save individual prompts for each question in this batch
         for idx, q in enumerate(questions_batch, 1):
             q_prompt = (
                 "You are a helpful assistant. Answer the following question clearly and concisely. "

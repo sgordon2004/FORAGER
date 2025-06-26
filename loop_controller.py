@@ -67,15 +67,49 @@ if __name__ == "__main__":
     with open("data/clean_restructured_prompts.json", "w") as f:
             json.dump(clean_prompts, f, indent = 2)
 
-    # # Save new answers to dictionary
-    # retry_answers = {}
 
-    # for qid, prompt in restructured.items():
-    #     new_response = get_llm_response(prompt)
-    #     retry_answers[qid] = new_response
-    
-    # with open("data/retry_answers.json", "w") as f:
-    #     json.dump(retry_answers, f, indent = 2)
+    # Feed new prompts to LLM
+    responses = {}
+
+    def rerun():
+        for qid, qdata in clean_prompts.items():
+            q_prompt = (
+                "You are a helpful assistant. Answer the following question clearly and concisely. "
+                "Provide only the final answer.\n\n"
+                f"Question:\n{qdata['question']}\nOptions:\n"
+            )
+            for opt in qdata["options"]:
+                q_prompt += f"{opt}\n"
+            q_prompt += """\n
+        Format your response as JSON with this structure:
+        {
+        "1": "..."
+        }
+            """
+
+            # Get response and format answer
+            response_json = get_llm_response(q_prompt)
+            try:
+                parsed = json.loads(response_json)
+                final_answer = parsed.get("1", "").strip()
+            except Exception:
+                final_answer = "[PARSE ERROR]"
+            
+            responses[qid] = {
+                "question": qdata["question"],
+                "options": qdata["options"],
+                "llm_response": final_answer
+            }
+
+        # Save responses to file
+        with open("data/llm_responses_round2.json", "w") as f:
+            json.dump(responses, f, indent=2)
+
+        print("LLM responses saved to data/llm_responses_round2.json.")
+            
+
+    rerun()
+
 
 #     # Mock LLM function that simulates what runner.py will do (send the prompt to Groq and get a response)
 #     # Right now it always returns "improved response here" just for testing
