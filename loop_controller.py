@@ -10,7 +10,7 @@ Controls the closed feedback loop:
 
 import json
 import time
-from formatter import  load_json
+from formatter import  load_json, clean_restructured_prompts
 from runner import get_llm_response, build_prompt
 
 if __name__ == "__main__":
@@ -42,7 +42,15 @@ if __name__ == "__main__":
         Your previous answer:
         "{v}"
 
-        Please revise the original prompt to make it clearer or better structured to guide you toward the correct answer. Respond with a rewritten version of the prompt only. Do not include any explanation of your changes or notes. Simply respond with your new, revised prompt, and only that.
+        Please revise the original prompt so that it is clearer and more direct. Then extract the rephrased question and its multiple-choice options in the following format:
+        
+        Respond with a JSON object like this:
+        {{
+        "question": "<rephrased question>",
+        "options": ["Option A", "Option B", "Option C", "Option D", "Option E"]
+        }}
+
+        Do not include any explanation or formatting outside of the JSON object.
         """
             new_prompt = get_llm_response(restructure_prompt)
             new_prompts[q_id] = new_prompt
@@ -53,8 +61,11 @@ if __name__ == "__main__":
         return new_prompts
 
     restructured = build_new_prompts()
-    for k, v in restructured.items():
-        print(k, v)
+
+    clean_prompts = clean_restructured_prompts(restructured)
+
+    with open("data/clean_restructured_prompts.json", "w") as f:
+            json.dump(clean_prompts, f, indent = 2)
 
     # # Save new answers to dictionary
     # retry_answers = {}
