@@ -78,9 +78,12 @@ def evaluate():
 		if value[0] != responses[entry]:
 			incorrect_questions[entry] = responses[entry]
 
+	# Adds a short summary of Groq's accuracy at the end of incorrect_questions.json
 	incorrect_questions["Number of Incorrect Questions"] = len(incorrect_questions)
-	incorrect_questions["TOtal Questions"] = len(test_questions)
-	incorrect_questions["Accuracy"] = round((len(test_questions) - len(incorrect_questions)) / len(test_questions), 2)
+	incorrect_questions["Total Questions"] = len(test_questions)
+	accuracy = (len(test_questions) - len(incorrect_questions)) / len(test_questions)
+	accuracy_str = f"{accuracy * 100:.2f}%"
+	incorrect_questions["Accuracy"] = accuracy_str
 
 def store_results():
 	"""
