@@ -15,7 +15,7 @@ import os
 import json
 from dotenv import load_dotenv
 load_dotenv()
-from formatter import format_json
+from formatter import format_json, load_json
 import re
 import time
 
@@ -34,7 +34,7 @@ HEADERS = {
 }
 
 # Load questions from formatter.py
-questions = format_json()
+questions = format_json(load_json())
 
 # Batches questions into 5 at a time to build combined prompt
 def build_prompt(formatted_batch):
