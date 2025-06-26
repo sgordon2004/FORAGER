@@ -13,6 +13,8 @@ Key Functions:
 
 import json
 
+filename = None
+
 def get_input_file():
     """
     Prompts the user to enter the path or filename to be uploaded to Groq.
@@ -20,7 +22,9 @@ def get_input_file():
     Returns:
         str: A valid path to the input JSON file.
     """
-    filename = input("Enter the path/name of file to be uploaded to Groq: ")
+    global filename
+    if filename == None:
+        filename = input("Enter the path/name of file to be uploaded to Groq: ")
     return f"data/{filename}"
 
 def load_json():

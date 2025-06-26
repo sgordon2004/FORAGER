@@ -13,7 +13,7 @@ Key Functions:
 """
 
 import json
-from .formatter import get_input_file
+from formatter import get_input_file
 import os
 
 def load_files():
