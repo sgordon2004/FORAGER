@@ -182,12 +182,12 @@
                 "input": "What is one main reason the semiconductor industry is shifting towards 3D heterogenous integration?",
                 "options": [
                     "It allows chips to be manufactured entirely on a single monolithic substrate",
-                    "It enables continued performance scaling beyond the limits of Moore\u00e2\u20ac\u2122s Law",
+                    "It enables continued performance scaling beyond the limits of Moore\u2019s Law",
                     "It eliminates the need for thermal management in high-density systems",
                     "It replaces the need for packaging altogether",
                     "It reduces the number of I/Os in complex devices"
                 ],
-                "answer": "It enables continued performance scaling beyond the limits of Moore\u00e2\u20ac\u2122s Law"
+                "answer": "It enables continued performance scaling beyond the limits of Moore\u2019s Law"
             },
             {
                 "input": "Which packaging method creates high-density connections without using full through-silicon via (TSV) stacks?",
@@ -501,21 +501,21 @@
                     "It allows companies to bypass the need for AI",
                     "It replaces traditional processors with photonic-only systems",
                     "It eliminates the need for silicon interposers",
-                    "Moore\u00e2\u20ac\u2122s Law scaling is slowing, limiting gains from transistor miniaturization",
+                    "Moore\u2019s Law scaling is slowing, limiting gains from transistor miniaturization",
                     "It avoids the use of chiplets altogether"
                 ],
-                "answer": "Moore\u00e2\u20ac\u2122s Law scaling is slowing, limiting gains from transistor miniaturization"
+                "answer": "Moore\u2019s Law scaling is slowing, limiting gains from transistor miniaturization"
             },
             {
                 "input": "Which of the following is an example of a real-world application of heterogeneous integration?",
                 "options": [
-                    "Samsung\u00e2\u20ac\u2122s foldable screen display",
-                    "AMD\u00e2\u20ac\u2122s EPYC processors using chiplet architecture",
-                    "Tesla\u00e2\u20ac\u2122s battery management systems",
+                    "Samsung\u2019s foldable screen display",
+                    "AMD\u2019s EPYC processors using chiplet architecture",
+                    "Tesla\u2019s battery management systems",
                     "Microsoft Excel running on ARM chips",
-                    "Apple\u00e2\u20ac\u2122s iTunes software"
+                    "Apple\u2019s iTunes software"
                 ],
-                "answer": "AMD\u00e2\u20ac\u2122s EPYC processors using chiplet architecture"
+                "answer": "AMD\u2019s EPYC processors using chiplet architecture"
             },
             {
                 "input": "What is the purpose of the Heterogenous Integration Roadmap (HIR)?",

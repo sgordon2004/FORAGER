@@ -10,108 +10,193 @@ Controls the closed feedback loop:
 
 import json
 import time
-from runner import get_llm_response
-
-INCORRECT = "incorrect_questions.json"
-GROUND_TRUTH = "4_distractors.json"
+from formatter import  load_json, clean_restructured_prompts
+from runner import get_llm_response, build_prompt
 
 if __name__ == "__main__":
-    # Load incorrectly answered questions
-    with open("data/incorrect_questions.json") as f:
-        incorrect_data = json.load(f)
-    print(f"Loaded {len(incorrect_data)} incorrectly answered questions.")
 
-    # Load ground truth
-    with open(GROUND_TRUTH, "r") as f:
-        ground_truth_data = json.load(f)
-    print(f"Loaded {len(ground_truth_data)} given questions.")
+    # Load incorrect questions and original questions
+    incorrect = load_json("data/incorrect_questions.json")
+    ground_truth = load_json("data/4_distractors.json")
+    prompt_history = load_json("data/prompt_history.json")
 
-    # Mock LLM function that simulates what runner.py will do (send the prompt to Groq and get a response)
-    # Right now it always returns "improved response here" just for testing
-    def run_llm(prompt):
-        print(f"[RUNNER] Prompt sent: {prompt}")
-        return "improved response here"  # Mocked improved response
+    # Build new prompt based off of incorrect questions
+    new_prompts = {}
+    def build_new_prompts():
+        """
+        Uses the original prompt for each incorrect question and asks the LLM to restructure it.
 
-    # Simulates the evaluator: checks whether the model’s output matches the true answer (ignoring case and extra spaces)
-    def is_correct(response, ground_truth):
-        return response.strip().lower() == ground_truth.strip().lower()
+        Returns:
+            dict: Rephrased prompts to feed back to the LLM.
+        """
+        for k, v in incorrect.items():
+            q_id = f"Q{k}"
+            original_prompt = prompt_history.get(q_id, "[Prompt not found]")
+            restructure_prompt = f"""
+        You answered the following question incorrectly.
+        
+        Here was the original prompt:
 
-    # Optionally rephrases a prompt to help the LLM give a better answer on the next attempt
-    def tweak_prompt(prompt):
-        return prompt + " Please be specific and accurate."
+        {original_prompt}
 
-    # Load failed prompts into a list of dictionaries
-    with open("data/failed_prompts.json") as f:
-        failed_prompts = json.load(f)
+        Your previous answer:
+        "{v}"
 
-    # Number of attempts to try to get correct answer is 3 and results are stored in the array
-    attempts = 3
-    retry_results = []
+        Please revise the original prompt so that it is clearer and more direct. Then extract the rephrased question and its multiple-choice options in the following format:
+        
+        Respond with a JSON object like this:
+        {{
+        "question": "<rephrased question>",
+        "options": ["Option A", "Option B", "Option C", "Option D", "Option E"]
+        }}
 
-    # Feedback Loop
+        Do not include any explanation or formatting outside of the JSON object.
+        """
+            new_prompt = get_llm_response(restructure_prompt)
+            new_prompts[q_id] = new_prompt
+        
+        with open("data/restructured_prompts.json", "w") as f:
+            json.dump(new_prompts, f, indent = 2)
+        
+        return new_prompts
 
-    # Start looping through each failed prompt. Pulls out the prompt (input) and correct answer (answer).
-    # The variable prompt can be tweaked later if needed.
-    for ex in failed_prompts:
-        original = ex["input"]
-        answer = ex["answer"]
-        prompt = original
+    restructured = build_new_prompts()
 
-        # For each prompt, try it up to 3 times. Call the mock LLM and print the result of each attempt.
-        for attempt in range(1, attempts + 1):
-            response = run_llm(prompt)
-            print(f"Attempt {attempt}: {response}")
+    clean_prompts = clean_restructured_prompts(restructured)
 
-            # If the LLM gets the right answer, record that result (including how many tries it took),
-            # label it as "correct", and exit the retry loop for that prompt.
-            if is_correct(response, answer):
-                retry_results.append({
-                    "input": original,
-                    "final_prompt": prompt,
-                    "response": response,
-                    "attempts": attempt,
-                    "status": "correct"
-                })
-                break
+    with open("data/clean_restructured_prompts.json", "w") as f:
+            json.dump(clean_prompts, f, indent = 2)
+
+
+    # Feed new prompts to LLM
+    responses = {}
+
+    def rerun():
+        for qid, qdata in clean_prompts.items():
+            q_prompt = (
+                "You are a helpful assistant. Answer the following question clearly and concisely. "
+                "Provide only the final answer.\n\n"
+                f"Question:\n{qdata['question']}\nOptions:\n"
+            )
+            for opt in qdata["options"]:
+                q_prompt += f"{opt}\n"
+            q_prompt += """\n
+        Format your response as JSON with this structure:
+        {
+        "1": "..."
+        }
+            """
+
+            # Get response and format answer
+            response_json = get_llm_response(q_prompt)
+            try:
+                parsed = json.loads(response_json)
+                final_answer = parsed.get("1", "").strip()
+            except Exception:
+                final_answer = "[PARSE ERROR]"
             
-            # If the first attempt failed, modify the prompt to (hopefully) improve the LLM’s next response.
-            if attempt == 1:
-                prompt = tweak_prompt(prompt)
+            responses[qid] = {
+                "question": qdata["question"],
+                "options": qdata["options"],
+                "llm_response": final_answer
+            }
 
-            # Pause for 1 second before trying again to avoid spamming the LLM API
-            # (practical when real API calls are made)
-            time.sleep(1)
+        # Save responses to file
+        with open("data/llm_responses_round2.json", "w") as f:
+            json.dump(responses, f, indent=2)
 
-        # If the LLM still didn’t get it right after all attempts, log the final try and label the status as "still incorrect"
-        else:
-            retry_results.append({
-                "id": ex.get("id", None),
-                "input": ex["input"],
-                "final_prompt": prompt,
-                "response": response,
-                "attempts": attempts,
-                "status": "still incorrect"
-            })
-            break
+        print("LLM responses saved to data/llm_responses_round2.json.")
+            
 
-        # tweak for second/third attempts
-        if attempt == 1:
-            prompt_dict["input"] = tweak_prompt(prompt_dict["input"])
+    rerun()
 
-        time.sleep(1)  # prevents spam in API with 1 sec delay
 
-    else:
-        retry_results.append({
-            "id": qid,
-            "input": ex["input"],
-            "final_prompt": prompt_dict["input"],
-            "response": response,
-            "attempts": attempts,
-            "status": "still incorrect"
-        })
+#     # Mock LLM function that simulates what runner.py will do (send the prompt to Groq and get a response)
+#     # Right now it always returns "improved response here" just for testing
+#     def run_llm(prompt):
+#         print(f"[RUNNER] Prompt sent: {prompt}")
+#         return "improved response here"  # Mocked improved response
 
-# save results
-with open("data/retry_results.json", "w") as f:
-    json.dump(retry_results, f, indent=2)
+#     # Simulates the evaluator: checks whether the model’s output matches the true answer (ignoring case and extra spaces)
+#     def is_correct(response, ground_truth):
+#         return response.strip().lower() == ground_truth.strip().lower()
 
-print("Loop complete. Results written to data/retry_results.json")
+#     # Optionally rephrases a prompt to help the LLM give a better answer on the next attempt
+#     def tweak_prompt(prompt):
+#         return prompt + " Please be specific and accurate."
+
+#     # Load failed prompts into a list of dictionaries
+#     with open("data/failed_prompts.json") as f:
+#         failed_prompts = json.load(f)
+
+#     # Number of attempts to try to get correct answer is 3 and results are stored in the array
+#     attempts = 3
+#     retry_results = []
+
+#     # Feedback Loop
+
+#     # Start looping through each failed prompt. Pulls out the prompt (input) and correct answer (answer).
+#     # The variable prompt can be tweaked later if needed.
+#     for ex in failed_prompts:
+#         original = ex["input"]
+#         answer = ex["answer"]
+#         prompt = original
+
+#         # For each prompt, try it up to 3 times. Call the mock LLM and print the result of each attempt.
+#         for attempt in range(1, attempts + 1):
+#             response = run_llm(prompt)
+#             print(f"Attempt {attempt}: {response}")
+
+#             # If the LLM gets the right answer, record that result (including how many tries it took),
+#             # label it as "correct", and exit the retry loop for that prompt.
+#             if is_correct(response, answer):
+#                 retry_results.append({
+#                     "input": original,
+#                     "final_prompt": prompt,
+#                     "response": response,
+#                     "attempts": attempt,
+#                     "status": "correct"
+#                 })
+#                 break
+            
+#             # If the first attempt failed, modify the prompt to (hopefully) improve the LLM’s next response.
+#             if attempt == 1:
+#                 prompt = tweak_prompt(prompt)
+
+#             # Pause for 1 second before trying again to avoid spamming the LLM API
+#             # (practical when real API calls are made)
+#             time.sleep(1)
+
+#         # If the LLM still didn’t get it right after all attempts, log the final try and label the status as "still incorrect"
+#         else:
+#             retry_results.append({
+#                 "id": ex.get("id", None),
+#                 "input": ex["input"],
+#                 "final_prompt": prompt,
+#                 "response": response,
+#                 "attempts": attempts,
+#                 "status": "still incorrect"
+#             })
+#             break
+
+#         # tweak for second/third attempts
+#         if attempt == 1:
+#             prompt_dict["input"] = tweak_prompt(prompt_dict["input"])
+
+#         time.sleep(1)  # prevents spam in API with 1 sec delay
+
+#     else:
+#         retry_results.append({
+#             "id": qid,
+#             "input": ex["input"],
+#             "final_prompt": prompt_dict["input"],
+#             "response": response,
+#             "attempts": attempts,
+#             "status": "still incorrect"
+#         })
+
+# # save results
+# with open("data/retry_results.json", "w") as f:
+#     json.dump(retry_results, f, indent=2)
+
+# print("Loop complete. Results written to data/retry_results.json")

@@ -36,8 +36,12 @@ HEADERS = {
 # Load questions from formatter.py
 questions = format_json(load_json())
 
+# Variable to store general "helpful assistant prompt"
+general_prompt = ("You are a helpful assistant. Answer the following questions clearly and concisely. Provide only the final answer for each question, labeled by its number.\n\n"
+        "Questions:\n")
+
 # Batches questions into 5 at a time to build combined prompt
-def build_prompt(formatted_batch):
+def build_prompt(formatted_batch, prompt=general_prompt):
     """
     Builds a prompt string from a batch of formatted questions for LLM input.
 
@@ -47,10 +51,6 @@ def build_prompt(formatted_batch):
     Returns:
         str: A complete prompt formatted for Groq's LLM with JSON instructions.
     """
-    prompt = (
-        "You are a helpful assistant. Answer the following questions clearly and concisely. Provide only the final answer for each question, labeled by its number.\n\n"
-        "Questions:\n"
-    )
 
     for idx, question in enumerate(formatted_batch, 1):
         prompt += f"\n{idx}) {question['input']}\nOptions:\n"
@@ -113,13 +113,37 @@ def initial_run():
     - Parses and attaches answers to each question
     - Saves all results to a JSON file in the data directory
     """
+    global_qid = 1
+
+    # Dictionary to hold original prompts
+    prompt_history = {}
     results = {}
 
     # Loop through batched questions
     for i, questions_batch in enumerate(questions, 1):
         print(f"Working on Batch #{i}/{len(questions)} total batches...\n")
+
+        # Build a batch prompt and get LLM response
         prompt = build_prompt(questions_batch)
         raw_answer = get_llm_response(prompt)
+
+        # Save individual prompts for each question in this batch
+        for idx, q in enumerate(questions_batch, 1):
+            q_prompt = (
+                "You are a helpful assistant. Answer the following question clearly and concisely. "
+            "Provide only the final answer.\n\n"
+            f"Question:\n{q['input']}\nOptions:\n"
+            )
+            for opt in q["options"]:
+                q_prompt += f"{opt}\n"
+            q_prompt += """\n
+Format your response as JSON with this structure:
+{
+    "1": "..."
+}
+            """
+            prompt_history[f"Q{global_qid}"] = q_prompt
+            global_qid += 1
 
         try:
             # Extract JSON block safely using regex
@@ -140,6 +164,9 @@ def initial_run():
         results[f"Batch_{i}"] = {
             "questions": questions_batch,
         }
+        
+    with open("data/prompt_history.json", "w") as f:
+        json.dump(prompt_history, f, indent=2)
 
     # Save responses to a JSON file
     output_path = os.path.join("data", "llm_responses.json")

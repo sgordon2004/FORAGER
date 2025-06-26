@@ -12,6 +12,7 @@ Key Functions:
 """
 
 import json
+import re
 
 filename = None
 
@@ -23,16 +24,24 @@ def get_input_file():
         str: A valid path to the input JSON file.
     """
     global filename
-    if filename == None:
+    if filename is None:
         filename = input("Enter the path/name of file to be uploaded to Groq: ")
     return f"data/{filename}"
 
-def load_json():
+def load_json(file=None):
     """
     Opens the input JSON to be used.
+
+    Args:
+        file (str): Optional path to a file. If None, prompts user for it.
+    
+    Returns:
+        dict: loaded JSON data
     """
-    file = get_input_file()
+    if file is None:
+        file = get_input_file()
     with open(file) as f:
+        print(f"Loading {file}...")
         return json.load(f)
 
 # # Set batch size
@@ -68,3 +77,22 @@ def format_json(data, batch_size=5):
         batches.append(formatted_batch)
     
     return batches
+
+def clean_restructured_prompts(data):
+    cleaned = {}
+
+    for qid, raw_str in data.items():
+        try:
+            obj = json.loads(raw_str)
+            question = obj["question"].strip()
+            options = [opt.strip() for opt in obj["options"]]
+        except Exception:
+            question = raw_str.strip()
+            options = []
+
+        cleaned[qid] = {
+            "question": question,
+            "options": options
+        }
+
+    return cleaned

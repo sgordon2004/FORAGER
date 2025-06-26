@@ -1,0 +1,7 @@
+{
+  "Q2": "{\n    \"When did Gordon Moore, co-founder of Intel, first predict that the number of transistors on a microchip would double approximately every two years, leading to a slowdown in the rate of progress in computing power and miniaturization? Options:\n    2003\n    2012\n    2008\n    2000\n    2001\"\n}",
+  "Q3": "{\n    \"1\": \"What is the primary form of a modular chip, from which other forms are derived?\",\n    \"Options\": [\n        \"Standard\",\n        \"Die\",\n        \"Wafer\",\n        \"Chip carrier\",\n        \"Memory\"\n    ]\n}",
+  "Q8": "{\n    \"1\": \"Compared to conventional packaging approaches, interposers are generally: Options: Less expensive, More expensive, About the same cost, Only cheaper for wire bonding, Only used in experimental chips. Which option is correct?\"\n}",
+  "Q17": "{\n    \"1\": \"Which packaging method creates high-density connections without using full through-silicon via (TSV) stacks, allowing for increased interconnect density and reduced power consumption? Options: Fan-Out Wafer-Level Packaging (FO-WLP), Chiplet technology, 2.5D packaging, Micro-bump bonding, Embedded Multi-die Interconnect Bridge\"\n}",
+  "Q40": "{\n    \"1\": \"Which type of heterogeneity is typically associated with the integration of different features or functionalities within a system, such as combining multiple sensors or processing units? Options: Surface heterogeneity, Chip heterogeneity, Process-layer heterogeneity, Device-specific heterogeneity, Software heterogeneity\"\n}"
+}
