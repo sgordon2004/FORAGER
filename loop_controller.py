@@ -11,18 +11,14 @@ Controls the closed feedback loop:
 import json
 import time
 from formatter import  load_json, clean_restructured_prompts
-from runner import get_llm_response, build_prompt
+from runner import get_llm_response, initial_run
+from evaluator import run_eval_process
 
 if __name__ == "__main__":
 
-    # Load incorrect questions and original questions
-    incorrect = load_json("data/incorrect_questions.json")
-    ground_truth = load_json("data/4_distractors.json")
-    prompt_history = load_json("data/prompt_history.json")
-
     # Build new prompt based off of incorrect questions
     new_prompts = {}
-    def build_new_prompts():
+    def build_new_prompts(incorrect, prompt_history):
         """
         Uses the original prompt for each incorrect question and asks the LLM to restructure it.
 
@@ -60,18 +56,11 @@ if __name__ == "__main__":
         
         return new_prompts
 
-    restructured = build_new_prompts()
-
-    clean_prompts = clean_restructured_prompts(restructured)
-
-    with open("data/clean_restructured_prompts.json", "w") as f:
-            json.dump(clean_prompts, f, indent = 2)
-
 
     # Feed new prompts to LLM
     responses = {}
 
-    def rerun():
+    def rerun(round_number, clean_prompts):
         for qid, qdata in clean_prompts.items():
             q_prompt = (
                 "You are a helpful assistant. Answer the following question clearly and concisely. "
@@ -102,14 +91,42 @@ if __name__ == "__main__":
             }
 
         # Save responses to file
-        with open("data/llm_responses_round2.json", "w") as f:
+        with open(f"data/round_{round_number}_responses.json", "w") as f:
             json.dump(responses, f, indent=2)
 
         print("LLM responses saved to data/llm_responses_round2.json.")
             
 
-    rerun()
+    def prompt_lock_loop(rounds=3):
+        """
+        Executes the full prompt-feedback loop multiple times,
+        refining prompts and re-evaluating responses.
+        """
+        for i in range(rounds):
+            print(f"\n --- Starting Loop Iteration {i + 1} ---\n")
 
+            # Step 1: Feed our prompts to LLM and collect responses
+            initial_run()
+
+            # Step 2: Evaluate responses to create incorrect_questions.json
+            run_eval_process()
+
+            # Step 3: Load incorrect questions and original questions
+            incorrect = load_json("data/incorrect_questions.json")
+            ground_truth = load_json("data/4_distractors.json")
+            prompt_history = load_json("data/prompt_history.json")
+
+            # Step 4: Build improved prompts and rerun
+            restructured = build_new_prompts(incorrect, prompt_history)
+            clean_prompts = clean_restructured_prompts(restructured)
+
+            with open("data/clean_restructured_prompts.json", "w") as f:
+                json.dump(clean_prompts, f, indent = 2)
+
+            rerun(i + 1, clean_prompts)
+
+
+    prompt_lock_loop()
 
 #     # Mock LLM function that simulates what runner.py will do (send the prompt to Groq and get a response)
 #     # Right now it always returns "improved response here" just for testing
