@@ -79,7 +79,7 @@ def evaluate():
 			incorrect_questions[entry] = responses[entry]
 
 	incorrect_questions["Number of Incorrect Questions"] = len(incorrect_questions)
-	incorrect_questions["TOtal Questions"] = len(test_questions)
+	incorrect_questions["Total Questions"] = len(test_questions)
 	incorrect_questions["Accuracy"] = round((len(test_questions) - len(incorrect_questions)) / len(test_questions), 2)
 
 def store_results():
