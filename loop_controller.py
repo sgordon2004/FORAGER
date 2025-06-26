@@ -26,6 +26,8 @@ if __name__ == "__main__":
             dict: Rephrased prompts to feed back to the LLM.
         """
         for k, v in incorrect.items():
+            if not k.isdigit():
+                continue # Skip metadata keys
             q_id = f"Q{k}"
             original_prompt = prompt_history.get(q_id, "[Prompt not found]")
             restructure_prompt = f"""
@@ -106,15 +108,14 @@ if __name__ == "__main__":
             print(f"\n --- Starting Loop Iteration {i + 1} ---\n")
 
             # Step 1: Feed our prompts to LLM and collect responses
-            initial_run()
+            initial_run(round_number=i+1)
 
             # Step 2: Evaluate responses to create incorrect_questions.json
             run_eval_process()
 
-            # Step 3: Load incorrect questions and original questions
+            # Step 3: Load incorrect questions and original prompts
             incorrect = load_json("data/incorrect_questions.json")
-            ground_truth = load_json("data/4_distractors.json")
-            prompt_history = load_json("data/prompt_history.json")
+            prompt_history = load_json(f"data/prompt_history_round_{i + 1}.json")
 
             # Step 4: Build improved prompts and rerun
             restructured = build_new_prompts(incorrect, prompt_history)
