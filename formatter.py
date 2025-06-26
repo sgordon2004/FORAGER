@@ -23,16 +23,24 @@ def get_input_file():
         str: A valid path to the input JSON file.
     """
     global filename
-    if filename == None:
+    if filename is None:
         filename = input("Enter the path/name of file to be uploaded to Groq: ")
     return f"data/{filename}"
 
-def load_json():
+def load_json(file=None):
     """
     Opens the input JSON to be used.
+
+    Args:
+        file (str): Optional path to a file. If None, prompts user for it.
+    
+    Returns:
+        dict: loaded JSON data
     """
-    file = get_input_file()
+    if file is None:
+        file = get_input_file()
     with open(file) as f:
+        print(f"Loading {file}...")
         return json.load(f)
 
 # # Set batch size
