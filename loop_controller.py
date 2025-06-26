@@ -10,26 +10,21 @@ Controls the closed feedback loop:
 
 import json
 import time
+from runner import get_llm_response
 
-INCORRECT_FILE = "incorrect_questions.json"  # update if different
-GROUND_TRUTH_FILE = "4_distractors.json"
+INCORRECT = "incorrect_questions.json"
+GROUND_TRUTH = "4_distractors.json"
 
 if __name__ == "__main__":
     # Load incorrectly answered questions
-    with open(INCORRECT_FILE, "r") as f:
+    with open("data/incorrect_questions.json") as f:
         incorrect_data = json.load(f)
-
     print(f"Loaded {len(incorrect_data)} incorrectly answered questions.")
 
     # Load ground truth
-    with open(GROUND_TRUTH_FILE, "r") as f:
+    with open(GROUND_TRUTH, "r") as f:
         ground_truth_data = json.load(f)
-
     print(f"Loaded {len(ground_truth_data)} given questions.")
-
-    # Later: Replace these placeholder functions with actual imports once available
-        # from runner import run_llm
-        # from evaluator import is_correct
 
     # Mock LLM function that simulates what runner.py will do (send the prompt to Groq and get a response)
     # Right now it always returns "improved response here" just for testing
@@ -90,15 +85,33 @@ if __name__ == "__main__":
         # If the LLM still didn’t get it right after all attempts, log the final try and label the status as "still incorrect"
         else:
             retry_results.append({
-                "input": original,
+                "id": ex.get("id", None),
+                "input": ex["input"],
                 "final_prompt": prompt,
                 "response": response,
                 "attempts": attempts,
                 "status": "still incorrect"
             })
+            break
 
-    # Save final retry results
-    with open("data/retry_results.json", "w") as f:
-        json.dump(retry_results, f, indent=2) 
+        # tweak for second/third attempts
+        if attempt == 1:
+            prompt_dict["input"] = tweak_prompt(prompt_dict["input"])
 
-    print("Loop complete. Results written to data/retry_results.json")
+        time.sleep(1)  # prevents spam in API with 1 sec delay
+
+    else:
+        retry_results.append({
+            "id": qid,
+            "input": ex["input"],
+            "final_prompt": prompt_dict["input"],
+            "response": response,
+            "attempts": attempts,
+            "status": "still incorrect"
+        })
+
+# save results
+with open("data/retry_results.json", "w") as f:
+    json.dump(retry_results, f, indent=2)
+
+print("Loop complete. Results written to data/retry_results.json")
