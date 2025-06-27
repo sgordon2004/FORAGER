@@ -38,7 +38,8 @@ def build_new_prompts(incorrect, prompt_history):
     Your previous answer:
     "{v}"
 
-    Please revise the original prompt so that it is clearer and more direct. Then extract the rephrased question and its multiple-choice options in the following format:
+    Please revise the original prompt so that it is clearer and more direct. Be sure to reuse the exact original multiple-choice options without changing, reordering, or adding new ones.
+    Then extract the rephrased question and its multiple-choice options in the following format:
     
     Respond with a JSON object like this:
     {{
@@ -71,6 +72,7 @@ def rerun(round_number, clean_prompts):
         for opt in qdata["options"]:
             q_prompt += f"{opt}\n"
         q_prompt += """\n
+    Only choose from the options listed above. Do not create new answers or reword existing ones.
     Format your response as JSON with this structure:
     {
     "1": "..."
@@ -98,7 +100,7 @@ def rerun(round_number, clean_prompts):
     print(f"\033[1;92m✅ Saved LLM responses to to data/round_{round_number}_responses.json!\n")
             
 
-def prompt_lock_loop(test_file, rounds=2):
+def prompt_lock_loop(test_file, rounds=3):
     """
     Executes full prompt-feedback loop (only after the initial_run()),
     refining prompts and re-evaluating responses.
@@ -122,7 +124,7 @@ def prompt_lock_loop(test_file, rounds=2):
         # Step 3: Load incorrect questions and original prompts
         incorrect = load_json("FORAGER/data/incorrect_questions/incorrect_questions.json")
 
-        print(f"\033[1;94m📊 Loaded {len(incorrect)} incorrect questions from previous round.\033[0m\n")
+        print(f"\033[1;94m📊 Loaded {len(incorrect)-3} incorrect questions from previous round.\033[0m\n")
 
         prompt_history = load_json(f"FORAGER/data/prompt_history/prompt_history_round_{prev_round - 1}.json")
 
