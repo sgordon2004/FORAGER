@@ -94,7 +94,7 @@ def store_results():
 		json.dump(incorrect_questions, out_file, indent=4)
 	
 	output_path = os.path.join("data", "incorrect_questions.json")
-	print(f"Successfully saved evaluation results to {output_path}!")
+	print(f"Successfully saved evaluation results to {output_path}!\n")
 
 def run_eval_process():
 	"""

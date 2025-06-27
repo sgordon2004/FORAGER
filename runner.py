@@ -97,12 +97,12 @@ def get_llm_response(prompt, max_retries=3):
             return response.json()["choices"][0]["message"]["content"]
         
         except (requests.exceptions.Timeout, requests.exceptions.ConnectionError, requests.exceptions.HTTPError) as e:
-            print(f"Attempt #{attempt} failed: {e}")
+            print(f"*** Attempt #{attempt} failed: {e} ***\n")
             if attempt < max_retries:
                 print("Retrying in 8 seconds...\n")
                 time.sleep(8)
             else:
-                print("Max retries reached. Returning error message.")
+                print("**** Max retries reached. Returning error message. ****\n")
                 return str(e)
 
 def initial_run():
@@ -151,10 +151,10 @@ Format your response as JSON with this structure:
             if match:
                 parsed_answer = json.loads(match.group(0))
             else:
-                print(f"Warning: No valid JSON found for Batch #{i}")
+                print(f"*** Warning: No valid JSON found for Batch #{i} ***\n")
                 parsed_answer = {}
         except json.JSONDecodeError:
-            print(f"Warning: could not parse answer for Batch_{i}")
+            print(f"*** Warning: could not parse answer for Batch_{i} ***\n")
             parsed_answer = {}
 
         # Attach answers directly to each question
@@ -173,7 +173,7 @@ Format your response as JSON with this structure:
     with open(output_path, "w") as f:
         json.dump(results, f, indent=4)
 
-    print(f"Saved LLM responses to {output_path}!")
+    print(f"Saved LLM responses to {output_path}!\n")
 
 
 if __name__ == "__main__":

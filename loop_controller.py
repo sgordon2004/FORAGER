@@ -96,7 +96,7 @@ if __name__ == "__main__":
         with open(f"data/round_{round_number}_responses.json", "w") as f:
             json.dump(responses, f, indent=2)
 
-        print("LLM responses saved to data/llm_responses_round2.json.")
+        print(f"Saved LLM responses to to data/round_{round_number}_responses.json!\n")
             
 
     def prompt_lock_loop(rounds=3):

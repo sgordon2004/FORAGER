@@ -41,7 +41,7 @@ def load_json(file=None):
     if file is None:
         file = get_input_file()
     with open(file) as f:
-        print(f"Loading {file}...")
+        print(f"Loading {file}...\n")
         return json.load(f)
 
 # # Set batch size
