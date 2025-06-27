@@ -1,0 +1,7 @@
+{
+  "Q2": "At what year did Moore's Law start showing signs of slowdown?\nOptions:\n2000\n2001\n2003\n2008\n2012",
+  "Q3": "What is the primary form of a modular chip?\nOptions:\nStandard\nDie\nWafer\nChip carrier\nMemory",
+  "Q8": "Compared to conventional packaging approaches, interposers are generally what in terms of cost?\nOptions:\nLess expensive\nMore expensive\nAbout the same cost\nOnly cheaper for wire bonding\nOnly used in experimental chips",
+  "Q17": "Which packaging method creates high-density connections without using full through-silicon via (TSV) stacks?\nOptions:\nFan-Out Wafer-Level Packaging (FO-WLP)\nChiplet technology\n2.5D packaging\nMicro-bump bonding\nEmbedded Multi-die Interconnect Bridge",
+  "Q40": "What type of heterogeneity is associated with feature-level integration?\nOptions:\nSurface heterogeneity\nChip heterogeneity\nProcess-layer heterogeneity\nDevice-specific heterogeneity\nSoftware heterogeneity"
+}
