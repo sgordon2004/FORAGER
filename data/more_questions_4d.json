@@ -1,1523 +1,762 @@
 [ 
-
 { 
-
   "input": "What is true about transistor and die sizes in chips?", 
-
   "target_scores": { 
-
     "Transistors are getting smaller but die sizes are getting bigger": 1, 
-
     "Transistors and die sizes are getting bigger": 0, 
-
     "Transistors and die sizes are getting smaller": 0, 
-
     "Transistors are getting smaller but die sizes are remaining the same": 0, 
-
     "Transistors are getting bigger but die sizes are getting smaller": 0 
-
   } 
-
 }, 
-
   { 
-
     "input": "Which is true about semiconductor chips in 1995?", 
-
     "target_scores": { 
-
       "There were about 10⁹ transistors with a 90 nm node on chips that took up 10 mm²": 0, 
-
       "There were about 10⁷ transistors with a 1 µm node on chips larger than 1,000 mm²": 0, 
-
       "Chips had approximately 10⁴ transistors fabricated using a 5 µm node process": 0, 
-
       "Chips in 1995 were typically built with a 180 nm node and measured 250 mm²": 0, 
-
       "There were about 10^6 transistors with a 0.5 um node on chips that took up a die area of about 100 mm^2": 1 
-
     } 
-
-  }, 
-
+  },
   { 
-
     "input": "Which is true about semiconductor chips in 2020?", 
-
     "target_scores": { 
-
       "There were about 5*10^10 transistors with a 7 nm node on chips that took up a die area of about 800 mm^2": 1, 
-
       "Chips in 2020 used 65 nm nodes and had roughly 10⁷ transistors over 50 mm²": 0, 
-
       "There were approximately 5×10⁸ transistors on 22 nm chips with a die size of 500 mm²": 0, 
-
       "Chips used in 2020 were built using 14 nm nodes and did not exceed 100 mm²": 0, 
-
       "The standard chip in 2020 held 2×10¹¹ transistors on a 1.5 µm node": 0 
-
     } 
-
   }, 
-
   { 
-
     "input": "According to the presentation, what is a key reason for the rise of advanced packaging since 2015?", 
-
     "target_scores": { 
-
       "Chiplets were invented in 2015": 0, 
-
       "Silicon wafers became significantly cheaper that year": 0, 
-
       "Packaging borrowed heavily from silicon technology, enabling finer interconnects and tighter spacing": 1, 
-
       "A global shortage of silicon forced packaging to evolve": 0, 
-
       "Transistor miniaturization was halted by physical limits": 0 
-
     } 
-
   }, 
-
   { 
-
     "input": "What is the “golden regime” for heterogeneous chiplet dimensions?", 
-
     "target_scores": { 
-
       "Gate pitch of 500 µm and dielet size of 10⁴ mm²": 0, 
-
       "Interconnect pitch of 2–10 mm and dielet size of 1–100 cm²": 0, 
-
       "Interconnect pitch of 2–10 µm and dielet size of 1–100 mm²": 1, 
-
       "Gate pitch of 5 mm and dielet size of 0.1–1 mm²": 0, 
-
       "Serial channel spacing of 50–100 µm only": 0 
-
     } 
-
   }, 
-
   { 
-
     "input": "Which of the following is NOT a major challenge in scaling heterogeneous systems?", 
-
     "target_scores": { 
-
       "EDA (Electronic Design Automation) tools": 0, 
-
       "Signaling protocols for short and long haul": 0, 
-
       "Clock synchronization": 0, 
-
       "Standard bulk wafer fabrication methods": 1, 
-
       "Dielet marketplace creation": 0 
-
     } 
-
   }, 
-
   { 
-
     "input": "Why is a dielet marketplace important in this ecosystem?", 
-
     "target_scores": { 
-
       "It ensures monopoly control by wafer manufacturers": 0, 
-
       "It bypasses the need for packaging and testing": 0, 
-
       "It allows stocking of bare dielets": 1, 
-
       "It reduces transistor count on each die": 0, 
-
       "It increases the heat dissipation of the system": 0 
-
     } 
-
   }, 
-
   { 
-
     "input": "Which application area is suggested as a good fit for heterogeneous integration?", 
-
     "target_scores": { 
-
       "Traditional desktop PCs from early 2000s": 0, 
-
       "Paper manufacturing systems": 0, 
-
       "mm-wave and THz applications": 1, 
-
       "Fossil-fuel power plants": 0, 
-
       "Diesel engine control units": 0 
-
     } 
-
   }, 
-
   { 
-
     "input": "What time-to-market milestone is there for heterogeneous integration assemblies?", 
-
     "target_scores": { 
-
       "5 years": 0, 
-
       "2 years": 0, 
-
       "1 year": 0, 
-
       "Under 6 months": 1, 
-
       "Over 1 year": 0 
-
     } 
-
   }, 
-
   { 
-
     "input": "What does the U.K. company Real Ice hope to do to help fight climate change?", 
-
     "target_scores": { 
-
       "Launch satellites to reflect sunlight away from Earth": 0, 
-
       "Use algae to absorb excess carbon dioxide in the atmosphere": 0, 
-
       "Inject sulfur aerosols into the stratosphere to cool the planet": 0, 
-
       "Construct underwater barriers to prevent warm water from reaching the Arctic": 0, 
-
       "Artificially freeze sea ice to make up for ice melting in the Arctic ice cap": 1 
-
     } 
-
   }, 
-
   { 
-
     "input": "How does Real Ice artificially freeze sea water?", 
-
     "target_scores": { 
-
       "By using drones to spray liquid nitrogen over the ocean surface": 0, 
-
       "By seeding clouds to lower atmospheric temperature in polar regions": 0, 
-
       "By installing reflective panels on ice sheets to reduce heat absorption": 0, 
-
       "By deploying undersea refrigeration units to cool the Arctic Ocean": 0, 
-
       "By pumping sea water on top of existing ice, where the cold air freezes it": 1 
-
     } 
-
   }, 
-
   { 
-
     "input": "Why is releasing small particles to block sunlight a controversial geoengineering idea?", 
-
     "target_scores": { 
-
       "Because it causes an immediate rise in sea levels": 0, 
-
       "Because it creates ozone holes over tropical zones": 0, 
-
       "Because it leads to irreversible ice accumulation": 0, 
-
       "Because it permanently increases ocean salinity": 0, 
-
       "Because it can affect weather patterns": 1 
-
     } 
-
   }, 
-
   { 
-
     "input": "How much money did the U.K. allocate toward geoengineering research in May 2025?", 
-
     "target_scores": { 
-
       "$7.5 billion": 0, 
-
       "£75,000": 0, 
-
       "$250 million": 0, 
-
       "$1 billion": 0, 
-
       "$75 million": 1 
-
     } 
-
   }, 
-
   { 
-
     "input": "Which of the following best describes the engineering logic behind pumping seawater onto Arctic ice during winter?", 
-
     "target_scores": { 
-
       "The latent heat from freezing seawater can delay spring melting.": 0, 
-
       "Ice volume is maximized by injecting warm water under pressure.": 0, 
-
       "Freezing seawater on top creates additional mass that helps insulate and reinforce existing ice.": 1, 
-
       "Pumped water increases the albedo of the snow cover.": 0, 
-
       "Seawater injection helps dilute brine channels in ice layers.": 0 
-
     } 
-
   }, 
-
   { 
-
     "input": "Why does the presence of salt in the pumped seawater pose a design concern for future geoengineering trials?", 
-
     "target_scores": { 
-
       "Salt interferes with drone navigation systems.": 0, 
-
       "Excess salt draws moisture from surrounding snow, causing collapse.": 0, 
-
       "Salt can depress the melting point of ice, making it more susceptible to early melt in summer.": 1, 
-
       "Salt layers fracture under pressure and destabilize the ice shelf.": 0, 
-
       "Salt absorbs more sunlight than freshwater ice, decreasing albedo.": 0 
-
     } 
-
   }, 
-
   { 
-
     "input": "What physical outcome was observed shortly after the seawater was pumped onto the snow?", 
-
     "target_scores": { 
-
       "It caused frost heave and ruptured nearby ice sensors.": 0, 
-
       "The water ran off into crevasses rather than freezing.": 0, 
-
       "It formed a dense, blue slush layer that started to freeze within hours.": 1, 
-
       "Wind dispersed it before it could accumulate.": 0, 
-
       "The water flash-froze into brittle ice crystals.": 0 
-
     } 
-
   }, 
-
   { 
-
     "input": "From a systems engineering standpoint, what is the most significant logistical barrier to scaling the Real Ice approach across the Arctic?", 
-
     "target_scores": { 
-
       "Difficulty in sourcing fresh water instead of seawater": 0, 
-
       "Coordinating legal agreements across territorial waters": 0, 
-
       "Limited electrical conductivity of sea ice impeding equipment": 0, 
-
       "The enormous number of robotic units required to cover vast areas effectively": 1, 
-
       "Adverse impact on migratory bird flight paths": 0 
-
     } 
-
   }, 
-
   { 
-
     "input": "What distinguishes Real Ice’s approach from other solar radiation management (SRM) methods?", 
-
     "target_scores": { 
-
       "It uses aircraft to inject aerosols into the stratosphere.": 0, 
-
       "It involves space-based reflectors to redirect sunlight.": 0, 
-
       "It directly modifies the Earth’s surface energy balance through physical ice thickening.": 1, 
-
       "It genetically alters algae to reflect more light.": 0, 
-
       "It relies on CO₂ scrubbing rather than climate forcing.": 0 
-
     } 
-
   }, 
-
+  {
+  "input": "In terms of climate modeling, what is the projected global benefit if Arctic sea ice lasts just one month longer each year?",
+  "target_scores": {
+    "Arctic ecosystems will double their resilience index.": 0,
+    "It would create a radiative forcing effect equal to removing 930 million metric tons of CO₂ for 20 years.": 1,
+    "Permafrost thaw would be completely halted.": 0,
+    "Sea levels would stop rising for a decade.": 0,
+    "Global temperatures would decrease by 1.5 °C.": 0
+  }
+},
+{
+  "input": "Which of the following best summarizes the ethical hesitation acknowledged by Real Ice’s team?",
+  "target_scores": {
+    "Pumping seawater violates indigenous fishing rights.": 0,
+    "There is a risk of damaging offshore oil infrastructure.": 0,
+    "The approach could shift political attention away from reducing carbon emissions.": 1,
+    "Freezing ice alters atmospheric circulation patterns unpredictably.": 0,
+    "Reflective ice layers could cause aviation hazards.": 0
+  }
+},
+{
+  "input": "What is the name of NEO Battery Materials' advanced silicon EV battery?",
+  "target_scores": {
+    "S-200G": 0,
+    "NeoCell X1": 0,
+    "UltraSilicon V": 0,
+    "Li-Power Max": 0,
+    "P-300N": 1
+  }
+},
+{
+  "input": "What capacity retention did the P-300N achieve after 300 charge cycles?",
+  "target_scores": {
+    "50%": 0,
+    "70%": 0,
+    "Over 90%": 1,
+    "60%": 0,
+    "80%": 0
+  }
+},
+{
+  "input": "What is the primary material used in the anode of the P-300N?",
+  "target_scores": {
+    "Silane gas": 0,
+    "Graphite": 0,
+    "Metallurgical-grade silicon (MG-Si)": 1,
+    "Lithium metal": 0,
+    "Silicon nanoparticles": 0
+  }
+},
+{
+  "input": "How does MG-Si compare to graphite in terms of cost by weight?",
+  "target_scores": {
+    "Twice as expensive": 0,
+    "Same cost": 0,
+    "Slightly more expensive": 0,
+    "Approximately half the cost": 1,
+    "Cost difference is negligible": 0
+  }
+},
+{
+  "input": "What major testing format did NEO use to simulate realistic battery performance?",
+  "target_scores": {
+    "Lithium-sulfur cells": 0,
+    "Half-cells with pure lithium": 0,
+    "Pouch cells only": 0,
+    "Full coin cells": 1,
+    "Supercapacitor trials": 0
+  }
+},
+{
+  "input": "What issue has historically limited silicon’s use in lithium-ion battery anodes?",
+  "target_scores": {
+    "Low electrical conductivity": 0,
+    "High manufacturing cost": 0,
+    "Poor safety ratings": 0,
+    "Volume expansion and particle pulverization": 1,
+    "Lack of supply chain access": 0
+  }
+},
+  {
+  "input": "What design phase follows NEO’s successful coin cell testing?",
+  "target_scores": {
+    "Industrial rollouts": 0,
+    "Single-layer pouch cells": 1,
+    "Supercapacitor modules": 0,
+    "Sodium-ion conversion": 0,
+    "Direct-to-market pilot packs": 0
+  }
+},
+{
+  "input": "Why are multi-layer pouch cells important in battery development?",
+  "target_scores": {
+    "They eliminate the need for separators": 0,
+    "They replicate real-world capacity scaling": 1,
+    "They lower the temperature of operation": 0,
+    "They reduce charge times to under 1 minute": 0,
+    "They eliminate cathode usage entirely": 0
+  }
+},
+{
+  "input": "What recent infrastructure upgrade did NEO make to support production scale-up?",
+  "target_scores": {
+    "Acquired lithium refining plants": 0,
+    "Installed high-spec processing equipment": 1,
+    "Purchased a graphite processing line": 0,
+    "Built a pilot EV manufacturing line": 0,
+    "Replaced pouch cells with coin cell stations": 0
+  }
+},
+{
+  "input": "What markets have shown interest in the P-300N battery platform?",
+  "target_scores": {
+    "Only Canadian and Chinese firms": 0,
+    "South Korea, the US, and Germany": 1,
+    "Just U.S.-based EV startups": 0,
+    "Only battery recycling companies": 0,
+    "Aerospace-only defense contractors": 0
+  }
+},
+{
+  "input": "What does EDA stand for?",
+  "target_scores": {
+    "Electrical Device Architecture": 0,
+    "Electronic Device Automation": 0,
+    "Electromagnetic Data Analysis": 0,
+    "Electronic Design Automation": 1,
+    "Engineered Design Algorithms": 0
+  }
+},
+{
+  "input": "What is one reason EDA has become essential in chip design?",
+  "target_scores": {
+    "Chip design is now done entirely by hand": 0,
+    "Chips no longer need testing": 0,
+    "Modern chips have billions of connections and require teamwork": 1,
+    "Chips no longer use semiconductors": 0,
+    "Chips are all identical and don't need variation": 0
+  }
+},
+{
+  "input": "How has artificial intelligence (AI) affected EDA?",
+  "target_scores": {
+    "It made manual chip design easier": 0,
+    "It eliminated the need for simulation": 0,
+    "It made chips obsolete": 0,
+    "It enhanced EDA tools from simulation to rollout": 1,
+    "It replaced silicon with AI processors": 0
+  }
+},
+{
+  "input": "What are the three main functions of EDA tools?",
+  "target_scores": {
+    "Debugging, rendering, assembly": 0,
+    "Simulation, design, and verification": 1,
+    "Programming, testing, marketing": 0,
+    "Distribution, logistics, simulation": 0,
+    "Modeling, packaging, recycling": 0
+  }
+},
+ {
+  "input": "Why is EDA simulation important?",
+  "target_scores": {
+    "It makes chips waterproof": 0,
+    "It avoids power loss": 0,
+    "It predicts circuit behavior before real-world testing": 1,
+    "It generates electricity for circuits": 0,
+    "It eliminates the need for design": 0
+  }
+},
+{
+  "input": "What is the purpose of EDA verification?",
+  "target_scores": {
+    "To ensure the design works as intended and performs well": 1,
+    "To shorten the design cycle only": 0,
+    "To manufacture chips faster": 0,
+    "To eliminate the use of cathodes": 0,
+    "To simulate electromagnetic interference": 0
+  }
+},
+{
+  "input": "What does DFM stand for in EDA?",
+  "target_scores": {
+    "Device Feedback Mechanism": 0,
+    "Digital Format Management": 0,
+    "Design for Manufacturability": 1,
+    "Dynamic Function Module": 0,
+    "Dual Frequency Modeling": 0
+  }
+},
+{
+  "input": "What benefit does ML (machine learning) bring to EDA?",
+  "target_scores": {
+    "Slower but safer design": 0,
+    "Replaces design teams completely": 0,
+    "Improves speed, quality, and customer satisfaction": 1,
+    "Makes chips more expensive": 0,
+    "Converts analog designs to digital automatically": 0
+  }
+},
+{
+  "input": "What is a result of using EDA tools with AI/ML features?",
+  "target_scores": {
+    "Lower design complexity": 0,
+    "Less accurate chips": 0,
+    "Faster chip production with higher performance": 1,
+    "Elimination of simulation": 0,
+    "Manual testing becomes more important": 0
+  }
+},
+{
+  "input": "What does TCAD in EDA refer to?",
+  "target_scores": {
+    "Time-Critical Architecture Design": 0,
+    "Topographical Chip Auto Design": 0,
+    "Technology Computer-Aided Design": 1,
+    "Thermal Control and Analysis Development": 0,
+    "Test Circuit Alignment and Debugging": 0
+  }
+},
+{
+  "input": "What is the purpose of Design for Manufacturability (DFM)?",
+  "target_scores": {
+    "To reduce power usage": 0,
+    "To manage chip packaging": 0,
+    "To simulate user experience": 0,
+    "To ensure the chip design meets manufacturing requirements": 1,
+    "To minimize shipping costs": 0
+  }
+},
+{
+  "input": "What is Silicon Lifecycle Management (SLM) focused on?",
+  "target_scores": {
+    "Reducing the number of transistors": 0,
+    "Monitoring chip performance post-manufacturing": 1,
+    "Designing more flexible silicon": 0,
+    "Manufacturing silicon wafers": 0,
+    "Estimating chip temperature": 0
+  }
+},
+  {
+  "input": "What is a language commonly used in EDA simulation tools?",
+  "target_scores": {
+    "Python": 0,
+    "Verilog or VHDL": 1,
+    "SQL": 0,
+    "Java": 0,
+    "Swift": 0
+  }
+},
+{
+  "input": "Which of the following best describes place and route in EDA design?",
+  "target_scores": {
+    "Physically assembling and arranging circuit elements": 1,
+    "Writing device drivers": 0,
+    "Encrypting the firmware": 0,
+    "Programming the FPGA": 0,
+    "Packaging chips for shipment": 0
+  }
+},
+{
+  "input": "What is equivalence checking used for in verification?",
+  "target_scores": {
+    "To measure chip weight": 0,
+    "To validate thermal thresholds": 0,
+    "To compare the implemented design with the original logic": 1,
+    "To count the number of transistors": 0,
+    "To generate marketing models": 0
+  }
+},
+{
+  "input": "Which of these companies led the third phase of EDA’s commercial evolution?",
+  "target_scores": {
+    "Calma, Computervision, Applicon": 0,
+    "Intel, RCA, Sony": 0,
+    "Daisy, Valid Logic, Mentor Graphics": 0,
+    "Synopsys, Cadence, Mentor": 1,
+    "Bell Labs, Sharp, GE": 0
+  }
+},
+{
+  "input": "Why is EDA essential for modern semiconductor design?",
+  "target_scores": {
+    "It reduces screen brightness in devices": 0,
+    "Chips can be patched easily after production": 0,
+    "Chip complexity is too great to manage without automation": 1,
+    "It replaces silicon entirely": 0,
+    "It eliminates the need for testing": 0
+  }
+},
+{
+  "input": "What is the primary material used in solar cells to convert sunlight into electricity?",
+  "target_scores": {
+    "Aluminum": 0,
+    "Copper": 0,
+    "Silicon": 1,
+    "Glass": 0,
+    "Graphite": 0
+  }
+},
+{
+  "input": "What is the function of the glass sheet in a solar panel?",
+  "target_scores": {
+    "Convert sunlight to electricity": 0,
+    "Increase voltage": 0,
+    "Protect the silicon cells inside": 1,
+    "Prevent heat absorption": 0,
+    "Reflect sunlight back": 0
+  }
+},
+{
+  "input": "Which type of solar panel is known for its flexibility and is often used in thin-film applications?",
+  "target_scores": {
+    "Monocrystalline": 0,
+    "Polycrystalline": 0,
+    "Amorphous": 1,
+    "Transparent": 0,
+    "Nanocrystalline": 0
+  }
+},
+  {
+  "input": "What distinguishes n-type solar cells from p-type solar cells?",
+  "target_scores": {
+    "N-type cells are blue while p-type cells are black": 0,
+    "P-type uses phosphorus; n-type uses boron": 0,
+    "N-type cells have a phosphorus base and negative charge": 1,
+    "N-type cells are more flexible": 0,
+    "P-type cells do not conduct electricity": 0
+  }
+},
+{
+  "input": "What is the purpose of the junction box in a solar panel?",
+  "target_scores": {
+    "To mount the panel": 0,
+    "To store electricity": 0,
+    "To prevent reverse electricity flow": 1,
+    "To reflect light": 0,
+    "To regulate sunlight intensity": 0
+  }
+},
+{
+  "input": "What is the final step in the solar panel manufacturing process?",
+  "target_scores": {
+    "Coating the back sheet": 0,
+    "Quality testing under Standard Test Conditions": 1,
+    "Applying the aluminum frame": 0,
+    "Installing the glass cover": 0,
+    "Soldering the solar cells": 0
+  }
+},
+{
+  "input": "Why is insulation inside a solar panel important?",
+  "target_scores": {
+    "To boost sunlight capture": 0,
+    "To change the color of the panel": 0,
+    "To reduce heat and thus maintain efficiency": 1,
+    "To hold wires in place": 0,
+    "To help with soldering": 0
+  }
+},
+{
+  "input": "Which solar cell type is generally the most efficient but also the most expensive to produce?",
+  "target_scores": {
+    "Amorphous": 0,
+    "Polycrystalline": 0,
+    "Monocrystalline": 1,
+    "Organic": 0,
+    "Transparent oxide": 0
+  }
+},
+{
+  "input": "What is the purpose of bus wires in a solar panel?",
+  "target_scores": {
+    "Absorb UV rays": 0,
+    "Act as heat sinks": 0,
+    "Connect silicon cells in parallel": 1,
+    "Hold the frame together": 0,
+    "Store backup electricity": 0
+  }
+},
+{
+  "input": "Which company is known in the U.S. for producing thin-film solar panels?",
+  "target_scores": {
+    "SunPower": 0,
+    "SolarCity": 0,
+    "Tesla": 0,
+    "First Solar": 1,
+    "Panasonic": 0
+  }
+},
+{
+  "input": "What is the primary function of a transistor?",
+  "target_scores": {
+    "Convert AC to DC": 0,
+    "Measure temperature": 0,
+    "Amplify signals or act as a switch": 1,
+    "Store electrical energy": 0,
+    "Generate magnetic fields": 0
+  }
+},
+  {
+  "input": "What distinguishes Bipolar Junction Transistors (BJTs) from Field Effect Transistors (FETs)?",
+  "target_scores": {
+    "BJTs are voltage-controlled; FETs are current-controlled": 0,
+    "FETs use both majority and minority carriers": 0,
+    "BJTs use both majority and minority carriers; FETs use only majority carriers": 1,
+    "BJTs operate at higher voltages than FETs": 0,
+    "FETs have only two terminals": 0
+  }
+},
+{
+  "input": "In an NPN transistor, what type of charge carriers primarily control current flow?",
+  "target_scores": {
+    "Holes": 0,
+    "Neutrons": 0,
+    "Protons": 0,
+    "Electrons": 1,
+    "Photons": 0
+  }
+},
+{
+  "input": "What is the role of the Gate terminal in a FET?",
+  "target_scores": {
+    "Provides heat dissipation": 0,
+    "Connects the device to power supply": 0,
+    "Controls the size and shape of the channel between Source and Drain": 1,
+    "Functions as the current output": 0,
+    "Stores voltage during idle periods": 0
+  }
+},
+{
+  "input": "Which type of transistor is preferred for fast switching and high input impedance?",
+  "target_scores": {
+    "BJT": 0,
+    "UJT": 0,
+    "JFET": 0,
+    "MOSFET": 1,
+    "Photo-BJT": 0
+  }
+},
+{
+  "input": "Why are N-channel MOSFETs used more often than P-channel MOSFETs?",
+  "target_scores": {
+    "They are cheaper to produce": 0,
+    "They operate at lower voltages": 0,
+    "Electrons have higher mobility than holes": 1,
+    "They use fewer external components": 0,
+    "They produce more heat": 0
+  }
+},
+{
+  "input": "Which of the following transistors is sensitive to light instead of electric signals?",
+  "target_scores": {
+    "JFET": 0,
+    "UJT": 0,
+    "Photo Transistor": 1,
+    "MOSFET": 0,
+    "Power Transistor": 0
+  }
+},
+{
+  "input": "Which transistor type is not suitable for signal amplification?",
+  "target_scores": {
+    "BJT": 0,
+    "MOSFET": 0,
+    "UJT (Uni-Junction Transistor)": 1,
+    "NPN": 0,
+    "PNP": 0
+  }
+},
+{
+  "input": "What does the hFE value on a small signal transistor indicate?",
+  "target_scores": {
+    "Thermal stability": 0,
+    "Switching delay": 0,
+    "Signal amplification capacity": 1,
+    "Input voltage": 0,
+    "Breakdown voltage": 0
+  }
+},
+  {
+  "input": "Which type of transistor is commonly used in high-frequency switching applications like CATV and UHF systems?",
+  "target_scores": {
+    "Power Transistor": 0,
+    "Small Signal Transistor": 0,
+    "High Frequency (RF) Transistor": 1,
+    "Photo-FET": 0,
+    "Depletion-mode MOSFET": 0
+  }
+},
+{
+  "input": "Which of the following best explains why BJTs are classified as “bipolar” devices?",
+  "target_scores": {
+    "They contain both P-type and N-type materials": 0,
+    "They can operate in either switching or amplifying modes": 0,
+    "They rely on both majority and minority charge carriers for conduction": 1,
+    "They require both voltage and current for activation": 0,
+    "They include both enhancement and depletion regions": 0
+  }
+},
+{
+  "input": "What structural characteristic distinguishes MOSFETs from JFETs?",
+  "target_scores": {
+    "MOSFETs have only two terminals while JFETs have three": 0,
+    "JFETs use electron flow while MOSFETs use hole flow exclusively": 0,
+    "MOSFETs feature an insulated gate separated by a thin oxide layer": 1,
+    "JFETs operate using the photovoltaic effect": 0,
+    "MOSFETs require minority carrier injection to switch states": 0
+  }
+},
+{
+  "input": "Why do MOSFETs typically offer higher input impedance than BJTs?",
+  "target_scores": {
+    "The gate in MOSFETs is insulated, preventing direct current flow": 1,
+    "MOSFETs use thermal gates that resist AC frequencies": 0,
+    "BJTs lack a proper emitter region": 0,
+    "MOSFETs have variable collector current": 0,
+    "BJTs are voltage-controlled and lack impedance variation": 0
+  }
+},
+{
+  "input": "Which of the following scenarios would most likely require a photo-FET instead of a photo-BJT?",
+  "target_scores": {
+    "A system requiring a fast on/off switching in the absence of light": 0,
+    "An application demanding high light sensitivity and voltage-based control": 1,
+    "A situation with frequent thermal cycling": 0,
+    "A circuit using only small signal amplification": 0,
+    "Any system using analog voltage regulation": 0
+  }
+},
+{
+  "input": "What is the most likely reason N-channel MOSFETs are more commonly used than P-channel types in modern circuits?",
+  "target_scores": {
+    "N-channel devices are cheaper to fabricate with higher voltage thresholds": 0,
+    "P-channel devices have better performance in high-temperature environments": 0,
+    "Electrons in N-channel devices offer superior mobility over holes in P-channel devices": 1,
+    "N-channel MOSFETs are less affected by input impedance": 0,
+    "P-channel MOSFETs require no gate voltage to operate": 0
+  }
+},
+{
+  "input": "Which region of operation in a BJT corresponds to its use as a linear amplifier?",
+  "target_scores": {
+    "Saturation region": 0,
+    "Cut-off region": 0,
+    "Active region": 1,
+    "Reverse breakdown region": 0,
+    "Depletion region": 0
+  }
+},
+{
+  "input": "Which of the following differentiates enhancement-mode MOSFETs from depletion-mode ones?",
+  "target_scores": {
+    "Enhancement-mode requires a gate voltage to form a conductive channel; depletion-mode conducts by default": 1,
+    "Depletion-mode MOSFETs are always made from polycrystalline silicon": 0,
+    "Enhancement-mode MOSFETs do not use any doping in the substrate": 0,
+    "Only enhancement-mode MOSFETs operate in high-frequency applications": 0,
+    "Depletion-mode transistors use minority carriers for conduction": 0
+  }
+},
   { 
-
-    "input": "In terms of climate modeling, what is the projected global benefit if Arctic sea ice lasts just one month longer each year?", 
-
-    "target_scores": { 
-
-      "Arctic ecosystems will double their resilience index.": 0, 
-
-      "It would create a radiative forcing effect equal to removing 930 million metric tons of CO₂ for 20 years.": 1, 
-
-      "Permafrost thaw would be completely halted.": 0, 
-
-      "Sea levels would stop rising for a decade.": 0, 
-
-      "Global temperatures would decrease by 1.5 °C.": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "Which of the following best summarizes the ethical hesitation acknowledged by Real Ice’s team?", 
-
-    "target_scores": { 
-
-      "Pumping seawater violates indigenous fishing rights.": 0, 
-
-      "There is a risk of damaging offshore oil infrastructure.": 0, 
-
-      "The approach could shift political attention away from reducing carbon emissions.": 1, 
-
-      "Freezing ice alters atmospheric circulation patterns unpredictably.": 0, 
-
-      "Reflective ice layers could cause aviation hazards.": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What is the name of NEO Battery Materials' advanced silicon EV battery?", 
-
-    "target_scores": { 
-
-      "S-200G": 0, 
-
-      "NeoCell X1": 0, 
-
-      "UltraSilicon V": 0, 
-
-      "Li-Power Max": 0, 
-
-      "P-300N": 1 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What capacity retention did the P-300N achieve after 300 charge cycles?", 
-
-    "target_scores": { 
-
-      "50%": 0, 
-
-      "70%": 0, 
-
-      "Over 90%": 1, 
-
-      "60%": 0, 
-
-      "80%": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What is the primary material used in the anode of the P-300N?", 
-
-    "target_scores": { 
-
-      "Silane gas": 0, 
-
-      "Graphite": 0, 
-
-      "Metallurgical-grade silicon (MG-Si)": 1, 
-
-      "Lithium metal": 0, 
-
-      "Silicon nanoparticles": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "How does MG-Si compare to graphite in terms of cost by weight?", 
-
-    "target_scores": { 
-
-      "Twice as expensive": 0, 
-
-      "Same cost": 0, 
-
-      "Slightly more expensive": 0, 
-
-      "Approximately half the cost": 1, 
-
-      "Cost difference is negligible": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What major testing format did NEO use to simulate realistic battery performance?", 
-
-    "target_scores": { 
-
-      "Lithium-sulfur cells": 0, 
-
-      "Half-cells with pure lithium": 0, 
-
-      "Pouch cells only": 0, 
-
-      "Full coin cells": 1, 
-
-      "Supercapacitor trials": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What issue has historically limited silicon’s use in lithium-ion battery anodes?", 
-
-    "target_scores": { 
-
-      "Low electrical conductivity": 0, 
-
-      "High manufacturing cost": 0, 
-
-      "Poor safety ratings": 0, 
-
-      "Volume expansion and particle pulverization": 1, 
-
-      "Lack of supply chain access": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What design phase follows NEO’s successful coin cell testing?", 
-
-    "target_scores": { 
-
-      "Industrial rollouts": 0, 
-
-      "Single-layer pouch cells": 1, 
-
-      "Supercapacitor modules": 0, 
-
-      "Sodium-ion conversion": 0, 
-
-      "Direct-to-market pilot packs": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "Why are multi-layer pouch cells important in battery development?", 
-
-    "target_scores": { 
-
-      "They eliminate the need for separators": 0, 
-
-      "They replicate real-world capacity scaling": 1, 
-
-      "They lower the temperature of operation": 0, 
-
-      "They reduce charge times to under 1 minute": 0, 
-
-      "They eliminate cathode usage entirely": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What recent infrastructure upgrade did NEO make to support production scale-up?", 
-
-    "target_scores": { 
-
-      "Acquired lithium refining plants": 0, 
-
-      "Installed high-spec processing equipment": 1, 
-
-      "Purchased a graphite processing line": 0, 
-
-      "Built a pilot EV manufacturing line": 0, 
-
-      "Replaced pouch cells with coin cell stations": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What markets have shown interest in the P-300N battery platform?", 
-
-    "target_scores": { 
-
-      "Only Canadian and Chinese firms": 0, 
-
-      "South Korea, the US, and Germany": 1, 
-
-      "Just U.S.-based EV startups": 0, 
-
-      "Only battery recycling companies": 0, 
-
-      "Aerospace-only defense contractors": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What does EDA stand for?", 
-
-    "target_scores": { 
-
-      "Electrical Device Architecture": 0, 
-
-      "Electronic Device Automation": 0, 
-
-      "Electromagnetic Data Analysis": 0, 
-
-      "Electronic Design Automation": 1, 
-
-      "Engineered Design Algorithms": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What is one reason EDA has become essential in chip design?", 
-
-    "target_scores": { 
-
-      "Chip design is now done entirely by hand": 0, 
-
-      "Chips no longer need testing": 0, 
-
-      "Modern chips have billions of connections and require teamwork": 1, 
-
-      "Chips no longer use semiconductors": 0, 
-
-      "Chips are all identical and don't need variation": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "How has artificial intelligence (AI) affected EDA?", 
-
-    "target_scores": { 
-
-      "It made manual chip design easier": 0, 
-
-      "It eliminated the need for simulation": 0, 
-
-      "It made chips obsolete": 0, 
-
-      "It enhanced EDA tools from simulation to rollout": 1, 
-
-      "It replaced silicon with AI processors": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What are the three main functions of EDA tools?", 
-
-    "target_scores": { 
-
-      "Debugging, rendering, assembly": 0, 
-
-      "Simulation, design, and verification": 1, 
-
-      "Programming, testing, marketing": 0, 
-
-      "Distribution, logistics, simulation": 0, 
-
-      "Modeling, packaging, recycling": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "Why is EDA simulation important?", 
-
-    "target_scores": { 
-
-      "It makes chips waterproof": 0, 
-
-      "It avoids power loss": 0, 
-
-      "It predicts circuit behavior before real-world testing": 1, 
-
-      "It generates electricity for circuits": 0, 
-
-      "It eliminates the need for design": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What is the purpose of EDA verification?", 
-
-    "target_scores": { 
-
-      "To ensure the design works as intended and performs well": 1, 
-
-      "To shorten the design cycle only": 0, 
-
-      "To manufacture chips faster": 0, 
-
-      "To eliminate the use of cathodes": 0, 
-
-      "To simulate electromagnetic interference": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What does DFM stand for in EDA?", 
-
-    "target_scores": { 
-
-      "Device Feedback Mechanism": 0, 
-
-      "Digital Format Management": 0, 
-
-      "Design for Manufacturability": 1, 
-
-      "Dynamic Function Module": 0, 
-
-      "Dual Frequency Modeling": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What benefit does ML (machine learning) bring to EDA?", 
-
-    "target_scores": { 
-
-      "Slower but safer design": 0, 
-
-      "Replaces design teams completely": 0, 
-
-      "Improves speed, quality, and customer satisfaction": 1, 
-
-      "Makes chips more expensive": 0, 
-
-      "Converts analog designs to digital automatically": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What is a result of using EDA tools with AI/ML features?", 
-
-    "target_scores": { 
-
-      "Lower design complexity": 0, 
-
-      "Less accurate chips": 0, 
-
-      "Faster chip production with higher performance": 1, 
-
-      "Elimination of simulation": 0, 
-
-      "Manual testing becomes more important": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What does TCAD in EDA refer to?", 
-
-    "target_scores": { 
-
-      "Time-Critical Architecture Design": 0, 
-
-      "Topographical Chip Auto Design": 0, 
-
-      "Technology Computer-Aided Design": 1, 
-
-      "Thermal Control and Analysis Development": 0, 
-
-      "Test Circuit Alignment and Debugging": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What is the purpose of Design for Manufacturability (DFM)?", 
-
-    "target_scores": { 
-
-      "To reduce power usage": 0, 
-
-      "To manage chip packaging": 0, 
-
-      "To simulate user experience": 0, 
-
-      "To ensure the chip design meets manufacturing requirements": 1, 
-
-      "To minimize shipping costs": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What is Silicon Lifecycle Management (SLM) focused on?", 
-
-    "target_scores": { 
-
-      "Reducing the number of transistors": 0, 
-
-      "Monitoring chip performance post-manufacturing": 1, 
-
-      "Designing more flexible silicon": 0, 
-
-      "Manufacturing silicon wafers": 0, 
-
-      "Estimating chip temperature": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What is a language commonly used in EDA simulation tools?", 
-
-    "target_scores": { 
-
-      "Python": 0, 
-
-      "Verilog or VHDL": 1, 
-
-      "SQL": 0, 
-
-      "Java": 0, 
-
-      "Swift": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "Which of the following best describes place and route in EDA design?", 
-
-    "target_scores": { 
-
-      "Physically assembling and arranging circuit elements": 1, 
-
-      "Writing device drivers": 0, 
-
-      "Encrypting the firmware": 0, 
-
-      "Programming the FPGA": 0, 
-
-      "Packaging chips for shipment": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What is equivalence checking used for in verification?", 
-
-    "target_scores": { 
-
-      "To measure chip weight": 0, 
-
-      "To validate thermal thresholds": 0, 
-
-      "To compare the implemented design with the original logic": 1, 
-
-      "To count the number of transistors": 0, 
-
-      "To generate marketing models": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "Which of these companies led the third phase of EDA’s commercial evolution?", 
-
-    "target_scores": { 
-
-      "Calma, Computervision, Applicon": 0, 
-
-      "Intel, RCA, Sony": 0, 
-
-      "Daisy, Valid Logic, Mentor Graphics": 0, 
-
-      "Synopsys, Cadence, Mentor": 1, 
-
-      "Bell Labs, Sharp, GE": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "Why is EDA essential for modern semiconductor design?", 
-
-    "target_scores": { 
-
-      "It reduces screen brightness in devices": 0, 
-
-      "Chips can be patched easily after production": 0, 
-
-      "Chip complexity is too great to manage without automation": 1, 
-
-      "It replaces silicon entirely": 0, 
-
-      "It eliminates the need for testing": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What is the primary material used in solar cells to convert sunlight into electricity?", 
-
-    "target_scores": { 
-
-      "Aluminum": 0, 
-
-      "Copper": 0, 
-
-      "Silicon": 1, 
-
-      "Glass": 0, 
-
-      "Graphite": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What is the function of the glass sheet in a solar panel?", 
-
-    "target_scores": { 
-
-      "Convert sunlight to electricity": 0, 
-
-      "Increase voltage": 0, 
-
-      "Protect the silicon cells inside": 1, 
-
-      "Prevent heat absorption": 0, 
-
-      "Reflect sunlight back": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "Which type of solar panel is known for its flexibility and is often used in thin-film applications?", 
-
-    "target_scores": { 
-
-      "Monocrystalline": 0, 
-
-      "Polycrystalline": 0, 
-
-      "Amorphous": 1, 
-
-      "Transparent": 0, 
-
-      "Nanocrystalline": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What distinguishes n-type solar cells from p-type solar cells?", 
-
-    "target_scores": { 
-
-      "N-type cells are blue while p-type cells are black": 0, 
-
-      "P-type uses phosphorus; n-type uses boron": 0, 
-
-      "N-type cells have a phosphorus base and negative charge": 1, 
-
-      "N-type cells are more flexible": 0, 
-
-      "P-type cells do not conduct electricity": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What is the purpose of the junction box in a solar panel?", 
-
-    "target_scores": { 
-
-      "To mount the panel": 0, 
-
-      "To store electricity": 0, 
-
-      "To prevent reverse electricity flow": 1, 
-
-      "To reflect light": 0, 
-
-      "To regulate sunlight intensity": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What is the final step in the solar panel manufacturing process?", 
-
-    "target_scores": { 
-
-      "Coating the back sheet": 0, 
-
-      "Quality testing under Standard Test Conditions": 1, 
-
-      "Applying the aluminum frame": 0, 
-
-      "Installing the glass cover": 0, 
-
-      "Soldering the solar cells": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "Why is insulation inside a solar panel important?", 
-
-    "target_scores": { 
-
-      "To boost sunlight capture": 0, 
-
-      "To change the color of the panel": 0, 
-
-      "To reduce heat and thus maintain efficiency": 1, 
-
-      "To hold wires in place": 0, 
-
-      "To help with soldering": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "Which solar cell type is generally the most efficient but also the most expensive to produce?", 
-
-    "target_scores": { 
-
-      "Amorphous": 0, 
-
-      "Polycrystalline": 0, 
-
-      "Monocrystalline": 1, 
-
-      "Organic": 0, 
-
-      "Transparent oxide": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What is the purpose of bus wires in a solar panel?", 
-
-    "target_scores": { 
-
-      "Absorb UV rays": 0, 
-
-      "Act as heat sinks": 0, 
-
-      "Connect silicon cells in parallel": 1, 
-
-      "Hold the frame together": 0, 
-
-      "Store backup electricity": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "Which company is known in the U.S. for producing thin-film solar panels?", 
-
-    "target_scores": { 
-
-      "SunPower": 0, 
-
-      "SolarCity": 0, 
-
-      "Tesla": 0, 
-
-      "First Solar": 1, 
-
-      "Panasonic": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What is the primary function of a transistor?", 
-
-    "target_scores": { 
-
-      "Convert AC to DC": 0, 
-
-      "Measure temperature": 0, 
-
-      "Amplify signals or act as a switch": 1, 
-
-      "Store electrical energy": 0, 
-
-      "Generate magnetic fields": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What distinguishes Bipolar Junction Transistors (BJTs) from Field Effect Transistors (FETs)?", 
-
-    "target_scores": { 
-
-      "BJTs are voltage-controlled; FETs are current-controlled": 0, 
-
-      "FETs use both majority and minority carriers": 0, 
-
-      "BJTs use both majority and minority carriers; FETs use only majority carriers": 1, 
-
-      "BJTs operate at higher voltages than FETs": 0, 
-
-      "FETs have only two terminals": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "In an NPN transistor, what type of charge carriers primarily control current flow?", 
-
-    "target_scores": { 
-
-      "Holes": 0, 
-
-      "Neutrons": 0, 
-
-      "Protons": 0, 
-
-      "Electrons": 1, 
-
-      "Photons": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What is the role of the Gate terminal in a FET?", 
-
-    "target_scores": { 
-
-      "Provides heat dissipation": 0, 
-
-      "Connects the device to power supply": 0, 
-
-      "Controls the size and shape of the channel between Source and Drain": 1, 
-
-      "Functions as the current output": 0, 
-
-      "Stores voltage during idle periods": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "Which type of transistor is preferred for fast switching and high input impedance?", 
-
-    "target_scores": { 
-
-      "BJT": 0, 
-
-      "UJT": 0, 
-
-      "JFET": 0, 
-
-      "MOSFET": 1, 
-
-      "Photo-BJT": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "Why are N-channel MOSFETs used more often than P-channel MOSFETs?", 
-
-    "target_scores": { 
-
-      "They are cheaper to produce": 0, 
-
-      "They operate at lower voltages": 0, 
-
-      "Electrons have higher mobility than holes": 1, 
-
-      "They use fewer external components": 0, 
-
-      "They produce more heat": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "Which of the following transistors is sensitive to light instead of electric signals?", 
-
-    "target_scores": { 
-
-      "JFET": 0, 
-
-      "UJT": 0, 
-
-      "Photo Transistor": 1, 
-
-      "MOSFET": 0, 
-
-      "Power Transistor": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "Which transistor type is not suitable for signal amplification?", 
-
-    "target_scores": { 
-
-      "BJT": 0, 
-
-      "MOSFET": 0, 
-
-      "UJT (Uni-Junction Transistor)": 1, 
-
-      "NPN": 0, 
-
-      "PNP": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What does the hFE value on a small signal transistor indicate?", 
-
-    "target_scores": { 
-
-      "Thermal stability": 0, 
-
-      "Switching delay": 0, 
-
-      "Signal amplification capacity": 1, 
-
-      "Input voltage": 0, 
-
-      "Breakdown voltage": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "Which type of transistor is commonly used in high-frequency switching applications like CATV and UHF systems?", 
-
-    "target_scores": { 
-
-      "Power Transistor": 0, 
-
-      "Small Signal Transistor": 0, 
-
-      "High Frequency (RF) Transistor": 1, 
-
-      "Photo-FET": 0, 
-
-      "Depletion-mode MOSFET": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "Which of the following best explains why BJTs are classified as “bipolar” devices?", 
-
-    "target_scores": { 
-
-      "They contain both P-type and N-type materials": 0, 
-
-      "They can operate in either switching or amplifying modes": 0, 
-
-      "They rely on both majority and minority charge carriers for conduction": 1, 
-
-      "They require both voltage and current for activation": 0, 
-
-      "They include both enhancement and depletion regions": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What structural characteristic distinguishes MOSFETs from JFETs?", 
-
-    "target_scores": { 
-
-      "MOSFETs have only two terminals while JFETs have three": 0, 
-
-      "JFETs use electron flow while MOSFETs use hole flow exclusively": 0, 
-
-      "MOSFETs feature an insulated gate separated by a thin oxide layer": 1, 
-
-      "JFETs operate using the photovoltaic effect": 0, 
-
-      "MOSFETs require minority carrier injection to switch states": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "Why do MOSFETs typically offer higher input impedance than BJTs?", 
-
-    "target_scores": { 
-
-      "The gate in MOSFETs is insulated, preventing direct current flow": 1, 
-
-      "MOSFETs use thermal gates that resist AC frequencies": 0, 
-
-      "BJTs lack a proper emitter region": 0, 
-
-      "MOSFETs have variable collector current": 0, 
-
-      "BJTs are voltage-controlled and lack impedance variation": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "Which of the following scenarios would most likely require a photo-FET instead of a photo-BJT?", 
-
-    "target_scores": { 
-
-      "A system requiring a fast on/off switching in the absence of light": 0, 
-
-      "An application demanding high light sensitivity and voltage-based control": 1, 
-
-      "A situation with frequent thermal cycling": 0, 
-
-      "A circuit using only small signal amplification": 0, 
-
-      "Any system using analog voltage regulation": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "What is the most likely reason N-channel MOSFETs are more commonly used than P-channel types in modern circuits?", 
-
-    "target_scores": { 
-
-      "N-channel devices are cheaper to fabricate with higher voltage thresholds": 0, 
-
-      "P-channel devices have better performance in high-temperature environments": 0, 
-
-      "Electrons in N-channel devices offer superior mobility over holes in P-channel devices": 1, 
-
-      "N-channel MOSFETs are less affected by input impedance": 0, 
-
-      "P-channel MOSFETs require no gate voltage to operate": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "Which region of operation in a BJT corresponds to its use as a linear amplifier?", 
-
-    "target_scores": { 
-
-      "Saturation region": 0, 
-
-      "Cut-off region": 0, 
-
-      "Active region": 1, 
-
-      "Reverse breakdown region": 0, 
-
-      "Depletion region": 0 
-
-    } 
-
-  }, 
-
-  { 
-
-    "input": "Which of the following differentiates enhancement-mode MOSFETs from depletion-mode ones?", 
-
-    "target_scores": { 
-
-      "Enhancement-mode requires a gate voltage to form a conductive channel; depletion-mode conducts by default": 1, 
-
-      "Depletion-mode MOSFETs are always made from polycrystalline silicon": 0, 
-
-      "Enhancement-mode MOSFETs do not use any doping in the substrate": 0, 
-
-      "Only enhancement-mode MOSFETs operate in high-frequency applications": 0, 
-
-      "Depletion-mode transistors use minority carriers for conduction": 0 
-
-    } 
-
-  }, 
-
-  { 
-
     "input": "Which statement most accurately reflects the role of gate voltage in a JFET?", 
-
     "target_scores": { 
-
       "It generates a charge imbalance in the emitter-base junction": 0, 
-
       "It controls the depletion layer in the gate-collector interface": 0, 
-
       "It varies the width of the conducting channel between source and drain": 1, 
-
       "It amplifies the base signal voltage directly": 0, 
-
       "It activates the substrate for dual-mode conduction": 0 
-
     } 
-
   }, 
-
   { 
-
     "input": "A designer needs a transistor capable of handling 15 A of collector current and operating near 100 MHz. Which transistor is most appropriate?", 
-
     "target_scores": { 
-
       "Small signal BJT": 0, 
-
       "Photo transistor": 0, 
-
       "Power transistor": 1, 
-
       "JFET": 0, 
-
       "Small switching transistor": 0 
-
     } 
-
   } 
-
 ] 
