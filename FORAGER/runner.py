@@ -61,11 +61,13 @@ def build_prompt(formatted_batch):
             prompt += f"{opt}\n"
     prompt += """
 Format your response as JSON with this structure:
+<json>
 {
     "1": "...",
     "2": "...",
     ...
 }
+</json>
     """
     return prompt
 
@@ -146,8 +148,10 @@ def initial_run(test_file):
                 q_prompt += f"{opt}\n"
             q_prompt += """\n
 Format your response as JSON with this structure:
+<json>
 {
     "1": "..."
+</json>
 }
             """
             prompt_history[f"Q{qid_counter}"] = q_prompt
@@ -155,9 +159,9 @@ Format your response as JSON with this structure:
 
         try:
             # Extract JSON block safely using regex
-            match = re.search(r"\{[\s\S]*\}", raw_answer)
+            match = re.search(r"<json>(.*?)</json>", raw_answer, re.DOTALL)
             if match:
-                parsed_answer = json.loads(match.group(0))
+                parsed_answer = json.loads(match.group(1))
             else:
                 print(f"\033[1;91m*** Warning: No valid JSON found for Batch #{i} ***\033[0m\n")
                 parsed_answer = {}
