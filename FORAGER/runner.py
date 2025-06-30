@@ -20,22 +20,20 @@ import time
 
 # Load API key from environment
 load_dotenv()
-API_KEY = os.getenv("GROQ_API_KEY")
 
 # Groq API setup
 groq_endpoint = "https://api.groq.com/openai/v1/chat/completions"
 model_name = "llama3-8b-8192"
 
 # HTTP headers for the request (used for auth. + content type)
-HEADERS = {
-    "Authorization": f"Bearer {API_KEY}",
-    "Content-Type": "application/json"
-}
-
-# Hide headers from pdoc
-__pdoc__ = {
-    "HEADERS": False
-}
+def get_headers():
+    """
+    Returns the headers required for Groq API requests.
+    """
+    return {
+        "Authorization": f"Bearer {os.getenv('GROQ_API_KEY')}",
+        "Content-Type": "application/json"
+    }
 
 # Variable to store general "helpful assistant prompt"
 general_prompt = ("You are a helpful assistant. Answer the following questions clearly and concisely. Provide only the final answer for each question, labeled by its number.\n\n"
@@ -82,7 +80,7 @@ def get_llm_response(prompt, max_retries=3):
         try:
             response = requests.post(
                 groq_endpoint,
-                headers = HEADERS,
+                headers = get_headers(),
                 json = {
                     "model": "llama3-8b-8192",
                     "messages": [
