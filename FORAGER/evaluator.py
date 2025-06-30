@@ -82,14 +82,6 @@ def evaluate():
 		if value[0] != responses[entry]:
 			incorrect_questions[entry] = responses[entry]
 
-	# Adds a short summary of Groq's accuracy at the end of incorrect_questions.json
-	incorrect_questions["Total Questions"] = len(test_questions)
-	incorrect_questions["Correct Answers"] = len(test_questions) - len(incorrect_questions)
-	incorrect_questions["Incorrect Answers"] = len(incorrect_questions)
-	accuracy = (len(test_questions) - len(incorrect_questions)) / len(test_questions)
-	accuracy_str = f"{accuracy * 100:.2f}%"
-	incorrect_questions["Accuracy"] = accuracy_str
-
 def store_results(round_number): # maybe rename this summarize_round(round_num) and add a summary printed to console
 	"""
 	Stores the incorrect answers in a new JSON file.
@@ -102,7 +94,18 @@ def store_results(round_number): # maybe rename this summarize_round(round_num) 
 	output_path = os.path.join("FORAGER", "data", "incorrect_questions", f"round_{round_number}_incorrect.json")
 	print(f"\033[1;92m✅ Successfully saved evaluation results to {output_path}!\033[0m\n")
 
-# def summarize_round(round_num):
+def summarize_round(round_number):
+	"""
+	Adds a short summary of Groq's accuracy at the end of incorrect_questions.json
+	"""
+	print(f"\033[1;92m🔎 Round {round_number} Summary\033[0m")
+	print(f"\033[1;92mNumber of Questions Asked: {len(test_questions)}\033[0m")
+	num_correct = len(test_questions) - len(incorrect_questions)
+	print(f"\033[1;92mNumber Correct: {num_correct}\033[0m")
+	print(f"\033[1;92mNumber Incorrect: {len(incorrect_questions)}\033[0m")
+	accuracy = (len(test_questions) - len(incorrect_questions)) / len(test_questions)
+	accuracy_str = f"{accuracy * 100:.2f}%"
+	print(f"\033[1;92mAccuracy: {accuracy_str}\033[0m")
 
 
 def run_eval_process(test_file, responses_file, round_number):
@@ -112,6 +115,7 @@ def run_eval_process(test_file, responses_file, round_number):
 	load_files(test_file, responses_file)
 	evaluate()
 	store_results(round_number)
+	summarize_round(round_number)
 
 if __name__ == "__main__":
     run_eval_process()
