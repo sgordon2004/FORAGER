@@ -101,6 +101,27 @@ def load_formatted_batch(test_file):
     test_path = os.path.join("FORAGER", "data", test_file)
     return format_json(load_json(test_path))
 
+def load_flat_questions(test_file):
+    """
+    Loads a flat dictionary of questions (as used in rounds 1+) into a list format.
+    
+    Args:
+        test_file (str): The name of the test file to load, relative to FORAGER/data/.
+    
+    Returns:
+        list: A list of question dictionaries, each with an "id" key (e.g., "Q1").
+    """
+    path = os.path.join("FORAGER", "data", "llm_responses", test_file)
+    with open(path, "r") as f:
+        data = json.load(f)
+
+    question_list = []
+    for qid, question in data.items():
+        question["id"] = qid
+        question_list.append(question)
+    
+    return question_list
+
 def build_prompt(formatted_batch):
     """
     Builds a prompt string from a batch of formatted questions for LLM input.
@@ -215,67 +236,97 @@ def save_llm_responses(results, round_number):
         json.dump(results, f, indent=4)
     print(f"\033[1;92m✅ Saved LLM responses to {path}!\033[0m\n")
 
-def initial_run(test_file):
+def run_round(test_file, round_number):
     """
-    Coordinates the full LLM evaluation pipeline for a given test dataset.
+    Executes one full round of LLM evaluation and labeling.
 
-    This function performs the following steps:
-    1. Loads and formats questions from a specified JSON file.
-    2. Splits questions into batches and constructs prompts.
-    3. Sends each prompt batch to the Groq LLM and receives raw responses.
-    4. Parses and attaches LLM answers to the original questions.
-    5. Builds individual prompts for each question and stores them for traceability.
-    6. Saves both prompt history and LLM-labeled responses to JSON files.
+    This function handles the entire prompt → response → evaluation pipeline 
+    for a single round of the prompt-lock loop. It loads the questions, 
+    builds prompts in batches, sends them to the LLM, parses responses, 
+    attaches answers, and saves the results.
 
     Args:
-        test_file (str): The name of the test file (inside `FORAGER/data/`) to load and evaluate.
+        test_file (str): The name of the test file (located in `FORAGER/data/`) 
+                         containing the questions to be evaluated.
+        round_number (int): The current evaluation round number, used to 
+                            label saved output files.
 
     Side Effects:
-        - Writes prompt history to `FORAGER/data/prompt_history/prompt_history_round_0.json`
-        - Writes labeled LLM responses to `FORAGER/data/llm_responses/round_0_responses.json`
+        - Saves prompt history to 
+          `FORAGER/data/prompt_history/prompt_history_round_<round_number>.json`
+        - Saves LLM-labeled responses to 
+          `FORAGER/data/llm_responses/round_<round_number>_responses.json`
 
     Raises:
-        Prints warnings if the LLM response is invalid or if JSON parsing fails.
+        Prints warnings if the LLM response is missing or if JSON parsing fails.
     """
-    qid_counter = 1
-
     # Dictionary to hold original prompts
     prompt_history = {}
     results = {}
 
-    # Step 1: Loads raw JSON file and formats it
-    question_batches = load_formatted_batch(test_file)
+    if round_number == 0:
+        qid_counter = 1
+        # Step 1: Loads raw JSON file and formats it
+        question_batches = load_formatted_batch(test_file)
 
-    for i, questions_batch in enumerate(question_batches, 1):
-        print(f"\033[1;94m🔄 Working on Batch #{i}/{len(question_batches)} total batches...\033[0m\n")
-        
-        # Step 2: Build and send prompt for current batch of questions and store raw response
-        prompt = build_prompt(questions_batch)
-        raw_answer = get_llm_response(prompt)
+        for i, questions_batch in enumerate(question_batches, 1):
+            print(f"\033[1;94m🔄 Working on Batch #{i}/{len(question_batches)} total batches...\033[0m\n")
+            
+            # Step 2: Build and send prompt for current batch of questions and store raw response
+            prompt = build_prompt(questions_batch)
+            raw_answer = get_llm_response(prompt)
 
-        # Step 3: Build and store individual question prompts for traceability
-        for q in questions_batch:
-            q_prompt = build_question_prompt(q)
-            prompt_history[f"Q{qid_counter}"] = q_prompt
-            qid_counter += 1
+            # Step 3: Build and store individual question prompts for traceability
+            for q in questions_batch:
+                q_prompt = build_question_prompt(q)
+                prompt_history[f"Q{qid_counter}"] = q_prompt
+                qid_counter += 1
 
-        # Step 4: Parse the raw response to extract JSON answers
-        parsed_answer = parse_llm_response(raw_answer, batch_num=i)
+            # Step 4: Parse the raw response to extract JSON answers
+            parsed_answer = parse_llm_response(raw_answer, batch_num=i)
 
-        # Step 5: Attach parsed answers to the original questions
-        for idx, q in enumerate(questions_batch, 1):
-            q["answer"] = parsed_answer.get(str(idx), None)
+            # Step 5: Attach parsed answers to the original questions
+            for idx, q in enumerate(questions_batch, 1):
+                q["answer"] = parsed_answer.get(str(idx), None)
 
-        # Step 6: Store the parsed answers in a results dictionary
-        results[f"Batch_{i}"] = {"questions": questions_batch}
+            # Step 6: Store the parsed answers in a results dictionary
+            results[f"Batch_{i}"] = {"questions": questions_batch}
+    else:
+        questions = load_flat_questions(test_file)
+        print(f"\033[1;94m🔄 Working on {len(questions)} individual questions for round {round_number}...\033[0m\n")
+        for q in questions:
+            qid = q["id"]
+            prompt = build_question_prompt(q)
+            prompt_history[qid] = prompt
+
+            try:
+                raw_response = get_llm_response(prompt)
+                parsed_answer = parse_llm_response(raw_response)
+            except Exception as e:
+                print(f"\033[1;91m*** Error processing question {qid}: {e} ***\033[0m\n")
+                parsed_answer = {}
+
+            q["answer"] = parsed_answer.get("1", None)
+            results[qid] = q
+
     
     # Step 7: Save the prompt history to a JSON file
-    save_prompt_history(prompt_history, round_number=0)
+    save_prompt_history(prompt_history, round_number=round_number)
 
     # Step 8: Save the LLM responses to a JSON file
-    save_llm_responses(results, round_number=0)
+    save_llm_responses(results, round_number=round_number)
 
-    run_eval_process(test_file, responses_file, round_number = 0)
+    # run_eval_process(test_file, responses_file, round_number = 0)
+
+def initial_run(test_file):
+    """
+    Wrapper for running the first round (round 0) of LLM evaluation.
+    Calls `run_round()` with `round_number=0` to evaluate the original question file.
+
+    Args:
+        test_file (str): The name of the initial test file to evaluate (e.g., "4_distractors.json").
+    """
+    run_round(test_file, round_number=0)
 
 if __name__ == "__main__":
     initial_run()
