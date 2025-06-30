@@ -82,7 +82,7 @@ def evaluate():
 		if value[0] != responses[entry]:
 			incorrect_questions[entry] = responses[entry]
 
-def store_results(round_number): # maybe rename this summarize_round(round_num) and add a summary printed to console
+def store_results(round_number):
 	"""
 	Stores the incorrect answers in a new JSON file.
 	"""
@@ -98,14 +98,51 @@ def summarize_round(round_number):
 	"""
 	Adds a short summary of Groq's accuracy at the end of incorrect_questions.json
 	"""
+	# Print the round summary
 	print(f"\033[1;92m🔎 Round {round_number} Summary\033[0m")
 	print(f"\033[1;92mNumber of Questions Asked: {len(test_questions)}\033[0m")
 	num_correct = len(test_questions) - len(incorrect_questions)
+	num_incorrect = len(incorrect_questions)
 	print(f"\033[1;92mNumber Correct: {num_correct}\033[0m")
-	print(f"\033[1;92mNumber Incorrect: {len(incorrect_questions)}\033[0m")
-	accuracy = (len(test_questions) - len(incorrect_questions)) / len(test_questions)
+	print(f"\033[1;92mNumber Incorrect: {num_incorrect}\033[0m")
+	accuracy = num_correct / len(test_questions)
 	accuracy_str = f"{accuracy * 100:.2f}%"
 	print(f"\033[1;92mAccuracy: {accuracy_str}\033[0m")
+
+	# Load or initialize the accuracy tracking file 
+	summary_path = "FORAGER/data/incorrect_questions/accuracy_summary.json"
+	if os.path.exists(summary_path):
+		with open(summary_path, 'r') as f:
+			past_scores = json.load(f)
+	else:
+		past_scores = {}
+
+	prev_round_key = str(round_number - 1)
+	if prev_round_key in past_scores:
+		prev_data = past_scores[prev_round_key]
+		prev_accuracy = prev_data["accuracy"]
+		prev_correct = prev_data["num_correct"]
+
+		# Accuracy comparison
+		accuracy_change = (accuracy - prev_accuracy) * 100
+		sign = "+" if accuracy_change >= 0 else "-"
+		print(f"\033[1;94mAccuracy Change from Previous Round: {sign}{abs(accuracy_change):.2f}%\033[0m")
+
+		# Number correct comparison
+		correct_change = num_correct - prev_correct
+		sign = "+" if correct_change >= 0 else "-"
+		print(f"\033[1;94mCorrect Answer Change from Previous Round: {sign}{abs(correct_change)}\033[0m")
+
+	else:
+		print("\033[1;94mNo previous round score to compare.\033[0m")
+
+	# Save current round's results
+	past_scores[str(round_number)] = {
+		"accuracy": accuracy,
+		"num_correct": num_correct
+	}
+	with open(summary_path, 'w') as f:
+		json.dump(past_scores, f, indent=2)
 
 
 def run_eval_process(test_file, responses_file, round_number):
