@@ -152,6 +152,58 @@ Format your response as JSON with this structure:
     """
     return prompt
 
+def parse_restructured_output(response):
+    """
+    Parses the LLM's rewritten prompt into a usable question dict.
+    
+    Expected format:
+    {
+        "question": "New question here",
+        "options": ["Answer A", "Answer B", "Answer C", "Answer D"]
+    }
+    """
+    try:
+        match = re.search(r"<json>(.*?)</json>", response, re.DOTALL)
+        if match:
+            return json.loads(match.group(1))
+        else:
+            print("⚠️ No valid JSON found in LLM response.")
+            return {}
+    except json.JSONDecodeError:
+        print("⚠️ Could not parse rewritten prompt response.")
+        return {}
+
+def restructure_prompts(incorrect_questions, prompt_history):
+    """
+    Rewrites incorrect questions using their original prompts via LLM.
+    
+    Args:
+        incorrect_questions (dict): A dictionary of questions that were answered incorrectly.
+        prompt_history (dict): A dictionary containing the original prompts for each question.
+        
+    Returns:
+        list: A list of restructured questino dicts with "input" and "options" keys.
+    """
+    restructured = []
+
+    for qid in incorrect_questions:
+        original_prompt = prompt_history[qid]
+        rewrite_prompt = (
+            "Reword the following question prompt for clarity and conciseness, "
+            "but do NOT alter or paraphrase the answer choices. Only reword the question itself.\n\n"
+            f"{original_prompt}\n\n"
+            "Format your response as JSON with this structure:\n"
+            "<json>{\n  \"input\": \"...\",\n  \"options\": [\"A. ...\", \"B. ...\", \"C. ...\", \"D. ...\"]\n}</json>"
+        )
+
+        raw = get_llm_response(rewrite_prompt)
+        parsed = parse_restructured_output
+
+        if parsed:
+            restructured.append(parsed)
+    
+    return restructured
+
 def get_llm_response(prompt, max_retries=3):
     """
     Sends a prompt to the Groq LLM and retrieves the JSON response.
