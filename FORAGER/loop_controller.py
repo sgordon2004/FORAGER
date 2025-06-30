@@ -115,9 +115,9 @@ def prompt_lock_loop(test_file, rounds=3):
 
         # Step 2: Evaluate responses to create incorrect_questions.json
 
-        response_file = f"FORAGER/data/llm_responses/round_{i-1}_responses.json"
+        response_file = f"round_{i-1}_responses.json"
         print(f"\033[94mEvaluating responses from {response_file} against test set {test_file}.\033[0m")
-        run_eval_process(f"FORAGER/data/{test_file}", response_file)
+        run_eval_process(test_file, response_file, i)
 
         print(f"\n\033[1;96m🔁 === Starting Loop Iteration {i} ===\033[0m\n")
 

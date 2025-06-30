@@ -17,6 +17,7 @@ from dotenv import load_dotenv
 from .formatter import format_json, load_json
 import re
 import time
+from .evaluator import run_eval_process
 
 # Load API key from environment
 load_dotenv()
@@ -207,6 +208,8 @@ def save_llm_responses(results, round_number):
     """
     os.makedirs(os.path.join("FORAGER", "data", "llm_responses"), exist_ok=True)
     filename = f"round_{round_number}_responses.json"
+    global responses_file
+    responses_file = filename
     path = os.path.join("FORAGER", "data", "llm_responses", filename)
     with open(path, "w") as f:
         json.dump(results, f, indent=4)
@@ -272,6 +275,7 @@ def initial_run(test_file):
     # Step 8: Save the LLM responses to a JSON file
     save_llm_responses(results, round_number=0)
 
+    run_eval_process(test_file, responses_file, round_number = 0)
 
 if __name__ == "__main__":
     initial_run()
