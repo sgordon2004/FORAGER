@@ -84,7 +84,7 @@ def evaluate():
 
 	# Adds a short summary of Groq's accuracy at the end of incorrect_questions.json
 	incorrect_questions["Total Questions"] = len(test_questions)
-	incorrect_questions["orrect Answers"] = len(test_questions) - len(incorrect_questions)
+	incorrect_questions["Correct Answers"] = len(test_questions) - len(incorrect_questions)
 	incorrect_questions["Incorrect Answers"] = len(incorrect_questions)
 	accuracy = (len(test_questions) - len(incorrect_questions)) / len(test_questions)
 	accuracy_str = f"{accuracy * 100:.2f}%"
@@ -96,10 +96,10 @@ def store_results(round_number): # maybe rename this summarize_round(round_num) 
 	"""
 	# Save updated results
 	os.makedirs("FORAGER/data/incorrect_questions", exist_ok=True)
-	with open("FORAGER/data/incorrect_questions/round_{round_number}_incorrect.json", "w") as out_file:
+	with open(f"FORAGER/data/incorrect_questions/round_{round_number}_incorrect.json", "w") as out_file:
 		json.dump(incorrect_questions, out_file, indent=4)
 	
-	output_path = os.path.join("FORAGER", "data", "incorrect_questions", "round_{round_number}_incorrect.json")
+	output_path = os.path.join("FORAGER", "data", "incorrect_questions", f"round_{round_number}_incorrect.json")
 	print(f"\033[1;92m✅ Successfully saved evaluation results to {output_path}!\033[0m\n")
 
 # def summarize_round(round_num):
