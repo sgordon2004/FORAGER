@@ -35,6 +35,10 @@ def get_headers():
         "Content-Type": "application/json"
     }
 
+__pdoc__ = {
+    "get_headers": False,  # Hide this function from documentation
+}
+
 # Variable to store general "helpful assistant prompt"
 general_prompt = ("You are a helpful assistant. Answer the following questions clearly and concisely. Provide only the final answer for each question, labeled by its number.\n\n"
         "Questions:\n")
