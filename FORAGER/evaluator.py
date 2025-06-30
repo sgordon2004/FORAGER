@@ -10,6 +10,8 @@ Key Functions:
 - evaluate(): Compares LLM answers to the answer key and identifies mismatches.
 - store_results(): Writes incorrect responses to a separate JSON file.
 - run_eval_process(): Executes the full evaluation workflow.
+
+TODO: Make evaluation for each round show up separately like in the llm_responses folder
 """
 
 import json
@@ -23,11 +25,12 @@ def load_files(test_file, responses_file):
 	global test_questions, llm_answers
 
 	# Load the original question file
-	with open(test_file) as f:
+	with open(f"FORAGER/data/{test_file}") as f:
+	# with open(test_file) as f:
 		test_questions = json.load(f)
 
 	# Load the LLM responses
-	with open(responses_file) as f:
+	with open(f"FORAGER/data/llm_responses/{responses_file}") as f:
 		llm_answers = json.load(f)
 
 def evaluate():
@@ -80,31 +83,35 @@ def evaluate():
 			incorrect_questions[entry] = responses[entry]
 
 	# Adds a short summary of Groq's accuracy at the end of incorrect_questions.json
-	incorrect_questions["Number of Incorrect Questions"] = len(incorrect_questions)
 	incorrect_questions["Total Questions"] = len(test_questions)
+	incorrect_questions["orrect Answers"] = len(test_questions) - len(incorrect_questions)
+	incorrect_questions["Incorrect Answers"] = len(incorrect_questions)
 	accuracy = (len(test_questions) - len(incorrect_questions)) / len(test_questions)
 	accuracy_str = f"{accuracy * 100:.2f}%"
 	incorrect_questions["Accuracy"] = accuracy_str
 
-def store_results():
+def store_results(round_number): # maybe rename this summarize_round(round_num) and add a summary printed to console
 	"""
 	Stores the incorrect answers in a new JSON file.
 	"""
 	# Save updated results
 	os.makedirs("FORAGER/data/incorrect_questions", exist_ok=True)
-	with open("FORAGER/data/incorrect_questions/incorrect_questions.json", "w") as out_file:
+	with open("FORAGER/data/incorrect_questions/round_{round_number}_incorrect.json", "w") as out_file:
 		json.dump(incorrect_questions, out_file, indent=4)
 	
-	output_path = os.path.join("FORAGER", "data", "incorrect_questions", "incorrect_questions.json")
-	print(f"Successfully saved evaluation results to {output_path}!\n")
+	output_path = os.path.join("FORAGER", "data", "incorrect_questions", "round_{round_number}_incorrect.json")
+	print(f"\033[1;92m✅ Successfully saved evaluation results to {output_path}!\033[0m\n")
 
-def run_eval_process(test_file, responses_file):
+# def summarize_round(round_num):
+
+
+def run_eval_process(test_file, responses_file, round_number):
 	"""
 	Runs the entire evaluation pipeline, from loading the files to storing the final results.
 	"""
 	load_files(test_file, responses_file)
 	evaluate()
-	store_results()
+	store_results(round_number)
 
 if __name__ == "__main__":
     run_eval_process()
