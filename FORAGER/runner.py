@@ -32,6 +32,11 @@ HEADERS = {
     "Content-Type": "application/json"
 }
 
+# Hide headers from pdoc
+__pdoc__ = {
+    "HEADERS": False
+}
+
 # Variable to store general "helpful assistant prompt"
 general_prompt = ("You are a helpful assistant. Answer the following questions clearly and concisely. Provide only the final answer for each question, labeled by its number.\n\n"
         "Questions:\n")
