@@ -246,8 +246,14 @@ def run_round(test_file, round_number):
     attaches answers, and saves the results.
 
     Args:
-        test_file (str): The name of the test file (located in `FORAGER/data/`) 
-                         containing the questions to be evaluated.
+        test_file (str):
+            For round 0, this should be the filename of the original unlabeled question set
+            (e.g., "4_distractors.json"), located in FORAGER/data.
+
+            For rounds >= 1, this should be the filename of the LM response file
+            from the previous round (e.g., "round_0_responses.json"), located in
+            FORAGER/data/llm_responses.
+
         round_number (int): The current evaluation round number, used to 
                             label saved output files.
 
@@ -315,8 +321,6 @@ def run_round(test_file, round_number):
 
     # Step 8: Save the LLM responses to a JSON file
     save_llm_responses(results, round_number=round_number)
-
-    # run_eval_process(test_file, responses_file, round_number = 0)
 
 def initial_run(test_file):
     """
