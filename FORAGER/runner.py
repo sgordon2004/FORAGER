@@ -67,31 +67,31 @@ def parse_llm_response(raw_response, batch_num=None):
         return {}
 
 def build_question_prompt(q):
-            """
-            Builds a prompt for a single question with options, formatted for LLM input.
-            
-            Args:
-                q (dict): A dictionary containing the question and its options.
-            
-            Returns:
-                str: A formatted prompt string for the question.
-            """
-            q_prompt = (
-                "You are a helpful assistant. Answer the following question clearly and concisely."
-                "Provide only the final answer.\n\n"
-                f"Question:\n{q['input']}\nOptions:\n"
-            )
-            for opt in q["options"]:
-                q_prompt += f"{opt}\n"
-            q_prompt += """\n
-                Format your response as JSON with this structure:
-                <json>
-                {
-                    "1": "..."
-                }
-                </json>
-            """
-            return q_prompt
+    """
+    Builds a prompt for a single question with options, formatted for LLM input.
+    
+    Args:
+        q (dict): A dictionary containing the question and its options.
+    
+    Returns:
+        str: A formatted prompt string for the question.
+    """
+    q_prompt = (
+        "You are a helpful assistant. Answer the following question clearly and concisely."
+        "Provide only the final answer.\n\n"
+        f"Question:\n{q['input']}\nOptions:\n"
+    )
+    for opt in q["options"]:
+        q_prompt += f"{opt}\n"
+    q_prompt += """\n
+        Format your response as JSON with this structure:
+        <json>
+        {
+            "1": "..."
+        }
+        </json>
+    """
+    return q_prompt
 
 def load_formatted_batch(test_file):
     """
