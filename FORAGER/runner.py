@@ -35,12 +35,71 @@ def get_headers():
         "Content-Type": "application/json"
     }
 
+# Hide the get_headers function from documentation
+# This is useful if you want to keep the implementation details private
+# and not expose it in the generated documentation.
 __pdoc__ = {
-    "get_headers": False,  # Hide this function from documentation
+    "get_headers": False
 }
 
+def parse_llm_response(raw_response, batch_num=None):
+    """
+    Extracts and parses the JSON portion of the LLM's raw response.
 
-# Batches questions into 5 at a time to build combined prompt
+    Args:
+        raw_response (str): The full string returned by the LLM.
+        batch_num (int, optional): Used for printing contextual error messages.
+
+    Returns:
+        dict: Parsed JSON answers, or an empty dict if parsing fails.
+    """
+    try:
+        match = re.search(r"<json>(.*?)</json>", raw_response, re.DOTALL)
+        if match:
+            return json.loads(match.group(1))
+        else:
+            if batch_num is not None:
+                print(f"\033[1;91m*** Warning: No valid JSON found for Batch #{batch_num} ***\033[0m\n")
+            return {}
+    except json.JSONDecodeError:
+        if batch_num is not None:
+            print(f"\033[1;91m*** Warning: could not parse answer for Batch_{batch_num} ***\n")
+        return {}
+
+def build_question_prompt(q):
+            """
+            Builds a prompt for a single question with options, formatted for LLM input.
+            
+            Args:
+                q (dict): A dictionary containing the question and its options.
+            
+            Returns:
+                str: A formatted prompt string for the question.
+            """
+            q_prompt = (
+                "You are a helpful assistant. Answer the following question clearly and concisely."
+                "Provide only the final answer.\n\n"
+                f"Question:\n{q['input']}\nOptions:\n"
+            )
+            for opt in q["options"]:
+                q_prompt += f"{opt}\n"
+            q_prompt += """\n
+                Format your response as JSON with this structure:
+                <json>
+                {
+                    "1": "..."
+                }
+                </json>
+            """
+            return q_prompt
+
+def load_formatted_batch(test_file):
+    """
+    Loads and formats the test questions from the specified JSON file.
+    """
+    test_path = os.path.join("FORAGER", "data", test_file)
+    return format_json(load_json(test_path))
+
 def build_prompt(formatted_batch):
     """
     Builds a prompt string from a batch of formatted questions for LLM input.
@@ -110,13 +169,70 @@ def get_llm_response(prompt, max_retries=3):
                 print("*** Max retries reached. Returning error message. ***\n")
                 return str(e)
 
+def save_prompt_history(prompt_history, round_number):
+    """
+    Saves the individual prompt history for each question to a JSON file.
+
+    This function creates a diirectory (if it doesn't exist) and writes the prompt
+    history dictionary to a JSON file named according to the specified round number.
+
+    Args:
+        prompt_history (dict): A dictionary containing question IDs (e.g., "Q1", "Q2", ...) as keys and their prompts as values.
+        round_number (int): The current evaluation round number (e.g., 0 for initial run), used to name the output file.
+
+    Side Effects:
+        Creates a JSON file at FORAGER/data/prompt_history/prompt_history_round_{round_number}.json
+        containing all question prompts used during evaluation.
+    """
+    os.makedirs(os.path.join("FORAGER", "data", "prompt_history"), exist_ok=True)
+    filename = f"prompt_history_round_{round_number}.json"
+    path = os.path.join("FORAGER", "data", "prompt_history", filename)
+    with open(path, "w") as f:
+        json.dump(prompt_history, f, indent=2)
+
+def save_llm_responses(results, round_number):
+    """
+    Saves the LLM-labeled responses to a JSON file.
+
+    This function creates a directory (if it doesn't exist) and writes the results dictionary
+    to a file named according to the specified round number.
+
+    Args:
+        results (dict): A dictionary mapping batch labels (e.g., "Batch_1", "Batch_2", ...) to their corresponding question and answer data.
+        round_number (int): The current evaluation round number (e.g., 0 for initial run), used to name the output file.
+
+    Side Effects:
+        Creates a JSON file at FORAGER/data/llm_responses/round_{round_number}_responses.json
+        containing all batches and their corresponding labeled questions.
+    """
+    os.makedirs(os.path.join("FORAGER", "data", "llm_responses"), exist_ok=True)
+    filename = f"round_{round_number}_responses.json"
+    path = os.path.join("FORAGER", "data", "llm_responses", filename)
+    with open(path, "w") as f:
+        json.dump(results, f, indent=4)
+    print(f"\033[1;92m✅ Saved LLM responses to {path}!\033[0m\n")
+
 def initial_run(test_file):
     """
-    Executes the full LLM evaluation pipeline:
-    - Builds prompts from formatted question batches
-    - Sends prompts to the LLM and collects responses
-    - Parses and attaches answers to each question
-    - Saves all results to a JSON file in the data directory
+    Coordinates the full LLM evaluation pipeline for a given test dataset.
+
+    This function performs the following steps:
+    1. Loads and formats questions from a specified JSON file.
+    2. Splits questions into batches and constructs prompts.
+    3. Sends each prompt batch to the Groq LLM and receives raw responses.
+    4. Parses and attaches LLM answers to the original questions.
+    5. Builds individual prompts for each question and stores them for traceability.
+    6. Saves both prompt history and LLM-labeled responses to JSON files.
+
+    Args:
+        test_file (str): The name of the test file (inside `FORAGER/data/`) to load and evaluate.
+
+    Side Effects:
+        - Writes prompt history to `FORAGER/data/prompt_history/prompt_history_round_0.json`
+        - Writes labeled LLM responses to `FORAGER/data/llm_responses/round_0_responses.json`
+
+    Raises:
+        Prints warnings if the LLM response is invalid or if JSON parsing fails.
     """
     qid_counter = 1
 
@@ -124,72 +240,37 @@ def initial_run(test_file):
     prompt_history = {}
     results = {}
 
-    # Load questions from formatter.py
-    test_path = os.path.join("FORAGER", "data", test_file)
-    questions = format_json(load_json(test_path))
+    # Step 1: Loads raw JSON file and formats it
+    question_batches = load_formatted_batch(test_file)
 
-    # Loop through batched questions
-    for i, questions_batch in enumerate(questions, 1):
-
-        print(f"\033[1;94m🔄 Working on Batch #{i}/{len(questions)} total batches...\033[0m\n")
-
-        # Build a batch prompt and get LLM response
+    for i, questions_batch in enumerate(question_batches, 1):
+        print(f"\033[1;94m🔄 Working on Batch #{i}/{len(question_batches)} total batches...\033[0m\n")
+        
+        # Step 2: Build and send prompt for current batch of questions and store raw response
         prompt = build_prompt(questions_batch)
         raw_answer = get_llm_response(prompt)
 
-        # Save individual prompts for each question in this batch
-        for idx, q in enumerate(questions_batch, 1):
-            q_prompt = (
-                "You are a helpful assistant. Answer the following question clearly and concisely. "
-            "Provide only the final answer.\n\n"
-            f"Question:\n{q['input']}\nOptions:\n"
-            )
-            for opt in q["options"]:
-                q_prompt += f"{opt}\n"
-            q_prompt += """\n
-Format your response as JSON with this structure:
-<json>
-{
-    "1": "..."
-</json>
-}
-            """
+        # Step 3: Build and store individual question prompts for traceability
+        for q in questions_batch:
+            q_prompt = build_question_prompt(q)
             prompt_history[f"Q{qid_counter}"] = q_prompt
             qid_counter += 1
 
-        try:
-            # Extract JSON block safely using regex
-            match = re.search(r"<json>(.*?)</json>", raw_answer, re.DOTALL)
-            if match:
-                parsed_answer = json.loads(match.group(1))
-            else:
-                print(f"\033[1;91m*** Warning: No valid JSON found for Batch #{i} ***\033[0m\n")
-                parsed_answer = {}
-        except json.JSONDecodeError:
-            print(f"\033[1;91m*** Warning: could not parse answer for Batch_{i} ***\n")
-            parsed_answer = {}
+        # Step 4: Parse the raw response to extract JSON answers
+        parsed_answer = parse_llm_response(raw_answer, batch_num=i)
 
-        # Attach answers directly to each question
+        # Step 5: Attach parsed answers to the original questions
         for idx, q in enumerate(questions_batch, 1):
             q["answer"] = parsed_answer.get(str(idx), None)
 
-        results[f"Batch_{i}"] = {
-            "questions": questions_batch,
-        }
+        # Step 6: Store the parsed answers in a results dictionary
+        results[f"Batch_{i}"] = {"questions": questions_batch}
     
-    os.makedirs("FORAGER/data/prompt_history", exist_ok=True)
-    prompt_history_path = os.path.join("FORAGER", "data", "prompt_history", "prompt_history_round_0.json")
-    with open(prompt_history_path, "w") as f:
-        json.dump(prompt_history, f, indent=2)
+    # Step 7: Save the prompt history to a JSON file
+    save_prompt_history(prompt_history, round_number=0)
 
-    # Save responses to a JSON file
-    llm_response_dir = os.path.join("FORAGER", "data", "llm_responses")
-    os.makedirs(llm_response_dir, exist_ok=True)
-    output_path = os.path.join("FORAGER", "data", "llm_responses", "round_0_responses.json")
-    with open(output_path, "w") as f:
-        json.dump(results, f, indent=4)
-
-    print(f"\033[1;92m✅ Saved LLM responses to {output_path}!\033[0m\n")
+    # Step 8: Save the LLM responses to a JSON file
+    save_llm_responses(results, round_number=0)
 
 
 if __name__ == "__main__":
