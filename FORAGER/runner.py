@@ -116,14 +116,15 @@ def initial_run(test_file):
     - Parses and attaches answers to each question
     - Saves all results to a JSON file in the data directory
     """
-    global_qid = 1
+    qid_counter = 1
 
     # Dictionary to hold original prompts
     prompt_history = {}
     results = {}
 
     # Load questions from formatter.py
-    questions = format_json(load_json(f"FORAGER/data/{test_file}"))
+    test_path = os.path.join("FORAGER", "data", test_file)
+    questions = format_json(load_json(test_path))
 
     # Loop through batched questions
     for i, questions_batch in enumerate(questions, 1):
@@ -149,8 +150,8 @@ Format your response as JSON with this structure:
     "1": "..."
 }
             """
-            prompt_history[f"Q{global_qid}"] = q_prompt
-            global_qid += 1
+            prompt_history[f"Q{qid_counter}"] = q_prompt
+            qid_counter += 1
 
         try:
             # Extract JSON block safely using regex
@@ -173,11 +174,13 @@ Format your response as JSON with this structure:
         }
     
     os.makedirs("FORAGER/data/prompt_history", exist_ok=True)
-    with open("FORAGER/data/prompt_history/prompt_history_round_0.json", "w") as f:
+    prompt_history_path = os.path.join("FORAGER", "data", "prompt_history", "prompt_history_round_0.json")
+    with open(prompt_history_path, "w") as f:
         json.dump(prompt_history, f, indent=2)
 
     # Save responses to a JSON file
-    os.makedirs("FORAGER/data/llm_responses", exist_ok=True)
+    llm_response_dir = os.path.join("FORAGER", "data", "llm_responses")
+    os.makedirs(llm_response_dir, exist_ok=True)
     output_path = os.path.join("FORAGER", "data", "llm_responses", "round_0_responses.json")
     with open(output_path, "w") as f:
         json.dump(results, f, indent=4)
