@@ -39,12 +39,9 @@ __pdoc__ = {
     "get_headers": False,  # Hide this function from documentation
 }
 
-# Variable to store general "helpful assistant prompt"
-general_prompt = ("You are a helpful assistant. Answer the following questions clearly and concisely. Provide only the final answer for each question, labeled by its number.\n\n"
-        "Questions:\n")
 
 # Batches questions into 5 at a time to build combined prompt
-def build_prompt(formatted_batch, prompt=general_prompt):
+def build_prompt(formatted_batch):
     """
     Builds a prompt string from a batch of formatted questions for LLM input.
 
@@ -54,6 +51,9 @@ def build_prompt(formatted_batch, prompt=general_prompt):
     Returns:
         str: A complete prompt formatted for Groq's LLM with JSON instructions.
     """
+
+    prompt = ("You are a helpful assistant. Answer the following questions clearly and concisely. Provide only the final answer for each question, labeled by its number.\n\n"
+        "Questions:\n")
 
     for idx, question in enumerate(formatted_batch, 1):
         prompt += f"\n{idx}) {question['input']}\nOptions:\n"
