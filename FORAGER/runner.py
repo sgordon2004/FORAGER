@@ -240,13 +240,10 @@ def run_round(test_file, round_number):
     """
     Executes one full round of LLM evaluation and labeling.
 
-    This function performs the following steps:
-    1. Loads and formats questions from a specified JSON file.
-    2. Splits questions into batches and constructs prompts.
-    3. Sends each prompt batch to the Groq LLM and receives raw responses.
-    4. Parses and attaches LLM answers to the original questions.
-    5. Builds individual prompts for each question and stores them for traceability.
-    6. Saves both prompt history and LLM-labeled responses to JSON files.
+    This function handles the entire prompt → response → evaluation pipeline 
+    for a single round of the prompt-lock loop. It loads the questions, 
+    builds prompts in batches, sends them to the LLM, parses responses, 
+    attaches answers, and saves the results.
 
     Args:
         test_file (str):
@@ -329,11 +326,14 @@ def initial_run(test_file):
     """
     Wrapper for running the first round (round 0) of LLM evaluation.
     Calls `run_round()` with `round_number=0` to evaluate the original question file.
+    Also runs the evaluation process for Round 0.
 
     Args:
         test_file (str): The name of the initial test file to evaluate (e.g., "4_distractors.json").
     """
     run_round(test_file, round_number=0)
+    round_0_response_path = "round_0_responses.json"
+    run_eval_process(test_file, round_0_response_path, round_number = 0)
 
 if __name__ == "__main__":
     initial_run()
