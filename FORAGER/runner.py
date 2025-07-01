@@ -208,10 +208,12 @@ def restructure_prompts(incorrect_questions, prompt_history):
         original_prompt = prompt_history[f"Q{qid}"]
         rewrite_prompt = (
             "Reword the following question prompt for clarity and conciseness, "
-            "but do NOT alter or paraphrase the answer choices. Only reword the question itself.\n\n"
+            "but do NOT change, paraphrase, or relabel the answer choices in any way. "
+            "Do NOT add letters, numbers, or any other prefixes in front of the options. "
+            "Only reword the question itself.\n\n"
             f"{original_prompt}\n\n"
             "Format your response as JSON with this structure:\n"
-            "<json>{\n  \"input\": \"...\",\n  \"options\": [\"A. ...\", \"B. ...\", \"C. ...\", \"D. ...\"]\n}</json>"
+            "<json>{\n  \"input\": \"...\",\n  \"options\": [\"option 1\", \"option 2\", \"option 3\", \"option 4\"]\n}</json>"
         )
 
         raw = get_llm_response(rewrite_prompt)
