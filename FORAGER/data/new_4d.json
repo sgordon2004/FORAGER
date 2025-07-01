@@ -70,7 +70,7 @@
     }
   },
   {
-    "inputs": "What best describes the “systems-pull” approach?",
+    "inputs": "What best describes the \"systems-pull\" approach?",
     "target_scores": {
       "Driving innovation through system-level needs": 1,
       "Pushing innovations from the bottom of the chain": 0,
