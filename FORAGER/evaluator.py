@@ -80,7 +80,11 @@ def evaluate():
 		if not value:
 			continue # No correct answer available for this question
 		if value[0] != responses[entry]:
-			incorrect_questions[entry] = responses[entry]
+			incorrect_questions[entry] = {
+				"Question and Answer Choices": test_questions[entry - 1],
+				"Groq's Answer": responses[entry],
+				"Correct Answer": answer_key[entry]
+			}
 
 def store_results(round_number):
 	"""
