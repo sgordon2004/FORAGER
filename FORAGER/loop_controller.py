@@ -33,7 +33,7 @@ def prompt_lock_loop(start_file, max_rounds=3):
 
         # Step 2: Load previous round's incorrect questions and original prompts
         incorrect = load_json(f"FORAGER/data/incorrect_questions/round_{i}_incorrect.json")
-        print(f"\033[1;94m📊 Loaded {len(incorrect)-3} incorrect questions from previous round.\033[0m\n")
+        print(f"\033[1;94m📊 Loaded {len(incorrect)} incorrect questions from previous round.\033[0m\n")
 
         prompt_history = load_json(f"FORAGER/data/prompt_history/prompt_history_round_{i - 1}.json")
 
