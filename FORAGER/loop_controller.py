@@ -26,6 +26,16 @@ def prompt_lock_loop(start_file, max_rounds=3):
     for i in range(1, max_rounds + 1): # i starts at 1 and ends at 3
         print(f"\033[1;96m🔁 === Starting Loop Iteration {i} ===\033[0m\n")
 
+        # Strategy instructions for each round
+        if round_number == 1:
+            strategy_instruction = "Mentally compare all options before selecting the best one."
+        elif round_number == 2:
+            strategy_instruction = "Internally identify any important keywords before answering."
+        elif round_number == 3:
+            strategy_instruction = "Think carefully through the reasoning before selecting your answer."
+        else:
+            strategy_instruction = ""
+
         # Step 1: Evaluate responses from previous round to create incorrect_questions.json
         response_file = f"round_{i-1}_responses.json"
         print(f"\033[94mEvaluating responses from {response_file} against test set {start_file}.\033[0m")
