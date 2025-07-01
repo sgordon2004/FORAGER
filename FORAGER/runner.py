@@ -424,8 +424,8 @@ def initial_run(test_file):
         test_file (str): The name of the initial test file to evaluate (e.g., "4_distractors.json").
     """
     run_round(test_file, round_number=0)
-    round_0_response_path = "round_0_responses.json"
-    run_eval_process(test_file, round_0_response_path, round_number = 0)
+    # round_0_response_path = "round_0_responses.json"
+    # run_eval_process(test_file, round_0_response_path, round_number = 0)
 
 if __name__ == "__main__":
     initial_run()
