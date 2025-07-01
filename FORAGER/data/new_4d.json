@@ -1,16 +1,16 @@
 [
   {
-    "inputs": "Which technology is an example of 2.5D integration?",
+    "input": "Which technology is an example of 2.5D integration?",
     "target_scores": {
       "Fan-Out Panel-Level Packaging": 0,
-      "Intel’s Foveros": 0,
+      "Intel's Foveros": 0,
       "CoWoS (Chip-on Wafer-on Substrate)": 1,
       "3D NAND": 0,
       "TSV-based processors": 0
     }
   },
   {
-    "inputs": "What is a major advantage of 3D integration over 2.5D?",
+    "input": "What is a major advantage of 3D integration over 2.5D?",
     "target_scores": {
       "Uses organic interposers": 0,
       "Reduces data transfer distances and power loss": 1,
@@ -20,7 +20,7 @@
     }
   },
   {
-    "inputs": "Which memory solution uses 3D integration technology?",
+    "input": "Which memory solution uses 3D integration technology?",
     "target_scores": {
       "HBM": 0,
       "DDR2": 0,
@@ -30,7 +30,7 @@
     }
   },
   {
-    "inputs": "What do microbumps and hybrid bonding enable in advanced packaging?",
+    "input": "What do microbumps and hybrid bonding enable in advanced packaging?",
     "target_scores": {
       "Better thermal coating": 0,
       "Low-frequency signal routing": 0,
@@ -40,7 +40,7 @@
     }
   },
   {
-    "inputs": "What distinguishes FOWLP?",
+    "input": "What distinguishes FOWLP?",
     "target_scores": {
       "Stacks dies vertically": 0,
       "Expands interconnects beyond the die footprint": 1,
@@ -50,7 +50,7 @@
     }
   },
   {
-    "inputs": "What is a key limitation of the traditional technology-push development model?",
+    "input": "What is a key limitation of the traditional technology-push development model?",
     "target_scores": {
       "It prevents module creation entirely": 0,
       "Innovations originate from system design only": 0,
@@ -60,7 +60,7 @@
     }
   },
   {
-    "inputs": "How can heterogeneous integration (HI) improve time-to-market for new products?",
+    "input": "How can heterogeneous integration (HI) improve time-to-market for new products?",
     "target_scores": {
       "By eliminating the need for circuit design": 0,
       "By shifting the development focal point closer to system design": 1,
@@ -70,7 +70,7 @@
     }
   },
   {
-    "inputs": "What best describes the \"systems-pull\" approach?",
+    "input": "What best describes the \"systems-pull\" approach?",
     "target_scores": {
       "Driving innovation through system-level needs": 1,
       "Pushing innovations from the bottom of the chain": 0,
@@ -80,7 +80,7 @@
     }
   },
   {
-    "inputs": "What does HI offer as a development focal point?",
+    "input": "What does HI offer as a development focal point?",
     "target_scores": {
       "A replacement for S&T innovation": 0,
       "A way to prevent system-level design": 0,
@@ -90,7 +90,7 @@
     }
   },
   {
-    "inputs": "What is the key benefit of establishing a core competency in heterogeneous integration?",
+    "input": "What is the key benefit of establishing a core competency in heterogeneous integration?",
     "target_scores": {
       "Eliminates fabrication costs": 0,
       "Prevents the need for system design": 0,
@@ -100,7 +100,7 @@
     }
   },
   {
-    "inputs": "What does STCO stand for in the context of 3D IC design?",
+    "input": "What does STCO stand for in the context of 3D IC design?",
     "target_scores": {
       "Structured Technology Configuration Optimization": 0,
       "Standard Test Circuit Organization": 0,
@@ -110,7 +110,7 @@
     }
   },
   {
-    "inputs": "Which of the following is not one of the four main types of 3DKs?",
+    "input": "Which of the following is not one of the four main types of 3DKs?",
     "target_scores": {
       "Chiplet Design Kits (CDK)": 0,
       "Memory Integration Kits (MIK)": 1,
@@ -120,7 +120,7 @@
     }
   },
   {
-    "inputs": "What is the purpose of a Chiplet Design Kit (CDK)?",
+    "input": "What is the purpose of a Chiplet Design Kit (CDK)?",
     "target_scores": {
       "To test analog signal converters": 0,
       "To define wafer-level manufacturing steps": 0,
@@ -130,7 +130,7 @@
     }
   },
   {
-    "inputs": "What do PADKs primarily define?",
+    "input": "What do PADKs primarily define?",
     "target_scores": {
       "Electrical test pin locations": 0,
       "Pitch, spacing, and connectivity rules for chiplets in packages": 1,
@@ -140,7 +140,7 @@
     }
   },
   {
-    "inputs": "What advantage does an electronic catalog of chiplets provide system designers?",
+    "input": "What advantage does an electronic catalog of chiplets provide system designers?",
     "target_scores": {
       "Ability to choose the best chiplets based on detailed attributes and models": 1,
       "Avoiding any design verification": 0,
@@ -150,7 +150,7 @@
     }
   },
   {
-    "inputs": "What is one of the main benefits of chiplet integration?",
+    "input": "What is one of the main benefits of chiplet integration?",
     "target_scores": {
       "Elimination of IP usage": 0,
       "Improved lithography resolution": 0,
@@ -160,7 +160,7 @@
     }
   },
   {
-    "inputs": "What challenge arises when integrating multiple chiplets with different functions?",
+    "input": "What challenge arises when integrating multiple chiplets with different functions?",
     "target_scores": {
       "Reduced transistor count": 0,
       "Difficulty in system boot-up": 0,
@@ -170,17 +170,17 @@
     }
   },
   {
-    "inputs": "Why are traditional EDA tools increasingly challenged in chiplet design?",
+    "input": "Why are traditional EDA tools increasingly challenged in chiplet design?",
     "target_scores": {
       "They struggle with high-density, complex connectivity in advanced packaging": 1,
       "They are not compatible with silicon materials": 0,
       "They require manual wafer slicing": 0,
-      "They don’t support analog circuit design": 0,
+      "They don't support analog circuit design": 0,
       "They cannot model flip-chip packages": 0
     }
   },
   {
-    "inputs": "What design boundary issue is caused by proprietary die-to-die interconnects?",
+    "input": "What design boundary issue is caused by proprietary die-to-die interconnects?",
     "target_scores": {
       "Shortens the interconnect length": 0,
       "Reduces chiplet functionality": 0,
@@ -190,7 +190,7 @@
     }
   },
   {
-    "inputs": "What speed requirement was met using the UCIe ecosystem and new design platform?",
+    "input": "What speed requirement was met using the UCIe ecosystem and new design platform?",
     "target_scores": {
       "16Gbps": 0,
       "24Gbps": 0,
@@ -200,7 +200,7 @@
     }
   },
   {
-    "inputs": "What topology is commonly used in homogeneous chip interconnection architectures?",
+    "input": "What topology is commonly used in homogeneous chip interconnection architectures?",
     "target_scores": {
       "Star": 0,
       "Tree": 0,
@@ -210,7 +210,7 @@
     }
   },
   {
-    "inputs": "Which product is an example of homogeneous chiplet integration?",
+    "input": "Which product is an example of homogeneous chiplet integration?",
     "target_scores": {
       "Intel Agilex": 0,
       "Apple M1 Ultra": 1,
@@ -220,7 +220,7 @@
     }
   },
   {
-    "inputs": "What is the main design concern in homogeneous chip interconnects?",
+    "input": "What is the main design concern in homogeneous chip interconnects?",
     "target_scores": {
       "Cost of optoelectronics": 0,
       "Latency between modules": 1,
@@ -230,7 +230,7 @@
     }
   },
   {
-    "inputs": "What makes heterogeneous chiplet interconnection more complex than homogeneous?",
+    "input": "What makes heterogeneous chiplet interconnection more complex than homogeneous?",
     "target_scores": {
       "Requirement for symmetrical chip modules": 0,
       "Need for uniform clock speeds": 0,
@@ -240,7 +240,7 @@
     }
   },
   {
-    "inputs": "Which interface type is not currently practical for mass production in chiplet interconnects?",
+    "input": "Which interface type is not currently practical for mass production in chiplet interconnects?",
     "target_scores": {
       "Parallel wireline communication": 0,
       "Wireless inductive coupling": 0,
