@@ -81,9 +81,9 @@ def clean_restructured_prompts(data):
 
     for qid, raw_str in data.items():
         try:
-            obj = json.loads(raw_str)
-            question = obj["question"].strip()
-            options = [opt.strip() for opt in obj["options"]]
+            # obj = json.loads(raw_str)
+            question = raw_str["input"].strip()
+            options = [opt.strip() for opt in raw_str["options"]]
         except Exception:
             question = raw_str.strip()
             options = []

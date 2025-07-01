@@ -94,6 +94,24 @@ def build_question_prompt(q):
     """
     return q_prompt
 
+def build_restructured_question_prompt(q):
+    q_prompt = (
+        "You are a helpful assistant. Answer the following question clearly and concisely."
+        "Provide only the final answer.\n\n"
+        f"Question:\n{q['question']}\nOptions:\n"
+    )
+    for opt in q["options"]:
+        q_prompt += f"{opt}\n"
+    q_prompt += """\n
+        Format your response as JSON with this structure:
+        <json>
+        {
+            "1": "..."
+        }
+        </json>
+    """
+    return q_prompt
+
 def load_formatted_batch(test_file):
     """
     Loads and formats the test questions from the specified JSON file.
@@ -111,7 +129,7 @@ def load_flat_questions(test_file):
     Returns:
         list: A list of question dictionaries, each with an "id" key (e.g., "Q1").
     """
-    path = os.path.join("FORAGER", "data", "llm_responses", test_file)
+    path = os.path.join("FORAGER", "data", test_file)
     with open(path, "r") as f:
         data = json.load(f)
 
@@ -184,10 +202,10 @@ def restructure_prompts(incorrect_questions, prompt_history):
     Returns:
         list: A list of restructured questino dicts with "input" and "options" keys.
     """
-    restructured = []
+    restructured = {}
 
     for qid in incorrect_questions:
-        original_prompt = prompt_history[qid]
+        original_prompt = prompt_history[f"Q{qid}"]
         rewrite_prompt = (
             "Reword the following question prompt for clarity and conciseness, "
             "but do NOT alter or paraphrase the answer choices. Only reword the question itself.\n\n"
@@ -197,10 +215,10 @@ def restructure_prompts(incorrect_questions, prompt_history):
         )
 
         raw = get_llm_response(rewrite_prompt)
-        parsed = parse_restructured_output
+        parsed = parse_restructured_output(raw)
 
         if parsed:
-            restructured.append(parsed)
+            restructured[f"Q{qid}"] = parsed
     
     return restructured
 
@@ -264,6 +282,26 @@ def save_prompt_history(prompt_history, round_number):
     with open(path, "w") as f:
         json.dump(prompt_history, f, indent=2)
 
+def save_restructured_prompts(restructured, round_number):
+    """
+    Saves restructured prompts to a JSON file for traceability and reuse.
+
+    Args:
+        restructured (dict): Dictionary of restructured questions, keyed by question ID.
+        round_number (int): The round number to label the output file.
+
+    Side Effects:
+        Saves the file to FORAGER/data/new_prompts/restructured_prompts_round_<round_number>.json
+    """
+    os.makedirs(os.path.join("FORAGER", "data", "new_prompts"), exist_ok=True)
+    filename = f"restructured_prompts_round_{round_number}.json"
+    path = os.path.join("FORAGER", "data", "new_prompts", filename)
+
+    with open(path, "w") as f:
+        json.dump(restructured, f, indent=2)
+    
+    print(f"\033[1;92m✅ Saved restructured prompts to {path}!\033[0m\n")
+     
 def save_llm_responses(results, round_number):
     """
     Saves the LLM-labeled responses to a JSON file.
@@ -322,7 +360,7 @@ def run_round(test_file, round_number):
     prompt_history = {}
     results = {}
 
-    if round_number == 0:
+    if round_number == 0: # test_file = original 4_distractors.json, etc.
         qid_counter = 1
         # Step 1: Loads raw JSON file and formats it
         question_batches = load_formatted_batch(test_file)
@@ -349,12 +387,12 @@ def run_round(test_file, round_number):
 
             # Step 6: Store the parsed answers in a results dictionary
             results[f"Batch_{i}"] = {"questions": questions_batch}
-    else:
+    else: # test_file = restrucutured_prompts_round_1.json, etc.
         questions = load_flat_questions(test_file)
         print(f"\033[1;94m🔄 Working on {len(questions)} individual questions for round {round_number}...\033[0m\n")
         for q in questions:
             qid = q["id"]
-            prompt = build_question_prompt(q)
+            prompt = build_restructured_question_prompt(q)
             prompt_history[qid] = prompt
 
             try:

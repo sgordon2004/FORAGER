@@ -11,7 +11,7 @@ Controls the closed feedback loop:
 import json
 import os
 from .formatter import  load_json, clean_restructured_prompts
-from .runner import get_llm_response, restructure_prompts, run_round
+from .runner import get_llm_response, restructure_prompts, run_round, save_restructured_prompts
 from .evaluator import run_eval_process
 
 def prompt_lock_loop(start_file, max_rounds=3):
@@ -27,12 +27,12 @@ def prompt_lock_loop(start_file, max_rounds=3):
         print(f"\033[1;96m🔁 === Starting Loop Iteration {i} ===\033[0m\n")
 
         # Step 1: Evaluate responses from previous round to create incorrect_questions.json
-        response_file = f"FORAGER/data/llm_responses/round_{i-1}_responses.json"
+        response_file = f"round_{i-1}_responses.json"
         print(f"\033[94mEvaluating responses from {response_file} against test set {start_file}.\033[0m")
         run_eval_process(start_file, response_file, i)
 
         # Step 2: Load previous round's incorrect questions and original prompts
-        incorrect = load_json("FORAGER/data/incorrect_questions/round_{i}_incorrect.json")
+        incorrect = load_json(f"FORAGER/data/incorrect_questions/round_{i}_incorrect.json")
         print(f"\033[1;94m📊 Loaded {len(incorrect)-3} incorrect questions from previous round.\033[0m\n")
 
         prompt_history = load_json(f"FORAGER/data/prompt_history/prompt_history_round_{i - 1}.json")
@@ -40,9 +40,9 @@ def prompt_lock_loop(start_file, max_rounds=3):
         # Step 3: Restructure prompts based on incorrect questions and rerun LLM on them
         restructured = restructure_prompts(incorrect, prompt_history)
         clean_prompts = clean_restructured_prompts(restructured)
+
         # Save cleaned prompts to JSON for round i
-        save_path = f"FORAGER/data/new_prompts/restructured_prompts_round_{i}.json"
-        with open(save_path, "w") as f:
-            json.dump(clean_prompts, f, indent=2)
+        save_restructured_prompts(clean_prompts, i)
+        
         # Feed into next round
         run_round(f"new_prompts/restructured_prompts_round_{i}.json", i)
