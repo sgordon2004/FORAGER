@@ -232,7 +232,6 @@
   {
     "input": "A designer wants to use a bridge structure instead of TSV interposers to connect chips laterally. Which solution best matches this goal?",
     "target_scores": {
-      
       "TSV interposer": 0,
       "Redistribution Layer (RDL) substrate": 0,
       "Embedded Multi-die Interconnect Bridge (EMIB)": 1,
