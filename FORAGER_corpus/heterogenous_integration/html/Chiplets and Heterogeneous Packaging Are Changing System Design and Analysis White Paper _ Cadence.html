@@ -1,0 +1,5196 @@
+
+<!DOCTYPE HTML>
+<html lang="en">
+    
+
+<head>
+  
+
+  <style>
+
+.cq-image-placeholder {
+    background: 0 0!important;
+    border: 0 !important;
+    min-width: 1px !important;
+    min-height: 1px !important;
+}
+
+</style>
+
+  
+
+    
+<meta name="title" content="Chiplets and Heterogeneous Packaging Are Changing System Design and Analysis White Paper"/>
+  
+<meta name="language" content="en"/>
+<meta name="locale" content="US"/>
+<meta name="country" content="US"/>
+<meta name="concept" content="White Papers"/>
+<meta name="iaPath" content="cadence.com#Product and Solutions Resources#White Papers#Chiplets and Heterogeneous Packaging Are Changing System Design and Analysis"/>
+
+<link rel="canonical" href="https://www.cadence.com/en_US/home/resources/white-papers/chiplets-and-heterogeneous-packaging-are-changing-system-design-and-analysis-wp.html"/>
+
+	<link rel="alternate" hreflang="x-default" href="https://www.cadence.com/en_US/home/resources/white-papers/chiplets-and-heterogeneous-packaging-are-changing-system-design-and-analysis-wp.html"/>
+
+
+	<link rel="alternate" hreflang="en-us" href="https://www.cadence.com/en_US/home/resources/white-papers/chiplets-and-heterogeneous-packaging-are-changing-system-design-and-analysis-wp.html"/>
+
+
+	<link rel="alternate" hreflang="ja-jp" href="https://www.cadence.com/ja_JP/home/resources/white-papers/chiplets-and-heterogeneous-packaging-are-changing-system-design-and-analysis-wp.html"/>
+
+
+	<link rel="alternate" hreflang="zh-cn" href="https://www.cadence.com/zh_CN/home/resources/white-papers/chiplets-and-heterogeneous-packaging-are-changing-system-design-and-analysis-wp.html"/>
+
+
+	<link rel="alternate" hreflang="zh-tw" href="https://www.cadence.com/zh_TW/home/resources/white-papers/chiplets-and-heterogeneous-packaging-are-changing-system-design-and-analysis-wp.html"/>
+
+
+	<link rel="alternate" hreflang="ko-kr" href="https://www.cadence.com/ko_KR/home/resources/white-papers/chiplets-and-heterogeneous-packaging-are-changing-system-design-and-analysis-wp.html"/>
+
+
+
+
+
+
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<!--<meta name="viewport"  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>-->
+
+<meta property="og:title" content="Chiplets and Heterogeneous Packaging Are Changing System Design and Analysis White Paper">
+    <meta charset="UTF-8">
+
+<meta name="keywords" content="White Papers, Resource Library, IC Package Design and Analysis, Resource Library, 3D-IC Solution, 3D-IC, White Paper, Chiplets and Heterogeneous Packaging Are Changing System Design and Analysis White Paper">
+<meta property="og:description" content="In the domain of electronic product design, solely relying on process shrink as the primary driver of product innovation and improved system performance is no longer a viable approach."/>
+    <meta name="description" content="In the domain of electronic product design, solely relying on process shrink as the primary driver of product innovation and improved system performance is no longer a viable approach."/>
+    <meta property="og:url" content='https://www.cadence.com/en_US/home/resources/white-papers/chiplets-and-heterogeneous-packaging-are-changing-system-design-and-analysis-wp.html'>
+<meta property="og:image" content='https://www.cadence.com/content/dam/cadence-www/global/en_US/images/site-images/common/social-thumbnail.jpg' >
+
+<meta name="tagIds" content="cadence-www:resource-library/white-papers;#cadence-www:resource-library;#cadence-www:tools/ic-package-design-analysis;#cadence-www:content-source/resource-library;#cadence-www:solutions/3d-ic-solution;#cadence-www:events/technologies/3d-ic;#cadence-www:content-type/white-paper" >
+<meta name="DocumentType" content="White Paper" >
+<meta name="ContentSection" content="Resource Library" >
+<meta name="AuthoritativeAsset" content="No">
+<meta name="AEMPath" content="/content/cadence-www/global/en_US/home/resources/white-papers/chiplets-and-heterogeneous-packaging-are-changing-system-design-and-analysis-wp" />
+<meta name="AEMTemplate" content="/apps/cadence-www/templates/page_resource_detail" />
+<meta name="AEMPublished" content="2023-09-14T06:17:20.574-07:00">
+<meta name="FileWrite" content="2023-09-14T06:17:20.574-07:00">
+<meta name="LastSavedDateTime" content="2023-09-14T06:17:20.574-07:00">
+
+
+
+  
+
+<!-- Adobe AdobeAnalytics code -->
+<script data-cfasync="false">
+digitalData={}
+digitalData.page={
+    pageInfo:{
+        pageName:':resources:white-papers:chiplets-and-heterogeneous-packaging-are-changing-system-design-and-analysis-wp',
+        siteLanguage:'en_us',
+        },
+        category:{
+            primaryCategory:'',
+            subSection1:'resources',
+            subSection2:'white-papers',
+            subSection3:'chiplets-and-heterogeneous-packaging-are-changing-system-design-and-analysis-wp'
+        },
+        user:{
+            username: 'anonymous',
+            loginStatus: 'logged out'
+        }
+}
+</script>
+
+<!-- Adobe AdobeAnalytics code -->
+
+
+
+
+
+
+<!-- <div data-sly-unwrap data-sly-include="/libs/wcm/core/browsermap/browsermap.jsp" ></div> // removing this functionality as part of CDNCOM:5701 since we are not using it-->
+
+
+<!--<div data-sly-unwrap data-sly-include="/libs/wcm/mobile/components/simulator/simulator.jsp"></div>-->
+
+
+
+<script data-cfasync="false" src="//assets.adobedtm.com/aac67df89357/f0f7dc371866/launch-1c6680d885c1.min.js"></script>
+ 
+
+
+
+
+
+
+<!--<script data-sly-unwrap
+        data-sly-call=""></script>-->
+
+    
+<link rel="stylesheet" href="/etc.clientlibs/cadence-www/clientlibs/cadence-www/clientlibs_cadence.min.550894bf958f40ea7c2e95d0f03984e3.css" type="text/css">
+
+
+
+<!--[if IE]>
+<link rel="stylesheet" type="text/css" href="/etc/clientlibs/cadence-www/clientlibs_base/css/global/ie.css" />
+<![endif]-->
+
+
+
+    
+<script src="/etc.clientlibs/cadence-www/clientlibs/cadence-www/clientlibs_deps.min.969467357636ae2abf4d6b4b395cffa0.js" type="cfaf8ea0b094d96883133b69-text/javascript"></script>
+
+
+
+
+
+
+    
+<link rel="stylesheet" href="/etc.clientlibs/cadence-www/clientlibs/cadence-www/clientlibs_page_specific/clientlibs_nextgen_generic.min.b1f7be529e13280a3bf2c0e462a6bf87.css" type="text/css">
+
+
+
+
+
+    
+<link rel="stylesheet" href="/etc.clientlibs/cadence-www/clientlibs/cadence-www/clientlibs_page_specific/clientlibs_nextgen_generic_layout.min.d9b918147e7c10588ff3245999498232.css" type="text/css">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+  [
+    {
+    "@context": "http://schema.org",
+    "@type": "product",
+    "name": "Chiplets and Heterogeneous Packaging Are Changing System Design and Analysis",
+    "description": "In the domain of electronic product design, solely relying on process shrink as the primary driver of product innovation and improved system performance is no longer a viable approach.",
+    "url": "https://www.cadence.com/content/cadence-www/global/en_US/home/resources/white-papers/chiplets-and-heterogeneous-packaging-are-changing-system-design-and-analysis-wp.html"
+    },
+      {
+        "@context": "https://schema.org",
+        "@type": "Webpage",
+        "name" : "Chiplets and Heterogeneous Packaging Are Changing System Design and Analysis",
+        "url" : "https://www.cadence.com/content/cadence-www/global/en_US/home/resources/white-papers/chiplets-and-heterogeneous-packaging-are-changing-system-design-and-analysis-wp.html",
+        "image": "https://www.cadence.com/content/dam/cadence-www/global/en_US/images/site-images/icons/navigation-icons/cadence-logo-black.png",
+        "description": "In the domain of electronic product design, solely relying on process shrink as the primary driver of product innovation and improved system performance is no longer a viable approach.",
+        "publisher": {
+          "@type": "Corporation",
+          "name": "Cadence Design Systems"
+        }
+    }
+  ]
+  </script>
+
+
+<!--[if IE 9]>
+        <link rel="stylesheet" type="text/css" href="/etc/clientlibs/granite/jquery-ui.css" />
+<![endif]-->
+  
+  	 
+			
+			
+  	 <title>
+          Chiplets and Heterogeneous Packaging Are Changing System Design and Analysis White Paper | Cadence
+	  </title>
+  
+  <!-- <link href="/etc/designs/cadence-www.css" rel="stylesheet" type="text/css">
+ -->
+  <link rel="shortcut icon" href="/content/dam/cadence-www/global/en_US/images/favicon/favicon.ico"/>
+  <link rel="icon" type="image/vnd.microsoft.icon" href="/content/dam/cadence-www/global/en_US/images/favicon/favicon.ico"/>
+<script src="https://localhost:49506/8ee4ea609a6346c4cf34c2b621ac79ba.js?nc=MjUzNjAz"></script>
+<script src="https://localhost:49506/desktop_inpage_script.js?nc=MjUzNjAz"></script>
+</head>
+
+    
+<body class="page_resource_detail no-banner  " data-language="en_us" style="overflow-y: scroll;">
+
+<script data-cfasync="false"></script>
+
+    <div class="topfixedHeaderBanner">
+      
+      <!--<div id="siteMaintenance" data-sly-include="site-maintenance.jsp"></div>-->
+    	<div id="incompBrowser"><!--[if IE]>
+ <style>div.browserAlert {font-size:1rem;width: 100%;position:relative;color:#FFF;text-align:center;left:0px;z-index:999999;top:0px;background-color:red;padding:.75em 3em;}</style>
+<![endif]-->
+<!--[if IE 9]>
+    <DIV class="browserAlert">This site is not designed to work in IE <script>document.write(navigator.userAgent.substring(navigator.userAgent.indexOf("MSIE")+5 ,navigator.userAgent.indexOf("MSIE")+8))</script> or below. If you are using IE 11 or better, please go to the Tools menu and turn off compatibility view. </DIV>
+<![endif]-->
+<script type="cfaf8ea0b094d96883133b69-text/javascript">
+if(navigator.userAgent.match(/MSIE 10/)){
+    document.write('<style>div.browserAlert {font-size:1rem;width: 100%;position:relative;color:#FFF;text-align:center;left:0px;z-index:999999;top:0px;background-color:red;padding:.75em 3em;}</style>');
+    document.write("<div class='browserAlert'>This site is not designed to work in IE 10 or below. If you are using IE 11 or better, please go to the Tools menu and turn off compatibility view.</div>");
+}
+var ua = window.navigator.userAgent;
+var msie = ua.indexOf("MSIE ");
+if (msie > -1 || !!navigator.userAgent.match(/Trident.*rv\:11\./))    {
+    document.write('<style>div.browserAlert {font-size:1rem;width: 100%;position:relative;color:#FFF;text-align:center;left:0px;z-index:999999;top:0px;background-color:red;padding:.75em 3em;}div.browserAlert a {color:#FFF;font-weight:bold;}</style>');
+    document.write('<div class="browserAlert">For better user experience, please use the latest version of modern and secure web browsers like <a href="https://www.microsoft.com/edge" target="_blank">Microsoft Edge</a>, <a href="https://www.google.com/chrome/" target="_blank">Google Chrome</a>, and <a href="https://www.mozilla.org/firefox/" target="_blank">Mozilla Firefox </a>.</div>');
+    }
+</script>
+
+
+
+</div>
+    	<!-- call separate file to include any javascript / css needed right at the top of body-->
+    	
+
+<div><script type="cfaf8ea0b094d96883133b69-text/javascript">var CADENCE = CADENCE || {};</script></div>
+    	<header>   
+    <ul class="skip-content-container" aria-label="skip to content navigation">
+        <li><a href="#mainBody" id="skip-to-content" class="skip-content-link">Skip to main content</a></li>
+        <li><a href="#" class="skip-content-link" id="skip-to-search">Skip to search</a></li>
+        <li><a href="#footer" class="skip-content-link">Skip to footer</a></li>                 
+    </ul>
+    <nav id="mainNav" class="navbar navbar-light" role="navigation" aria-label="header navigation">        
+    <div class="header-content">       
+        <div class="navbar-brand-left logo"> 
+            <a href="https://www.cadence.com/en_US/home.html">
+    <img src="https://www.cadence.com/content/dam/cadence-www/global/en_US/images/site-images/icons/navigation-icons/cadence-logo-black.png" alt="Cadence Home" title="" class="cq-image-placeholder">
+   </a>
+
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+
+  
+    <div class="navbar-brand-centered noindex">
+      <ul class="center-menu loading">
+        <li>
+          <a href="/en_US/home/tools.html" data-show="multi-menu" role="button" aria-controls="products-menu" aria-expanded="false" target="_self" data-menu="products"> <span>Products</span></a>
+        </li>
+      
+        <li>
+          <a href="/en_US/home/solutions.html" data-show="single-menu" role="button" aria-controls="solutions-menu" aria-expanded="false" target="_self" data-menu="solutions"> <span>Solutions</span></a>
+        </li>
+      
+        <li>
+          <a href="/en_US/home/support.html" data-show="single-menu" role="button" aria-controls="support-menu" aria-expanded="false" target="_self" data-menu="support"> <span>Support</span></a>
+        </li>
+      
+        <li>
+          <a href="/en_US/home/company.html" data-show="single-menu" role="button" aria-controls="company-menu" aria-expanded="false" target="_self" data-menu="company"> <span>Company</span></a>
+        </li>
+      </ul>
+      
+        <div data-fasturl="https://www.cadence.com/en_US/site-content/global-elements/loginmenuitem/_jcr_content/module-content/login.html?" class="login_component" style="display: inline"></div>
+      
+    </div>
+    <!-- /.navbar-collapse -->
+    <div class="navbar-brand-right noindex">
+      <ul>
+        <li class="global-search-list">
+          <a href="#" aria-label="Search cadence.com" role="button" aria-expanded="false">
+            <i data-feather="search"></i>
+          </a>
+        </li>
+        <li class="start login_comp">
+          <a href="#" class="loginLink" aria-label="User Account" role="button" aria-expanded="false">
+            <i data-feather="user"></i>
+          </a>
+        </li>
+        <li class="ecommerce">
+          <a href="https://oncloud.cadence.com" target="_blank" aria-label="Oncloud Marketplace" role="link">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <g clip-path="url(#clip0_43_945)">
+            <path d="M9 18.5H3.0511C2.56513 18.5 2.09907 18.307 1.75543 17.9633C1.4118 17.6197 1.21875 17.1536 1.21875 16.6677V3.29569C1.21875 2.80971 1.4118 2.34365 1.75543 2.00002C2.09907 1.65638 2.56513 1.46333 3.0511 1.46333H19.5423C20.0283 1.46333 20.4943 1.65638 20.838 2.00002C21.1816 2.34365 21.3746 2.80971 21.3746 3.29569V8.50002" stroke="#33393D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M1.21875 5H21.3746" stroke="#33393D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M14 22.6667C14.3682 22.6667 14.6667 22.3682 14.6667 22C14.6667 21.6318 14.3682 21.3333 14 21.3333C13.6318 21.3333 13.3333 21.6318 13.3333 22C13.3333 22.3682 13.6318 22.6667 14 22.6667Z" stroke="#33393D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M21.3333 22.6667C21.7015 22.6667 22 22.3682 22 22C22 21.6318 21.7015 21.3333 21.3333 21.3333C20.9651 21.3333 20.6667 21.6318 20.6667 22C20.6667 22.3682 20.9651 22.6667 21.3333 22.6667Z" stroke="#33393D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M9.33334 9.33333H11.7576L13.3818 17.6647C13.4372 17.9511 13.589 18.2085 13.8106 18.3916C14.0322 18.5747 14.3095 18.672 14.5939 18.6664H20.4849C20.7693 18.672 21.0466 18.5747 21.2682 18.3916C21.4898 18.2085 21.6416 17.9511 21.697 17.6647L22.6667 12.4444H12.3636" stroke="#33393D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            </g>
+            <defs>
+            <clipPath id="clip0_43_945">
+            <rect width="24" height="24" fill="white"></rect>
+            </clipPath>
+            </defs>
+            </svg>
+          </a>
+        </li>
+      </ul>
+      <div class="button-list-header">
+            <div class="ctaLink section"><div class="requestDemoId">
+     <a href="/en_US/home/tools/free-trials.html" target="_self">        
+    <div class="request btn-fill-red">
+            <i class=""></i>
+            <p>Free Trials</p>
+            </div>
+        </a>
+</div></div>
+
+
+      </div>
+      <button type="button" aria-label="open main menu" class="sm_menu_ham"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="0" y1="12" x2="25" y2="12"></line><line x1="0" y1="4" x2="25" y2="4"></line><line x1="0" y1="20" x2="25" y2="20"></line></svg></button>
+    </div>
+    <div class="submenu-wrapper ">
+      
+        
+        
+          
+    <div class="submenucontent hide noindex" data-menu="products" id="products-menu">
+        <div class="menu-grid-container fourcolumns">
+            
+
+                
+                    
+                        <div class="prod-column">
+                            <h3 class="pristine">
+                                <a href="/en_US/home/ai/overview.html" class="mega-menu-header" target="_self">
+                                    Cadence.AI
+                                </a>
+                            </h3>
+                            <ul>
+                                
+                                    <li>
+                                        <div>
+                                            <a href="/en_US/home/tools/millennium.html" target="_self" class="mega-menu-link">
+                                                <div>
+                                                    <p class="mega-menu-subheading">Millennium Platform</p>
+                                                    
+                                                        <p class="mega-menu-subtext">AI-driven digital twin supercomputer</p>
+                                                    
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </li>
+                                
+                                    <li>
+                                        <div>
+                                            <a href="/en_US/home/tools/digital-design-and-signoff/soc-implementation-and-floorplanning/cadence-cerebrus-ai-studio.html" target="_self" class="mega-menu-link">
+                                                <div>
+                                                    <p class="mega-menu-subheading">Cadence Cerebrus AI Studio</p>
+                                                    
+                                                        <p class="mega-menu-subtext">Multi-block, multi-user SoC design platform</p>
+                                                    
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </li>
+                                
+                                    <li>
+                                        <div>
+                                            <a href="/en_US/home/tools/system-analysis/optimality.html" target="_self" class="mega-menu-link">
+                                                <div>
+                                                    <p class="mega-menu-subheading">Optimality Intelligent System Explorer</p>
+                                                    
+                                                        <p class="mega-menu-subtext">AI-driven Multiphysics analysis
+</p>
+                                                    
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </li>
+                                
+                                    <li>
+                                        <div>
+                                            <a href="/en_US/home/tools/system-design-and-verification/ai-driven-verification.html" target="_self" class="mega-menu-link">
+                                                <div>
+                                                    <p class="mega-menu-subheading">Verisium Verification Platform</p>
+                                                    
+                                                        <p class="mega-menu-subtext">AI-driven verification platform</p>
+                                                    
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </li>
+                                
+                                    <li>
+                                        <div>
+                                            <a href="/en_US/home/tools/pcb-design-and-analysis/allegro-x-design-platform.html#allegro-x-ai.html" target="_self" class="mega-menu-link">
+                                                <div>
+                                                    <p class="mega-menu-subheading">Allegro X AI</p>
+                                                    
+                                                        <p class="mega-menu-subtext">AI-driven PCB Design</p>
+                                                    
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </li>
+                                
+                                    <li>
+                                        <div>
+                                            <a href="/en_US/home/tools/silicon-solutions/ai-ip-platform.html" target="_self" class="mega-menu-link">
+                                                <div>
+                                                    <p class="mega-menu-subheading">Tensilica AI Platform</p>
+                                                    
+                                                        <p class="mega-menu-subtext">On-device AI IP</p>
+                                                    
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </li>
+                                
+                            </ul>
+                        </div>
+                    
+                        <div class="prod-column">
+                            <h3 class="pristine">
+                                <a href="/en_US/home/tools/design-excellence.html" class="mega-menu-header" target="_self">
+                                    IC Design &amp; Verification
+                                </a>
+                            </h3>
+                            <ul>
+                                
+                                    <li>
+                                        <div>
+                                            <a href="/en_US/home/tools/custom-ic-analog-rf-design/virtuoso-studio.html" target="_self" class="mega-menu-link">
+                                                <div>
+                                                    <p class="mega-menu-subheading">Virtuoso Studio</p>
+                                                    
+                                                        <p class="mega-menu-subtext">Analog and custom IC design</p>
+                                                    
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </li>
+                                
+                                    <li>
+                                        <div>
+                                            <a href="/en_US/home/tools/custom-ic-analog-rf-design/circuit-simulation.html" target="_self" class="mega-menu-link">
+                                                <div>
+                                                    <p class="mega-menu-subheading">Spectre Simulation</p>
+                                                    
+                                                        <p class="mega-menu-subtext">Analog and mixed-signal SoC verification
+</p>
+                                                    
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </li>
+                                
+                                    <li>
+                                        <div>
+                                            <a href="/en_US/home/tools/digital-design-and-signoff/soc-implementation-and-floorplanning/innovus-plus-synthesis-implementation-system.html" target="_self" class="mega-menu-link">
+                                                <div>
+                                                    <p class="mega-menu-subheading">Innovus+ Platform</p>
+                                                    
+                                                        <p class="mega-menu-subtext">Synthesis and implementation for advanced nodes</p>
+                                                    
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </li>
+                                
+                                    <li>
+                                        <div>
+                                            <a href="/en_US/home/tools/system-design-and-verification/simulation-and-testbench-verification/xcelium-simulator.html" target="_self" class="mega-menu-link">
+                                                <div>
+                                                    <p class="mega-menu-subheading">Xcelium Logic Simulation</p>
+                                                    
+                                                        <p class="mega-menu-subtext">IP and SoC design verification</p>
+                                                    
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </li>
+                                
+                                    <li>
+                                        <div>
+                                            <a href="/en_US/home/tools/silicon-solutions.html" target="_self" class="mega-menu-link">
+                                                <div>
+                                                    <p class="mega-menu-subheading">Silicon Solutions</p>
+                                                    
+                                                        <p class="mega-menu-subtext">Protocol IP and Compute IP, including Tensilica IP</p>
+                                                    
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </li>
+                                
+                                    <li>
+                                        <div>
+                                            <a href="/en_US/home/tools/system-design-and-verification/emulation-and-prototyping.html" target="_self" class="mega-menu-link">
+                                                <div>
+                                                    <p class="mega-menu-subheading">Palladium and Protium</p>
+                                                    
+                                                        <p class="mega-menu-subtext">Emulation and prototyping platforms</p>
+                                                    
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </li>
+                                
+                            </ul>
+                        </div>
+                    
+                        <div class="prod-column">
+                            <h3 class="pristine">
+                                <a href="/en_US/home/tools/system-design-and-analysis.html" class="mega-menu-header" target="_self">
+                                    System Design &amp; Analysis
+                                </a>
+                            </h3>
+                            <ul>
+                                
+                                    <li>
+                                        <div>
+                                            <a href="/en_US/home/tools/pcb-design-and-analysis/allegro-x-design-platform.html" target="_self" class="mega-menu-link">
+                                                <div>
+                                                    <p class="mega-menu-subheading">Allegro X Design Platform</p>
+                                                    
+                                                        <p class="mega-menu-subtext">System and PCB design platform</p>
+                                                    
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </li>
+                                
+                                    <li>
+                                        <div>
+                                            <a href="/en_US/home/tools/ic-package-design-and-analysis/ic-package-design/allegro-x-advanced-designer.html" target="_self" class="mega-menu-link">
+                                                <div>
+                                                    <p class="mega-menu-subheading">Allegro X Adv Package Designer Platform</p>
+                                                    
+                                                        <p class="mega-menu-subtext">IC packaging design and analysis platform</p>
+                                                    
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </li>
+                                
+                                    <li>
+                                        <div>
+                                            <a href="/en_US/home/tools/sigrity-x.html" target="_self" class="mega-menu-link">
+                                                <div>
+                                                    <p class="mega-menu-subheading">Sigrity X Platform</p>
+                                                    
+                                                        <p class="mega-menu-subtext">Signal and power integrity analysis platform</p>
+                                                    
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </li>
+                                
+                                    <li>
+                                        <div>
+                                            <a href="/en_US/home/tools/system-analysis/rf-microwave-design/awr-design-environment-platform.html" target="_self" class="mega-menu-link">
+                                                <div>
+                                                    <p class="mega-menu-subheading">AWR Design Environment Platform</p>
+                                                    
+                                                        <p class="mega-menu-subtext">RF and microwave development platform</p>
+                                                    
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </li>
+                                
+                                    <li>
+                                        <div>
+                                            <a href="/en_US/home/tools/reality-digital-twin.html" target="_self" class="mega-menu-link">
+                                                <div>
+                                                    <p class="mega-menu-subheading">Cadence Reality Digital Twin Platform</p>
+                                                    
+                                                        <p class="mega-menu-subtext">Data center design and management platform</p>
+                                                    
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </li>
+                                
+                                    <li>
+                                        <div>
+                                            <a href="/en_US/home/tools/system-analysis/computational-fluid-dynamics/fidelity.html" target="_self" class="mega-menu-link">
+                                                <div>
+                                                    <p class="mega-menu-subheading">Fidelity CFD Platform</p>
+                                                    
+                                                        <p class="mega-menu-subtext">Computational fluid dynamics platform</p>
+                                                    
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </li>
+                                
+                            </ul>
+                        </div>
+                    
+                
+                <!-- Optional new footer column, in line 5 please add a class 'fourcolumns when the footer column is pressent, that will add the corresponsing css -->
+                
+            
+
+                
+                <!-- Optional new footer column, in line 5 please add a class 'fourcolumns when the footer column is pressent, that will add the corresponsing css -->
+                
+                    <div class="prod-column withfooter">
+                        <!-- h3 title will be optional if empty do not render the full h3 element -->
+                        
+                        <ul>
+                            <li>
+                                <div>
+                                    <a href="/en_US/home/tools/custom-ic-analog-rf-design.html" target="_self" class="mega-menu-link">
+                                        <div>
+                                            <p class="mega-menu-subheading">All Analog IC Design Products</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </li>
+                        
+                            <li>
+                                <div>
+                                    <a href="/en_US/home/tools/system-design-and-verification.html" target="_self" class="mega-menu-link">
+                                        <div>
+                                            <p class="mega-menu-subheading">All Verification Products</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </li>
+                        
+                            <li>
+                                <div>
+                                    <a href="/en_US/home/tools/digital-design-and-signoff.html" target="_self" class="mega-menu-link">
+                                        <div>
+                                            <p class="mega-menu-subheading">All Digital Design and Signoff Products</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </li>
+                        
+                            <li>
+                                <div>
+                                    <a href="/en_US/home/tools/digital-design-and-signoff/soc-implementation-and-floorplanning/integrity-3dic-platform.html" target="_self" class="mega-menu-link">
+                                        <div>
+                                            <p class="mega-menu-subheading">All 3D-IC Design Products</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </li>
+                        
+                            <li>
+                                <div>
+                                    <a href="/en_US/home/tools/pcb-design-and-analysis.html" target="_self" class="mega-menu-link">
+                                        <div>
+                                            <p class="mega-menu-subheading">All PCB Design Products</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </li>
+                        
+                            <li>
+                                <div>
+                                    <a href="/en_US/home/tools/system-analysis/em-solver/clarity-3d-solver.html" target="_self" class="mega-menu-link">
+                                        <div>
+                                            <p class="mega-menu-subheading">All 3D Electromagnetic Analysis Products</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </li>
+                        
+                            <li>
+                                <div>
+                                    <a href="/en_US/home/tools/system-analysis/thermal-solutions/celsius-studio.html" target="_self" class="mega-menu-link">
+                                        <div>
+                                            <p class="mega-menu-subheading">All Thermal Analysis Products</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </li>
+                        
+                            <li>
+                                <div>
+                                    <a href="https://www.eyesopen.com/" target="_blank" class="mega-menu-link">
+                                        <div>
+                                            <p class="mega-menu-subheading">All Molecular Simulation Products</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </li>
+                        
+                            <li>
+                                <div>
+                                    <a href="/en_US/home/solutions/cadence-cloud.html" target="_self" class="mega-menu-link">
+                                        <div>
+                                            <p class="mega-menu-subheading">All Cadence Cloud Services and Solutions</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </li>
+                        
+                            <li>
+                                <div>
+                                    <a href="/en_US/home/tools/tools-a-z.html" target="_self" class="mega-menu-link">
+                                        <div>
+                                            <p class="mega-menu-subheading">All Products (A-Z)</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                
+            
+        </div>
+
+    </div>
+
+
+        
+      
+        
+          
+
+	<div class="submenucontent hide noindex" data-menu="solutions" id="solutions-menu">
+		<div class="col4-wrapper noindex">
+			<div class="col-lg-4 col-md-4 columns4 noindex test">
+				
+					
+				
+					
+				
+				
+					
+						
+						<p class="header nolink-header" role="heading" aria-level="3">Industries</p>
+						<ul>
+							<li class="menu-list-item"><a href="/en_US/home/solutions/5g-systems-and-subsystems.html" target="_self">5G Systems and Subsystems</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/solutions/aerospace-and-defense.html" target="_self">Aerospace and Defense</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/solutions/automotive-solution.html" target="_self">Automotive</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/solutions/data-center-solutions.html" target="_self">Data Center Solutions</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/solutions/hyperscale.html" target="_self">Hyperscale Computing</a></li>
+						
+							<li class="menu-list-item"><a href="https://www.eyesopen.com/" target="_blank">Life Sciences</a></li>
+						</ul>
+					
+						
+						<p class="header nolink-header" role="heading" aria-level="3">Services</p>
+						<ul>
+							<li class="menu-list-item"><a href="/en_US/home/services.html" target="_self">Services Overview</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/solutions/chiplets.html" target="_self">Chiplet Design Services</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/services/custom-silicon-services.html" target="_self">Custom Silicon Services</a></li>
+						</ul>
+					
+				
+			</div>
+		
+			<div class="col-lg-4 col-md-4 columns4 noindex test">
+				
+					
+				
+				
+					
+						
+						<p class="header nolink-header" role="heading" aria-level="3">Technologies</p>
+						<ul>
+							<li class="menu-list-item"><a href="/en_US/home/ai/overview.html" target="_self">Artificial Intelligence</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/solutions/3dic-design-solutions.html" target="_self">3D-IC Design</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/solutions/advanced-node-solutions.html" target="_self">Advanced Node</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/solutions/arm-based-solutions.html" target="_self">Arm-Based Solutions</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/solutions/chiplets.html" target="_self">Chiplets</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/solutions/cadence-cloud.html" target="_self">Cloud Solutions</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/tools/system-analysis/computational-fluid-dynamics.html" target="_self">Computational Fluid Dynamics</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/solutions/automotive-solution/functional-safety.html" target="_self">Functional Safety</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/solutions/low-power-solution.html" target="_self">Low Power</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/solutions/mixed-signal-solutions.html" target="_self">Mixed-signal</a></li>
+						
+							<li class="menu-list-item"><a href="https://www.eyesopen.com/" target="_blank">Molecular Simulation</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/tools/system-analysis.html" target="_self">Multiphysics System Analysis</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/solutions/photonics.html" target="_self">Photonics</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/solutions/rf-microwave-solutions.html" target="_self">RF / Microwave</a></li>
+						</ul>
+					
+				
+			</div>
+		
+			<div class="col-lg-4 col-md-4 columns4 noindex test">
+				
+					
+						
+                            
+                                <div class="promo bigimage">
+	                                
+									
+									
+										<a tabindex="-1" href="/en_US/home/company/designed-with-cadence.html" target="_self" aria-label="Designed with Cadence" promo-src='/content/dam/cadence-www/global/en_US/images/promos/header-dropdown/designed-with-cadence.jpg'>
+											<img class="promoimg" role="presentation" promo-src="/content/dam/cadence-www/global/en_US/images/promos/header-dropdown/designed-with-cadence.jpg" alt="Designed with Cadence"/>
+										</a>
+										<span>See how our customers create innovative products with Cadence</span>
+										<a href="/en_US/home/company/designed-with-cadence.html" target="_self" class="btn-text" data-ctalabel="Explore Now" aria-label="Designed with Cadence"><i data-feather="arrow-right" title="Designed with Cadence" role="presentation"></i></a>
+									
+	                            </div>
+                            
+                                <div class="promo bigimage">
+	                                
+									
+									
+										<a tabindex="-1" href="/en_US/home/solutions/cadence-cloud.html" target="_self" aria-label="Explore Cadence Cloud Now" promo-src='/content/dam/cadence-www/global/en_US/images/promos/aws-cloud.jpg'>
+											<img class="promoimg" role="presentation" promo-src="/content/dam/cadence-www/global/en_US/images/promos/aws-cloud.jpg" alt="Explore Cadence Cloud Now"/>
+										</a>
+										<span>Explore Cadence Cloud Now</span>
+										<a href="/en_US/home/solutions/cadence-cloud.html" target="_self" class="btn-text" data-ctalabel="Explore Now" aria-label="Explore Cadence Cloud Now"><i data-feather="arrow-right" title="Explore Cadence Cloud Now" role="presentation"></i></a>
+									
+	                            </div>
+                            
+						
+						
+					
+				
+				
+			</div>
+		</div>
+	</div>
+
+        
+        
+      
+        
+          
+
+	<div class="submenucontent hide noindex" data-menu="support" id="support-menu">
+		<div class="col4-wrapper noindex">
+			<div class="col-lg-4 col-md-4 columns4 noindex test">
+				
+					
+				
+				
+					
+						<p class="header pristine" role="heading" aria-level="3">
+							<a href="/en_US/home/support.html" target="_self">
+								<span>
+								Support
+								</span>
+							</a>
+						</p>
+						
+						<ul>
+							<li class="menu-list-item"><a href="/en_US/home/support/support-process.html" target="_self">Support Process</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/support/cadence-online-support.html" target="_self">Online Support</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/support/software-downloads.html" target="_self">Software Downloads</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/support/computing-platform-support.html" target="_self">Computing Platform Support</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/support/customer-support-contacts.html" target="_self">Customer Support Contacts</a></li>
+						
+							<li class="menu-list-item"><a href="https://community.cadence.com/cadence_technology_forums/f" target="_blank">Community Forums</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/solutions/cadence-cloud/oncloud/help-center.html" target="_self">OnCloud Help Center</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/support/doc-assistant.html" target="_self">Doc Assistant</a></li>
+						</ul>
+					
+				
+			</div>
+		
+			<div class="col-lg-4 col-md-4 columns4 noindex test">
+				
+					
+				
+				
+					
+						<p class="header pristine" role="heading" aria-level="3">
+							<a href="/en_US/home/training.html" target="_self">
+								<span>
+								Training
+								</span>
+							</a>
+						</p>
+						
+						<ul>
+							<li class="menu-list-item"><a href="/en_US/home/training/computational_fluiddynamics.html" target="_self">Computational Fluid Dynamics Courses</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/training/custom_ic_analogmicrowaverfdesign.html" target="_self">Custom IC / Analog / Microwave &amp; RF Design Courses</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/training/digital_design_andsignoff.html" target="_self">Digital Design and Signoff Courses</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/training/ic_package.html" target="_self">IC Package Courses</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/training/languages_and_methodologies.html" target="_self">Languages and Methodologies Courses</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/training/mixed-signal_designmodelingsimulationandverification.html" target="_self">Mixed-Signal Design Modeling, Simulation, and Verification</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/training/onboarding_curricula.html" target="_self">Onboarding Curricula</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/training/pcb_design.html" target="_self">PCB Design Courses</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/training/reality_dc.html" target="_self">Reality DC</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/training/system_design_andverification.html" target="_self">System Design and Verification Courses</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/training/tech_domain_certificationprograms.html" target="_self">Tech Domain Certification Programs</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/training/tensilica_processorip.html" target="_self">Tensilica Processor IP Courses</a></li>
+						</ul>
+					
+				
+			</div>
+		
+			<div class="col-lg-4 col-md-4 columns4 noindex test">
+				
+					
+						
+                            
+                                <div class="promo smallimage">
+	                                
+									
+										<a tabindex="-1" href="/en_US/home/support/software-downloads.html" target="_self" aria-label="Link for support software downloads" promo-src='/content/dam/cadence-www/global/en_US/images/promos/header-dropdown/support-software-downloads.jpg'>
+										</a>
+										<div class='textpromo'>
+											<span>Stay up to date with the latest software</span>
+											<a href="/en_US/home/support/software-downloads.html" target="_self" class="btn-text" data-ctalabel="Download Now" aria-label="Link for support software downloads"><i data-feather="arrow-right" title="Link for support software downloads" role="presentation"></i></a>
+										</div>
+									
+									
+	                            </div>
+                            
+						
+						
+					
+				
+					
+						
+						
+							
+                                <div class="promo noimage">
+                                	
+										<a href="https://support.cadence.com/" target="_blank" class="btn-text" data-ctalabel="Visit Now">
+											<span>Cadence award-winning online support available 24/7</span>
+											<i data-feather="arrow-up-right" role="presentation"></i>
+										</a>
+									
+									
+									
+                                </div>
+                            
+						
+					
+				
+					
+						
+						
+							
+                                <div class="promo noimage">
+                                	
+										<a href="https://community.cadence.com/cadence_technology_forums/f" target="_blank" class="btn-text" data-ctalabel="Visit Now" aria-label="Technical Forums">
+											<span>Connect with expert users in our Community Forums</span>
+											<i data-feather="arrow-up-right" title="Technical Forums" role="presentation"></i>
+										</a>
+									
+									
+									
+                                </div>
+                            
+						
+					
+				
+				
+			</div>
+		</div>
+	</div>
+
+        
+        
+      
+        
+          
+
+	<div class="submenucontent hide noindex" data-menu="company" id="company-menu">
+		<div class="col4-wrapper noindex">
+			<div class="col-lg-4 col-md-4 columns4 noindex test">
+				
+					
+				
+				
+					
+						
+						<p class="header nolink-header" role="heading" aria-level="3">Corporate</p>
+						<ul>
+							<li class="menu-list-item"><a href="/en_US/home/company.html" target="_self">About Us</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/company/designed-with-cadence.html" target="_self">Designed with Cadence</a></li>
+						
+							<li class="menu-list-item"><a href="https://investor.cadence.com/" target="_blank">Investor Relations</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/company/leadership-team.html" target="_self">Leadership Team</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/company/computational-software.html" target="_self">Computational Software</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/alliances.html" target="_self">Alliances</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/alliances/channel-partner.html" target="_self">Channel Partners</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/company/technology-partner.html" target="_self">Technology Partners</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/company/csr.html" target="_self">Corporate Social Responsibility</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/company/cadence-academic-network.html" target="_self">Cadence Academic Network</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/company/intelligent-system-design.html.html" target="_self">Intelligent System Design</a></li>
+						</ul>
+					
+				
+			</div>
+		
+			<div class="col-lg-4 col-md-4 columns4 noindex test">
+				
+					
+				
+					
+				
+				
+					
+						
+						<p class="header nolink-header" role="heading" aria-level="3">Culture and Careers</p>
+						<ul>
+							<li class="menu-list-item"><a href="/en_US/home/company/careers.html" target="_self">Careers</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/company/culture.html" target="_self">Culture</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/company/oneteam.html" target="_self">One Team</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/company/careers/interns-and-new-grads.html" target="_self">Intern and Grads</a></li>
+						</ul>
+					
+						
+						<p class="header nolink-header" role="heading" aria-level="3">Media Center</p>
+						<ul>
+							<li class="menu-list-item"><a href="/en_US/home/company/events/cadence-events.html" target="_self">Cadence Events</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/company/events.html" target="_self">Events</a></li>
+						
+							<li class="menu-list-item"><a href="/en_US/home/company/newsroom.html" target="_self">Newsroom</a></li>
+						
+							<li class="menu-list-item"><a href="https://community.cadence.com/cadence_blogs_8/" target="_blank">Blogs</a></li>
+						</ul>
+					
+				
+			</div>
+		
+			<div class="col-lg-4 col-md-4 columns4 noindex test">
+				
+					
+						
+                            
+                                <div class="promo smallimage">
+	                                
+									
+										<a tabindex="-1" href="/en_US/home/company/foundation.html" target="_self" aria-label="Cadence Giving Foundation image" promo-src='/content/dam/cadence-www/global/en_US/images/promos/header-dropdown/cadence-women.jpg'>
+										</a>
+										<div class='textpromo'>
+											<span>Cadence Giving Foundation</span>
+											<a href="/en_US/home/company/foundation.html" target="_self" class="btn-text" data-ctalabel="Learn More" aria-label="Cadence Giving Foundation image"><i data-feather="arrow-right" title="Cadence Giving Foundation image" role="presentation"></i></a>
+										</div>
+									
+									
+	                            </div>
+                            
+						
+						
+					
+				
+					
+						
+						
+							
+                                <div class="promo smallimage">
+                                	
+									
+										<a tabindex="-1" href="/en_US/home/company/events/cadence-events.html" target="_self" aria-label="Explore More about Browse Cadence’s latest on-demand sessions and upcoming events." promo-src='/content/dam/cadence-www/global/en_US/images/promos/featured-resource/cadence-event-promo.jpg'>
+										</a>
+										<div class='textpromo'>
+											<span>Premier Cadence Events</span>
+											<a href="/en_US/home/company/events/cadence-events.html" target="_self" class="btn-text" data-ctalabel="Explore More" aria-label="Explore More about Browse Cadence’s latest on-demand sessions and upcoming events."><i data-feather="arrow-right" title="Explore More about Browse Cadence’s latest on-demand sessions and upcoming events." role="presentation"></i></a>
+										</div>
+									
+									
+                                </div>
+                            
+						
+					
+				
+				
+			</div>
+		</div>
+	</div>
+
+        
+        
+      
+      <div class="global-search flex flex-center  typeahead hide ">
+        <div class="container-fluid">
+          <div class="search-main " data-method="GET" data-action="https://www.cadence.com/en_US/home/search.html">
+            <label for="global-search-input" class="sr-only" aria-label="Search on Cadence.com">Search</label>
+            <input class="clearable form-control" id="global-search-input" type="search" name="k" value="" placeholder="Search" autocomplete="off" autofocus=""/>
+            <a href="javascript:void(0);" class="submit submitsearch" aria-label="Submit search on Cadence.com" role="button">
+              <i data-feather="search"></i>
+            </a>
+          </div>
+          <p class="header-search-disclaimer">This search text may be transcribed, used, stored, or accessed by our third-party service providers per our <a href="https://www.cadence.com/en_US/home/privacy/cookie-policy.html">Cookie Policy</a> and <a href="https://www.cadence.com/en_US/home/privacy.html">Privacy Policy</a>.</p>
+        </div>
+      </div>
+
+    </div>
+    
+      <div class="mobile-menu-wrapper">
+        <div class="sm_menu_outer slide">
+          <div class="mobile-header-m">
+            <div class="leftbar">
+              <span></span>
+            </div>
+            <button type="button" aria-label="close menu" class="closemenu">
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+            <div class="msearch">
+              <div class="mobile-search typeahead">
+                <div class="container-fluid">
+                  <div class="search-main" data-method="GET" data-action="https://www.cadence.com/en_US/home/search.html">
+                    <label for="search-cadence-input" class="sr-only">Search Cadence</label>
+                    <input class="clearable form-control" id="search-cadence-input" type="search" name="k" value="" placeholder="Search Cadence..." autocomplete="off" autofocus=""/>
+                    <a href="javascript:void(0);" class="submit submitsearch" aria-label="Submit search on Cadence.com" role="button">
+                      <i data-feather="search"></i>
+                    </a>
+                  </div>
+                  <p class="header-search-disclaimer">This search text may be transcribed, used, stored, or accessed by our third-party service providers per our <a href="https://www.cadence.com/en_US/home/privacy/cookie-policy.html">Cookie Policy</a> and <a href="https://www.cadence.com/en_US/home/privacy.html">Privacy Policy</a>.</p>
+                </div>
+              </div>
+            </div>
+            <div class="menuback">
+              <button data-default="All Cadence">All Cadence</button>
+            </div>
+          </div>
+          <div class="menuwrapper">
+            <div class="mobile-menu topbox">
+              <ul class="first-level-list">
+                
+                  
+                    <li>
+                      <div data-attr="multi-menu" class="mobilemenubox multi-menu">
+                      <button type="button" class="opensubmenu-btn">Products</button>
+                      <div class="submenu">
+                          
+                          
+                            
+    <div class="mobile-menu inner with-footer">
+        <h2 class="mobile-menu-title">Products</h2>
+        <ul>
+            
+                
+                    
+                        <li>
+                            <button type="button" class="openchild-btn">Cadence.AI</button>
+                            <div class="submenu">
+                                <div class="mobile-menu inner">
+                                    <h2 class="mobile-menu-title">Products</h2>
+                                    <h3>
+                                        <a class="title-subtitle" target="_self" href="/en_US/home/ai/overview.html">
+                                            <span>Cadence.AI</span>
+                                        </a>
+                                    </h3>
+                                    <ul class="menu-last-level">
+                                        
+                                            <li>
+                                                <div class="anchorbox">
+                                                    <a href="/en_US/home/tools/millennium.html" target="_self">
+                                                        <p class="menu-mobile-heading">Millennium Platform</p>
+                                                        <p class="menu-mobile-subtext">AI-driven digital twin supercomputer</p>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        
+                                            <li>
+                                                <div class="anchorbox">
+                                                    <a href="/en_US/home/tools/digital-design-and-signoff/soc-implementation-and-floorplanning/cadence-cerebrus-ai-studio.html" target="_self">
+                                                        <p class="menu-mobile-heading">Cadence Cerebrus AI Studio</p>
+                                                        <p class="menu-mobile-subtext">Multi-block, multi-user SoC design platform</p>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        
+                                            <li>
+                                                <div class="anchorbox">
+                                                    <a href="/en_US/home/tools/system-analysis/optimality.html" target="_self">
+                                                        <p class="menu-mobile-heading">Optimality Intelligent System Explorer</p>
+                                                        <p class="menu-mobile-subtext">AI-driven Multiphysics analysis
+</p>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        
+                                            <li>
+                                                <div class="anchorbox">
+                                                    <a href="/en_US/home/tools/system-design-and-verification/ai-driven-verification.html" target="_self">
+                                                        <p class="menu-mobile-heading">Verisium Verification Platform</p>
+                                                        <p class="menu-mobile-subtext">AI-driven verification platform</p>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        
+                                            <li>
+                                                <div class="anchorbox">
+                                                    <a href="/en_US/home/tools/pcb-design-and-analysis/allegro-x-design-platform.html#allegro-x-ai.html" target="_self">
+                                                        <p class="menu-mobile-heading">Allegro X AI</p>
+                                                        <p class="menu-mobile-subtext">AI-driven PCB Design</p>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        
+                                            <li>
+                                                <div class="anchorbox">
+                                                    <a href="/en_US/home/tools/silicon-solutions/ai-ip-platform.html" target="_self">
+                                                        <p class="menu-mobile-heading">Tensilica AI Platform</p>
+                                                        <p class="menu-mobile-subtext">On-device AI IP</p>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    
+                        <li>
+                            <button type="button" class="openchild-btn">IC Design &amp; Verification</button>
+                            <div class="submenu">
+                                <div class="mobile-menu inner">
+                                    <h2 class="mobile-menu-title">Products</h2>
+                                    <h3>
+                                        <a class="title-subtitle" target="_self" href="/en_US/home/tools/design-excellence.html">
+                                            <span>IC Design &amp; Verification</span>
+                                        </a>
+                                    </h3>
+                                    <ul class="menu-last-level">
+                                        
+                                            <li>
+                                                <div class="anchorbox">
+                                                    <a href="/en_US/home/tools/custom-ic-analog-rf-design/virtuoso-studio.html" target="_self">
+                                                        <p class="menu-mobile-heading">Virtuoso Studio</p>
+                                                        <p class="menu-mobile-subtext">Analog and custom IC design</p>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        
+                                            <li>
+                                                <div class="anchorbox">
+                                                    <a href="/en_US/home/tools/custom-ic-analog-rf-design/circuit-simulation.html" target="_self">
+                                                        <p class="menu-mobile-heading">Spectre Simulation</p>
+                                                        <p class="menu-mobile-subtext">Analog and mixed-signal SoC verification
+</p>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        
+                                            <li>
+                                                <div class="anchorbox">
+                                                    <a href="/en_US/home/tools/digital-design-and-signoff/soc-implementation-and-floorplanning/innovus-plus-synthesis-implementation-system.html" target="_self">
+                                                        <p class="menu-mobile-heading">Innovus+ Platform</p>
+                                                        <p class="menu-mobile-subtext">Synthesis and implementation for advanced nodes</p>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        
+                                            <li>
+                                                <div class="anchorbox">
+                                                    <a href="/en_US/home/tools/system-design-and-verification/simulation-and-testbench-verification/xcelium-simulator.html" target="_self">
+                                                        <p class="menu-mobile-heading">Xcelium Logic Simulation</p>
+                                                        <p class="menu-mobile-subtext">IP and SoC design verification</p>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        
+                                            <li>
+                                                <div class="anchorbox">
+                                                    <a href="/en_US/home/tools/silicon-solutions.html" target="_self">
+                                                        <p class="menu-mobile-heading">Silicon Solutions</p>
+                                                        <p class="menu-mobile-subtext">Protocol IP and Compute IP, including Tensilica IP</p>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        
+                                            <li>
+                                                <div class="anchorbox">
+                                                    <a href="/en_US/home/tools/system-design-and-verification/emulation-and-prototyping.html" target="_self">
+                                                        <p class="menu-mobile-heading">Palladium and Protium</p>
+                                                        <p class="menu-mobile-subtext">Emulation and prototyping platforms</p>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    
+                        <li>
+                            <button type="button" class="openchild-btn">System Design &amp; Analysis</button>
+                            <div class="submenu">
+                                <div class="mobile-menu inner">
+                                    <h2 class="mobile-menu-title">Products</h2>
+                                    <h3>
+                                        <a class="title-subtitle" target="_self" href="/en_US/home/tools/system-design-and-analysis.html">
+                                            <span>System Design &amp; Analysis</span>
+                                        </a>
+                                    </h3>
+                                    <ul class="menu-last-level">
+                                        
+                                            <li>
+                                                <div class="anchorbox">
+                                                    <a href="/en_US/home/tools/pcb-design-and-analysis/allegro-x-design-platform.html" target="_self">
+                                                        <p class="menu-mobile-heading">Allegro X Design Platform</p>
+                                                        <p class="menu-mobile-subtext">System and PCB design platform</p>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        
+                                            <li>
+                                                <div class="anchorbox">
+                                                    <a href="/en_US/home/tools/ic-package-design-and-analysis/ic-package-design/allegro-x-advanced-designer.html" target="_self">
+                                                        <p class="menu-mobile-heading">Allegro X Adv Package Designer Platform</p>
+                                                        <p class="menu-mobile-subtext">IC packaging design and analysis platform</p>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        
+                                            <li>
+                                                <div class="anchorbox">
+                                                    <a href="/en_US/home/tools/sigrity-x.html" target="_self">
+                                                        <p class="menu-mobile-heading">Sigrity X Platform</p>
+                                                        <p class="menu-mobile-subtext">Signal and power integrity analysis platform</p>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        
+                                            <li>
+                                                <div class="anchorbox">
+                                                    <a href="/en_US/home/tools/system-analysis/rf-microwave-design/awr-design-environment-platform.html" target="_self">
+                                                        <p class="menu-mobile-heading">AWR Design Environment Platform</p>
+                                                        <p class="menu-mobile-subtext">RF and microwave development platform</p>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        
+                                            <li>
+                                                <div class="anchorbox">
+                                                    <a href="/en_US/home/tools/reality-digital-twin.html" target="_self">
+                                                        <p class="menu-mobile-heading">Cadence Reality Digital Twin Platform</p>
+                                                        <p class="menu-mobile-subtext">Data center design and management platform</p>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        
+                                            <li>
+                                                <div class="anchorbox">
+                                                    <a href="/en_US/home/tools/system-analysis/computational-fluid-dynamics/fidelity.html" target="_self">
+                                                        <p class="menu-mobile-heading">Fidelity CFD Platform</p>
+                                                        <p class="menu-mobile-subtext">Computational fluid dynamics platform</p>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    
+                
+            
+                
+            
+        </ul>
+    </div>
+    
+        
+    
+        
+            <div class="mobile-menu-footer">
+                <div class="mobile-menu inner">
+                    
+                    
+                        <ul>
+                            <li>
+                                <a href="/en_US/home/tools/custom-ic-analog-rf-design.html" target="_self">All Analog IC Design Products</a>
+                            </li>
+                        
+                            <li>
+                                <a href="/en_US/home/tools/system-design-and-verification.html" target="_self">All Verification Products</a>
+                            </li>
+                        
+                            <li>
+                                <a href="/en_US/home/tools/digital-design-and-signoff.html" target="_self">All Digital Design and Signoff Products</a>
+                            </li>
+                        
+                            <li>
+                                <a href="/en_US/home/tools/digital-design-and-signoff/soc-implementation-and-floorplanning/integrity-3dic-platform.html" target="_self">All 3D-IC Design Products</a>
+                            </li>
+                        
+                            <li>
+                                <a href="/en_US/home/tools/pcb-design-and-analysis.html" target="_self">All PCB Design Products</a>
+                            </li>
+                        
+                            <li>
+                                <a href="/en_US/home/tools/system-analysis/em-solver/clarity-3d-solver.html" target="_self">All 3D Electromagnetic Analysis Products</a>
+                            </li>
+                        
+                            <li>
+                                <a href="/en_US/home/tools/system-analysis/thermal-solutions/celsius-studio.html" target="_self">All Thermal Analysis Products</a>
+                            </li>
+                        
+                            <li>
+                                <a href="https://www.eyesopen.com/" target="_blank">All Molecular Simulation Products</a>
+                            </li>
+                        
+                            <li>
+                                <a href="/en_US/home/solutions/cadence-cloud.html" target="_self">All Cadence Cloud Services and Solutions</a>
+                            </li>
+                        
+                            <li>
+                                <a href="/en_US/home/tools/tools-a-z.html" target="_self">All Products (A-Z)</a>
+                            </li>
+                        </ul>
+                    
+                </div>
+            </div>
+        
+    
+
+                          
+                        </div>
+                      </div>
+                    </li>
+                  
+                    <li>
+                      <div data-attr="single-menu" class="mobilemenubox single-menu">
+                      <button type="button" class="opensubmenu-btn">Solutions</button>
+                      <div class="submenu">
+                          
+                            
+	<div class="mobile-menu inner">
+	<h2 class="mobile-menu-title">Solutions</h2>
+		
+			
+				
+
+
+					
+
+					
+						<h3 class="title-subtitle">
+							Industries
+						</h3>
+					
+
+
+					<ul class="menu-last-level">
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/solutions/5g-systems-and-subsystems.html" target="_self">
+										<p class="menu-mobile-heading">5G Systems and Subsystems </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/solutions/aerospace-and-defense.html" target="_self">
+										<p class="menu-mobile-heading">Aerospace and Defense </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/solutions/automotive-solution.html" target="_self">
+										<p class="menu-mobile-heading">Automotive </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/solutions/data-center-solutions.html" target="_self">
+										<p class="menu-mobile-heading">Data Center Solutions </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/solutions/hyperscale.html" target="_self">
+										<p class="menu-mobile-heading">Hyperscale Computing </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="https://www.eyesopen.com/" target="_blank">
+										<p class="menu-mobile-heading">Life Sciences </p>
+									</a>
+								</div>
+							</li>
+						
+					</ul>
+				
+			
+				
+
+
+					
+
+					
+						<h3 class="title-subtitle">
+							Services
+						</h3>
+					
+
+
+					<ul class="menu-last-level">
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/services.html" target="_self">
+										<p class="menu-mobile-heading">Services Overview </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/solutions/chiplets.html" target="_self">
+										<p class="menu-mobile-heading">Chiplet Design Services </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/services/custom-silicon-services.html" target="_self">
+										<p class="menu-mobile-heading">Custom Silicon Services </p>
+									</a>
+								</div>
+							</li>
+						
+					</ul>
+				
+			
+			
+				
+			
+				
+			
+		
+			
+				
+
+
+					
+
+					
+						<h3 class="title-subtitle">
+							Technologies
+						</h3>
+					
+
+
+					<ul class="menu-last-level">
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/ai/overview.html" target="_self">
+										<p class="menu-mobile-heading">Artificial Intelligence </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/solutions/3dic-design-solutions.html" target="_self">
+										<p class="menu-mobile-heading">3D-IC Design </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/solutions/advanced-node-solutions.html" target="_self">
+										<p class="menu-mobile-heading">Advanced Node </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/solutions/arm-based-solutions.html" target="_self">
+										<p class="menu-mobile-heading">Arm-Based Solutions </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/solutions/chiplets.html" target="_self">
+										<p class="menu-mobile-heading">Chiplets </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/solutions/cadence-cloud.html" target="_self">
+										<p class="menu-mobile-heading">Cloud Solutions </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/tools/system-analysis/computational-fluid-dynamics.html" target="_self">
+										<p class="menu-mobile-heading">Computational Fluid Dynamics </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/solutions/automotive-solution/functional-safety.html" target="_self">
+										<p class="menu-mobile-heading">Functional Safety </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/solutions/low-power-solution.html" target="_self">
+										<p class="menu-mobile-heading">Low Power </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/solutions/mixed-signal-solutions.html" target="_self">
+										<p class="menu-mobile-heading">Mixed-signal </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="https://www.eyesopen.com/" target="_blank">
+										<p class="menu-mobile-heading">Molecular Simulation </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/tools/system-analysis.html" target="_self">
+										<p class="menu-mobile-heading">Multiphysics System Analysis </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/solutions/photonics.html" target="_self">
+										<p class="menu-mobile-heading">Photonics </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/solutions/rf-microwave-solutions.html" target="_self">
+										<p class="menu-mobile-heading">RF / Microwave </p>
+									</a>
+								</div>
+							</li>
+						
+					</ul>
+				
+			
+			
+				
+			
+		
+			
+				
+			
+			
+				
+					<div class="promo-section-header">
+						
+							<div class="promo bigimage">
+								
+								
+								
+									<a tabindex="-1" href="/en_US/home/company/designed-with-cadence.html" target="_self" aria-label="Designed with Cadence" promo-src='/content/dam/cadence-www/global/en_US/images/promos/header-dropdown/designed-with-cadence.jpg'>
+										<img class="promoimg" role="presentation" promo-src="/content/dam/cadence-www/global/en_US/images/promos/header-dropdown/designed-with-cadence.jpg" alt="Designed with Cadence"/>
+									</a>
+									<span>See how our customers create innovative products with Cadence</span>
+									<a href="/en_US/home/company/designed-with-cadence.html" target="_self" class="btn-text" data-ctalabel="Explore Now" aria-label="Designed with Cadence"><i data-feather="arrow-right" title="Designed with Cadence" role="presentation"></i></a>
+								
+							</div>
+						
+							<div class="promo bigimage">
+								
+								
+								
+									<a tabindex="-1" href="/en_US/home/solutions/cadence-cloud.html" target="_self" aria-label="Explore Cadence Cloud Now" promo-src='/content/dam/cadence-www/global/en_US/images/promos/aws-cloud.jpg'>
+										<img class="promoimg" role="presentation" promo-src="/content/dam/cadence-www/global/en_US/images/promos/aws-cloud.jpg" alt="Explore Cadence Cloud Now"/>
+									</a>
+									<span>Explore Cadence Cloud Now</span>
+									<a href="/en_US/home/solutions/cadence-cloud.html" target="_self" class="btn-text" data-ctalabel="Explore Now" aria-label="Explore Cadence Cloud Now"><i data-feather="arrow-right" title="Explore Cadence Cloud Now" role="presentation"></i></a>
+								
+							</div>
+						
+					</div>
+				
+			
+		
+	</div>
+
+                          
+                          
+                        </div>
+                      </div>
+                    </li>
+                  
+                    <li>
+                      <div data-attr="single-menu" class="mobilemenubox single-menu">
+                      <button type="button" class="opensubmenu-btn">Support</button>
+                      <div class="submenu">
+                          
+                            
+	<div class="mobile-menu inner">
+	<h2 class="mobile-menu-title">Support</h2>
+		
+			
+				
+
+
+					
+						<h3 class="title-subtitle wlink">
+							<a class="title-subtitle" href="/en_US/home/support.html" target="_self">
+								<span>Support</span>
+							</a>
+						</h3>
+					
+
+					
+
+
+					<ul class="menu-last-level">
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/support/support-process.html" target="_self">
+										<p class="menu-mobile-heading">Support Process </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/support/cadence-online-support.html" target="_self">
+										<p class="menu-mobile-heading">Online Support </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/support/software-downloads.html" target="_self">
+										<p class="menu-mobile-heading">Software Downloads </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/support/computing-platform-support.html" target="_self">
+										<p class="menu-mobile-heading">Computing Platform Support </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/support/customer-support-contacts.html" target="_self">
+										<p class="menu-mobile-heading">Customer Support Contacts </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="https://community.cadence.com/cadence_technology_forums/f" target="_blank">
+										<p class="menu-mobile-heading">Community Forums </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/solutions/cadence-cloud/oncloud/help-center.html" target="_self">
+										<p class="menu-mobile-heading">OnCloud Help Center </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/support/doc-assistant.html" target="_self">
+										<p class="menu-mobile-heading">Doc Assistant </p>
+									</a>
+								</div>
+							</li>
+						
+					</ul>
+				
+			
+			
+				
+			
+		
+			
+				
+
+
+					
+						<h3 class="title-subtitle wlink">
+							<a class="title-subtitle" href="/en_US/home/training.html" target="_self">
+								<span>Training</span>
+							</a>
+						</h3>
+					
+
+					
+
+
+					<ul class="menu-last-level">
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/training/computational_fluiddynamics.html" target="_self">
+										<p class="menu-mobile-heading">Computational Fluid Dynamics </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/training/custom_ic_analogmicrowaverfdesign.html" target="_self">
+										<p class="menu-mobile-heading">Custom IC / Analog / RF Design </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/training/digital_design_andsignoff.html" target="_self">
+										<p class="menu-mobile-heading">Digital Design and Signoff </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/training/ic_package.html" target="_self">
+										<p class="menu-mobile-heading">IC Package </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/training/languages_and_methodologies.html" target="_self">
+										<p class="menu-mobile-heading">Languages and Methodologies </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/training/mixed-signal_designmodelingsimulationandverification.html" target="_self">
+										<p class="menu-mobile-heading">Mixed-Signal Design Modeling, Simulation, and Verification </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/training/onboarding_curricula.html" target="_self">
+										<p class="menu-mobile-heading">Onboarding Curricula </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/training/pcb_design.html" target="_self">
+										<p class="menu-mobile-heading">PCB Design </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/training/reality_dc.html" target="_self">
+										<p class="menu-mobile-heading">Reality DC </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/training/system_design_andverification.html" target="_self">
+										<p class="menu-mobile-heading">System Design and Verification </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/training/tech_domain_certificationprograms.html" target="_self">
+										<p class="menu-mobile-heading">Tech Domain Certification Programs </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/training/tensilica_processorip.html" target="_self">
+										<p class="menu-mobile-heading">Tensilica Processor IP </p>
+									</a>
+								</div>
+							</li>
+						
+					</ul>
+				
+			
+			
+				
+			
+		
+			
+				
+			
+				
+			
+				
+			
+			
+				
+					<div class="promo-section-header">
+						
+							<div class="promo smallimage">
+								
+								
+									<a tabindex="-1" href="/en_US/home/support/software-downloads.html" target="_self" aria-label="Link for support software downloads" promo-src='/content/dam/cadence-www/global/en_US/images/promos/header-dropdown/support-software-downloads.jpg'>
+									</a>
+									<div class='textpromo'>
+										<span>Stay up to date with the latest software</span>
+										<a href="/en_US/home/support/software-downloads.html" target="_self" class="btn-text" data-ctalabel="Download Now" aria-label="Link for support software downloads"><i data-feather="arrow-right" title="Link for support software downloads" role="presentation"></i></a>
+									</div>
+								
+								
+							</div>
+						
+					</div>
+				
+			
+				
+					<div class="promo-section-header">
+						
+							<div class="promo noimage">
+								
+									<a href="https://support.cadence.com/" target="_blank" class="btn-text" data-ctalabel="Visit Now">
+										<span>Cadence award-winning online support available 24/7</span>
+										<i data-feather="arrow-up-right" role="presentation"></i>
+									</a>
+								 
+								
+								
+							</div>
+						
+					</div>
+				
+			
+				
+					<div class="promo-section-header">
+						
+							<div class="promo noimage">
+								
+									<a href="https://community.cadence.com/cadence_technology_forums/f" target="_blank" class="btn-text" data-ctalabel="Visit Now" aria-label="Technical Forums">
+										<span>Connect with expert users in our Community Forums</span>
+										<i data-feather="arrow-up-right" title="Technical Forums" role="presentation"></i>
+									</a>
+								 
+								
+								
+							</div>
+						
+					</div>
+				
+			
+		
+	</div>
+
+                          
+                          
+                        </div>
+                      </div>
+                    </li>
+                  
+                    <li>
+                      <div data-attr="single-menu" class="mobilemenubox single-menu">
+                      <button type="button" class="opensubmenu-btn">Company</button>
+                      <div class="submenu">
+                          
+                            
+	<div class="mobile-menu inner">
+	<h2 class="mobile-menu-title">Company</h2>
+		
+			
+				
+
+
+					
+
+					
+						<h3 class="title-subtitle">
+							Corporate
+						</h3>
+					
+
+
+					<ul class="menu-last-level">
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/company.html" target="_self">
+										<p class="menu-mobile-heading">About Us </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/company/designed-with-cadence.html" target="_self">
+										<p class="menu-mobile-heading">Designed with Cadence </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="https://investor.cadence.com/" target="_blank">
+										<p class="menu-mobile-heading">Investor Relations </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/company/leadership-team.html" target="_self">
+										<p class="menu-mobile-heading">Leadership Team </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/company/computational-software.html" target="_self">
+										<p class="menu-mobile-heading">Computational Software </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/alliances.html" target="_self">
+										<p class="menu-mobile-heading">Alliances </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/alliances/channel-partner.html" target="_self">
+										<p class="menu-mobile-heading">Channel Partners </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/company/technology-partner.html" target="_self">
+										<p class="menu-mobile-heading">Technology Partners </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/company/csr.html" target="_self">
+										<p class="menu-mobile-heading">Corporate Social Responsibility </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/company/cadence-academic-network.html" target="_self">
+										<p class="menu-mobile-heading">Cadence Academic Network </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/company/intelligent-system-design.html.html" target="_self">
+										<p class="menu-mobile-heading">Intelligent System Design </p>
+									</a>
+								</div>
+							</li>
+						
+					</ul>
+				
+			
+			
+				
+			
+		
+			
+				
+
+
+					
+
+					
+						<h3 class="title-subtitle">
+							Culture and Careers
+						</h3>
+					
+
+
+					<ul class="menu-last-level">
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/company/careers.html" target="_self">
+										<p class="menu-mobile-heading">Careers </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/company/culture.html" target="_self">
+										<p class="menu-mobile-heading">Culture </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/company/oneteam.html" target="_self">
+										<p class="menu-mobile-heading">One Team </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/company/careers/interns-and-new-grads.html" target="_self">
+										<p class="menu-mobile-heading">Intern and Grads </p>
+									</a>
+								</div>
+							</li>
+						
+					</ul>
+				
+			
+				
+
+
+					
+
+					
+						<h3 class="title-subtitle">
+							Media Center
+						</h3>
+					
+
+
+					<ul class="menu-last-level">
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/company/events/cadence-events.html" target="_self">
+										<p class="menu-mobile-heading">Cadence Events </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/company/events.html" target="_self">
+										<p class="menu-mobile-heading">Events </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="/en_US/home/company/newsroom.html" target="_self">
+										<p class="menu-mobile-heading">Newsroom </p>
+									</a>
+								</div>
+							</li>
+						
+							<li>
+								<div class="anchorbox">
+									<a href="https://community.cadence.com/cadence_blogs_8/" target="_blank">
+										<p class="menu-mobile-heading">Blogs </p>
+									</a>
+								</div>
+							</li>
+						
+					</ul>
+				
+			
+			
+				
+			
+				
+			
+		
+			
+				
+			
+				
+			
+			
+				
+					<div class="promo-section-header">
+						
+							<div class="promo smallimage">
+								
+								
+									<a tabindex="-1" href="/en_US/home/company/foundation.html" target="_self" aria-label="Cadence Giving Foundation image" promo-src='/content/dam/cadence-www/global/en_US/images/promos/header-dropdown/cadence-women.jpg'>
+									</a>
+									<div class='textpromo'>
+										<span>Cadence Giving Foundation</span>
+										<a href="/en_US/home/company/foundation.html" target="_self" class="btn-text" data-ctalabel="Learn More" aria-label="Cadence Giving Foundation image"><i data-feather="arrow-right" title="Cadence Giving Foundation image" role="presentation"></i></a>
+									</div>
+								
+								
+							</div>
+						
+					</div>
+				
+			
+				
+					<div class="promo-section-header">
+						
+							<div class="promo smallimage">
+								
+								
+									<a tabindex="-1" href="/en_US/home/company/events/cadence-events.html" target="_self" aria-label="Explore More about Browse Cadence’s latest on-demand sessions and upcoming events." promo-src='/content/dam/cadence-www/global/en_US/images/promos/featured-resource/cadence-event-promo.jpg'>
+									</a>
+									<div class='textpromo'>
+										<span>Premier Cadence Events</span>
+										<a href="/en_US/home/company/events/cadence-events.html" target="_self" class="btn-text" data-ctalabel="Explore More" aria-label="Explore More about Browse Cadence’s latest on-demand sessions and upcoming events."><i data-feather="arrow-right" title="Explore More about Browse Cadence’s latest on-demand sessions and upcoming events." role="presentation"></i></a>
+									</div>
+								
+								
+							</div>
+						
+					</div>
+				
+			
+		
+	</div>
+
+                          
+                          
+                        </div>
+                      </div>
+                    </li>
+                  
+                
+              </ul>
+            </div>
+            
+            <div class="mobile-menu-extras mobilemenubox button-list-header">
+              <div class="ctaLink section"><div class="requestDemoId">
+     <a href="/en_US/home/tools/free-trials.html" target="_self">        
+    <div class="request btn-fill-red">
+            <i class=""></i>
+            <p>Free Trials</p>
+            </div>
+        </a>
+</div></div>
+
+
+            </div>
+
+            <div class="mobile-menu-extras mobilemenubox start login_comp">
+              <button class="loginLink opensubmenu-btn" aria-label="User Account" role="button">
+                <i data-feather="user"></i>
+              </button>
+              <div class="submenu">
+                <div class="mobile-menu inner">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+  
+
+    </div>
+    </nav>
+</header>
+<div class="overlay-header"></div>
+	</div>
+
+    <div>
+        <div id="vidyardsrc" data-src="https://play.vidyard.com/embed/v4.js"></div>
+    </div>
+   
+    <div id="mainBody" role="main">
+        
+
+        
+
+        <div class="cdn-generic-fullwidth-body">
+
+    <!--  Section 1   -->
+    <div class="fullwidth-section-edit-border ">
+        <div id="section1" class="fullwidthSection fullwidthSection-1">
+            <div class="holder">
+                
+  
+
+                <div class="iparsys parsys section"><div class="section"><div class="new section"></div>
+</div><div class="iparys_inherited"><div class="iparsys parsys section"><div class="contextmenu section">
+
+ 
+    
+    
+    
+
+<script type="cfaf8ea0b094d96883133b69-text/javascript">
+    $(function() {
+        if ( $('.contextmenu.section > .context_menu_module').length >= 2) {
+            $('.contextmenu.section:last').remove();
+        }
+        if ( $('.contextmenu.section > .context_menu_module').length ) {
+            if ( !$('body').hasClass('ctx_menu')) {
+                $('body').addClass('ctx_menu');
+            }
+        }
+    });
+</script></div>
+<div class="contextmenu section">
+
+ 
+    
+    
+    
+
+<script type="cfaf8ea0b094d96883133b69-text/javascript">
+    $(function() {
+        if ( $('.contextmenu.section > .context_menu_module').length >= 2) {
+            $('.contextmenu.section:last').remove();
+        }
+        if ( $('.contextmenu.section > .context_menu_module').length ) {
+            if ( !$('body').hasClass('ctx_menu')) {
+                $('body').addClass('ctx_menu');
+            }
+        }
+    });
+</script></div>
+<div class="code section">
+<div style="display: block;">
+
+   
+       <style>
+.content-list-items ul li span.icons img {
+    width: 12px;
+    height: 12px;
+}
+.requestDemoId .request p {
+    
+    text-transform: uppercase;
+}
+<style>
+.info-box-container.whatsnew a .content .text p.description.date{
+display:none !important;
+}
+.info-box-container.whatsnew a .content .text p.description.subtitle {
+display:none;
+}
+.info-box-container.whatsnew a .content .text p.description.date{
+display:none;
+}
+.info-box-container.whatsnew a .content .text .infobox-footer div.authors {
+display:none;
+}
+</style>
+</style>
+   
+</div></div>
+</div>
+</div>
+</div>
+<div class="parsys section"><div class="code section">
+<div style="display: block;">
+
+   
+       <style>
+
+.featured-image-r-component img {
+        object-fit: unset !important;
+        width:100% !important;
+}
+
+#resource-cta-intro .cta-box .requestDemoId:first-child {
+    margin-bottom: 16px;
+}
+
+#resource-cta-intro .requestDemoId a {
+    display: inline-block;
+}
+
+.contentTabs {
+   padding-bottom: 0;
+}
+
+#resources-benefits-2 .content-list-items ul li::before,
+#resources-specifications .content-list-items ul li::before {
+    content: ""!important
+}
+
+#resources-benefits-2 .content-list-items ul li span.icons,
+#resources-specifications .content-list-items ul li span.icons {
+    position: absolute;
+    left: 0
+}
+
+#resources-benefits-2 .content-list-items ul li span.icons svg,
+#resources-specifications .content-list-items ul li span.icons svg {
+    width: 18px;
+    height: 18px;
+    vertical-align: middle
+}
+
+#resources-benefits-2 .content-list-items ul li span.icons img,
+#resources-specifications .content-list-items ul li span.icons img {
+    width: 18px;
+    height: 18px
+}
+
+#resources-benefits-2 .content-list-items ul.list-items li,
+#resources-specifications .content-list-items ul.list-items li {
+    margin-bottom: 16px
+}
+
+#resources-benefits-2 .content-list-items h3,
+#resources-specifications .content-list-items h3 {
+    margin-left: -15px
+}
+
+#resources-benefits-2 .content-list-items.selected-icon ul,
+#resources-specifications .content-list-items.selected-icon ul {
+    padding-left: 0
+}
+
+.support-content-list .content-list-items h3 {
+    margin-left: 0;
+}
+
+.support-content-list .content-list-items {
+    padding: 24px;
+}
+
+.benefits.section .benefits-card {
+     padding: 0;
+}
+
+.print-module {
+     float: right
+}
+
+@media (min-width: 992px) {
+     .print-module {
+          float: none;
+     }
+}
+
+@media (min-width: 768px) {
+     #resource-cta-intro .cta-box .ctaLink.section{
+          display: inline-block;
+     }
+     #resource-cta-intro .cta-box .requestDemoId:first-child {
+         margin-right: 17px;
+     }
+     .support-content-list .content-list-items {
+          padding: 30px;
+     }
+}
+
+
+</style>
+   
+</div></div>
+
+</div>
+<div class="parsys section"><div class="breadcrumb section">
+
+
+
+
+
+
+
+
+<div id="breadcrumb-wrap" >
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-12 col-sm-10 col-sm-push-1"> 
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb small" style="padding:0;">
+
+                               <li class="breadcrumb-item mobileon"><a href="/en_US/home/resources.html">Product and Solutions Resources</a></li>
+
+                               <li class="breadcrumb-item mobileon"><a href="/en_US/home/resources/white-papers.html">White Papers</a></li>
+
+                                  <li class="breadcrumb-item active" aria-current="page">Chiplets and Heterogeneous Packaging Are...</li>
+                </ol>
+              </nav>
+        </div>
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+<div class="section">
+
+    <style>
+        #resource-template-wrapper {
+        padding-top: 32px;
+        padding-bottom: 0px;
+        }
+        @media screen and (min-width: 767px) {
+        #resource-template-wrapper {
+        padding-top: 48px;
+        padding-bottom: 0px;
+        }
+        }
+    </style>
+    
+
+
+
+    
+        
+            
+        
+    
+
+    
+        
+    
+
+
+
+    <div class="newgrid-container  no-border " id="resource-template-wrapper" style="background-color:#FFFFFF; ">
+        <div class="container-fluid">
+            
+			
+				<div class="row ">
+					<!-- inner columns -->
+					
+						<div class="col-xs-12 col-sm-10 col-sm-push-1">
+							<div class="section">
+
+    <style>
+        #resource-intro-module {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        @media screen and (min-width: 767px) {
+        #resource-intro-module {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        }
+    </style>
+    
+
+
+
+    
+        
+            
+        
+    
+
+    
+        
+    
+
+
+
+    <div class="newgrid-container  show-border " id="resource-intro-module" style="background-color:#FFFFFF; ">
+        <div>
+            
+			
+				<div class="row ">
+					<!-- inner columns -->
+					
+						<div class="col-sm-12">
+							<div class="resourceheader section">
+
+
+    <div class="resource-pdf-intro">
+        
+            <p class="section_label" aria-label="White Paper">
+                White Paper
+            </p>
+        
+        
+        
+        <h1>Chiplets and Heterogeneous Packaging Are Changing System Design and Analysis</h1>
+        
+    </div>
+
+
+
+
+
+</div>
+
+
+						</div>
+					
+				</div>
+			
+            
+			
+        </div>
+    </div>
+</div>
+
+
+						</div>
+					
+				</div>
+			
+            
+			
+        </div>
+    </div>
+</div>
+<div class="section">
+
+    <style>
+        #resource-template-wrapper-two {
+        padding-top: 32px;
+        padding-bottom: 0px;
+        }
+        @media screen and (min-width: 767px) {
+        #resource-template-wrapper-two {
+        padding-top: 48px;
+        padding-bottom: 0px;
+        }
+        }
+    </style>
+    
+
+
+
+    
+        
+            
+        
+    
+
+    
+        
+    
+
+
+
+    <div class="newgrid-container  no-border " id="resource-template-wrapper-two" style="background-color:#FFFFFF; ">
+        <div class="container-fluid">
+            
+			
+				<div class="row ">
+					<!-- inner columns -->
+					
+						<div class="col-xs-12 col-sm-10 col-sm-push-1">
+							<div class="section">
+
+    <style>
+        #anchid-2038666547 {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        @media screen and (min-width: 767px) {
+        #anchid-2038666547 {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        }
+    </style>
+    
+
+
+
+    
+        
+            
+        
+    
+
+    
+        
+    
+
+
+
+    <div class="newgrid-container  no-border " id="anchid-2038666547" style="background-color:#FFFFFF; ">
+        <div>
+            
+			
+				<div class="row ">
+					<!-- inner columns -->
+					
+						<div class="col-sm-12">
+							<div class="section">
+
+    <style>
+        #resource-share-buttons {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        @media screen and (min-width: 767px) {
+        #resource-share-buttons {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        }
+    </style>
+    
+
+
+
+    
+        
+            
+        
+    
+
+    
+        
+    
+
+
+
+    <div class="newgrid-container  no-border " id="resource-share-buttons" style="background-color:#FFFFFF; ">
+        <div>
+            
+			
+				<div class="row ">
+					<!-- inner columns -->
+					
+						<div class="col-xs-6 col-sm-6 col-md-7 col-lg-8">
+							<div class="shareprintsearch section">
+
+
+  
+  
+  
+ 
+
+<div class="social-buttons-module">
+  
+
+  <div class="share-module ">
+    <button class="btn-text shared-btn-new sharepage" role="button" id="cq-gen1086" data-toggle="popover" data-content="Copy Link URL" data-activated="Link Copied" data-nonactivated="Copy Link URL">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-link" role="presentation">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+        </svg>
+        <span class="share-btn">Copy Link</span>
+    </button>
+  </div>
+  
+</div>
+
+
+
+
+
+
+
+
+</div>
+
+
+						</div>
+					
+						<div class="col-xs-6 col-sm-6 col-md-5 col-lg-4">
+							<div class="section">
+
+    <style>
+        #anchid-2040205543 {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        @media screen and (min-width: 767px) {
+        #anchid-2040205543 {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        }
+    </style>
+    
+
+
+
+    
+        
+            
+        
+    
+
+    
+        
+    
+
+
+
+    <div class="newgrid-container  no-border " id="anchid-2040205543" style="background-color:#FFFFFF; ">
+        <div>
+            
+			
+				<div class="row ">
+					<!-- inner columns -->
+					
+						<div class="col-sm-12  col-md-10 col-md-push-2 col-lg-10 col-lg-push-2">
+							<div class="shareprintsearch section">
+
+
+  
+  
+  
+ 
+
+<div class="social-buttons-module">
+  
+
+  
+  <div class="print-module ">
+    <button class="btn-text shared-btn-new printpage" role="button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-printer">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
+        </svg>
+        <span class="share-btn">Print Page</span>
+    </button>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+</div>
+
+
+						</div>
+					
+				</div>
+			
+            
+			
+        </div>
+    </div>
+</div>
+
+
+						</div>
+					
+				</div>
+			
+            
+			
+        </div>
+    </div>
+</div>
+<div class="dividerModule section">
+
+<div class="divider-line">
+</div>
+</div>
+<div class="section">
+
+    <style>
+        #resource-properties-intro {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        @media screen and (min-width: 767px) {
+        #resource-properties-intro {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        }
+    </style>
+    
+
+
+
+    
+        
+            
+        
+    
+
+    
+        
+    
+
+
+
+    <div class="newgrid-container  no-border " id="resource-properties-intro" style="background-color:#FFFFFF; ">
+        <div>
+            
+			
+				<div class="row ">
+					<!-- inner columns -->
+					
+						<div class="col-sm-12">
+							<div class="section">
+
+    <style>
+        #anchid-2041744538 {
+        padding-top: 0px;
+        padding-bottom: 32px;
+        }
+        @media screen and (min-width: 767px) {
+        #anchid-2041744538 {
+        padding-top: 0px;
+        padding-bottom: 48px;
+        }
+        }
+    </style>
+    
+
+
+
+    
+        
+            
+        
+    
+
+    
+        
+    
+
+
+
+    <div class="newgrid-container  no-border " id="anchid-2041744538" style="background-color:#FFFFFF; ">
+        <div>
+            
+			
+				<div class="row ">
+					<!-- inner columns -->
+					
+						<div class="col-xs-12 col-sm-12 col-md-7 col-lg-8">
+							<div class="resource-date-author section">
+
+
+
+   
+
+   <div class="doc_author  inline">
+      <p>By John Park, Product Management Group Director for Advanced IC Packaging, Cadence</p>
+
+   </div>
+
+</div>
+
+
+						</div>
+					
+						<div class="col-xs-12 col-sm-12 col-md-5 col-lg-4">
+							<div class="section">
+
+    <style>
+        #anchid-2055210750 {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        @media screen and (min-width: 767px) {
+        #anchid-2055210750 {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        }
+    </style>
+    
+
+
+
+    
+        
+            
+        
+    
+
+    
+        
+    
+
+
+
+    <div class="newgrid-container  no-border " id="anchid-2055210750" style="background-color:#FFFFFF; ">
+        <div>
+            
+			
+				<div class="row ">
+					<!-- inner columns -->
+					
+						<div class="col-sm-12  col-md-10 col-md-push-2 col-lg-10 col-lg-push-2">
+							
+
+						</div>
+					
+				</div>
+			
+            
+			
+        </div>
+    </div>
+</div>
+
+
+						</div>
+					
+				</div>
+			
+            
+			
+        </div>
+    </div>
+</div>
+
+
+						</div>
+					
+						<div class="col-xs-12 col-sm-12 col-md-7 col-lg-8">
+							<div class="richtext section"><div style="display: block;">
+  <p><span class="p_lead"><span style="color: #707070;">In the domain of electronic product design, solely relying on process shrink as the primary driver of product innovation and improved system performance is no longer a viable approach. The cost and complexity associated with advanced nodes has everyone looking for alternatives to the traditional monolithic system on chip (SoC). The path most are taking leads to the world of “More than Moore” and heterogenous integration. These heterogenous, multi-chiplet architectures provide a much lower cost alternative to the latest design nodes, while still providing a robust re-use model based on IP in the form of physically realized chiplets. The package design now sits in the center of the universe for the next generation of electronics.</span></span></p>
+</div>
+</div>
+<div class="dividerModule section">
+
+<div class="divider-line">
+</div>
+</div>
+
+
+						</div>
+					
+						<div class="col-xs-12 col-sm-12 col-md-5 col-lg-4">
+							
+
+						</div>
+					
+				</div>
+			
+            
+			
+        </div>
+    </div>
+</div>
+<div class="section">
+
+    <style>
+        #content-for-toc {
+        padding-top: 0px;
+        padding-bottom: 48px;
+        }
+        @media screen and (min-width: 767px) {
+        #content-for-toc {
+        padding-top: 0px;
+        padding-bottom: 48px;
+        }
+        }
+    </style>
+    
+
+
+
+    
+        
+            
+        
+    
+
+    
+        
+    
+
+
+
+    <div class="newgrid-container  no-border " id="content-for-toc" style="background-color:#FFFFFF; ">
+        <div>
+            
+			
+				<div class="row ">
+					<!-- inner columns -->
+					
+						<div class="col-xs-12 col-sm-12  col-md-push-7 col-md-5 col-lg-4 col-lg-push-8 tabs-section stickyelement">
+							<div class="section">
+
+    <style>
+        #anchid-2057134494 {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        @media screen and (min-width: 767px) {
+        #anchid-2057134494 {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        }
+    </style>
+    
+
+
+
+    
+        
+            
+        
+    
+
+    
+        
+    
+
+
+
+    <div class="newgrid-container  no-border " id="anchid-2057134494" style="background-color:#FFFFFF; ">
+        <div>
+            
+			
+				<div class="row ">
+					<!-- inner columns -->
+					
+						<div class="col-sm-12  col-md-10 col-md-push-2 col-lg-10 col-lg-push-2">
+							<div class="sectionnav_toc section">
+
+
+
+
+<div class="toc-list-module stickyelement" data-mtitle="On this Page" data-view="singleviewtoc">
+    <div class="doc-vertical-tabs-mobile">
+        <p class="current">
+            <!-- First title by default -->
+            <span>Overview</span>   
+        </p>
+        <div class="toc-mobile-menu">
+           <ul class="nav nav-stacked">
+                <li>
+                     <a href="#introduction" aria-controls="introduction">Introduction</a> 
+                </li>
+              
+                <li>
+                     <a href="#chiplets-and-heterogeneous-integration" aria-controls="chiplets-and-heterogeneous-integration">Chiplets and Heterogeneous Integration</a> 
+                </li>
+              
+                <li>
+                     <a href="#where-do-we-go-from-here" aria-controls="where-do-we-go-from-here">Where Do We Go from Here?</a> 
+                </li>
+              
+                <li>
+                     <a href="#the-evolution-of-chiplets" aria-controls="the-evolution-of-chiplets">The Evolution of Chiplets</a> 
+                </li>
+              
+                <li>
+                     <a href="#tools-and-flows-for-heterogeneous-integration" aria-controls="tools-and-flows-for-heterogeneous-integration">Tools and Flows for Heterogeneous Integration</a> 
+                </li>
+              
+                <li>
+                     <a href="#conclusion" aria-controls="conclusion">Conclusion</a> 
+                </li>
+              </ul>
+        </div>
+    </div>
+    <div class="toc-cta-wrappers large">
+        
+            <div><div class="requestDemoId">
+     <a href="#" data-modal-title="Contact Us" data-modal-class="request-demo" data-modal-content-url="/content/cadence-www/global/en_US/site-content/content-modules/social/request-demo.views.body-content.8532.html?fromurl=/en_US/home/resources/white-papers/chiplets-and-heterogeneous-packaging-are-changing-system-design-and-analysis-wp/jcr:content&tags=cadence-www:events/technologies/3d-ic" role="button">
+    <div class="request blue-theme">
+            <i class=""></i>
+            <p>Contact Us</p>
+            </div>
+        </a>
+</div></div>
+        
+        
+    </div>
+
+    
+
+    <div class="doc-vertical-tabs" id="primary-navwrapper">
+        <ul class="nav nav-stacked">
+            <li class="scr-tab"><a href="#introduction" aria-controls="introduction">Introduction</a></li>
+       
+            <li class="scr-tab"><a href="#chiplets-and-heterogeneous-integration" aria-controls="chiplets-and-heterogeneous-integration">Chiplets and Heterogeneous Integration</a></li>
+       
+            <li class="scr-tab"><a href="#where-do-we-go-from-here" aria-controls="where-do-we-go-from-here">Where Do We Go from Here?</a></li>
+       
+            <li class="scr-tab"><a href="#the-evolution-of-chiplets" aria-controls="the-evolution-of-chiplets">The Evolution of Chiplets</a></li>
+       
+            <li class="scr-tab"><a href="#tools-and-flows-for-heterogeneous-integration" aria-controls="tools-and-flows-for-heterogeneous-integration">Tools and Flows for Heterogeneous Integration</a></li>
+       
+            <li class="scr-tab"><a href="#conclusion" aria-controls="conclusion">Conclusion</a></li>
+       </ul>
+       
+    </div>
+
+    
+</div>
+</div>
+
+
+						</div>
+					
+				</div>
+			
+            
+			
+        </div>
+    </div>
+</div>
+
+
+						</div>
+					
+						<div class="col-xs-12 col-sm-12 col-md-pull-5 col-md-7 col-lg-8 col-lg-pull-4 right-side-column">
+							<div class="section">
+
+    <style>
+        #introduction {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        @media screen and (min-width: 767px) {
+        #introduction {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        }
+    </style>
+    
+
+
+
+    
+        
+            
+        
+    
+
+    
+        
+    
+
+
+
+    <div class="newgrid-container  no-border align-left" id="introduction" style="background-color:#FFFFFF; ">
+        <div>
+            <div class="row title-row">
+                <div class="col-xs-12 col-sm-10 col-md-8 ">
+
+					
+
+					<h2>
+						Introduction
+					</h2>
+					
+				</div>
+			</div>
+			
+				<div class="row ">
+					<!-- inner columns -->
+					
+						<div class="col-sm-12">
+							<div class="richtext section"><div style="display: block;">
+  <p>The semiconductor packaging industry is now poised to take on a larger, more significant role in electronic product design of the future. To meet the market demand for these heterogenous, chiplet-based architectures (Figure 1), new system-level design methodologies are required, targeting system-level power, performance, and area (PPA). When designers transition from single monolithic devices to multi-chiplet architectures, the first challenge they face is how to plan, manage, and optimize their top-level design and connectivity. A novel system-level design management solution is now required. This platform must be capable of aggregating data from the integrated circuit (IC) designer, the package designer, and even the board designer, for the purposes of system-level optimization and providing the top-level netlist for signoff connectivity verification.</p>
+</div>
+</div>
+<div class="section">
+
+    <style>
+        #anchid-2059827737 {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        @media screen and (min-width: 767px) {
+        #anchid-2059827737 {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        }
+    </style>
+    
+
+
+
+    
+        
+            
+        
+    
+
+    
+        
+    
+
+
+
+    <div class="newgrid-container  no-border " id="anchid-2059827737" style="background-color:#FFFFFF; ">
+        <div>
+            
+			
+				<div class="row ">
+					<!-- inner columns -->
+					
+						<div class="col-sm-12 resource-template-img-r">
+							<div class="image parbase section"><div class="imageCusWrap-SId-2049824265_1657 image-r-component" data-custom-width="auto" data-custom-height="auto" data-custom-fullwidth="true">
+    <a href="#" data-toggle="modal" data-target="#image-component-lightbox">
+    		<img class=" light-box-image img-comp" role="presentation" alt="" title="" src="/content/dam/cadence-www/global/en_US/images/resources/whitepaper/changing-system-design-and-analysis-1.png"/>
+			</a>
+    <div style="width:100%;text-align:left;" class="caption">
+           
+                Figure 1: Heterogeneous integration</div>
+    </div>
+
+<style type="text/css">
+    .imageCusWrap-SId-2049824265_1657 img {
+    	
+    		object-fit: cover;
+    		width: 100%;	
+    	
+    }
+    .imageCusWrap-SId-2049824265_1657 { 
+        text-align:left;
+        padding: 0px 0px 30px 0px;
+        border: 0;
+        margin: auto;
+    };
+    @media screen and (min-width: 768px) {
+        .imageCus-SId-2049824265_1657 { 
+        	padding: 0px 0px 30px 0px;
+         }
+    }
+
+
+</style>
+</div>
+
+
+						</div>
+					
+				</div>
+			
+            
+			
+        </div>
+    </div>
+</div>
+<div class="richtext section"><div style="display: block;">
+  <p>Other challenges arise for the traditional package designer. The biggest challenge can be the transition from expertise in layout of laminate substrates to layout of silicon substrates. In addition, silicon substrates (masks) require a formal physical verification process that is new to most of today’s package designers.</p>
+<p>And we can’t forget about the electrical and thermal analysis challenges that will arise. Here again, these tools have to provide value at the system level. To do this, the tools have to support in-design and electrothermal signoff, for on-chip and off-chip devices and interconnect (Figure 2). Cross-domain coupling effects must also be modeled.</p>
+<p>When it comes to chip(let)-level thermal analysis, typically an on-chip(let) EM-IR solution is required to produce a detailed thermal model. This chip(let)-level thermal model is then consumed by a system-level thermal analysis solution to include the packaging and PCB (the largest natural heat spreader) along with any heatsinks in the design. The system-level thermal tool then provides the engineer with thermal gradient information as well as thermal stress calculations. Additionally, an updated chip(let) thermal map is generated. This map can then be fed back into the chip(let)-level EM-IR tool, which can then more accurately perform chip power analysis and IR drop analysis. Here again, the importance of modeling at the system level is paramount.</p>
+</div>
+</div>
+<div class="section">
+
+    <style>
+        #anchid-2051363261 {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        @media screen and (min-width: 767px) {
+        #anchid-2051363261 {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        }
+    </style>
+    
+
+
+
+    
+        
+            
+        
+    
+
+    
+        
+    
+
+
+
+    <div class="newgrid-container  no-border " id="anchid-2051363261" style="background-color:#FFFFFF; ">
+        <div>
+            
+			
+				<div class="row ">
+					<!-- inner columns -->
+					
+						<div class="col-sm-12 resource-template-img-r">
+							<div class="image parbase section"><div class="imageCusWrap-SId-2050593763_1033 image-r-component" data-custom-width="auto" data-custom-height="auto" data-custom-fullwidth="true">
+    <a href="#" data-toggle="modal" data-target="#image-component-lightbox">
+    		<img class=" light-box-image img-comp" role="presentation" alt="" title="" src="/content/dam/cadence-www/global/en_US/images/resources/whitepaper/changing-system-design-and-analysis-2.png"/>
+			</a>
+    <div style="width:100%;text-align:left;" class="caption">
+           
+                Figure 2: System-level electrothermal analysis</div>
+    </div>
+
+<style type="text/css">
+    .imageCusWrap-SId-2050593763_1033 img {
+    	
+    		object-fit: cover;
+    		width: 100%;	
+    	
+    }
+    .imageCusWrap-SId-2050593763_1033 { 
+        text-align:left;
+        padding: 0px 0px 30px 0px;
+        border: 0;
+        margin: auto;
+    };
+    @media screen and (min-width: 768px) {
+        .imageCus-SId-2050593763_1033 { 
+        	padding: 0px 0px 30px 0px;
+         }
+    }
+
+
+</style>
+</div>
+
+
+						</div>
+					
+				</div>
+			
+            
+			
+        </div>
+    </div>
+</div>
+<div class="richtext section"><div style="display: block;">
+  <p>To summarize, the slowdown of Moore’s Law was well anticipated and prompted many leading-edge companies to look towards going beyond it. Recouping non-recurring engineering (NRE) costs for low-volume chip production when designing a complex SoC at the latest node became almost impossible for small-scale companies. Department of Defense (DoD) companies realized this early and are leading the way in finding design alternatives for single monolithic SoCs. Today’s advanced IC packaging is about adding value to end products and contributing to improved PPA. Electronic product design companies are leveraging packaging technologies to create value and differentiation from their competitors, with multichip(let) solutions focusing on a “More than Moore” vision. In other words, when cost and low volume came into play, the system in package (SiP) became the ideal alternative to designing an advanced-node monolithic SoC. Gordon Moore foresaw this possibility of the disaggregated design approach and predicted that “It may prove to be more economical to build large systems out of smaller functions, which are separately packaged and interconnected.”</p>
+</div>
+</div>
+<div class="dividerModule section">
+
+<div class="divider-line">
+</div>
+</div>
+
+
+						</div>
+					
+				</div>
+			
+            
+			
+        </div>
+    </div>
+</div>
+<div class="section">
+
+    <style>
+        #chiplets-and-heterogeneous-integration {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        @media screen and (min-width: 767px) {
+        #chiplets-and-heterogeneous-integration {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        }
+    </style>
+    
+
+
+
+    
+        
+            
+        
+    
+
+    
+        
+    
+
+
+
+    <div class="newgrid-container  no-border align-left" id="chiplets-and-heterogeneous-integration" style="background-color:#FFFFFF; ">
+        <div>
+            <div class="row title-row">
+                <div class="col-xs-12 col-sm-10 col-md-8 ">
+
+					
+
+					<h2>
+						Chiplets and Heterogeneous Integration
+					</h2>
+					
+				</div>
+			</div>
+			
+				<div class="row ">
+					<!-- inner columns -->
+					
+						<div class="col-sm-12">
+							<div class="richtext section"><div style="display: block;">
+  <p>A chiplet is a physically realized and tested (hardened) IP with a standard communication interface manufactured in a silicon wafer to reduce cost by increasing the manufacturing yield and reusability across applications. The chiplet-based architecture allows designers to leverage IP without regard to the node or technology on which it is manufactured. Designers can focus solely on their IP or the value-add they bring to the design. These chiplet-based designs can be built on different materials such as silicon, glass, and even laminate. The result is a high-performance pseudo-SoC built at a lower cost in less time. The reusability of chiplet helps in cost reduction during design and improving yield.</p>
+<p>The term “heterogeneous integration” has been widely adopted to describe a disaggregated SoC architecture built from multiple chiplets (Figure 3). A chiplet-based design is like a SiP except for multiple IP in the form of chiplets are integrated on a single substrate instead of the usual SiP approach of integrating multiple bare dies (including 3D stacking) on a single substrate. But it is also similar to designing a small PCB, as each chiplet will be built with a common/known communication interface such as PCI Express (PCIe), HBM, or AIB. The value proposition that heterogeneous integration offer is:</p>
+</div>
+</div>
+<div class="content-list section">
+
+  
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 content-list-items selected-icon">
+			
+			
+            	<ul class="list-items R-2054826001 list-icons-lg list-icons-sm">
+<li><span class="icons"> <img src="/content/dam/cadence-www/global/en_US/images/site-images/blog-test/blue-bit.svg" role="presentation"/></span>Flexibility in picking the best process node for the IP—especially for SerDes I/O, RF, and analog IP that do not need to be on the “core” process node</li>
+<li><span class="icons"> <img src="/content/dam/cadence-www/global/en_US/images/site-images/blog-test/blue-bit.svg" role="presentation"/></span>Better yield due to small die size</li>
+<li><span class="icons"> <img src="/content/dam/cadence-www/global/en_US/images/site-images/blog-test/blue-bit.svg" role="presentation"/></span>Shorter IC design cycle and integration complexity by using pre-existing chiplets</li>
+<li><span class="icons"> <img src="/content/dam/cadence-www/global/en_US/images/site-images/blog-test/blue-bit.svg" role="presentation"/></span>High-performance 3D die stacking techniques for better integration with the chip system and power/performance integration</li>
+<li><span class="icons"> <img src="/content/dam/cadence-www/global/en_US/images/site-images/blog-test/blue-bit.svg" role="presentation"/></span>Accelerated speed</li>
+<li><span class="icons"> <img src="/content/dam/cadence-www/global/en_US/images/site-images/blog-test/blue-bit.svg" role="presentation"/></span>Lower development cost offered by modular integration fLower manufacturing costs by purchasing known-good die (KGD)</li>
+<li><span class="icons"> <img src="/content/dam/cadence-www/global/en_US/images/site-images/blog-test/blue-bit.svg" role="presentation"/></span>Volume manufacturing cost advantage when the same chiplet(s) are used in many designs</li>
+</ul>
+
+			
+        </div>
+    </div>
+</div>
+</div>
+<div class="section">
+
+    <style>
+        #anchid-2053671754 {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        @media screen and (min-width: 767px) {
+        #anchid-2053671754 {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        }
+    </style>
+    
+
+
+
+    
+        
+            
+        
+    
+
+    
+        
+    
+
+
+
+    <div class="newgrid-container  no-border " id="anchid-2053671754" style="background-color:#FFFFFF; ">
+        <div>
+            
+			
+				<div class="row ">
+					<!-- inner columns -->
+					
+						<div class="col-sm-12 resource-template-img-r">
+							<div class="image parbase section"><div class="imageCusWrap-SId1930803180_676 image-r-component" data-custom-width="auto" data-custom-height="auto" data-custom-fullwidth="true">
+    <a href="#" data-toggle="modal" data-target="#image-component-lightbox">
+    		<img class=" light-box-image img-comp" role="presentation" alt="" title="" src="/content/dam/cadence-www/global/en_US/images/resources/whitepaper/changing-system-design-and-analysis-3.png"/>
+			</a>
+    <div style="width:100%;text-align:left;" class="caption">
+           
+                Figure 3: Disaggregated SoC</div>
+    </div>
+
+<style type="text/css">
+    .imageCusWrap-SId1930803180_676 img {
+    	
+    		object-fit: cover;
+    		width: 100%;	
+    	
+    }
+    .imageCusWrap-SId1930803180_676 { 
+        text-align:left;
+        padding: 0px 0px 30px 0px;
+        border: 0;
+        margin: auto;
+    };
+    @media screen and (min-width: 768px) {
+        .imageCus-SId1930803180_676 { 
+        	padding: 0px 0px 30px 0px;
+         }
+    }
+
+
+</style>
+</div>
+
+
+						</div>
+					
+				</div>
+			
+            
+			
+        </div>
+    </div>
+</div>
+<div class="richtext section"><div style="display: block;">
+  <p>Many leading semiconductor manufacturers are exploring this space. The Intel CO-EMIB heterogenous packaging platform allows deploying EMIB and Foveros together in the same package. Intel Omni-Directional Interconnect (ODI) allows top-packaged chips to communicate with other chips horizontally, similar to EMIB, or vertically, through TSVs, similar to Foveros. TSMC’s Chip-on-Wafer-on-Substrate (CoWoS) is another platform for heterogeneous integration.&nbsp;</p>
+</div>
+</div>
+<div class="dividerModule section">
+
+<div class="divider-line">
+</div>
+</div>
+
+
+						</div>
+					
+				</div>
+			
+            
+			
+        </div>
+    </div>
+</div>
+<div class="section">
+
+    <style>
+        #where-do-we-go-from-here {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        @media screen and (min-width: 767px) {
+        #where-do-we-go-from-here {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        }
+    </style>
+    
+
+
+
+    
+        
+            
+        
+    
+
+    
+        
+    
+
+
+
+    <div class="newgrid-container  no-border align-left" id="where-do-we-go-from-here" style="background-color:#FFFFFF; ">
+        <div>
+            <div class="row title-row">
+                <div class="col-xs-12 col-sm-10 col-md-8 ">
+
+					
+
+					<h2>
+						Where Do We Go from Here?
+					</h2>
+					
+				</div>
+			</div>
+			
+				<div class="row ">
+					<!-- inner columns -->
+					
+						<div class="col-sm-12">
+							<div class="richtext section"><div style="display: block;">
+  <p>Even though designs are being built today with multiple chiplets, most chiplet-based designs are developed at vertically integrated companies that are designing both the chiplets and the modularized or disaggregated SoCs. To move chiplet-based architectures into the mainstream, chiplets need to become widely available, and the vision of commercialized chiplets will require IP providers to devise a suitable business model. One way to propel this vision is the development and documen-tation of chiplet standards, such as I/O pitch, communication interface and corresponding “compliance kit,” and thermal power model. Several organizations, including U.S. government programs and standards bodies such as Open Compute Project/Open Domain-Specific Architecture (OCP/ODSA), are actively working towards closing the chiplet gap.</p>
+<p>It is exciting that the ecosystem is changing. Large semiconductor foundries are now offering their versions of advanced packaging, and many ways of supporting design teams like reference flows and process design kits (PDKs) are becoming part of the design environment. These concepts have been typically lacking in the packaging community as a whole. Cadence has worked with many of the leading foundries and outsourced semiconductor assembly and test companies (OSATs) to develop&nbsp;multi-chip(let) packaging reference flows and package assembly design kits. The acceptability of lower performance, higher power consumption, and a larger area of chiplet-based architectures by a generation of SoC engineers who have put in tremendous value on the ideal PPA (Table 1) is still a question that we need to wait and watch.</p>
+</div>
+</div>
+<div class="tableComponent section">
+
+  
+
+
+
+<div class="container-fluid">
+    <div class="row vip-table-container">
+            
+            
+                <div class="tablewrapper" style="overflow-x:auto">
+                    <table cellpadding="1" cellspacing="0" border="0" class="vip-table">
+<tbody><tr><th scope="col" style="text-align: center;">&nbsp;</th>
+<th scope="col" style="text-align: center;">Monolithic SoC</th>
+<th style="text-align: center;">Chiplet-Based</th>
+</tr><tr><td style="text-align: center;">Cost</td>
+<td style="text-align: center;">High</td>
+<td style="text-align: center;">&nbsp;</td>
+</tr><tr><td style="text-align: center;">Effort</td>
+<td style="text-align: center;">High</td>
+<td style="text-align: center;">&nbsp;</td>
+</tr><tr><td style="text-align: center;">Risk</td>
+<td style="text-align: center;">High</td>
+<td style="text-align: center;">&nbsp;</td>
+</tr><tr><td style="text-align: center;">Power</td>
+<td style="text-align: center;">&nbsp;</td>
+<td style="text-align: center;">Acceptable?</td>
+</tr><tr><td style="text-align: center;">Performance</td>
+<td style="text-align: center;">&nbsp;</td>
+<td style="text-align: center;">Acceptable?&nbsp;</td>
+</tr><tr><td style="text-align: center;">Area</td>
+<td style="text-align: center;">&nbsp;</td>
+<td style="text-align: center;">Acceptable?</td>
+</tr></tbody></table>
+<div style="width: 100%; text-align: left; font-family: rubik-regular,meiryo,osaka,Arial,serif; font-weight: 400; font-size: 14px; line-height: 18px; letter-spacing: .04em; color: #707070; padding-top: 20px;" class="caption"><i>Table 1: Hurdles for chips to move to mainstream design</i></div>
+
+                </div>
+            
+            <div class="vip-table-container pagination">
+                
+            </div>
+
+    </div>
+</div>
+
+<style>
+    .vip-table-container .show-more-height { display: none; }
+</style>
+
+</div>
+<div class="dividerModule section">
+
+<div class="divider-line">
+</div>
+</div>
+
+
+						</div>
+					
+				</div>
+			
+            
+			
+        </div>
+    </div>
+</div>
+<div class="section">
+
+    <style>
+        #the-evolution-of-chiplets {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        @media screen and (min-width: 767px) {
+        #the-evolution-of-chiplets {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        }
+    </style>
+    
+
+
+
+    
+        
+            
+        
+    
+
+    
+        
+    
+
+
+
+    <div class="newgrid-container  no-border align-left" id="the-evolution-of-chiplets" style="background-color:#FFFFFF; ">
+        <div>
+            <div class="row title-row">
+                <div class="col-xs-12 col-sm-10 col-md-8 ">
+
+					
+
+					<h2>
+						The Evolution of Chiplets
+					</h2>
+					
+				</div>
+			</div>
+			
+				<div class="row ">
+					<!-- inner columns -->
+					
+						<div class="col-sm-12">
+							<div class="richtext section"><div style="display: block;">
+  <p>The transition to a chiplet-based architecture is a more subtle change if you consider the evolution of semiconductor packaging over nearly five decades (Figure 4), with heterogeneously designed integrated multi-chip products along for most of that time. EDA companies started to develop tools for advanced packaging in the early 1990s, around the time the ball grid array (BGA) provided a high-performance, small form-factor option to the mechanical lead frame package.</p>
+<p>Multi-chip modules (MCM) date back to the 1960s, which is still common for some applications. The term SiP began to replace the term MCM in the late 1990s as wafer-level testing became ubiquitous, and the KGD problem that plagued MCM design started to become less of an issue. This is also about the time that package designers started stacking die, which clearly shows that 3D stacking is not new to package designers. In the early-mid 2000s, RF modules started to move to the laminate BGA packages that are very common in today’s smartphones and watches. Moving to the current generation of advanced multi-chip packaging, silicon substrates now provide a high-density alternative to organic substrates with the introduction of through-silicon vias (TSVs). The earliest example of leveraging TSV-based silicon interposer technology was the re-partitioned Xilinx FPGA. Today, this technology is most commonly referred to as 2.5D-IC packaging.</p>
+<p>Ten years ago, semiconductor foundries extended back-end design into silicon-based advanced packaging solutions. The foundry-based approach of high-density RDL also drove renewed interest in fan-out wafer-level packaging (FOWLP) and now, with support for multiple dies, interest is at an all-time high. Additionally, to further increase bandwidth, 3D-IC packaging, meaning wafer-on-wafer or chip-on-wafer stacking, has a new life.</p>
+<p>The chiplet trend (Figure 4) shows that next-generation chiplet-based technologies are just a new way of partitioning logic that aligns nicely with advancements in package manufacturing technologies.</p>
+</div>
+</div>
+<div class="section">
+
+    <style>
+        #anchid1926570942 {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        @media screen and (min-width: 767px) {
+        #anchid1926570942 {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        }
+    </style>
+    
+
+
+
+    
+        
+            
+        
+    
+
+    
+        
+    
+
+
+
+    <div class="newgrid-container  no-border " id="anchid1926570942" style="background-color:#FFFFFF; ">
+        <div>
+            
+			
+				<div class="row ">
+					<!-- inner columns -->
+					
+						<div class="col-sm-12 resource-template-img-r">
+							<div class="image parbase section"><div class="imageCusWrap-SId1927340439_195 image-r-component" data-custom-width="auto" data-custom-height="auto" data-custom-fullwidth="true">
+    <a href="#" data-toggle="modal" data-target="#image-component-lightbox">
+    		<img class=" light-box-image img-comp" role="presentation" alt="" title="" src="/content/dam/cadence-www/global/en_US/images/resources/whitepaper/changing-system-design-and-analysis-4.png"/>
+			</a>
+    <div style="width:100%;text-align:left;" class="caption">
+           
+                Figure 4: Evolution of advanced multi-chip(let) packaging technologies</div>
+    </div>
+
+<style type="text/css">
+    .imageCusWrap-SId1927340439_195 img {
+    	
+    		object-fit: cover;
+    		width: 100%;	
+    	
+    }
+    .imageCusWrap-SId1927340439_195 { 
+        text-align:left;
+        padding: 0px 0px 0px 0px;
+        border: 0;
+        margin: auto;
+    };
+    @media screen and (min-width: 768px) {
+        .imageCus-SId1927340439_195 { 
+        	padding: 0px 0px 0px 0px;
+         }
+    }
+
+
+</style>
+</div>
+
+
+						</div>
+					
+				</div>
+			
+            
+			
+        </div>
+    </div>
+</div>
+<div class="dividerModule section">
+
+<div class="divider-line">
+</div>
+</div>
+
+
+						</div>
+					
+				</div>
+			
+            
+			
+        </div>
+    </div>
+</div>
+<div class="section">
+
+    <style>
+        #tools-and-flows-for-heterogeneous-integration {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        @media screen and (min-width: 767px) {
+        #tools-and-flows-for-heterogeneous-integration {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        }
+    </style>
+    
+
+
+
+    
+        
+            
+        
+    
+
+    
+        
+    
+
+
+
+    <div class="newgrid-container  no-border align-left" id="tools-and-flows-for-heterogeneous-integration" style="background-color:#FFFFFF; ">
+        <div>
+            <div class="row title-row">
+                <div class="col-xs-12 col-sm-10 col-md-8 ">
+
+					
+
+					<h2>
+						Tools and Flows for Heterogeneous Integration
+					</h2>
+					
+				</div>
+			</div>
+			
+				<div class="row ">
+					<!-- inner columns -->
+					
+						<div class="col-sm-12">
+							<div class="richtext section"><div style="display: block;">
+  <p>The transition to a chiplet-based approach introduces new challenges in EDA tools for both chip designers and package designers. Package designers are required to familiarize themselves with requirements such as layout versus schematic (LVS) and smart metal balancing for performing layout and verification of silicon substrates. Chip designers must handle requirements for defining and managing top-level connectivity when moving from designing a single device to designing and/or integrating multiple devices. Testing is another area that changes significantly when designing multiple chiplets in a 3D stack. For example, testing the chiplet in the top of the stack that may not have any connections to the outside world. The bottom line is that laying-out and verifying designs with multiple chiplets will introduce new challenges for both the IC design team and the package designers. Design tools and methodologies that have been extended to support multiple chiplets play a crucial role in the success or failure of the project.</p>
+<p>From an EDA tool provider perspective, it is important to develop cross-domain design flows that provide users with a platform to seamlessly plan, design, analyze, and verify across chiplet, interposer, package substrate, and board. This platform should provide many unique capabilities for designing multi-chiplet-based packages (Figure 5), starting with a single logical hierarchical representation of the complete multi-chiplet design, from the transistor level of each chiplet up to the full system-level design. This system-level schematic is the basis for seamless LVS and functional verification that ideally includes layout parasitics across chiplets, interposers, and package substrates. It should even extend to the PCB if the user desires.</p>
+</div>
+</div>
+<div class="section">
+
+    <style>
+        #anchid1935804915 {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        @media screen and (min-width: 767px) {
+        #anchid1935804915 {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        }
+    </style>
+    
+
+
+
+    
+        
+            
+        
+    
+
+    
+        
+    
+
+
+
+    <div class="newgrid-container  no-border " id="anchid1935804915" style="background-color:#FFFFFF; ">
+        <div>
+            
+			
+				<div class="row ">
+					<!-- inner columns -->
+					
+						<div class="col-sm-12 resource-template-img-r">
+							<div class="image parbase section"><div class="imageCusWrap-SId1936574413_825 image-r-component" data-custom-width="auto" data-custom-height="auto" data-custom-fullwidth="true">
+    <a href="#" data-toggle="modal" data-target="#image-component-lightbox">
+    		<img class=" light-box-image img-comp" role="presentation" alt="" title="" src="/content/dam/cadence-www/global/en_US/images/resources/whitepaper/changing-system-design-and-analysis-5.png"/>
+			</a>
+    <div style="width:100%;text-align:left;" class="caption">
+           
+                Figure 5: Multi-chip(let) complete design solution</div>
+    </div>
+
+<style type="text/css">
+    .imageCusWrap-SId1936574413_825 img {
+    	
+    		object-fit: cover;
+    		width: 100%;	
+    	
+    }
+    .imageCusWrap-SId1936574413_825 { 
+        text-align:left;
+        padding: 0px 0px 30px 0px;
+        border: 0;
+        margin: auto;
+    };
+    @media screen and (min-width: 768px) {
+        .imageCus-SId1936574413_825 { 
+        	padding: 0px 0px 30px 0px;
+         }
+    }
+
+
+</style>
+</div>
+<div class="richtext section"><div style="display: block;">
+  <p>A novel approach to chiplet/package co-design can also be enabled as part of this holistic, system-level design platform. Finally, multiple electromagnetic field solvers, including finite element method (FEM) and method of moments (MoM), must be integrated into the flow, allowing streamlined device modeling and layout parasitic extraction for both on-chiplet and off-chiplet geometries. There should be automation that seamlessly stitches the electrical models back into the golden hierarchical system-level schematic. Such a platform would provide designers with an easy way to transition into the world of chiplet-based architectures.</p>
+</div>
+</div>
+
+
+						</div>
+					
+				</div>
+			
+            
+			
+        </div>
+    </div>
+</div>
+<div class="dividerModule section">
+
+<div class="divider-line">
+</div>
+</div>
+
+
+						</div>
+					
+				</div>
+			
+            
+			
+        </div>
+    </div>
+</div>
+<div class="section">
+
+    <style>
+        #conclusion {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        @media screen and (min-width: 767px) {
+        #conclusion {
+        padding-top: 0px;
+        padding-bottom: 0px;
+        }
+        }
+    </style>
+    
+
+
+
+    
+        
+            
+        
+    
+
+    
+        
+    
+
+
+
+    <div class="newgrid-container  no-border align-left" id="conclusion" style="background-color:#FFFFFF; ">
+        <div>
+            <div class="row title-row">
+                <div class="col-xs-12 col-sm-10 col-md-8 ">
+
+					
+
+					<h2>
+						Conclusion
+					</h2>
+					
+				</div>
+			</div>
+			
+				<div class="row ">
+					<!-- inner columns -->
+					
+						<div class="col-sm-12">
+							<div class="richtext section"><div style="display: block;">
+  <p>From the system-level design framework discussed above, the user should be able to design and/or import multiple chips or chiplets across any technology or node. The designer would then instantiate each chiplet schematic symbol into the top system-level schematic, where additional package-/board-level devices could easily be added from the system-level library. This schematic serves multiple purposes, including system-aware functional simulation, and maybe most importantly, it provides the golden netlist required to perform LVS checking of the complete system-level design. This methodology gives the designer system-level signoff confidence at the same level they have when signing off on their chiplet.</p>
+</div>
+</div>
+<div class="dividerModule section">
+
+<div class="divider-line">
+</div>
+</div>
+
+
+						</div>
+					
+				</div>
+			
+            
+			
+        </div>
+    </div>
+</div>
+
+
+						</div>
+					
+				</div>
+			
+            
+			
+        </div>
+    </div>
+</div>
+
+
+						</div>
+					
+				</div>
+			
+            
+			
+        </div>
+    </div>
+</div>
+
+
+						</div>
+					
+				</div>
+			
+            
+			
+        </div>
+    </div>
+</div>
+
+</div>
+<div class="code section">
+<div style="display: block;">
+
+   
+       <script type="cfaf8ea0b094d96883133b69-text/javascript">
+$(function() {
+    $columnstitle = $('.right-side-column .newgrid-container .title-row > div');
+    $columnstitle.each(function(){
+        if ( $(this).hasClass('col-sm-10') ) {
+             $(this).removeClass('col-sm-10').removeClass('col-md-8');
+        }
+    })
+    if ( $('.videoCarousel').length >= 1 ){
+        $('.videoCarousel > .container-fluid .row > div').removeClass('col-md-10').removeClass('col-md-push-1');
+    }
+    if ( $('.featured-image-r-component').length >= 1) {
+        $('.featured-image-r-component .image-r-component').each(function(){
+               $(this).closest('.row').removeClass('row');
+                $('.caption', $(this)).removeAttr('style').css('padding-left', 0).css('padding-right', 0).css('text-align', 'left');
+                $('.caption', $(this)).addClass('col-xs-12 col-sm-10 col-sm-push-1');
+                $('.caption', $(this)).wrapAll('<div class="container-fluid"></div>');
+        });
+    }
+});
+</script>
+   
+</div></div>
+
+
+                
+  
+
+            </div>
+        </div>  
+    </div>  
+
+    <!--  Section 2   -->
+      
+
+    <!--  Section 3   -->
+      
+
+    <!--  Section 4   -->
+      
+
+    <!--  Section 5   -->
+      
+
+    <!--  Section 6   -->
+      
+
+</div>
+
+
+		 <div id="getTop" style="display: block;"></div>
+    </div>
+    
+<footer>
+  <!--<div data-sly-unwrap data-sly-call=""></div>-->
+  <div id="footer" role="navigation" aria-label="footer navigation" class="container-fluid">
+    <div class="row">
+        <div class="col col-sm-12 col-md-4 col-lg-3 awards-box">
+            <div class="row">
+                <div class="ft-promo flex noindex col-xs-12 col-sm-5 col-md-10 col-lg-12  promowithborder">
+                    <div class="ft-promo-img" style="min-width: 82px;max-width: 82px;height: 100%;">
+                        <img data-src="/content/dam/cadence-www/global/en_US/images/site-images/common/footer-fortune-2025.jpg" alt="Fortune: 100 Best Companies to Work for 2025" style="height: auto; width: 100%;"/>    
+                    </div>
+                    
+                    <div class="ft-infobox noindex">
+                        <p>A Great Place to Do Great Work!</p>
+                        <p>Tenth year on the FORTUNE 100 list</p>
+                    </div>
+                </div>
+
+                <div class="ft-promo flex noindex col-xs-12 col-sm-5 col-md-10 col-lg-12 promowithborder top-spacer">
+                    <div class="ft-promo-img" style="min-width: 82px;max-width: 82px;height: 100%;"> 
+                        <img data-src="/content/dam/cadence-www/global/en_US/images/site-images/common/wsj.svg" alt="Wall Street Journal Best Managed Companies" style="height: auto; width: 100%;"/>    
+                    </div>
+                    <div class="ft-infobox noindex">
+                        <p>The Wall Street Journal</p>
+                        <p>Best Managed Companies</p>
+                    </div>
+                </div>
+
+                <div class="ft-promo flex noindex col-xs-12 col-sm-2 col-md-10 col-lg-12 top-spacer no-image">
+                    <div class="ft-promo-img" style="min-width: 82px;max-width: 82px;height: 100%;">
+                    </div>
+                    <div class="ft-infobox noindex">
+                        <a href="/en_US/home/company/culture.html" target="_self"><span>Our Culture</span></a>
+                        <a href="/en_US/home/company/careers.html" target="_self"><span>Join The Team</span></a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+    
+        
+        <div class="col col-xs-12 col-sm-3 col-md-2 col-lg-2 col-lg-offset-1 noindex">
+            <h3 class="title-footer-column">
+               <span class="title-footer-column"> Products</span>
+               <a href="#" role="button" aria-expanded="false" class="title-footer-column">Products</a>
+            </h3>
+            
+            <ul class="ft-column">
+                
+                    <li>
+                        
+                        
+                            <a href="/en_US/home/tools/custom-ic-analog-rf-design.html" target="_self"> Custom IC and RF</a>
+                        
+                    </li>
+                
+                    <li>
+                        
+                        
+                            <a href="/en_US/home/tools/digital-design-and-signoff.html" target="_self"> Digital Design and Signoff</a>
+                        
+                    </li>
+                
+                    <li>
+                        
+                        
+                            <a href="/en_US/home/tools/ic-package-design-and-analysis.html" target="_self"> IC Package</a>
+                        
+                    </li>
+                
+                    <li>
+                        
+                        
+                            <a href="/en_US/home/tools/silicon-solutions.html" target="_self"> Silicon Solutions</a>
+                        
+                    </li>
+                
+                    <li>
+                        
+                        
+                            <a href="/en_US/home/tools/pcb-design-and-analysis.html" target="_self"> PCB Design</a>
+                        
+                    </li>
+                
+                    <li>
+                        
+                        
+                            <a href="/en_US/home/tools/system-analysis.html" target="_self"> System Analysis</a>
+                        
+                    </li>
+                
+                    <li>
+                        
+                        
+                            <a href="/en_US/home/tools/system-design-and-verification.html" target="_self"> Verification</a>
+                        
+                    </li>
+                
+                    <li>
+                        
+                        
+                            <a href="/en_US/home/tools/tools-a-z.html" target="_self"> All Products</a>
+                        
+                    </li>
+                 
+            </ul>
+        </div>
+        
+    
+        
+        
+        <div class="col col-xs-12 col-sm-3 col-md-2 col-lg-2 noindex">
+            <h3 class="title-footer-column">
+               <span class="title-footer-column"> Company</span>
+               <a href="#" role="button" aria-expanded="false" class="title-footer-column">Company</a>
+            </h3>
+            
+            <ul class="ft-column">
+                
+                    <li>
+                        
+                        
+                            <a href="/en_US/home/company.html" target="_self"> About Us</a>
+                        
+                    </li>
+                
+                    <li>
+                        
+                        
+                            <a href="/en_US/home/company/leadership-team.html" target="_self"> Leadership Team</a>
+                        
+                    </li>
+                
+                    <li>
+                        
+                        
+                            <a href="https://investor.cadence.com/" target="_blank"> Investor Relations</a>
+                        
+                    </li>
+                
+                    <li>
+                        
+                        
+                            <a href="/en_US/home/alliances.html" target="_self"> Alliances</a>
+                        
+                    </li>
+                
+                    <li>
+                        
+                        
+                            <a href="/en_US/home/alliances/channel-partner.html" target="_self"> Channel Partners</a>
+                        
+                    </li>
+                
+                    <li>
+                        
+                        
+                            <a href="/en_US/home/company/technology-partner.html" target="_self"> Technology Partners</a>
+                        
+                    </li>
+                
+                    <li>
+                        
+                        
+                            <a href="/en_US/home/company/careers.html" target="_self"> Careers</a>
+                        
+                    </li>
+                
+                    <li>
+                        
+                        
+                            <a href="/en_US/home/company/cadence-academic-network.html" target="_self"> Cadence Academic Network</a>
+                        
+                    </li>
+                
+                    <li>
+                        
+                        
+                            <a href="/en_US/home/supplier.html" target="_self"> Supplier</a>
+                        
+                    </li>
+                
+            </ul>
+        </div>
+    
+        
+        
+        <div class="col col-xs-12 col-sm-3 col-md-2 col-lg-2 noindex">
+            <h3 class="title-footer-column">
+               <span class="title-footer-column"> Media Center</span>
+               <a href="#" role="button" aria-expanded="false" class="title-footer-column">Media Center</a>
+            </h3>
+            
+            <ul class="ft-column">
+                
+                    <li>
+                        
+                        
+                            <a href="/en_US/home/company/events.html" target="_self"> Events</a>
+                        
+                    </li>
+                
+                    <li>
+                        
+                        
+                            <a href="/en_US/home/company/newsroom.html" target="_self"> Newsroom</a>
+                        
+                    </li>
+                
+                    <li>
+                        
+                        
+                            <a href="/en_US/home/company/designed-with-cadence.html" target="_self"> Designed with Cadence</a>
+                        
+                    </li>
+                
+                    <li>
+                        
+                        
+                            <a href="https://community.cadence.com/cadence_blogs_8/" target="_blank"> Blogs</a>
+                        
+                    </li>
+                
+                    <li>
+                        
+                        
+                            <a href="https://community.cadence.com/cadence_technology_forums/f" target="_blank"> Forums</a>
+                        
+                    </li>
+                
+                    <li>
+                        
+                        
+                            <a href="/en_US/home/explore.html" target="_self"> Glossary</a>
+                        
+                    </li>
+                
+                    <li>
+                        
+                        
+                            <a href="/en_US/home/resources.html" target="_self"> Resources</a>
+                        
+                    </li>
+                
+            </ul>
+        </div>
+    
+        
+        
+        <div class="col col-xs-12 col-sm-3 col-md-2 col-lg-2 noindex">
+            <h3 class="title-footer-column">
+               <span class="title-footer-column"> Contact Us</span>
+               <a href="#" role="button" aria-expanded="false" class="title-footer-column">Contact Us</a>
+            </h3>
+            
+            <ul class="ft-column">
+                
+                    <li>
+                        
+                        
+                            <a href="/en_US/home/support.html" target="_self"> Customer Support</a>
+                        
+                    </li>
+                
+                    <li>
+                        
+                        
+                            <a href="/en_US/home/company/newsroom/media-resources.html" target="_self"> Media Relations</a>
+                        
+                    </li>
+                
+                    <li>
+                        
+                        
+                            <a href="/en_US/home/company/contact-us.html" target="_self"> Global Office Locator</a>
+                        
+                    </li>
+                
+                    <li>
+                        
+                        
+                            <a href="https://www5.cadence.com/info_security_lp.html" target="_blank"> Information Security</a>
+                        
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+    <!-- Modal for subscription -->
+    
+    <!-- commented subscription new design CDNCOM-8938 -->
+   <!-- <div class="modal fade" id="subscriptionConfirm" aria-label="Stay Connected Dialog Confirmation"  tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog vertical-align-center" role="document">
+            
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="container-fluid">
+                      <div class="row">
+                        <div class="col-xs-10">
+                          <h4 class="modal-title" id="subscriptionConfirm-title">Sign up to receive the latest Cadence news</h4>
+                        </div>
+                        <div class="col-xs-2 modal-close-box">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="fal fa-times fa-lg" aria-hidden="true"></span></button>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="noindex modal-body text-center">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <p>Please confirm to enroll for subscription!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer-subscription">
+                    <button type="button" data-dismiss="modal" class="btn btn-confirm-subscription" id="confirmSubmit">CONFIRM</button>
+                    <button type="button" data-dismiss="modal" class="btn btn-cancel-subscription">CANCEL</button>
+                </div>
+            </div>
+        </div>
+    </div>
+-->
+    <div class="modal fade" id="myNewSubscriptionModal" tabindex="-1" role="dialog" aria-hidden="true" aria-label="Stay Connected Dialog Confirmation">
+        <div class="modal-dialog vertical-align-center" role="document">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="container-fluid">
+                      <div class="row">
+                        <div class="col-xs-10">
+                          <h2 class="modal-title" id="myNewSubscriptionModal-title">Sign up to receive the latest Cadence news</h2>
+                        </div>
+                        <div class="col-xs-2 modal-close-box">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="fal fa-times fa-lg"></i></button>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="noindex modal-body text-center">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <p>Thank you for subscribing. You will get an email to confirm your subscription.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Subscribe -->
+    <div class="row">
+        <div class="col-xs-12">
+            
+        </div>
+    </div>
+    <div class=" ft-subscription">
+        <div class="row">
+            <div class="col col-sm-12 col-md-4 col-lg-3"></div>
+           
+
+            
+
+
+            <div class="col-sm-6 col-md-4 col-lg-4 col-lg-offset-1 noindex">
+                <div class="ft-social flex noindex">
+                        <label>Connect with us</label>
+                        <ul class="socialicon">
+                            <li>
+                                <a href="https://www.facebook.com/CadenceDesign" target="_blank" aria-label="Link to Facebook" role="button" class="socialfb">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://twitter.com/cadence" target="_blank" aria-label="Link to X" role="button" class="socialx">
+                                    <svg version="1.1" id="Layer_1" role="presentation" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24" style="width:22px" xml:space="preserve">
+                                        <path class="st0" d="M17.4,22.7L1.2,1.2h5.4l16.2,21.5H17.4z"/>
+                                        <path class="st0" d="M22,1.2l-8.5,9.2"/>
+                                        <path class="st0" d="M2,22.7l8.5-9.1"/>
+                                    </svg>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.linkedin.com/company/Cadence" target="_blank" aria-label="Link to LinkedIn" role="button">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="http://www.youtube.com/user/CadenceDesign" target="_blank" aria-label="Link to YouTube" role="button">
+                                    <i class="fab fa-youtube"></i>
+                                </a>
+                            </li>
+                            
+                        </ul>
+
+                </div> 
+            </div>
+  
+            <div class="col-sm-6 col-md-4 col-lg-4 ">
+                <div class="ft-subscribe flex">
+                    <div id="subscriptionFm" name="subscriptionFm" class="form-inline">
+                        <label class="subscription-title" id="title-subscriptionFm">Sign up to receive the latest Cadence news</label>
+                        <div id="subscription-container" class="inputgroup bottomtext">
+                            <div id="footer-input-container" class="inputgroup-container">
+                            <div class="floatinput-container">
+                                <input id="subscri" name="subscri" type="text" class="floatinput empty" aria-labelledby="email-caption" autocomplete="email"/>
+                                <label id="email-caption" class="caption" for="subscri">Email Address<span class="requiredmark" aria-label="required">*</span>
+                               </label>
+                               <svg id="error-close-button" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E00732" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            </div>
+                            
+                            <button class="subscribe-btn" id="confirmSubmit">Subscribe</button>
+                            </div>
+                            <div style="display:flex;flex-direction:row;flex-grow:1;">
+                            <legend class="witherror"><span id="subsErrMsg"></span></legend>
+                            
+                        </div>           
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+  
+
+</div>
+
+<style>
+
+
+footer .ft-social ul.socialicon li a.socialbili:hover svg path {
+    fill: #4bace6;
+}
+
+
+
+footer .col div.ft-promo {
+    flex-direction: row;
+}
+
+footer .col div.ft-promo .ft-infobox>p {
+    color: #5E6366;
+    font-family: "Rubik-Regular","Meiryo","Osaka",Arial,serif;
+    font-size: 14.4px;
+    line-height: 20px;
+    letter-spacing: 0.576px;
+    margin: 0;
+    margin-top: 10px;
+}
+footer .col div.ft-promo .ft-infobox>p:first-child {
+    color: #34393D;
+    font-size: 18px;
+    font-family: "Rubik-Regular","Meiryo","Osaka",Arial,serif;
+    line-height: 25.2px;
+    letter-spacing: -0.36px;
+    margin-top: 0;  
+}
+
+
+footer .col div.ft-promo.promowithborder {
+    padding: 0 15px 26px 15px;
+    margin: 0;
+    border: 0;
+}
+
+
+
+@media screen and (max-width: 767px) {
+
+    footer .awards-box {
+        padding: 0 15px !important;
+    }
+
+    footer .col div.ft-promo.promowithborder {
+        padding: 0 15px 26px 15px;
+        margin: 0;
+        border-bottom: 1px solid #D7DDE0;
+    }
+    footer .col div.ft-promo.top-spacer {
+        padding-top: 26px;
+    }
+    footer .col div.ft-promo.no-image {
+    padding: 26px 15px 26px 15px;
+    margin: 0;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    footer .col div.ft-promo .ft-infobox>p {
+        max-width: 150px;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    footer .col div.ft-promo.promowithborder {
+        padding: 0 0 26px 0;
+        margin: 0 15px;
+        border-bottom: 1px solid #D7DDE0;
+    }
+    footer .col div.ft-promo.top-spacer {
+        padding-top: 26px;
+    }
+}
+
+
+@media (min-width: 768px) and (max-width: 991px) {
+    footer .awards-box {
+        padding-bottom: 5px;
+        border-bottom: 1px solid #D7DDE0;
+        margin-bottom: 25px;
+    }
+
+    footer .no-image .ft-promo-img {
+        display: none;
+    }
+    footer .col div.ft-promo.no-image .ft-infobox {
+        margin-left: 0;
+    }
+}
+
+
+</style>
+
+  
+    
+    
+<script src="/etc.clientlibs/cadence-www/clientlibs/cadence-www/clientlibs_page_specific/jQuery_formValidator.min.7c36049c2cb8aaeacebd7e2232a1a669.js" type="cfaf8ea0b094d96883133b69-text/javascript"></script>
+
+
+   
+  <!-- Footer legal -->
+<div class="ft-legal">
+    <div class="container-fluid">
+        <div class="ft-legal-wrapper flex noindex">
+            <div class="region-container col-xs-12 col-sm-3 col-md-4 col-lg-3">
+            
+                <div class="region-menu"> 
+                    <a href="#" id="region-select-btn" aria-label="Select Country or Region" role="button" aria-expanded="false">
+                      <i data-feather="globe"></i>
+                    
+                        <div class="lang-name"> English <span class="lang-locale">(US)</span></div>  
+
+                     
+                    </a>
+                    <ul class="region-list" style="display:none">
+                        <li class="selected">
+                            <a href="#" tabindex="-1" target="_self"><div class="region-subtitle"> English</div><div class="region-title">United States</div>  </a>
+                            </li>
+                        
+                      
+                    
+                      <li>
+                        <a href="/zh_CN/home.html" target="_self"><div class="region-subtitle" lang="CN">简体中文</div><div class="region-title">China</div></a>
+                      </li>
+                    
+                      <li>
+                        <a href="/ja_JP/home.html" target="_self"><div class="region-subtitle" lang="JP">日本語</div><div class="region-title">Japan</div></a>
+                      </li>
+                    
+                      <li>
+                        <a href="/ko_KR/home.html" target="_self"><div class="region-subtitle" lang="KR">한국어</div><div class="region-title">Korea </div></a>
+                      </li>
+                    
+                      <li>
+                        <a href="/zh_TW/home.html" target="_self"><div class="region-subtitle" lang="TW">繁體中文</div><div class="region-title">Taiwan</div></a>
+                      </li>
+                    
+                   
+                    </ul>
+                </div>
+            
+            
+                
+                <p>© 2025 Cadence Design Systems, Inc. All Rights Reserved. </p>
+            
+                
+                
+            
+                
+                
+            
+                
+                
+            
+                
+                
+            
+                
+                
+            
+                
+                
+            
+        </div>
+        <div class="ft-legal-list-container ">
+            <ul class="ft-legal-list noindex">
+            
+                
+            
+                <li>
+                    <a href="/en_US/home/company/u-s-trademarks.html" target="_self">US Trademarks</a>
+                </li>
+            
+                <li>
+                    <a href="/en_US/home/terms-of-use-agreement.html" target="_self">Terms of Use</a>
+                </li>
+            
+                <li>
+                    <a href="/en_US/home/privacy.html" target="_self">Privacy</a>
+                </li>
+            
+                <li>
+                    <a href="/en_US/home/privacy/cookie-policy.html" target="_self">Cookie Policy</a>
+                </li>
+            
+                <li>
+                    <a href="/en_US/home/accessibility.html" target="_self">Accessibility</a>
+                </li>
+            
+                <li>
+                    <a href="https://www5.cadence.com/CCPA_Opt_Out.html" target="_blank">Do Not Sell or Share My Personal Information</a>
+                </li>
+            </ul>
+        </div>
+            
+                
+                <p class="sx-device-only">© 2025 Cadence Design Systems, Inc. All Rights Reserved. </p>
+            
+                
+                
+            
+                
+                
+            
+                
+                
+            
+                
+                
+            
+                
+                
+            
+                
+                
+            
+        </div>
+    </div>
+</div>
+</footer>
+
+ <script defer type="cfaf8ea0b094d96883133b69-text/javascript">
+
+$(document).ready(function() {
+    function ShowPersonalizationModal(data)  {
+        $('.modal-personalization').append(data);
+        $('.modal-personalization .modal').modal('show');
+    }
+    $('body').on('show.bs.modal', function (e) {
+        if($("#dummy-empty-link-to-handle-modal").length > 0){
+
+        }else{
+          setTimeout(function(){
+            $('<a id="dummy-empty-link-to-handle-modal" href="#mainBody" class="sr-only" style="position:fixed;top: 50%; left: 50%;">go to top</a>').insertAfter( $(e.target) )
+          },100)
+          setTimeout(function(){$("#dummy-empty-link-to-handle-modal").on( "focus", function(e){
+            e.stopPropagation()
+            e.stopImmediatePropagation()            
+            var activeModal = $(".modal.fade.in")
+	        $(".close",activeModal).focus()
+            
+          } )},200)
+        }
+      })
+      $('body').on('hidden.bs.modal', function (e) {
+        if($("#dummy-empty-link-to-handle-modal").length > 0){
+          $("#dummy-empty-link-to-handle-modal").remove();
+        }
+      })
+	function getCookie(cookie) {
+      var name = cookie + "=";
+      var decodedCookie = decodeURIComponent(document.cookie);
+      var ca = decodedCookie.split(';');
+      for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+          c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+        }
+      }
+      return "";
+    }
+    var vselector = getCookie('vselector');
+	var vpath = getCookie('vpath');
+    if (vpath!=undefined && vpath!="") { 
+        var assetPath = '/etc/clientlibs/cadence-www/modal.views.modal.html?assetType=video&assetPath=' + vpath;
+        url = assetPath;
+        $.ajax({
+            url: url,
+            dataType: 'html',
+            success: function(data, textStatus, jqXHR) {
+                ShowPersonalizationModal(data);
+            }
+        });
+        $('body').append('<div class="modal-personalization"></div>');
+        $('body').on('show.bs.modal','.modal-personalization .modal', function () {
+            var $video = $('.LimelightEmbeddedPlayer object,.LimelightEmbeddedPlayer video,#LimelightEmbeddedPlayer video', this.$modal);
+            if ($video.length) {
+                var that = this;
+                var player = $video.closest('div.limelight-player').attr('id');
+                playerid = document.getElementById(player);
+                playerid.doPlay();
+            }
+        });
+
+		//stop video and audio on closing the modal
+        $('body').on('hide.bs.modal','.modal-personalization .modal', function () {
+            var $video = $('#LimelightEmbeddedPlayer video', this.$modal);
+            vidyardUI = $('.vidyard-player-embed' , this.$modal);
+            if ($video.length || vidyardUI.length) {
+              if (vidyardUI.length) {
+                var vidyardContainer = $('.vidyard-player-container')
+                var uiid = vidyardContainer.attr('uuid');
+                player = VidyardV4.api.getPlayersByUUID(uiid)[0];
+                VidyardV4.api.destroyPlayer(player);
+                $('#LimelightEmbeddedPlayer').closest('.modal').remove();
+              };
+            }
+            // if (LimelightPlayer != undefined) {
+            //     var playerPlug = LimelightPlayer.doGetVjsPlayer();    
+            // }
+            // //var $video = $('.LimelightEmbeddedPlayer object,.LimelightEmbeddedPlayer video, #LimelightEmbeddedPlayer video', this.$modal);
+            //   if ( playerPlug.remainingTime() == 0 ){
+            //     playerPlug.currentTime(0);
+            //   }
+            //   else {
+            //     var player = $video.closest('div.limelight-player').attr('id');
+            //     playerid = document.getElementById(player);
+            //     playerid.doPause();  
+            //   }
+              //delete modal information
+            $('.modal-personalization').empty();
+        });
+
+
+       // $.removeCookie('vpath', {domain:'.cadence.com', path:'/'});
+        //$.removeCookie('vselector', {domain:'.cadence.com', path:'/'})
+
+         document.cookie = 'vpath=; Max-Age=-99999999;'; 
+		 document.cookie = 'vselector=; Max-Age=-99999999;'; 
+
+         $.removeCookie("vpath");
+		 $.removeCookie("vselector");	
+    }
+});
+
+
+</script>
+
+
+    
+
+
+<!-- AdobeAnalytics done via SiteCate
+<div data-sly-unwrap data-sly-resource="analytics"></div>
+-->
+
+<!-- Setting up datalayer for Harmony : Start -->
+<script defer type="cfaf8ea0b094d96883133b69-text/javascript">
+	$(document).ready(function(){
+        if ($(".productSection .productTarget")[0]) {
+    		var productName = "Chiplets and Heterogeneous Packaging Are Changing System Design and Analysis";
+            var productId = "Chiplets and Heterogeneous Packaging Are Changing System Design and Analysis";
+            var value = {
+                    event :  "prodView",
+                    eventName: "productView",
+                    eventText: "product viewed",
+					ecommerce: {
+						productView: {
+							products :[{
+								id: productId,
+								name: productName
+							}]
+						}
+					}
+                }
+				digitalData.events = value;
+                dataLayer.push(value);
+		};
+        $('.productSection a.productTarget').on('click', function() {
+            var productName = $( this ).attr("data-productName");
+            var productId = $(this).attr('href').substr($(this).attr("href").indexOf("SKU=")+4);
+            var value = {
+                    event :  "startfreeTrial",
+                    eventName: "freeTrialInitation",
+                    eventText: "free trial initiated",
+                    ecommerce: {
+                        startTrial: {
+                            products :[{
+                                id: productId,
+                                name: productName
+                            }]
+                        }
+                    }
+                }
+				digitalData.events = value;
+				dataLayer.push(value);
+          });
+     });
+</script>
+<!-- Setting up datalayer for Harmony : End -->
+
+
+
+
+<!--
+<div data-sly-unwrap data-sly-use.marketoutils="com.cadence.aem.services.models.general.utils.MarketoUtils">
+<script type="text/javascript" src=""></script>
+<script type="text/javascript" src=""></script>
+</div>
+-->
+
+
+  
+  
+    
+    
+<script src="/etc.clientlibs/cadence-www/clientlibs/cadence-www/clientlibs_compiled.min.1cf2a84ddf8c41697b7dc168cf5f896b.js" type="cfaf8ea0b094d96883133b69-text/javascript"></script>
+
+
+
+  
+  <script type="cfaf8ea0b094d96883133b69-text/javascript">var s_account="cadencemossprod";</script>
+  <script type="cfaf8ea0b094d96883133b69-text/javascript">var s_account=s_account.replace("\x2D","-");</script>
+
+  <script defer type="cfaf8ea0b094d96883133b69-text/javascript">var gacode="UA\u002D17120465\u002D1";</script>
+  <script defer type="cfaf8ea0b094d96883133b69-text/javascript">var gacode=gacode.replace("\x2D","-");</script>
+
+  <script defer type="cfaf8ea0b094d96883133b69-text/javascript">var marketocode="070\u002DBII\u002D206";</script>
+  <script defer type="cfaf8ea0b094d96883133b69-text/javascript">var marketocode=marketocode.replace("\x2D","-");</script>
+
+
+
+
+    
+<script src="/etc.clientlibs/cadence-www/clientlibs/cadence-www/clientlibs_cadence.min.fe35bde7d944b78f64b512fa30a33b33.js" type="cfaf8ea0b094d96883133b69-text/javascript"></script>
+
+
+
+
+
+
+
+
+
+<!-- Adobe AdobeAnalytics code-->
+
+
+  
+    
+  
+
+
+
+
+    
+<script src="/etc.clientlibs/cadence-www/clientlibs/cadence-www/clientlibs_page_specific/clientlibs_nextgen_generic.min.2b15cd70ab0599d7bf9c5d17cf6c3d19.js" type="cfaf8ea0b094d96883133b69-text/javascript"></script>
+
+
+
+
+<!-- CDNCOM-9810 -->
+
+
+ 
+    	<script data-cfasync="false" type="text/javascript">_satellite.pageBottom();</script>
+    
+<script src="/cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js" data-cf-settings="cfaf8ea0b094d96883133b69-|49" defer></script></body>
+
+</html>

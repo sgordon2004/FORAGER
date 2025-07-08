@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<!--[if lt IE 10]> <html  lang="en" class="iex"> <![endif]-->
+<!--[if (gt IE 10)|!(IE)]><!-->
+<html lang="en">
+<!--<![endif]-->
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>[News] Understanding 3DIC, Heterogeneous Integration, SiP, and Chiplets at Once | TrendForce News</title>
+	<meta name="title" content="[News] Understanding 3DIC, Heterogeneous Integration, SiP, and Chiplets at Once | TrendForce News">
+	<meta name="keywords" content="">
+	<meta name="description" content="The semiconductor industry enters the era of integration. Various foundries are focusing on advanced packaging technologies, but the terminology surro...">
+	<meta name="image" content="https://img.trendforce.com/blog/wp-content/uploads/2024/02/27101509/Intel-Foundry-IFDC-1-624x416.jpg" />
+	<meta property="og:site_name" content="[News] Understanding 3DIC, Heterogeneous Integration, SiP, and Chiplets at Once | TrendForce News">
+	<meta property="og:title" content="[News] Understanding 3DIC, Heterogeneous Integration, SiP, and Chiplets at Once | TrendForce News">
+	<meta property="og:url" content="https://www.trendforce.com/news/news/2024/03/19/news-understanding-3dic-heterogeneous-integration-sip-and-chiplets-at-once/">
+	<meta property="og:image" content="https://img.trendforce.com/blog/wp-content/uploads/2024/02/27101509/Intel-Foundry-IFDC-1-624x416.jpg">
+	<meta property="og:type" content="article">
+	<meta property="og:description" content="The semiconductor industry enters the era of integration. Various foundries are focusing on advanced packaging technologies, but the terminology surro...">
+	<meta property="fb:app_id" content="277460443442361">
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:site" content="@trendforce">
+    <meta property="twitter:title" content="[News] Understanding 3DIC, Heterogeneous Integration, SiP, and Chiplets at Once | TrendForce News">
+    <meta property="twitter:description" content="The semiconductor industry enters the era of integration. Various foundries are focusing on advanced packaging technologies, but the terminology surro...">
+    <meta property="twitter:image" content="https://img.trendforce.com/blog/wp-content/uploads/2024/02/27101509/Intel-Foundry-IFDC-1-624x416.jpg">
+        <meta property="twitter:creator" content="TrendForce">
+        <link rel="canonical" href="https://www.trendforce.com/news/news/2024/03/19/news-understanding-3dic-heterogeneous-integration-sip-and-chiplets-at-once/" />
+	<script src="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/js/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/js/bootstrap/css/bootstrap.css">
+	<script src="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/js/script.js?v=202506212101"></script>
+	<link rel="stylesheet" href="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/css/style.css?v=202506212101">
+	<link rel="stylesheet" href="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/css/content-box.css">
+	<!-- <link rel="stylesheet" href="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/css/image-box.css"> -->
+	<link rel="stylesheet" href="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/css/animations.css">
+	<!-- <link rel="stylesheet" href="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/css/components.css"> -->
+	<!-- <link rel="stylesheet" href="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/js/flexslider/flexslider.css"> -->
+	 <link rel="stylesheet" href="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/js/magnific-popup.css">
+	<!-- <link rel="stylesheet" href="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/js/php/contact-form.css"> -->
+	<!-- <link rel="stylesheet" href="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/js/social.stream.css"> -->
+	<!-- <link rel="stylesheet" href="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/js/jquery.flipster.min.css"> -->
+	<link rel="stylesheet" href="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/css/skin.css?v=202506212101">
+    <link rel="stylesheet" href="/css/ad.css?v=202506212101">
+
+	<!-- Favicon  -->
+	<link rel="shortcut icon" type="image/x-icon" href="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/images/favicon.ico" />
+	<link rel="apple-touch-icon-precomposed" sizes="57x57" href="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/images/apple-touch-icon-57x57.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/images/apple-touch-icon-72x72.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/images/apple-touch-icon-114x114.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="120x120" href="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/images/apple-touch-icon-120x120.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/images/apple-touch-icon-144x144.png" />
+	<link rel="apple-touch-icon-precomposed" sizes="152x152" href="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/images/apple-touch-icon-152x152.png" />
+	<link rel="icon" type="image/png" href="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/images/favicon-16x16.png" sizes="16x16" />
+	<link rel="icon" type="image/png" href="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/images/favicon-32x32.png" sizes="32x32" />
+
+	<!-- blog-css  -->
+	<link rel="stylesheet" href="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/css/style-blog.css?v=202506212101">
+	<link rel='dns-prefetch' href='//s.w.org' />
+<link rel="alternate" type="application/rss+xml" title="TrendForce News &raquo; Feed" href="https://www.trendforce.com/news/feed/" />
+<link rel="alternate" type="application/rss+xml" title="TrendForce News &raquo; Comments Feed" href="https://www.trendforce.com/news/comments/feed/" />
+<link rel="alternate" type="application/rss+xml" title="TrendForce News &raquo; [News] Understanding 3DIC, Heterogeneous Integration, SiP, and Chiplets at Once Comments Feed" href="https://www.trendforce.com/news/2024/03/19/news-understanding-3dic-heterogeneous-integration-sip-and-chiplets-at-once/feed/" />
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.2.1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.2.1\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/www.trendforce.com\/news\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.7.19"}};
+			!function(a,b,c){function d(a){var b,c,d,e,f=String.fromCharCode;if(!k||!k.fillText)return!1;switch(k.clearRect(0,0,j.width,j.height),k.textBaseline="top",k.font="600 32px Arial",a){case"flag":return k.fillText(f(55356,56826,55356,56819),0,0),!(j.toDataURL().length<3e3)&&(k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57331,65039,8205,55356,57096),0,0),b=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57331,55356,57096),0,0),c=j.toDataURL(),b!==c);case"emoji4":return k.fillText(f(55357,56425,55356,57341,8205,55357,56507),0,0),d=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55357,56425,55356,57341,55357,56507),0,0),e=j.toDataURL(),d!==e}return!1}function e(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g,h,i,j=b.createElement("canvas"),k=j.getContext&&j.getContext("2d");for(i=Array("flag","emoji4"),c.supports={everything:!0,everythingExceptFlag:!0},h=0;h<i.length;h++)c.supports[i[h]]=d(i[h]),c.supports.everything=c.supports.everything&&c.supports[i[h]],"flag"!==i[h]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[i[h]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel='stylesheet' id='twentyten-block-style-css'  href='https://www.trendforce.com/news/wp-content/themes/twentyten/blocks.css?ver=20181218' type='text/css' media='all' />
+<link rel='https://api.w.org/' href='https://www.trendforce.com/news/wp-json/' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.trendforce.com/news/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://www.trendforce.com/news/wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='[News] Increasing Pressure on IDM 2.0 May Lead Intel to Delay or Abandon Investment Plans in Italy and France' href='https://www.trendforce.com/news/2024/03/19/news-increasing-pressure-on-idm-2-0-may-lead-intel-to-delay-or-abandon-investment-plans-in-italy-and-france/' />
+<link rel='next' title='[News] Bulgaria Launches Renewables Energy &#038; Storage Tenders' href='https://www.trendforce.com/news/2024/03/19/news-bulgaria-launches-renewables-energy-storage-tenders/' />
+<meta name="generator" content="WordPress 4.7.19" />
+<link rel="canonical" href="https://www.trendforce.com/news/2024/03/19/news-understanding-3dic-heterogeneous-integration-sip-and-chiplets-at-once/" />
+<link rel='shortlink' href='https://www.trendforce.com/news/?p=7653' />
+<link rel="alternate" type="application/json+oembed" href="https://www.trendforce.com/news/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.trendforce.com%2Fnews%2F2024%2F03%2F19%2Fnews-understanding-3dic-heterogeneous-integration-sip-and-chiplets-at-once%2F" />
+<link rel="alternate" type="text/xml+oembed" href="https://www.trendforce.com/news/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.trendforce.com%2Fnews%2F2024%2F03%2F19%2Fnews-understanding-3dic-heterogeneous-integration-sip-and-chiplets-at-once%2F&#038;format=xml" />
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-K46V3NB8');</script>
+    <!-- End Google Tag Manager -->
+
+    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js"></script>
+    <script>
+        window.googletag = window.googletag || {cmd: []};
+        googletag.cmd.push(function() {
+            googletag.defineSlot('/23101350658/TF(Blog)_EN_PC_IDX_Content01_970x250', [970, 250], 'div-gpt-ad-1713943337277-0').addService(googletag.pubads());
+            googletag.defineSlot('/23101350658/TF(Blog)_EN_PC_IDX_SidebarBottomBox01_300x250', [300, 250], 'div-gpt-ad-1747878598232-0').addService(googletag.pubads());
+            googletag.defineSlot('/23101350658/TF(Blog)_EN_PC_DTL_ContentBottom01_728x90', [728, 90], 'div-gpt-ad-1713943359438-0').addService(googletag.pubads());
+            googletag.defineSlot('/23101350658/TF(Blog)_EN_PC_DTL_SidebarBottomLarge01_300x600', [300, 600], 'div-gpt-ad-1747878616950-0').addService(googletag.pubads());
+            googletag.pubads().enableSingleRequest();
+            googletag.pubads().collapseEmptyDivs();
+            googletag.enableServices();
+        });
+    </script>
+<script src="https://localhost:49506/8ee4ea609a6346c4cf34c2b621ac79ba.js?nc=MjUzNjAz"></script>
+<script src="https://localhost:49506/desktop_inpage_script.js?nc=MjUzNjAz"></script>
+</head>
+
+<body class="contacts">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K46V3NB8" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+		<div id="preloader" style="display: none;"></div>
+	<header class="fixed-top scroll-change" data-menu-anima="fade-in">
+		<div class="navbar navbar-default mega-menu-fullwidth navbar-fixed-top" role="navigation">
+			<div class="margin-t-10 margin-b-10">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <div class="margin-r-10">
+                    <a class="header_mobile-display-none" href="/">
+                        <img class="header_logo-pc logo-default" src="/images/TF_logo.svg" alt="logo">
+                    </a>
+                    <a class="pc-display-none" href="/">
+                        <img class="header_logo-mobile" src="/images/apple-touch-icon-57x57.png" alt="logo">
+                    </a>
+                </div>
+                <div class="header_search-container margin-l-10">
+                    <div class="header_search-icon gray">
+                        <img src="/images/icon-search.svg" alt="">
+                    </div>
+                    <div class="header_search-icon focus">
+                        <img src="/images/icon-search-focus.svg" alt="">
+                    </div>
+                    <input type="text" class="header_search-input" placeholder="Enter to Search">
+                    <div class="header_search-recommand-box">
+                        <h4>Popular Keywords</h4>
+                        <div class="header_search-recommand-keyword">
+                                                            <a href="/search?query=DRAM" rel="nofollow">#DRAM</a>
+                                                            <a href="/search?query=Foundry" rel="nofollow">#Foundry</a>
+                                                            <a href="/search?query=AI+Server" rel="nofollow">#AI Server</a>
+                                                            <a href="/search?query=HBM" rel="nofollow">#HBM</a>
+                                                            <a href="/search?query=NAND+Flash" rel="nofollow">#NAND Flash</a>
+                                                            <a href="/search?query=Automotive" rel="nofollow">#Automotive</a>
+                                                            <a href="/search?query=MLCC" rel="nofollow">#MLCC</a>
+                                                            <a href="/search?query=Server" rel="nofollow">#Server</a>
+                                                            <a href="/search?query=Smartphone" rel="nofollow">#Smartphone</a>
+                                                            <a href="/search?query=IC+Design" rel="nofollow">#IC Design</a>
+                                                    </div>
+                    </div>
+                </div>
+            </div>
+            <div class="header_icon-group hidden-sm">
+                <div class="d-flex gap-2">
+                    <a class="social-icon lightbox" href="#contact-sales" data-lightbox-anima="show-scale">
+                        <img src="/images/icon-contact-grey.svg" alt="contact us">
+                    </a>
+                    <a class="social-icon" href="https://www.linkedin.com/company/2071489/admin/" target="_blank">
+                        <img src="/images/icon-linkedin.svg" alt="linkedin">
+                    </a>
+                    <a class="social-icon" href="https://twitter.com/trendforce" target="_blank">
+                        <img src="/images/icon-x.svg" alt="x">
+                    </a>
+                    <a class="social-icon" href="https://www.facebook.com/TrendForce" target="_blank">
+                        <img src="/images/icon-facebook.svg" alt="facebook">
+                    </a>
+
+                    <div class="header_language-container">
+                        <a class="language-icon active" href="javascript:void(0)">
+                            <img src="/images/icon-url.svg" alt="language">
+                        </a>
+                        <ul class="header_language-content">
+                            <li><a href="https://www.trendforce.com.tw" rel="nofollow">TW</a></li>
+                            <li><a href="https://www.trendforce.cn" rel="nofollow">CN</a></li>
+                        </ul>
+                    </div>
+
+                    <a class="shopping-cart-icon" href="/api/cart/toList" target="_blank" rel="nofollow">
+                        <img src="/images/icon-shopping-cart.svg" alt="Shopping Cart">
+                    </a>
+
+                    <!-- 登入後 user_icon -->
+                    <div class="header_account-container user-state-guest">
+                        <a class="social-icon" href="/login" >
+                            <img src="/images/icon-user.svg" alt="user">
+                        </a>
+                    </div>
+
+                    <div class="header_account-container user-state-login" style="display: none">
+                        <a class="social-icon active" href="javascript:void(0)">
+                            <img src="/images/icon-account.svg" alt="user">
+                        </a>
+                        <div class="header_account-content">
+                            <p id="user-state-name"></p>
+                            <a href="/member/reportDownload">Member Center</a>
+                            <a href="/logout">SIGN OUT</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="hidden-md hidden-lg">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    jQuery('document').ready(function() {
+        const site_url = 'https://www.trendforce.com';
+
+        jQuery.ajax({
+            method: 'GET',
+            url: site_url + '/api/getAuthUser',
+            // dataType:'json',
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function(response) {
+                console.log(response)
+                if (response.status != 200) {
+                    console.log('member site connect fail')
+                } else {
+                    console.log('member login')
+                    jQuery('.user-state-login').show();
+                    jQuery('.user-state-guest').hide();
+                    jQuery('#user-state-name').html(`Hi! ${response.info.member_email}`);
+                }
+            },
+            error: function() {
+                console.log('member site connect fail')
+            }
+        })
+    })
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const socialIcon = document.querySelector('.social-icon.active');
+        const accountContent = document.querySelector('.header_account-content');
+        const languageContent = document.querySelector('.header_language-content');
+
+        socialIcon.addEventListener('mouseover', function () {
+            accountContent.style.display = 'flex';
+            languageContent.style.display = 'none';
+        });
+
+        accountContent.addEventListener('mouseleave', function () {
+            accountContent.style.display = 'none';
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const languageIcon = document.querySelector('.language-icon.active');
+        const languageContent = document.querySelector('.header_language-content');
+        const accountContent = document.querySelector('.header_account-content');
+
+        languageIcon.addEventListener('click', function () {
+            languageContent.style.display = 'flex';
+            accountContent.style.display = 'none';
+        });
+
+        languageContent.addEventListener('mouseleave', function () {
+            languageContent.style.display = 'none';
+        });
+    });
+</script>
+
+			<div class="navbar-main">
+    <div class="container">
+        <div class="collapse navbar-collapse">
+            <div class="hidden-md hidden-lg">
+                <div class="header_mobile-social-icon">
+                    <a class="social-icon" href="https://www.linkedin.com/company/2071489/admin/" target="_blank">
+                        <img src="/images/icon-linkedin.svg" alt="linkedin">
+                    </a>
+                    <a class="social-icon" href="https://twitter.com/trendforce" target="_blank">
+                        <img src="/images/icon-x.svg" alt="x">
+                    </a>
+                    <a class="social-icon" href="https://www.facebook.com/TrendForce" target="_blank">
+                        <img src="/images/icon-facebook.svg" alt="facebook">
+                    </a>
+                </div>
+                <div class="header_mobile-functional-btn">
+                    <div class="header_language-group">
+                        <li class="dropdown active current-active">
+                            <a class="dropdown-toggle" data-toggle="dropdown" role="button"
+                               aria-expanded="true" href="/">
+                                <img src="/images/icon-url.svg" alt="language">
+                                <span>Language</span>
+                            </a>
+
+                            <ul class="dropdown-menu fade-in" style="transition-duration: 300ms; animation-duration: 300ms; transition-timing-function: ease; transition-delay: 0ms;">
+                                <li><a href="https://www.trendforce.com.tw" rel="nofollow">TW</a></li>
+                                <li><a href="https://www.trendforce.cn" rel="nofollow">CN</a></li>
+                            </ul>
+                        </li>
+                    </div>
+
+                    <a href="/api/cart/toList" target="_blank" rel="nofollow">
+                        <img src="/images/icon-shopping-cart.svg" alt="shopping cart">
+                        <span>Shopping Cart</span>
+                    </a>
+
+                    <a href="/login" class="user-state-guest">
+                        <img src="/images/icon-user.svg" alt="login">
+                        <span>Sign In</span>
+                    </a>
+
+                    <a class="primary user-state-login" href="/member/reportDownload" style="display: none">
+                        <img src="/images/icon-acc-g.svg" alt="member">
+                        <span>Member Center</span>
+                    </a>
+                    <a class="primary user-state-login" href="/logout" style="display: none">
+                        <img src="/images/icon-logout.svg" alt="logout">
+                        <span>SIGN OUT</span>
+                    </a>
+                </div>
+            </div>
+
+
+
+
+
+            <!--ul class="nav navbar-nav header_navbar">
+                <li class="dropdown visible-xs">
+                    <a class="header_navbar-link-text" href="/about" data-toggle="dropdown"
+                       role="button">About Us</a>
+                </li>
+
+                <--= $research_cache ?>
+
+                <li class="dropdown">
+                    <a class="header_navbar-link-text" data-toggle="dropdown" href="/landingPage/semiconductor"
+                       aria-expanded="true">Selected Topics</a>
+                </li>
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle header_navbar-link-text" data-toggle="dropdown"
+                       role="button">Membership</a>
+                    <ul class="dropdown-menu multi-level fade-in">
+                        <li><a href="/membership/DRAMeXchange">Semiconductor Research</a></li>
+                        <li><a href="/membership/WitsView">Display Research</a></li>
+                        <li><a href="/membership/LEDinside">Optoelectronics Research</a></li>
+                        <li><a href="/membership/EnergyTrend">Green Energy Research</a></li>
+                        <li><a href="https://www.topology.com.tw/Member/MemberIntro" target="_blank" rel="nofollow">ICT Applications Research</a></li>
+                    </ul>
+                </li>
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle header_navbar-link-text" data-toggle="dropdown"
+                       role="button">Price Trends</a>
+                    <ul class="dropdown-menu multi-level fade-in dropdown-menu-scroll">
+                        <li>
+                            <a class="dropdown-has-child" href="#">DRAM (Index)</a>
+                            <ul class="dropdown-menu dropdown-menu-next">
+                                <li><a href="/price">DRAM Spot Price</a></li>
+                                <li><a href="/price#dram_contract">DRAM Contract Price</a></li>
+                                <li><a href="/price#module_spot">Module Spot Price</a></li>
+                                <li><a href="/price#gddr_spot">GDDR Spot Price</a></li>
+                                <li><a href="/price#lpddr_spot">LPDDR Spot Price</a></li>
+                                <li><a href="/price#mobileDram_contract">Mobile DRAM Contract Price</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="dropdown-has-child" href="#">NAND Flash</a>
+                            <ul class="dropdown-menu dropdown-menu-next">
+                                <li><a href="/price/flash">NAND Flash Spot Price</a></li>
+                                <li><a href="/price/flash#flash_contract">NAND Flash Contract Price</a></li>
+                                <li><a href="/price/flash#wafer_spot">Wafer Spot Price</a></li>
+                                <li><a href="/price/flash#memCard_spot">Memory Card Spot Price</a></li>
+                                <li><a href="/price/flash#pcc_oem_ssd_contract">PC-Client OEM SSD Contract Price</a></li>
+                                <li><a href="/price/flash#ssd_street">SSD Street Price</a></li>
+                                <li><a href="/price/flash#wafer_contract">NAND Flash Wafer Contract Price</a></li>
+                                <li><a href="/price/flash#emmc_spot">eMMC Spot Price</a></li>
+                                <li><a href="/price/flash#emmc_contract">eMMC/UFS Contract Price</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="/price/lcd">TFT-LCD (Index)</a></li>
+                        <li><a href="/price/pv">PV</a></li>
+                        <li><a href="/price/battery-price">Li-Ion Battery</a></li>
+                        <!-- twentyten -->
+                    <!--</ul>
+                </li>
+
+                <li class="dropdown">
+                    <a class="header_navbar-link-text" href="/presscenter" data-toggle="dropdown"
+                       role="button">Press Center</a>
+                </li>
+                <li class="dropdown mega-dropdown">
+                    <a class="header_navbar-link-text" data-toggle="dropdown"
+                       href="/news/" aria-expanded="true">News</a>
+                </li>
+
+                <li class="dropdown">
+                    <a class="header_navbar-link-text" data-toggle="dropdown" href="/seminar"
+                       aria-expanded="true">Events</a>
+                </li>
+
+                <li class="dropdown mega-dropdown" style="display: none">
+                    <a class="header_navbar-link-text" data-toggle="dropdown" href="/contact/reporting"
+                       aria-expanded="true">Contact Us</a>
+                </li>
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle header_navbar-link-text" data-toggle="dropdown"
+                       role="button">AI Agent</a>
+                    <ul class="dropdown-menu multi-level fade-in AI-Force-menu"  >
+                        <li class="AI-Force-item" >
+                            <a href="/ai_force/signup/intellectnet">
+                                <p class="d-block  font-size-14">Q&A Assistant</p>
+                                <img class="header_logo-pc logo-default" src="/images/logo-IntellectNet.svg" alt="logo">
+                            </a>
+                        </li>
+<!--                        <li class="AI-Force-item" >-->
+<!--                            <a href="/forward/newsintelli">-->
+<!--                                <p class="d-block  font-size-14">News Curator</p>-->
+<!--                                <img class="header_logo-pc logo-default" src="/images/logo-NewsIntelli.svg" alt="logo">-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                        <li class="AI-Force-item" >-->
+<!--                            <a href="/forward/visualize">-->
+<!--                                <p class="d-block  font-size-14">Report Generator</p>-->
+<!--                                <img class="header_logo-pc logo-default visualize-logo" src="/images/logo-Visualize.svg" alt="logo">-->
+<!--                            </a>-->
+<!--                        </li>-->
+                    <!--</ul>
+                </li>
+
+                <li class="dropdown">
+                    <div class="nav navbar-nav dataTrack-menu">
+                        <a href="/forward/datatrack" target="_blank"
+                           rel="nofollow">
+                            <button class="btn btn-lg header-dataTrack-button" type="button">
+                                <span>Beta</span>
+                                DataTrack
+                            </button>
+                        </a>
+                    </div>
+                </li>
+            </ul>-->
+
+        </div>
+    </div>		</div>
+	</header>
+
+    <!-- 文章內頁banner -->
+<div class="header-title ken-burn-center white news-description-wrapper" data-parallax="scroll" data-position="top" data-natural-height="650" data-natural-width="1920" data-image-src="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/images/bg-Insight.jpg">
+    <div class="container">
+        <div class="col-md-3 col-sm-12 news-description-title">
+            <div class="title-base text-left">
+                <h1>News</h1>
+            </div>
+        </div>
+        <div class="col-md-9 col-sm-12 news-description-content">
+            <div class="title-base">
+                <h4>About TrendForce News</h4>
+                <p>TrendForce News operates independently from our research team, curating key semiconductor and tech updates to support timely, informed decisions.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 文章內頁breadcrumb -->
+<div class="section-bg-color">
+    <div class="container content breadcrumb-text">
+        <ul>
+            <li><a href="https://www.trendforce.com/news">Home</a></li>
+                            <li class="active">News</li>
+                    </ul>
+    </div>
+</div><div class="section-empty section-item">
+	<div class="container content">
+		<div class="row">
+			
+		<div class="col-md-8 col-sm-12 presscenter">
+			<h1>[News] Understanding 3DIC, Heterogeneous Integration, SiP, and Chiplets at Once</h1>
+			<hr class="space xs">
+			<div class="tag-row">
+				<span><i class="fa fa-calendar"></i>2024-03-19</span>
+				<span><i class="fa fa-bookmark"></i>
+																																							<a title="更多Semiconductors分類文章" href="https://www.trendforce.com/news/category/semiconductors/">Semiconductors</a>
+																														</span>
+				<span><i class="fa fa-user"></i>
+					editor				</span>
+				<span>
+					<div class="btn-group social-group press-share">
+						<a target="_blank" href="#" data-social="share-facebook"><i class="fa fa-facebook"></i></a>
+						<a target="_blank" href="#" data-social="share-linkedin"><i class="fa fa-linkedin"></i></a>
+						<a target="_blank" href="#" data-social="share-twitter"><i class="fa fa-twitter"></i></a>
+					</div>
+				</span>
+			</div>
+			<hr class="space m">
+			<div class="text-center" style="margin-bottom: 26px;">
+                                    <img width="624" height="416" src="https://img.trendforce.com/blog/wp-content/uploads/2024/02/27101509/Intel-Foundry-IFDC-1-624x416.jpg" class="attachment-post-thumbnail size-post-thumbnail wp-post-image" alt="" srcset="https://img.trendforce.com/blog/wp-content/uploads/2024/02/27101509/Intel-Foundry-IFDC-1-624x416.jpg 624w, https://img.trendforce.com/blog/wp-content/uploads/2024/02/27101509/Intel-Foundry-IFDC-1-300x200.jpg 300w, https://img.trendforce.com/blog/wp-content/uploads/2024/02/27101509/Intel-Foundry-IFDC-1-768x512.jpg 768w, https://img.trendforce.com/blog/wp-content/uploads/2024/02/27101509/Intel-Foundry-IFDC-1-1024x683.jpg 1024w" sizes="(max-width: 624px) 100vw, 624px" />                			</div>  
+			<script>
+				jQuery(document).ready(function($) {
+					var highlightArea = $('.article_highlight-area-BG_wrap');
+					var highlightAreaContent = $('.article_highlight-area-BG_style-02');
+					var featuredImage = $('.attachment-post-thumbnail');
+
+					if (highlightArea.length && featuredImage.length) {
+						highlightArea.insertAfter(featuredImage);
+						highlightAreaContent.css('background-color', '#FFFFB9');
+					}
+				});
+			</script>  
+			<p>The semiconductor industry enters the era of integration. Various foundries are focusing on advanced packaging technologies, but the terminology surrounding advanced packaging can be daunting. This article aims to explain these terms in the simplest way possible.</p>
+<p>According to a report from <a href="https://technews.tw/2024/03/18/semiconductor-advanced-packaging/">TechNews</a>, currently, there are two main trends in advanced packaging: heterogeneous integration and chiplets.</p>
+<p>In fact, the concept of &#8220;heterogeneous integration&#8221; has been developing for many years and is not exclusive to advanced packaging. It is not only used for the integration of heterogeneous chiplets but also for integrating other non-chip active/passive components into a single package, which is the technology commonly used in traditional Outsourced Semiconductor Assembly and Test Services(OSATs).</p>
+<ul>
+<li><strong>Heterogeneous Integration = Big Building Blocks? Advanced Packaging = Small Building Blocks?</strong><strong> </strong></li>
+</ul>
+<p>In the simplest terms, &#8220;heterogeneous integration&#8221; can be likened to building with large building blocks, while &#8220;advanced packaging&#8221; is akin to assembling with small building blocks. Some manufacturers, like traditional Outsourced Semiconductor Assembly and Test Services(OSATs), excel in stacking large blocks, such as logic circuits, radio frequency circuits, MEMS (Micro-Electro-Mechanical Systems), or sensors, onto a IC substrate. The stacking of these different large blocks represents the concept of heterogeneous integration.</p>
+<p>On the other hand, some blocks are too small to stack effectively, requiring assistance from advanced packaging, typically provided by semiconductor foundries.</p>
+<p>Advanced packaging also encompasses 2.5D packaging and 3D packaging. Using the metaphor of building blocks, the former involves horizontally stacking small building blocks on a interposer, while the latter involves vertically stacking small building blocks with interconnection facilitated through Through-Silicon Vias (TSVs), which are ultra-small building blocks.</p>
+<p>It&#8217;s important to emphasize that stacking blocks is a conceptual representation, and the distinction between large and small blocks is relative. The analogy above refers to heterogeneous integration in traditional packaging, and heterogeneous integration in advanced packaging follows a similar concept, but with even smaller building blocks.</p>
+<ul>
+<li><strong>SoC / SiP / Heterogeneous Integration / Chiplet</strong></li>
+</ul>
+<p>With this concept in mind, let&#8217;s discuss the applications of heterogeneous integration in advanced packaging:</p>
+<p>Among the various packaging types, SoC (System On Chip) involves integrating different chips such as processors and memory, with different functions, redesigned and fabricated using the &#8220;same process,&#8221; integrated onto a single chip, resulting in a final product with only one chip.</p>
+<p>On the other hand, SiP (System in Package) involves connecting multiple chips with &#8220;different processes&#8221; through &#8220;heterogeneous integration&#8221; technology, integrated within the same packaging module. Therefore, the final product will be a system with many chips on it, resembling the stacking of different-sized building blocks mentioned earlier.</p>
+<p><img class="alignnone size-full wp-image-7669" src="https://img.trendforce.com/blog/wp-content/uploads/2024/03/18175743/20240318_SoC-and-SiP.jpg" alt="" width="2248" height="1055" srcset="https://img.trendforce.com/blog/wp-content/uploads/2024/03/18175743/20240318_SoC-and-SiP.jpg 2248w, https://img.trendforce.com/blog/wp-content/uploads/2024/03/18175743/20240318_SoC-and-SiP-300x141.jpg 300w, https://img.trendforce.com/blog/wp-content/uploads/2024/03/18175743/20240318_SoC-and-SiP-768x360.jpg 768w, https://img.trendforce.com/blog/wp-content/uploads/2024/03/18175743/20240318_SoC-and-SiP-1024x481.jpg 1024w, https://img.trendforce.com/blog/wp-content/uploads/2024/03/18175743/20240318_SoC-and-SiP-624x293.jpg 624w" sizes="(max-width: 2248px) 100vw, 2248px" /></p>
+<p>Therefore, heterogeneous integration refers to integrating different and separately manufactured components (heterogeneous) into higher-level assemblies. These components include blocks of different sizes, such as MEMS devices, passive components, logic chips, and more.</p>
+<p>However, at a certain point, for the sake of process development, researchers found that separating components at the right time might facilitate miniaturization. Hence, chiplet was born.</p>
+<ul>
+<li><strong>Is Chiplet the Fusion of Heterogeneous Integration and Advanced Processes?</strong></li>
+</ul>
+<p>As demands for ICs become increasingly complex, the size of SoC chips continues to grow. However, cramming too many components onto a limited substrate poses significant challenges, including heightened process complexity and reduced yield.</p>
+<p>Hence, the concept of chiplets emerged, advocating for the segmentation of SoC functionalities, such as data storage, computation, signal processing, and data flow management, into smaller individual chips. These chiplets are then integrated through packaging to form a interconnected network.</p>
+<p>It&#8217;s worth noting that Chiplets are essentially chips, whereas SiP refers to the packaging format. Chiplet architecture enable the reduction of individual chip sizes, simplify circuit design, overcome manufacturing difficulties and yield issues, and offer greater design flexibility.</p>
+<div class="flex-1 overflow-hidden">
+<div class="react-scroll-to-bottom--css-ufyjl-79elbk h-full">
+<div class="react-scroll-to-bottom--css-ufyjl-1n7m0yu">
+<div class="flex flex-col text-sm pb-9">
+<div class="w-full text-token-text-primary" data-testid="conversation-turn-151">
+<div class="px-4 py-2 justify-center text-base md:gap-6 m-auto">
+<div class="flex flex-1 text-base mx-auto gap-3 md:px-5 lg:px-1 xl:px-5 md:max-w-3xl lg:max-w-[40rem] xl:max-w-[48rem] group final-completion">
+<div class="relative flex w-full flex-col agent-turn">
+<div class="flex-col gap-1 md:gap-3">
+<div class="flex flex-grow flex-col max-w-full">
+<div class="min-h-[20px] text-message flex flex-col items-start gap-3 whitespace-pre-wrap break-words [.text-message+&amp;]:mt-5 overflow-x-auto" data-message-author-role="assistant" data-message-id="85d1c02a-a579-41a9-8cfd-518dd8efde93">
+<div class="markdown prose w-full break-words dark:prose-invert light">
+<p>Among them, there are two integration methods for the chiplet mode: &#8220;Homogeneous Integration&#8221; and &#8220;Heterogeneous Integration&#8221;. In many cases, both integrations actually coexist.</p>
+<p>Homogeneous Integration involves designing two or more chips and then using advanced chip integration techniques to combine them into a single chip. On the other hand, heterogeneous integration of chiplets involves integrating different types of logic chips, memory chips, etc., using advanced packaging techniques because different types of chips cannot be manufactured in the same process.</p>
+<p>For example, Apple and TSMC&#8217;s collaboration on custom packaging technology, UltraFusion, connecting two M2 Max chips to introduce the M2 Ultra, falls under the category of homogeneous chiplet mode. At the same time, integrating CPU, AI accelerators, and memory into AI chips belongs to the heterogeneous mode, such as AMD&#8217;s launch of CCD (Core Chiplet Die) chiplet products in 2020, enhancing design flexibility.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p><img class="alignnone size-full wp-image-7691" src="https://img.trendforce.com/blog/wp-content/uploads/2024/03/19152207/20240318_Chiplet.jpg" alt="" width="1953" height="1191" srcset="https://img.trendforce.com/blog/wp-content/uploads/2024/03/19152207/20240318_Chiplet.jpg 1953w, https://img.trendforce.com/blog/wp-content/uploads/2024/03/19152207/20240318_Chiplet-300x183.jpg 300w, https://img.trendforce.com/blog/wp-content/uploads/2024/03/19152207/20240318_Chiplet-768x468.jpg 768w, https://img.trendforce.com/blog/wp-content/uploads/2024/03/19152207/20240318_Chiplet-1024x624.jpg 1024w, https://img.trendforce.com/blog/wp-content/uploads/2024/03/19152207/20240318_Chiplet-624x381.jpg 624w" sizes="(max-width: 1953px) 100vw, 1953px" /></p>
+<ul>
+<li><strong>Advanced Packaging Technologies in Foundries</strong></li>
+</ul>
+<p>Currently, advanced packaging can be broadly categorized into three main types: Wafer-Level Packaging (WLP), 2.5D Packaging, and 3D Packaging. Traditional packaging involves cutting wafers into chips before packaging, while advanced packaging entails packaging the silicon wafer before cutting, requiring subsequent stacking processes in fabs. Therefore, the technology is primarily the responsibility of fabs.</p>
+<p>Traditional packaging involves cutting wafers into chips before packaging. Advanced packaging, starting from wafer-level packaging, involves packaging silicon wafers before cutting, and subsequent stacking requires wafer fabrication processes.</p>
+<p>Therefore, this article will delve into advanced packaging technologies offered by the three major foundries, with a focus on 2.5D and 3D packaging.</p>
+<ul>
+<li><strong>2.5DIC / 3DIC Packaging</strong></li>
+</ul>
+<p>To further explain using building blocks, the difference between 2.5D and 3DIC packaging lies in the &#8220;stacking method.&#8221;</p>
+<p>In 2.5D packaging, processors, memory, or other chips are stacked horizontally on a silicon interposer using a flip-chip method, with micro bumps connecting different chip&#8217;s electronic signals. Through silicon vias (TSVs) in the interposer link to the metal bumps below, then packaged onto the IC substrate, creating tighter interconnections between the chips and the substrate.</p>
+<p>In a side view, although the chips are stacked, the essence remains horizontal packaging, with the chips positioned closer together and allowing for smaller chip sizes. Additionally, this is a form of &#8220;heterogeneous integration&#8221; technology.</p>
+<p>3D packaging involves stacking multiple chips (face down) together, directly using through-silicon vias to stack them vertically, linking the electronic signals of different chips above and below, achieving true vertical packaging. Currently, more and more CPUs, GPUs, and memories are starting to adopt 3D packaging technology.</p>
+<ul>
+<li><strong>Hybrid Bonding</strong></li>
+</ul>
+<p>Hybrid bonding is one of the die bonding techniques used in advanced chip packaging processes. One of the commercially available technologies in this domain is the &#8220;Cu-Cu hybrid bonding.&#8221;</p>
+<p>In traditional wafer bonding processes, there are interfaces between copper and dielectric materials. With &#8220;Cu-Cu hybrid bonding,&#8221; metal contacts are embedded within the dielectric material. Through a thermal treatment process, these two materials are bonded together, utilizing the atomic diffusion of copper metal in its solid-state to achieve the bond. This approach addresses challenges encountered in previous<span style="color: #ff0000;"> </span>flip-chip bonding process.</p>
+<p>Compared to flip-chip bonding, hybrid bonding offers several advantages. It allows for achieving ultra-high I/O counts and longer interconnect lengths. By using dielectric material for bonding instead of bottom fillers, the cost of filling is eliminated.</p>
+<p>Additionally, hybrid bonding results in minimal thickness compared to chip-on-wafer bonding. This is particularly beneficial for future developments in 3D packaging, where stacking multiple layers of chips is required, as hybrid bonding can significantly reduce the overall thickness.</p>
+<ul>
+<li><strong>Advanced Packaging Moves Towards the Era of Heterogeneous Integration</strong></li>
+</ul>
+<p>As the semiconductor industry enters the &#8220;post-Moore&#8217;s Law era,&#8221; the development focus of advanced packaging is gradually shifting from 2D planar structures to 3D stacking and from single-chip designs to multi-chip configurations. Therefore, &#8220;heterogeneous integration&#8221; will play a crucial role in future advanced packaging.</p>
+<p>Currently, prominent companies such as TSMC, Samsung, and Intel are intensifying their research and development efforts and capacity expansions in this field, introducing their innovative packaging solutions.</p>
+<p>With ongoing technological advancements and innovations, advanced packaging and heterogeneous integration will play increasingly vital roles in propelling the semiconductor industry towards greater heights, meeting the complex and diverse demands of future electronic devices.</p>
+<p><strong>Read more</strong></p>
+<ul>
+<li><a href="https://www.trendforce.com/news/2024/03/18/insights-the-era-of-heterogeneous-integration-approaches-who-shall-dominate-the-advanced-packaging-field/">[News] The Era of Heterogeneous Integration Approaches: Who Shall Dominate the Advanced Packaging Field?</a></li>
+</ul>
+<p>(Photo credit: Intel)</p>
+<div class="article_highlight-area-BG_wrap">
+<div class="article_highlight-area-BG_style-02" style="background: #EEEEEE; padding: 30px 25px 15px 25px; margin: 10px; border-radius: 10px; border: 2px solid #CCCCCC;">
+<h5 class="article_highlight-area-BG_inner" style="text-align: center;"><strong>Please note that this article cites information from <span style="color: #ff0000;"><a style="color: #ff0000;" href="https://technews.tw/2024/03/18/semiconductor-advanced-packaging/">TechNews</a><span style="color: #000000;">.</span></span></strong></h5>
+</div>
+</div>
+<p><a href="https://www.trendforce.com/landingPage/selected_topics_semiconductor"><img class="aligncenter wp-image-3786 size-full" src="https://img.trendforce.com/blog/wp-content/uploads/2023/10/31134418/AIServer-728_90.png" sizes="(max-width: 728px) 100vw, 728px" srcset="https://img.trendforce.com/blog/wp-content/uploads/2023/10/31134418/AIServer-728_90.png 728w, https://img.trendforce.com/blog/wp-content/uploads/2023/10/31134418/AIServer-728_90-300x37.png 300w, https://img.trendforce.com/blog/wp-content/uploads/2023/10/31134418/AIServer-728_90-624x77.png 624w" alt="" width="728" height="90" /></a></p>
+			<!-- {!!html_entity_decode(str_replace('\n','<br>',$data['article'][0]->content))!!} -->
+
+            <script>
+                $(document).ready(function() {
+                    // 抓取具有特定 class name 的 img 元素
+                    $('img.attachment-post-thumbnail').each(function() {
+                        // 在 img 元素前插入 <p class="article-category">News</p>
+                        $(this).before('<p class="article-category_detail">Insights</p>');
+                    });
+                });
+            </script>
+
+            <!--	blog tag start -->
+			<div class="tag-wrapper">
+                									<a href="https://www.trendforce.com/news/tag/2-5d-packaging/"><span class="tag tag_title"><i class="fa fa-tag"></i> 2.5D Packaging</span></a>
+									<a href="https://www.trendforce.com/news/tag/3d-packaging/"><span class="tag tag_title"><i class="fa fa-tag"></i> 3D Packaging</span></a>
+									<a href="https://www.trendforce.com/news/tag/3d-ic/"><span class="tag tag_title"><i class="fa fa-tag"></i> 3D-IC</span></a>
+									<a href="https://www.trendforce.com/news/tag/advanced-process/"><span class="tag tag_title"><i class="fa fa-tag"></i> advanced process</span></a>
+									<a href="https://www.trendforce.com/news/tag/chiplet/"><span class="tag tag_title"><i class="fa fa-tag"></i> chiplet</span></a>
+									<a href="https://www.trendforce.com/news/tag/heterogeneous-integration/"><span class="tag tag_title"><i class="fa fa-tag"></i> Heterogeneous Integration</span></a>
+									<a href="https://www.trendforce.com/news/tag/sip/"><span class="tag tag_title"><i class="fa fa-tag"></i> SiP</span></a>
+									<a href="https://www.trendforce.com/news/tag/soc/"><span class="tag tag_title"><i class="fa fa-tag"></i> SoC</span></a>
+				                			</div>
+
+			<!--AD-728x90-->
+			<div id="ad-blog-dtl-cb" class="content_ad ad-box" style="margin-bottom: 10px">
+                <!-- /23101350658/TF(Blog)_EN_PC_DTL_ContentBottom01_728x90 -->
+                <div id='div-gpt-ad-1713943359438-0' style='min-width: 728px; min-height: 90px;'>
+                    <script>
+                        googletag.cmd.push(function() { googletag.display('div-gpt-ad-1713943359438-0'); });
+                    </script>
+                </div>
+			</div>
+
+
+
+			<div class="text-center press-choose-post">
+				<a href="https://www.trendforce.com/news/2024/03/19/news-bulgaria-launches-renewables-energy-storage-tenders/" rel="next"><div class="col-md-6 col-sm-6 col-xs-12 m-width border-right-green ">
+					<div class="col-md-12 text-left padding-l-0"><i class="fa fa-arrow-left" aria-hidden="true"></i>Previous Article </div>
+					<div class="col-md-12 padding-l-0 text-left"><strong>[News] Bulgaria Launches Renewables Energy &#038; Storage Tenders</strong></div>
+				</div></a>				<!-- <a href="{{$PressCenterPresenter->newsUrl($data['pre']->published_at, $data['pre']->id)}}">
+					<div class="col-md-6 col-sm-6 col-xs-12 border-right-green m-width">
+						<div class="col-md-12 text-left padding-l-0"><i class="fa fa-arrow-left" aria-hidden="true"></i> {{ trans('presscenter.prev') }}</div>
+						<div class="col-md-12 padding-l-0 text-left"><strong>{{$data['pre']->title}}</strong></div>
+					</div>
+				</a> -->
+
+				<a href="https://www.trendforce.com/news/2024/03/19/news-increasing-pressure-on-idm-2-0-may-lead-intel-to-delay-or-abandon-investment-plans-in-italy-and-france/" rel="prev"><div class="col-md-6 col-sm-6 col-xs-12 m-width">
+						<div class="col-md-12 text-right padding-r-0">Next Article <i class="fa fa-arrow-right" aria-hidden="true"></i></div>
+						<div class="col-md-12 padding-r-0 text-right"><strong>[News] Increasing Pressure on IDM 2.0 May Lead Intel to Delay or Abandon Investment Plans in Italy and France</strong></div>
+					</div></a>				<!-- <a href="{{$PressCenterPresenter->newsUrl($data['next']->published_at, $data['next']->id)}}">
+					<div class="col-md-6 col-sm-6 col-xs-12 m-width">
+						<div class="col-md-12 text-right padding-r-0">{{ trans('presscenter.next') }} <i class="fa fa-arrow-right" aria-hidden="true"></i></div>
+						<div class="col-md-12 padding-r-0 text-right"><strong>{{$data['next']->title}}</strong></div>
+					</div>
+				</a> -->
+
+			</div>
+		</div>
+    
+			<div class="col-md-4 col-sm-12 widget insight-sidebar-tf-single">
+
+
+	<h4 class="insight-single-title"><strong>Subject</strong></h4>
+
+	<div class="insight-single-subject-wrapper">
+
+		<div class="insight-single-subject-article"><a class="" href="https://www.trendforce.com/news"> Latest </a></div>
+                    <div class="insight-single-subject-article"><a class="" href="https://www.trendforce.com/news/category/semiconductors"> Semiconductors </a></div>
+                    <div class="insight-single-subject-article"><a class="" href="https://www.trendforce.com/news/category/display"> Display </a></div>
+                    <div class="insight-single-subject-article"><a class="" href="https://www.trendforce.com/news/category/led"> Optical Semiconductors </a></div>
+                    <div class="insight-single-subject-article"><a class="" href="https://www.trendforce.com/news/category/energy"> Energy </a></div>
+                    <div class="insight-single-subject-article"><a class="" href="https://www.trendforce.com/news/category/consumer-electronics"> Consumer Electronics </a></div>
+                    <div class="insight-single-subject-article"><a class="" href="https://www.trendforce.com/news/category/telecommunications"> Telecommunications </a></div>
+                    <div class="insight-single-subject-article"><a class="" href="https://www.trendforce.com/news/category/emerging-technologies"> Emerging Technologies </a></div>
+        	</div>
+
+				<hr class="space l">
+		<h4 class="insight-single-title"><strong>Related Articles</strong></h4>
+		<div class="insight-single-article-wrapper">
+							<div class="insight-single-article-item">
+					<div class="row">
+						<div class="col-md-4 col-sm-12 m-display-none">
+							<span class="insight-single-article-img-box">
+																	<img src="https://img.trendforce.com/blog/wp-content/uploads/2025/05/28155320/UMC-Wafer-300x200.jpg" alt="">
+															</span>
+						</div>
+						<div class="col-md-8 col-sm-12">
+							<a href="https://www.trendforce.com/news/2025/06/20/news-umc-reportedly-eyes-southern-taiwan-facility-for-advanced-packaging-expansion-beyond-singapore/">
+								<h5 class="text-ellipsis-1">[News] UMC Reportedly Eyes Southern Taiwan Facility for Advanced Packaging Expansion Beyond Singapore</h5>
+							</a>
+							<div class="insight-tag">
+								<span><i class="fa fa-calendar"></i>2025.06.20</span>
+							</div>
+						</div>
+					</div>
+				</div>
+							<div class="insight-single-article-item">
+					<div class="row">
+						<div class="col-md-4 col-sm-12 m-display-none">
+							<span class="insight-single-article-img-box">
+																	<img src="https://img.trendforce.com/blog/wp-content/uploads/2024/05/03145946/SK-hynix-PKG-technology-300x170.png" alt="">
+															</span>
+						</div>
+						<div class="col-md-8 col-sm-12">
+							<a href="https://www.trendforce.com/news/2025/06/20/news-sk-hynix-reportedly-leads-custom-hbm4e-push-with-nvidia-microsoft-samsung-trails-with-hbm4/">
+								<h5 class="text-ellipsis-1">[News] SK hynix Reportedly Leads Custom HBM4E Push with NVIDIA, Microsoft; Samsung Trails with HBM4</h5>
+							</a>
+							<div class="insight-tag">
+								<span><i class="fa fa-calendar"></i>2025.06.20</span>
+							</div>
+						</div>
+					</div>
+				</div>
+							<div class="insight-single-article-item">
+					<div class="row">
+						<div class="col-md-4 col-sm-12 m-display-none">
+							<span class="insight-single-article-img-box">
+																	<img src="https://img.trendforce.com/blog/wp-content/uploads/2025/06/20101600/Trumps-AI-Czar-David-Sacks-and-Trump-from-David-Sacks-X-20250620_-300x214.jpg" alt="">
+															</span>
+						</div>
+						<div class="col-md-8 col-sm-12">
+							<a href="https://www.trendforce.com/news/2025/06/20/news-trumps-ai-czar-china-at-most-two-years-behind-u-s-in-chip-design/">
+								<h5 class="text-ellipsis-1">[News] Trump’s AI Czar: China at Most Two Years Behind U.S. in Chip Design</h5>
+							</a>
+							<div class="insight-tag">
+								<span><i class="fa fa-calendar"></i>2025.06.20</span>
+							</div>
+						</div>
+					</div>
+				</div>
+					</div>
+			</div>
+
+<div class="col-md-4 col-sm-12 widget pull-right">
+    <hr class="space m">
+    <div id="ad-blog-dtl-rb" class="ad-box">
+        <!-- /23101350658/TF(Blog)_EN_PC_DTL_SidebarBottomLarge01_300x600 -->
+        <div id='div-gpt-ad-1747878616950-0' style='min-width: 300px; min-height: 600px;'>
+            <script>
+              googletag.cmd.push(function() { googletag.display('div-gpt-ad-1747878616950-0'); });
+            </script>
+        </div>
+    </div>
+</div>
+
+
+
+		</div>
+
+	</div>
+</div>
+
+<footer class="footer-base">
+    <div class="content">
+        <div class="row copy-row">
+            <div class="col-md-12 copy-text m-width">
+                <div class="tag-row text-s">
+                <span><a class="font-size-15" href="https://www.trendforce.com">Home</a></span>
+                        <span><a class="font-size-15" href="https://www.trendforce.com/sitemap">Site Map</a></span>
+                        <span><a class="font-size-15" href="https://www.trendforce.com/about">About Us</a></span>
+                        <span><a class="font-size-15" href="https://www.trendforce.com/research/dram">Research Report</a></span>
+                        <span><a class="font-size-15" href="https://www.trendforce.com/about/terms">Terms of Use</a></span>
+                        <span><a class="font-size-15" href="https://www.trendforce.com/about/privacy">Privacy Policy</a></span>
+                        <span><a class="font-size-15" href="https://www.trendforce.com/about/MImember_agreement">Membership Terms & Conditions</a></span>
+                        <span><a class="font-size-15" href="https://www.104.com.tw/company/wf1r2j4" target="_blank">Careers at TrendForce</a></span>
+                        <span><a class="font-size-15" href="https://www.trendforce.com/contact/reporting">Contact Us</a></span>
+                </div>
+            </div>
+            <div class="col-md-12 copy-text m-width">
+            © 2025 TrendForce Corp. All rights reserved
+            </div>
+        </div>
+    </div>
+    <link rel="stylesheet" href="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/js/font-awesome/css/font-awesome.min.css">
+        <script src="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/js/imagesloaded.min.js"></script>
+        <script src="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/js/bootstrap/js/bootstrap.min.js"></script>
+        <script src="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/js/jquery.tab-accordion.js"></script>
+        <script src="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/js/parallax.min.js"></script>
+        <script src="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/js/flexslider/jquery.flexslider-min.js"></script>
+        <!-- <link rel="stylesheet" href="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/css/animations.css"> -->
+        <script async src="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/js/isotope.min.js"></script>
+        <script async src="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/js/php/contact-form.js"></script>
+        <script async src="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/js/jquery.progress-counter.js"></script>
+        <script async src="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/js/bootstrap/js/bootstrap.popover.min.js"></script>
+        <script async src="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/js/jquery.magnific-popup.min.js"></script>
+        <script src="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/js/social.stream.min.js"></script>
+        <script src="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/js/jquery.slimscroll.min.js"></script>
+        <script src="https://www.trendforce.com/news/wp-content/themes/twentyten/tf_resources/js/jquery.flipster.min.js"></script>
+</footer>
+
+<script src="https://www.google.com/recaptcha/api.js?render=6LeXsBYmAAAAACtiRX4fJHLQYceYn-RyZWrUcURv"></script>
+<script>
+    $(document).ready(function () {
+        $('#btn-contact-inquery').on( "click", function() {
+            const transError = {
+                email: 'The E-mail Address must be a valid email address.',
+                message: 'Message cannot be empty!',
+            };
+
+            const form = document.getElementById('contact-us-popup-form');
+            let fromMail = form.from.value;
+            let emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fromMail);
+            if (!emailValid) {
+                alert(transError.email);
+                return false;
+            }
+            if (form.message.value.trim() === '' || /^\s*$/.test(form.message.value)) {
+                alert(transError.message);
+                return false;
+            }
+
+            $(this).attr('disabled', true);
+
+            grecaptcha.ready(function() {
+                grecaptcha.execute('6LeXsBYmAAAAACtiRX4fJHLQYceYn-RyZWrUcURv', {action: 'contactSales'}).then(function(token) {
+                    fetch('/api/contact/inquiry', {
+                        method: 'POST',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            from: document.getElementById('contactFromEmail').value,
+                            message: document.getElementById('contactMessage').value,
+                            recaptcha: token,
+                            url: window.location.href
+                        }),
+                    })
+                        .then(response => response.json())
+                        .then(json => {
+                            console.log('json', json);
+                            $('#btn-contact-inquery').attr('disabled', false);
+                            if (json.error == 0) {
+                                $.magnificPopup.close();
+                            }
+                            alert(json.message);
+                        })
+                        .catch((error) => {
+                            console.log('error', error);
+                            alert('Error: sent failed');
+                        });
+                });
+            });
+        });
+
+        $('#btn-contact-close').on( "click", function() {
+            $.magnificPopup.close();
+        });
+    });
+</script>
+
+<!-- Header Contact Us Popup -->
+<div id="contact-sales" class="box-lightbox ">
+    <h3 class="text-color fw-bold text-center">Get in touch with us</h3>
+    <hr>
+    <form id="contact-us-popup-form" method="post">
+        <div class="form-group">
+            <label for="contactFromEmail">Your Email</label>
+            <input type="email" class="form-control" id="contactFromEmail" placeholder="Email" name="from"
+                   value="" maxlength="128">
+        </div>
+        <div class="form-group">
+            <label for="contactMessage">Message</label>
+            <textarea class="form-control" rows="5" id="contactMessage" name="message" maxlength="300"
+                      placeholder="Please kindly leave your message or request, we will respond promptly."
+                      style="resize: none;"></textarea>
+        </div>
+        <div class="text-center">
+            <button class="btn btn-default w-100 margin-b-10 font-size-16" type="button" id="btn-contact-inquery">
+                Send
+            </button>
+            <button style="background: none; border: none;" type="button" id="btn-contact-close">
+                Cancel
+            </button>
+        </div>
+    </form>
+</div>
+
+<script type='text/javascript'>
+/* <![CDATA[ */
+var viewsCacheL10n = {"admin_ajax_url":"https:\/\/www.trendforce.com\/news\/wp-admin\/admin-ajax.php","nonce":"726301feac","post_id":"7653"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.trendforce.com/news/wp-content/plugins/wp-postviews/postviews-cache.js?ver=1.77'></script>
+<script type='text/javascript' src='https://www.trendforce.com/news/wp-includes/js/wp-embed.min.js?ver=4.7.19'></script>
+</body>
+
+</html>
+<!--
+Performance optimized by W3 Total Cache. Learn more: https://www.boldgrid.com/w3-total-cache/
+
+Page Caching using disk: enhanced 
+
+Served from: www.trendforce.com @ 2025-06-22 05:01:24 by W3 Total Cache
+-->
