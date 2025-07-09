@@ -46,7 +46,7 @@ def extract_pdf(filename, x_tolerance=2.0):
 
 def dump_pdf_text(filename, text):
     """
-    Dumps the extracted text to a file in the pdf_text directory.
+    Dumps the extracted text to a file in the pdf_text directory and a .json metadata file.
 
     Args:
         text (str): The extracted text to be saved.
@@ -55,6 +55,23 @@ def dump_pdf_text(filename, text):
     with open(filepath, 'w') as f:
         f.write(text)
     print(f"Extracted text saved to {filepath}")
+
+    cleaned = "\n".join(line.strip() for line in text.splitlines() if line.strip())
+
+    # Save .json
+    json_output = {
+        "source_filename": filepath.name,
+        "title": Path(filepath).stem,
+        "content": cleaned,
+        "content_length": len(cleaned),
+        "num_paragraphs": cleaned.count("\n")
+    }
+
+    json_dir.mkdir(exist_ok=True)
+    json_path = json_dir / (Path(filename).stem + ".json")
+    with open(json_path, "w", encoding="utf-8") as jf:
+        json.dump(json_output, jf, indent=2)
+    print(f"[OK] Saved text and JSON for {filename}")
 
 def extract_all_pdfs(x_tolerance=2.0):
     """
@@ -68,24 +85,9 @@ def extract_all_pdfs(x_tolerance=2.0):
             text = extract_pdf(file_path.name, x_tolerance=x_tolerance)
             dump_pdf_text(file_path.name, text)
 
+
+
 # HTML
-
-# def extract_structured_blocks(soup):
-#     # Try known container classes that show up in Cadence/ASE/tech sites
-#     known_classes = [
-#         "text parbase section",
-#         "cmp-text",
-#         "cmp-container",
-#         "responsivegrid"
-#     ]
-
-#     # Collect blocks that match any known classes
-#     content_blocks = []
-#     for cls in known_classes:
-#         content_blocks = soup.find_all("div", class_=cls)
-#     if content_blocks:
-#         return bs("".join(str(b) for b in content_blocks), 'html.parser')
-#     return None
 
 def extract_structured_blocks(soup):
     known_classes = [
@@ -188,9 +190,4 @@ def extract_all_html():
         print(f"Cleaned HTML saved to {output_path}")
 
 extract_all_html()
-
-# Step 2: Generate or update metadata
-
-# Step 3: Chunk the text (~800 word chunks)
-
-# Step 4: Embed chunks
+extract_all_pdfs()
