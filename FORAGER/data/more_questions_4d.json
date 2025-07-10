@@ -43,10 +43,10 @@
     "input": "What is the \"golden regime\" for heterogeneous chiplet dimensions?", 
     "target_scores": { 
       "Gate pitch of 500 µm and dielet size of 10^4 mm²": 0, 
-      "Interconnect pitch of 2\u201010 mm and dielet size of 1\u2010100 cm²": 0, 
-      "Interconnect pitch of 2\u201010 µm and dielet size of 1\u2010100 mm²": 1, 
-      "Gate pitch of 5 mm and dielet size of 0.1\u20101 mm²": 0, 
-      "Serial channel spacing of 50\u2010100 µm only": 0 
+      "Interconnect pitch of 2-10 mm and dielet size of 1-100 cm²": 0, 
+      "Interconnect pitch of 2-10 µm and dielet size of 1-100 mm²": 1, 
+      "Gate pitch of 5 mm and dielet size of 0.1-1 mm²": 0, 
+      "Serial channel spacing of 50-100 µm only": 0 
     } 
   }, 
   { 
@@ -74,13 +74,13 @@
     "target_scores": { 
       "Traditional desktop PCs from early 2000s": 0, 
       "Paper manufacturing systems": 0, 
-      "mm\u2010wave and THz applications": 1, 
-      "Fossil\u2010fuel power plants": 0, 
+      "mm-wave and THz applications": 1, 
+      "Fossil-fuel power plants": 0, 
       "Diesel engine control units": 0 
     } 
   }, 
   { 
-    "input": "What time\u2010to\u2010market milestone is there for heterogeneous integration assemblies?", 
+    "input": "What time-to-market milestone is there for heterogeneous integration assemblies?", 
     "target_scores": { 
       "5 years": 0, 
       "2 years": 0, 
@@ -156,7 +156,7 @@
       "The water ran off into crevasses rather than freezing.": 0, 
       "It formed a dense, blue slush layer that started to freeze within hours.": 1, 
       "Wind dispersed it before it could accumulate.": 0, 
-      "The water flash\u2010froze into brittle ice crystals.": 0 
+      "The water flash-froze into brittle ice crystals.": 0 
     } 
   }, 
   { 

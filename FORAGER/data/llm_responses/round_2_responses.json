@@ -1,57 +1,266 @@
 {
-  "Q2": {
-    "question": "When did Moore's Law start showing signs of slowdown?",
-    "options": [
-      "2000",
-      "2001",
-      "2003",
-      "2008",
-      "2012"
-    ],
-    "answer": "2008"
-  },
-  "Q3": {
-    "question": "What is the primary form of a modular chip?",
-    "options": [
-      "Standard",
-      "Die",
-      "Wafer",
-      "Chip carrier",
-      "Memory"
-    ],
-    "answer": "Die"
-  },
-  "Q8": {
-    "question": "Compared to conventional packaging approaches, interposers are generally what in terms of cost?",
-    "options": [
-      "Less expensive",
-      "More expensive",
-      "About the same cost",
-      "Only cheaper for wire bonding",
-      "Only used in experimental chips"
-    ],
-    "answer": "Less expensive"
-  },
-  "Q17": {
-    "question": "Which packaging method creates high-density connections without using full through-silicon via (TSV) stacks?",
-    "options": [
-      "Fan-Out Wafer-Level Packaging (FO-WLP)",
-      "Chiplet technology",
-      "2.5D packaging",
-      "Micro-bump bonding",
-      "Embedded Multi-die Interconnect Bridge"
-    ],
-    "answer": "Fan-Out Wafer-Level Packaging (FO-WLP)"
-  },
-  "Q40": {
-    "question": "What type of heterogeneity is associated with the integration of features at the same level of abstraction?",
-    "options": [
-      "Surface heterogeneity",
-      "Chip heterogeneity",
-      "Process-layer heterogeneity",
-      "Device-specific heterogeneity",
-      "Software heterogeneity"
-    ],
-    "answer": "Process-layer heterogeneity"
-  }
+    "Q2": {
+        "question": "When did the rate of progress in the number of transistors on a microchip double approximately every two years, as described by Gordon Moore, start to slow down?",
+        "options": [
+            "2000",
+            "2001",
+            "2003",
+            "2008",
+            "2012"
+        ],
+        "id": "Q2",
+        "answer": "2008"
+    },
+    "Q8": {
+        "question": "How do interposers typically compare to conventional packaging approaches in terms of cost?",
+        "options": [
+            "Less expensive",
+            "More expensive",
+            "About the same cost",
+            "Only cheaper for wire bonding",
+            "Only used in experimental chips"
+        ],
+        "id": "Q8",
+        "answer": "Less expensive"
+    },
+    "Q17": {
+        "question": "What packaging method allows for high-density connections without using full through-silicon via (TSV) stacks?",
+        "options": [
+            "Fan-Out Wafer-Level Packaging (FO-WLP)",
+            "Chiplet technology",
+            "2.5D packaging",
+            "Micro-bump bonding",
+            "Embedded Multi-die Interconnect Bridge"
+        ],
+        "id": "Q17",
+        "answer": "Fan-Out Wafer-Level Packaging (FO-WLP)"
+    },
+    "Q37": {
+        "question": "What is the primary purpose of copper pillars and C4 bumps in test silicon interposers?",
+        "options": [
+            "To test signal integrity at millimeter-wave frequencies",
+            "To see how reliable a fully assembled exemplar system would be",
+            "To enable thermal dissipation for the interposer",
+            "To allow passive RFID tracking of dies",
+            "To create a vacuum-sealed chip chamber"
+        ],
+        "id": "Q37",
+        "answer": "To see how reliable a fully assembled exemplar system would be"
+    },
+    "Q40": {
+        "question": "What type of heterogeneity is typically associated with the integration of distinct features?",
+        "options": [
+            "Surface heterogeneity",
+            "Chip heterogeneity",
+            "Process-layer heterogeneity",
+            "Device-specific heterogeneity",
+            "Software heterogeneity"
+        ],
+        "id": "Q40",
+        "answer": "Process-layer heterogeneity"
+    },
+    "Q62": {
+        "question": "What is an example of 2.5D integration in technology?",
+        "options": [
+            "Fan-Out Panel-Level Packaging",
+            "Intel's Foveros",
+            "CoWoS (Chip-on Wafer-on Substrate)",
+            "3D NAND",
+            "TSV-based processors"
+        ],
+        "id": "Q62",
+        "answer": "Fan-Out Panel-Level Packaging"
+    },
+    "Q64": {
+        "question": "What type of memory solution uses 3D integration technology?",
+        "options": [
+            "HBM",
+            "DDR2",
+            "3D NAND Flash",
+            "SRAM",
+            "DRAM"
+        ],
+        "id": "Q64",
+        "answer": "HBM"
+    },
+    "Q73": {
+        "question": "What are the four main types of 3DKs, and which one is not part of this group?",
+        "options": [
+            "Chiplet Design Kits (CDK)",
+            "Memory Integration Kits (MIK)",
+            "Material Design Kits (MSK)",
+            "Package Test Design Kits (PTDK)",
+            "Package Assembly Design Kits (PADK)"
+        ],
+        "id": "Q73",
+        "answer": "The four main types of 3DKs are Chiplet Design Kits (CDK), Memory Integration Kits (MIK), Package Test Design Kits (PTDK), and Package Assembly Design Kits (PADK). Material Design Kits (MSK) is not part of this group."
+    },
+    "Q87": {
+        "question": "How do transistor and die sizes in integrated circuits evolve?",
+        "options": [
+            "Transistors are getting smaller but die sizes are getting bigger",
+            "Transistors and die sizes are getting bigger",
+            "Transistors and die sizes are getting smaller",
+            "Transistors are getting smaller but die sizes are remaining the same",
+            "Transistors are getting bigger but die sizes are getting smaller"
+        ],
+        "id": "Q87",
+        "answer": "Transistors are getting smaller but die sizes are remaining the same"
+    },
+    "Q99": {
+        "question": "What is the amount of funding allocated by the U.K. for geoengineering research in May 2025?",
+        "options": [
+            "$7.5 billion",
+            "\u00a375,000",
+            "$250 million",
+            "$1 billion",
+            "$75 million"
+        ],
+        "id": "Q99",
+        "answer": "\u00a375,000"
+    },
+    "Q100": {
+        "question": "What is the primary reason for pumping seawater onto Arctic ice during winter?",
+        "options": [
+            "The latent heat from freezing seawater can delay spring melting.",
+            "Ice volume is maximized by injecting warm water under pressure.",
+            "Freezing seawater on top creates additional mass that helps insulate and reinforce existing ice.",
+            "Pumped water increases the albedo of the snow cover.",
+            "Seawater injection helps dilute brine channels in ice layers."
+        ],
+        "id": "Q100",
+        "answer": "The latent heat from freezing seawater can delay spring melting."
+    },
+    "Q103": {
+        "question": "What logistical hurdle hinders the widespread implementation of the Real Ice approach across the Arctic from a systems engineering perspective?",
+        "options": [
+            "Difficulty in sourcing fresh water instead of seawater",
+            "Coordinating legal agreements across territorial waters",
+            "Limited electrical conductivity of sea ice impeding equipment",
+            "The enormous number of robotic units required to cover vast areas effectively",
+            "Adverse impact on migratory bird flight paths"
+        ],
+        "id": "Q103",
+        "answer": "Limited electrical conductivity of sea ice impeding equipment"
+    },
+    "Q104": {
+        "question": "What distinguishes Real Ice's approach to solar radiation management from other methods?",
+        "options": [
+            "It uses aircraft to inject aerosols into the stratosphere.",
+            "It involves space-based reflectors to redirect sunlight.",
+            "It directly modifies the Earth's surface energy balance through physical ice thickening.",
+            "It genetically alters algae to reflect more light.",
+            "It relies on CO2 scrubbing rather than climate forcing."
+        ],
+        "id": "Q104",
+        "answer": "It directly modifies the Earth's surface energy balance through physical ice thickening."
+    },
+    "Q107": {
+        "question": "What is the name of the advanced silicon electric vehicle battery developed by NEO Battery Materials?",
+        "options": [
+            "S-200G",
+            "NeoCell X1",
+            "UltraSilicon V",
+            "Li-Power Max",
+            "P-300N"
+        ],
+        "id": "Q107",
+        "answer": "NeoCell X1"
+    },
+    "Q109": {
+        "question": "What is the primary material used in the anode of the P-300N?",
+        "options": [
+            "Silane gas",
+            "Graphite",
+            "Metallurgical-grade silicon (MG-Si)",
+            "Lithium metal",
+            "Silicon nanoparticles"
+        ],
+        "id": "Q109",
+        "answer": "Metallurgical-grade silicon (MG-Si)"
+    },
+    "Q121": {
+        "question": "What is the primary purpose of EDA simulation?",
+        "options": [
+            "It makes chips waterproof",
+            "It avoids power loss",
+            "It predicts circuit behavior before real-world testing",
+            "It generates electricity for circuits",
+            "It eliminates the need for design"
+        ],
+        "id": "Q121",
+        "answer": "It predicts circuit behavior before real-world testing"
+    },
+    "Q126": {
+        "question": "What does TCAD stand for in Electronic Design Automation (EDA)?",
+        "options": [
+            "Time\u2010Critical Architecture Design",
+            "Topographical Chip Auto Design",
+            "Technology Computer\u2010Aided Design",
+            "Thermal Control and Analysis Development",
+            "Test Circuit Alignment and Debugging"
+        ],
+        "id": "Q126",
+        "answer": "Technology Computer-Aided Design"
+    },
+    "Q132": {
+        "question": "Which company led the third phase of EDA's commercial evolution?",
+        "options": [
+            "Calma, Computervision, Applicon",
+            "Intel, RCA, Sony",
+            "Daisy, Valid Logic, Mentor Graphics",
+            "Synopsys, Cadence, Mentor",
+            "Bell Labs, Sharp, GE"
+        ],
+        "id": "Q132",
+        "answer": "Daisy, Valid Logic, Mentor Graphics"
+    },
+    "Q137": {
+        "question": "What is the primary distinction between n-type and p-type solar cells?",
+        "options": [
+            "N\u2010type cells are blue while p\u2010type cells are black",
+            "P\u2010type uses phosphorus; n\u2010type uses boron",
+            "N\u2010type cells have a phosphorus base and negative charge",
+            "N\u2010type cells are more flexible",
+            "P\u2010type cells do not conduct electricity"
+        ],
+        "id": "Q137",
+        "answer": "P-type uses phosphorus; n-type uses boron"
+    },
+    "Q143": {
+        "question": "Which company is renowned in the U.S. for manufacturing thin-film solar panels?",
+        "options": [
+            "SunPower",
+            "SolarCity",
+            "Tesla",
+            "First Solar",
+            "Panasonic"
+        ],
+        "id": "Q143",
+        "answer": "SunPower"
+    },
+    "Q151": {
+        "question": "What type of transistor is not commonly used for signal amplification?",
+        "options": [
+            "BJT",
+            "MOSFET",
+            "UJT (Uni-Junction Transistor)",
+            "NPN",
+            "PNP"
+        ],
+        "id": "Q151",
+        "answer": "UJT (Uni-Junction Transistor)"
+    },
+    "Q154": {
+        "question": "What distinguishes BJTs as 'bipolar' devices?",
+        "options": [
+            "They contain both P-type and N-type materials",
+            "They can operate in either switching or amplifying modes",
+            "They rely on both majority and minority charge carriers for conduction",
+            "They require both voltage and current for activation",
+            "They include both enhancement and depletion regions"
+        ],
+        "id": "Q154",
+        "answer": "They contain both P-type and N-type materials"
+    }
 }
