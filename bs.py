@@ -56,5 +56,42 @@ nlp = spacy.load("en_core_web_sm")
 
 doc = nlp("TSMC dominates the 3DIC market.")
 
-for token in doc:
-    print(token.text, token.dep_, token.head.text, token.pos_)
+
+
+def extract_atomic_claims(text):
+    """
+    This method extracts individual, atomic claims from a passage.
+
+    Args:
+        text (str): The text from which to extract claims.
+    
+    Returns:
+        claims (list):  A list of atomic claims from the text.
+    """
+    doc = nlp(text)
+    claims = []
+
+    # doc.sents is an iterator over the sentences in a processed document
+    for sent in doc.sents:
+        subject, verb, object = None, None, None
+
+        # Iterate through each token in the sentence
+        for token in sent:
+            # If the token is the nominal subject,
+            # assign it to the `subject` variable
+            if token.dep_ == "nsubj" and subject is None:
+                subject = " ".join([t.text for t in token.subtree])
+            if token.dep_ == "ROOT":
+                verb = token.lemma_
+            if token.dep_ in ("dobj", "attr", "pobj") and object is None:
+                object = " ".join([t.text for t in token.subtree])
+
+        if subject and verb and object:
+            claim = f"{subject} {verb} {object}"
+            claims.append(claim)
+        
+    return claims
+
+text = "If TSMC dominates the market, Intel will struggle. TSMC is based in Taiwan."
+print(extract_atomic_claims("My name is Syrr. I like to eat chicken. I also go to school."))
+
