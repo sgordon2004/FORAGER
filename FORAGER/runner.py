@@ -224,6 +224,49 @@ def restructure_prompts(incorrect_questions, prompt_history):
     
     return restructured
 
+def regenerate_with_strict_grounding(failed_evaluations, prompt_history, evaluator_feedbacks, source_chunks):
+    """
+    Regenerates previously incorrect answers using evaluator feedback and source grounding.
+
+    Arguments: 
+      failed_evaluations(dict): A dictionary where keys are question IDs (e.g. "Q1") and values are the bad outputs.
+      prompt_history (dict): Dictionary of original task prompts (same format as your existing code).
+      evaluator_feedbacks (dict): Dictionary of feedback strings per question ID (e.g. "Q1": "This claim was unsupported...").
+      source_chunks (dict): Dictionary of RAG chunks per question ID used as grounding.
+
+    Returns: 
+      dict: Revised outputs per question ID, regenerated with strict grounding.
+    """
+
+    revised_answers = {}
+
+    for qid in failed_evaluations: 
+        question_key = f"Q{qid}"
+        original_prompt = prompt_history.get(question_key, "")
+        previous_output = failed_evaluations[qid]
+        feedback = evaluator_feedbacks.get(question_key, "")
+        source_text = source_chunks.get(question_key, "")
+
+        retry_prompt = (
+            "Your previous answer contradicted the evidence or was unsupported. \n"
+            "You must revise it using the source below and follow strict grounding rules. \n\n"
+            f"TASK:\n{original_prompt}\n\n"
+            f"PREVIOUS RESPONSE: \n{previous_output}\n"
+            f"SOURCE:\n{source_text}\n"
+            f"EVALUATOR FEEDBACK:\n{feedback}\n\n"
+            "INSTRUCTIONS: \n"
+            " - Only use facts from the source. \n"
+            " - Do not invent, speculate, or generalize. \n"
+            " - If the source does not contain the answer, say: 'The answer is not in the source.'\n\n"
+            "Corrected Response: "
+        )
+
+        raw = get_llm_response(retry_prompt)
+        if raw:
+            revised_answers[question_key] = raw
+
+    return revised_answers 
+
 def get_llm_response(prompt, max_retries=3):
     """
     Sends a prompt to the Groq LLM and retrieves the JSON response.
