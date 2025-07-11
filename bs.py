@@ -53,18 +53,26 @@ Thus, the final assembled claim is:
 import spacy
 # Load pretrained language model
 nlp = spacy.load("en_core_web_sm")
-
-doc = nlp("TSMC dominates the 3DIC market.")
+doc = nlp("Apple (the tech giant) is based in Cupertino.")
 
 # List of discourse markers to skip during extraction
 DISCOURSE_MARKERS = {"however", "although", "though", "meanwhile",
                      "nevertheless", "nonetheless", "in contrast", "on the other hand"}
 
 def clean_subtree(subtree):
-    return " ".join([
-        t.text for t in subtree
-        if t.text.lower() not in DISCOURSE_MARKERS
-    ])
+    # Remove parentheticals from sentences
+    cleaned = []
+    inside_parens = 0
+    for t in subtree:
+        if t.text == "(":
+            inside_parens += 1
+            continue
+        elif t.text == ")":
+            inside_parens -= 1
+            continue
+        if inside_parens == 0 and t.text.lower() not in DISCOURSE_MARKERS:
+            cleaned.append(t.text)
+    return " ".join(cleaned)
 
 def extract_atomic_claims(text):
     """
@@ -95,12 +103,30 @@ def extract_atomic_claims(text):
             if token.dep_ == "nsubj":
                 # Grab entire phrase representing subject, not just the subject itself
                 subject = clean_subtree(token.subtree)
+
             # Identify nominal subjects in the passive voice
             elif token.dep_ == "nsubjpass":
                 passive_subject = clean_subtree(token.subtree)
-            elif token.dep_ == "ROOT":
-                verb = token.lemma_
 
+            elif token.dep_ == "ROOT":
+                verb_parts = []
+                
+                # Include auxiliaries like "is" and "was"
+                for child in token.children:
+                    if child.dep_ in ("aux", "auxpass"):
+                        verb_parts.append(child.lemma_)
+                
+                # Add main verb
+                verb_parts.append(token.lemma_)
+
+                # Include prepositional phrase (e.g., "in Cupertino")
+                for child in token.children:
+                    if child.dep_ == "prep":
+                        verb_parts.append(child.lemma_)
+                        for obj in child.children:
+                            if obj.dep_ == "pobj":
+                                verb_parts.append(obj.lemma_)
+                verb = " ".join(verb_parts)
                 # Find "by" + its object anywhere under the ROOT token
                 # Debugging statements
                 # print("\n[DEBUG] Verb subtree:")
@@ -115,12 +141,12 @@ def extract_atomic_claims(text):
             elif token.dep_ in ("dobj", "attr", "pobj") and object_ is None:
                 object_ = clean_subtree(token.subtree)
         
-        # # Debugging statements
-        # print("---")
-        # print("SENTENCE:", sent.text)
-        # print("PASSIVE_SUBJECT:", passive_subject)
-        # print("AGENT:", agent)
-        # print("VERB:", verb)
+        # Debugging statements
+        print("---")
+        print("SENTENCE:", sent.text)
+        print("PASSIVE_SUBJECT:", passive_subject)
+        print("AGENT:", agent)
+        print("VERB:", verb)
 
         # Active voice
         if subject and verb and object_:
@@ -130,17 +156,24 @@ def extract_atomic_claims(text):
         elif passive_subject and agent and verb:
             claim = f"{agent} {verb} {passive_subject}"
             claims.append(claim)
+        # Final fallback
+        elif passive_subject and verb:
+            claim = f"{passive_subject} {verb}"
+            claims.append(claim)
 
     return claims
 
-text_1 = "TSMC is the global leader in semiconductor manufacturing. It produces chips for major firms like Apple and AMD. The company is headquartered in Hsinchu, Taiwan. Its revenue exceeded $70 billion in 2023. TSMC's advanced 3nm process began mass production in early 2023. If geopolitical tensions increase, the company might diversify its manufacturing locations."
-text_2 = "Intel has invested billions in next-generation packaging technology. Its Foveros and EMIB technologies aim to enhance performance and reduce power consumption. Although it trails TSMC in overall market share, Intel plans to compete aggressively in advanced nodes. The company is based in Santa Clara, California. It might regain leadership by 2027 if its roadmap stays on track."
-text_3 = "Research suggests that chiplet-based architectures improve performance per watt. AMD’s Ryzen processors use chiplets to separate compute and I/O functions. NVIDIA, on the other hand, focuses heavily on monolithic designs. If yields improve, more companies could shift to chiplet-based strategies. Some engineers argue that chiplets introduce interconnect complexity."
-text_4 = "Apple designs its own chips using ARM architecture. These chips are manufactured by TSMC using cutting-edge nodes. Qualcomm and MediaTek also rely on TSMC for fabrication. In contrast, Intel manufactures most of its chips in-house. While Samsung produces both memory and logic chips, it lags behind TSMC in foundry services. Analysts believe that AI workloads will drive demand for 2.5D and 3D packaging."
-text_5 = "TSMC might open a new fab in Germany. Some speculate that geopolitical pressures could accelerate this move. If subsidies are approved, the project will likely begin in 2026. However, no official confirmation has been released. The company declined to comment on its plans."
+# for token in doc:
+#     print(f"{token.text:15} | {token.dep_:10} | {token.head.text:10} | {token.pos_:6} | {token.lemma_}")
 
-print(extract_atomic_claims(text_1))
-print(extract_atomic_claims(text_2))
-print(extract_atomic_claims(text_3))
-print(extract_atomic_claims(text_4))
-print(extract_atomic_claims(text_5))
+# text_1 = "TSMC is the global leader in semiconductor manufacturing. It produces chips for major firms like Apple and AMD. The company is headquartered in Hsinchu, Taiwan. Its revenue exceeded $70 billion in 2023. TSMC's advanced 3nm process began mass production in early 2023. If geopolitical tensions increase, the company might diversify its manufacturing locations."
+# text_2 = "Intel has invested billions in next-generation packaging technology. Its Foveros and EMIB technologies aim to enhance performance and reduce power consumption. Although it trails TSMC in overall market share, Intel plans to compete aggressively in advanced nodes. The company is based in Santa Clara, California. It might regain leadership by 2027 if its roadmap stays on track."
+# text_3 = "Research suggests that chiplet-based architectures improve performance per watt. AMD’s Ryzen processors use chiplets to separate compute and I/O functions. NVIDIA, on the other hand, focuses heavily on monolithic designs. If yields improve, more companies could shift to chiplet-based strategies. Some engineers argue that chiplets introduce interconnect complexity."
+# text_4 = "Apple designs its own chips using ARM architecture. These chips are manufactured by TSMC using cutting-edge nodes. Qualcomm and MediaTek also rely on TSMC for fabrication. In contrast, Intel manufactures most of its chips in-house. While Samsung produces both memory and logic chips, it lags behind TSMC in foundry services. Analysts believe that AI workloads will drive demand for 2.5D and 3D packaging."
+# text_5 = "TSMC might open a new fab in Germany. Some speculate that geopolitical pressures could accelerate this move. If subsidies are approved, the project will likely begin in 2026. However, no official confirmation has been released. The company declined to comment on its plans."
+
+# print(extract_atomic_claims(text_1))
+# print(extract_atomic_claims(text_2))
+# print(extract_atomic_claims(text_3))
+# print(extract_atomic_claims(text_4))
+# print(extract_atomic_claims(text_5))
