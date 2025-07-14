@@ -13,14 +13,14 @@ This script initiates the complete workflow:
 To run the full pipeline, execute this file directly:
     python main.py
 """
-
+__docformat__ = "google"
 from dotenv import load_dotenv
 import os
 from FORAGER.embedder import faiss_db, chunks, model # Importing loaded FAISS and chunks 
 # from FORAGER.runner import initial_run
 # from FORAGER.evaluator import run_eval_process
 # from FORAGER.loop_controller import prompt_lock_loop
-from FORAGER.pll_controller import run_pll_on_prompt
+# from FORAGER.pll_controller import run_pll_on_prompt
 
 
 # # Entry point
@@ -80,7 +80,7 @@ if __name__ == "main":
     prompt = build_prompt(context_chunks, question)
 
     #Step 3 - Run PLL loop on this prompt (generate + self-check + improve)
-    result = run_pll_on_prompt(prompt)
+    # result = run_pll_on_prompt(prompt)
 
-    print("\n --- Final Answer ---")
-    print (result["candidate"])   
+    # print("\n --- Final Answer ---")
+    # print (result["candidate"])   

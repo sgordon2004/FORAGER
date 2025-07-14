@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup as bs
 from pathlib import Path
 from readability import Document
 import json
-
+__docformat__ = "google"
 base = Path("FORAGER_corpus/heterogenous_integration") # Base directory for the FORAGER corpus's HI information
 pdf_dir = base / "pdf" # Sub-directory containing PDF files
 html_dir = base / "html" # Sub-directory containing HTML files

@@ -13,7 +13,7 @@ Key Functions:
 
 import json
 import re
-
+__docformat__ = "google"
 filename = None
 
 def get_input_file():

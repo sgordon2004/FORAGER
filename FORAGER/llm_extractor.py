@@ -1,7 +1,7 @@
 from FORAGER.runner import get_llm_response
 import json
 from dotenv import load_dotenv
-
+__docformat__ = "google"
 llm_claim_prompt = """
 You are an information extraction engine. Your task is to extract all **atomic factual claims** from the input text below.
 
@@ -53,7 +53,7 @@ def extract_atomic_claims_llm(text: str) -> str:
         print(response)
         return []
     
-test = "NVIDIA, the leader in graphics processing units, announced its latest AI chip in 2024. The chip is manufactured using TSMC’s 3nm process technology. Despite global supply chain disruptions, NVIDIA reported record quarterly revenue. Meanwhile, Intel continues to expand its foundry services but struggles to match TSMC’s efficiency. Apple has also shifted more chip production to TSMC to support its custom silicon roadmap."
+# test = "NVIDIA, the leader in graphics processing units, announced its latest AI chip in 2024. The chip is manufactured using TSMC’s 3nm process technology. Despite global supply chain disruptions, NVIDIA reported record quarterly revenue. Meanwhile, Intel continues to expand its foundry services but struggles to match TSMC’s efficiency. Apple has also shifted more chip production to TSMC to support its custom silicon roadmap."
 
-print(f"[DEBUG] llm_extractor.py Sending input to LLM:\n{test}")
-print(extract_atomic_claims_llm(test))
+# print(f"[DEBUG] llm_extractor.py Sending input to LLM:\n{test}")
+# print(extract_atomic_claims_llm(test))

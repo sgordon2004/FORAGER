@@ -15,7 +15,7 @@ This module is intended to be used after generating an answer and retrieving sup
 documents. The confidence score can be used to determine whether the answer should be
 accepted, discarded, or refined in subsequent iterations of the Prompt Lock Loop (PLL).
 """
-
+__docformat__ = "google"
 def confidence_checker(eval_label, similarity_score):
     """
     Determines a final confidence score or decision based on the evaluation label 

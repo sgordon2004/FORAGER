@@ -6,7 +6,7 @@ It then wraps each chunk with metada and saves it as a JSONL.
 from pathlib import Path
 import json
 from transformers import AutoTokenizer
-
+__docformat__ = "google"
 # Directory from which the JSONs are coming
 input_dir = Path("FORAGER_corpus/heterogenous_integration/json")
 # Contains all of the JSON docs

@@ -18,8 +18,8 @@ from .formatter import format_json, load_json
 import re
 import time
 from .evaluator import run_eval_process
-from embedder import search_index
-
+# from .embedder import search_index
+__docformat__ = "google"
 # Load API key from environment
 load_dotenv()
 
@@ -279,21 +279,22 @@ def regenerate_or_retrieve_more(prompt, k=3):
     Returns: 
         str: A new candidate response.
     """
+    extra_context = ""
     #Retrieve similar chunks from the knowledge base 
     print(f"\033[1;96m🔍 Retrieving top {k} relevant chunks...\033[0m")
-    chunks = search_index(prompt, k) # This already prints relevant chunks 
+    # chunks = search_index(prompt, k) # This already prints relevant chunks 
 
     #Format the retrieved chunks into extra content (if search_index doesn't return text, you may need to extract it from your FAISS chunk list)
-    extra_context = "\n\n".join([chunk['text'] for chunk in chunks]) #Assuming chunks is a list of dicts
+    # extra_context = "\n\n".join([chunk['text'] for chunk in chunks]) #Assuming chunks is a list of dicts
 
     #Regenerate a response with more grounding 
     grounded_prompt = f"""Use the information below to improve your answer: 
 
-{extra_context}
+    {extra_context}
 
-Orginal Question: 
-{prompt}
-""" 
+    Orginal Question: 
+    {prompt}
+    """ 
     print (f"\033[1;96m🔍 Regenerating with grounded context...\033[0m")
     new_response = get_llm_response(grounded_prompt)
 

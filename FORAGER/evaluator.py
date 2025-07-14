@@ -13,7 +13,7 @@ Key Functions:
 
 TODO: Make evaluation for each round show up separately like in the llm_responses folder
 """
-
+__docformat__ = "google"
 import json
 from .formatter import get_input_file
 import os
