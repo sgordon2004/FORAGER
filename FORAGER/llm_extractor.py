@@ -1,7 +1,28 @@
+"""
+This module extracts atomic factual claims from text using a large language model (LLM) via Groq API. It is a key component 
+of the FORAGER pipeline, enabling structured extraction of factual statements from unstructured LLM-generated responses.
+
+Core Functionality:
+- Defines a strict prompt for the LLM instructing it to extract atomic, standalone factual claims from a given input text.
+- Sends the formatted prompt to the LLM using the `get_llm_response()` function and parses the raw response.
+- Ensures the output is a valid Python list of strings, each representing a single factual claim.
+
+Key Features:
+- Automatically handles appositional phrases and compound sentences by splitting them into separate claims.
+- Filters out rhetorical, opinionated, or vague statements to retain only verifiable factual claims.
+- Includes error handling to catch parsing failures and unexpected LLM output formats.
+
+Intended Usage:
+This module is used after an LLM generates a response to a user query, providing a structured set of factual claims for 
+further validation in the FORAGER pipeline (e.g., via BS detection and confidence scoring).
+
+"""
+
 from FORAGER.runner import get_llm_response
 import json
 from dotenv import load_dotenv
 __docformat__ = "google"
+
 llm_claim_prompt = """
 You are an information extraction engine. Your task is to extract all **atomic factual claims** from the input text below.
 

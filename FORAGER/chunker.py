@@ -1,6 +1,23 @@
 """
-This module loads each document's JSON file, tokenizes the content, and chunks it.
-It then wraps each chunk with metada and saves it as a JSONL.
+This module processes a collection of JSON documents, tokenizes their content, 
+and splits the text into overlapping chunks for downstream embedding and retrieval tasks 
+within the FORAGER pipeline.
+
+Core Functionality:
+- Loads JSON files from a specified input directory, each containing a document's full text.
+- Tokenizes the document content using the Llama 3 tokenizer to ensure consistency with LLM inference.
+- Splits the tokenized content into fixed-size, overlapping chunks to preserve context across boundaries.
+- Writes each chunk, along with its associated metadata (source filename, title, chunk index, token positions), 
+  to a JSONL file — one chunk per line.
+
+Key Features:
+- Automatically creates output directories if they do not exist.
+- Uses overlapping windows to reduce information loss between adjacent chunks.
+- Designed for scalable pre-processing of large text corpora for retrieval-augmented generation (RAG) pipelines.
+
+Intended Usage:
+Run this script directly to chunk all documents in the input directory and output them to a single JSONL file. 
+These chunks are later embedded and indexed for similarity search in the FORAGER system.
 """
 
 from pathlib import Path

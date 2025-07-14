@@ -1,6 +1,4 @@
 """
-formatter.py
-
 This module loads the original JSON dataset and formats it into question batches
 for LLM processing. Each batch contains a fixed number of questions with clearly
 structured input and multiple-choice options.

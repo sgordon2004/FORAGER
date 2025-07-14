@@ -1,8 +1,22 @@
 """
-This module extracts raw text from documents within the FORAGER corpus.
-It converts all source documents (PDF, HTML, Markdown, etc.) into clean, structured plain text chunks, enriched with metadata,
-and prepared for embedding and retrieval.
-It turns messy raw content into queryable knowledge.
+This module handles the ingestion of raw documents into the FORAGER pipeline by extracting clean, structured text 
+from various file formats, including PDFs and HTML files. It converts messy, unstructured source documents into 
+plain text files and accompanying JSON metadata, making them suitable for downstream chunking, embedding, and retrieval.
+
+Core Functionality:
+- Extracts text from PDF documents using pdfplumber, with optional tolerance adjustments for improved accuracy.
+- Extracts visible, main content from HTML files using a combination of heuristic block selection and the Readability algorithm.
+- Cleans and normalizes extracted text, removing unnecessary whitespace and formatting.
+- Saves the processed text into dedicated text directories and generates JSON metadata files containing document statistics.
+
+Key Features:
+- Supports batch processing of all documents in the FORAGER corpus input directories.
+- Automatically creates required directories for storing extracted text and metadata.
+- Designed for extensibility to support additional document formats (e.g., Markdown) if needed.
+
+Intended Usage:
+Run this module to extract and clean all PDF and HTML documents in the FORAGER corpus. The resulting plain text and metadata 
+files serve as the foundation for the retrieval-augmented generation (RAG) pipeline by enabling efficient indexing and retrieval.
 """
 
 import pdfplumber

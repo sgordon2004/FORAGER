@@ -1,6 +1,4 @@
 """
-evaluator.py
-
 This module evaluates the performance of Groq's LLM by comparing its responses
 against ground-truth answers. It computes accuracy metrics, flags incorrect answers,
 and saves them for further review.
