@@ -215,9 +215,9 @@ else:
 
 
 # Test search
-test_query = "What is heterogeneous integration?"
-print(test_query)
-search_database(test_query, 5)
+# test_query = "What is heterogeneous integration?"
+# print(test_query)
+# search_database(test_query, 5)
 
 
 
