@@ -6,8 +6,7 @@ Using the jsonl file with each line being a separate json representing a chunk..
 3. Includes search function
 
 Potential next steps:
-Implement a way to restart the database if a totally new set of chunks is passed in for some reason.
-Currently, it is assumed that any new chunks are added onto the end of the existing file indicated by chunk_filepath.
+Modify so embedder can take chunks from another file besides just chunks.jsonl, if necessary
 """
 
 import os 
@@ -26,7 +25,7 @@ prefix = "Represent this sentence for retrieval: "
 # Start by preparing the embedding model
 model = SentenceTransformer("BAAI/bge-base-en-v1.5")
 
-# Path to JSONL file with chunks - using test file for now (first 10 chunks of chunks.jsonl)
+# Important filepaths listed here
 chunk_filepath = "FORAGER_corpus/heterogenous_integration/chunks/chunks.jsonl"
 
 test_chunk_filepath = "FORAGER_corpus/heterogenous_integration/chunks/test_chunks.jsonl"
@@ -113,13 +112,13 @@ def add_to_FAISS(new_embedded_chunks):
     faiss_db.add(new_embedded_chunks)
     faiss.write_index(faiss_db, faiss_db_filepath)
 
-def search_index(query, k):
+def search_database(query, num_vectors):
     """
     Function to search the FAISS database for the closest k chunks to the query (based on dot product)
     
     Arguments:
         query: User query or LLM response
-        k: Number of closest vectors to return
+        num_vectors: Number of closest vectors to return
     """
 
     global prefix
@@ -131,15 +130,15 @@ def search_index(query, k):
     query_emb = model.encode(query_with_prefix, normalize_embeddings = True).astype("float32")
 
     # Ensure k <= length of index
-    k = min(k, faiss_db.ntotal)
+    num_vectors = min(num_vectors, faiss_db.ntotal)
 
     # Search index
-    scores, indices = faiss_db.search(query_emb, k)
-    print(f"Scores: \n{scores}\n")
-    print(f"indices: \n{indices}\n")
+    scores, indices = faiss_db.search(query_emb, num_vectors)
+    # print(f"Scores: \n{scores}\n")
+    # print(f"indices: \n{indices}\n")
 
     # Show results
-    print(f"\n\033[1;94mReturning the {k} most similar chunks for query: \"{query}\"\033[0m\n")
+    print(f"\n\033[1;94mReturning the {num_vectors} most similar chunks for query: \"{query}\"\033[0m\n")
     # print(chunks)
     for rank, idx in enumerate(indices[0]):
         print(f"{rank+1}. Source: {chunks[idx]["source_filename"]} \nChunk: {chunks[idx]["chunk_id"]} \nScore: {scores[0][rank]:.4f}\n")
@@ -166,6 +165,11 @@ def print_vector_in_FAISS(n):
     print(f"Printing vector in FAISS index at entry {n}...")
     print(f"{faiss_db.reconstruct(n)}\n")
 
+def clear_database():
+    """
+    Takes everything out of the FAISS database, if necessary.
+    """
+    faiss_db.reset()
 
 #----------------------------#
 # Execution                  #
@@ -195,7 +199,7 @@ else:
 # Test search
 test_query = "What is heterogeneous integration?"
 print(test_query)
-search_index(test_query, 5)
+search_database(test_query, 5)
 
 
 
