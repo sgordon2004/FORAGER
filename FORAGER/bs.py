@@ -191,8 +191,16 @@ def detect_bs(claim: str, supporting_docs: list[str],
               threshold_supported=0.75, threshold_contradicted=0.2) -> str:
     """
     Detects if a claim is Supported, Contradicted, or Unsupported by supporting_docs.
-
     Prioritizes NLI (logical relation), then falls back to cosine similarity if needed.
+
+    Args:
+        claim (str): The LLM-generated claim to be inspected.
+        supporting_docs (list[str]): The documents retrieved from the knowledge base that the LLM based its claim on.
+        threshold_supported (float): The minimum vector similarity score between the claim and doc that is needed to classify a claim as supported by its docs.
+        threshold_contradicted (float): The maximum vector similarity score between the claim and doc that is needed to classify a claim as directly contradicted by its docs.
+
+    Returns:
+        The degree to which the claim is supported by the documents it used. Either Supported, Unsupported, or Contradicted.
     """
     from FORAGER.embedder import prefix, model
     from sentence_transformers import util
@@ -232,7 +240,7 @@ def detect_bs(claim: str, supporting_docs: list[str],
     else:
         return "Unsupported"
     
-    
+
 # for token in doc:
 #     print(f"{token.text:15} | {token.dep_:10} | {token.head.text:10} | {token.pos_:6} | {token.lemma_}")
 
