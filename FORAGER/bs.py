@@ -1,54 +1,17 @@
 """
 This module serves as the BS detector. It splits the raw LLM claim into atomic claims and compares them to evidence.
-spaCy is an open-source Python library for natural language processing (NLP). It handles tasks like:
-    - sentence segmentation
-    - part-of-speech (POS) tagging
-    - named entity recognition (NER)
-    - dependency parsing (how words relate gramatically)
-    - Lemmatization (base forms of words)
-FORAGER uses spaCY to extract subject-verb-object_ (SVO) relationships from sentences, which helps isolate claims.
 
-en_core_web_sm is one of spaCY's pretrained language models.
-    - en = English
-    - core = Core model (general-purpose)
-    - sm = Small version (lightweight + fast)
-When given text, en_core_web_sm returns a fully annotated doc with tokens, sentence boundaries, POS tags, dependencies, etc.
+Although it is not currently used, this module outlines a method to use spaCy's part-of-speech (POS) recognition to extract
+atomic claims from LLM responses.
 
-Example:
-[python]
-doc = nlp("TSMC dominates the 3DIC market.")
+spaCy is an open-source Python library for natural language processing (NLP). It handles tasks like sentence segmentation, 
+part-of-speech (POS) tagging, named entity recognition (NER), dependency parsing (how words relate gramatically), 
+and lemmatization (base forms of words).
 
-for token in doc:
-    print(token.text, token.dep_, token.head.text, token.pos_)
-
-[output]
-[token.text]    [token.dep_ ]   [token.head.text]   [token.pos_]
-TSMC            nsubj           dominates           PROPN
-dominates       ROOT            dominates           VERB
-the             det             market              DET
-3DIC            compound        market              PROPN
-market          dobj            dominates           NOUN
-.               punct           dominates           PUNCT
-
-How to read the output:
-1. Look for dep_ == 'nsubj', which is the nominal subject:
-    - That's 'TSMC', which DEPENDS ON 'dominates' (token.head.text)
-So, the subject is 'TSMC' and the verb is 'dominates' (the head of the subject)
-
-2. Look for dep_ == 'dobj':
-    - That's 'market', which also depensd on 'dominates'
-    - This is the DIRECT object_ of the verb.
-So, the object_ is 'market'. But there are also modifiers or market:
-    - 3DIC is `compound` -> describes 'market'
-    - 'the' is `det` -> determiner for 'market'
-So we build the full object_ as "the 3DIC market"
-
-Thus, the final assembled claim is:
-    Subject: TSMC
-    Verb: dominates
-    object_: the 3DIC market
-
+This module uses en_core_web_sm, one of spaCY's pretrained langauge models,
+to extract subject-verb-object_ (SVO) relationships from sentences, which helps isolate claims.
 """
+
 __docformat__ = "google"
 from transformers import pipeline
 nli = pipeline("text-classification", model="facebook/bart-large-mnli")
@@ -79,7 +42,7 @@ def clean_subtree(subtree):
 
 def extract_atomic_claims(text):
     """
-    This method extracts individual, atomic claims from a passage.
+    This method extracts individual, atomic claims from a passage, using a pretrained spaCy language model to do so.
 
     Args:
         text (str): The text from which to extract claims.
@@ -169,10 +132,12 @@ def extract_atomic_claims(text):
 def classify_claim_with_nli(claim: str, supporting_doc: str) -> str:
     """
     Classifies the claim based on a supporting_doc using NLI (entailment, neutral, contradiction).
+    This method uses Facebook's bart-large-mnli Natural Language Inference model based on BART architecture.
+    bart-large-mnli classifies the relationship between two pieces of text (a hypothesis and a premise) into one of three categories.
 
     Args:
-        claim (str): The LLM-generated claim to be evaluated.
-        supporting_doc (str): The retrieved context the LLM based its answer on.
+        claim (str): The LLM-generated claim to be evaluated. The NLI uses this as the hypothesis.
+        supporting_doc (str): The retrieved context the LLM based its answer on. The NLI uses this as the premise.
 
     Returns:
         The degree to which the claim is supported by the document.
