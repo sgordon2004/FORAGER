@@ -1,9 +1,41 @@
 # FORAGER
 
-Instructions on running formatter.py:
-1. Import the format_json() method into the file you're working on that needs the data
-2. format_json() returns a dictionary of all the questions
-    - Each entry in the dictionary holds 5 questions
-    - Each key is the input
-    - Each value holds the answer choices
-3. Feed format_json() into Groq one index at a time (since each index holds 5 questions)
+**FORAGER** (Fact-Oriented Responsible AI-Guided Engineering Research) is a verification pipeline designed to improve trust in Large Language Models (LLMs). It combines **Prompt Lock Looping**, **Retrieval-Augmented Generation (RAG)**, and **Natural Language Inference (NLI)** techniques to validate AI-generated claims against reliable evidence.
+
+---
+
+## 🚀 Features
+- ✅ Multi-stage claim verification
+- ✅ BS Detector leveraging `facebook/bart-large-mnli`
+- ✅ Modular ingestion, chunking, and embedding pipelines
+- ✅ Structured JSONL formatting and claim aggregation
+- ✅ Supports engineering research domains (e.g., semiconductors, HI)
+
+---
+
+## 🛠️ Installation
+
+Clone the repository and install dependencies:
+```bash
+git clone https://github.com/your-username/FORAGER.git
+cd FORAGER
+pip install -r requirements.txt
+```
+
+## 📘 Usage
+
+FORAGER is accessible via a simple front-end interface; no coding is required.
+
+### Typical Flow via UI
+1. **Upload** your documents (PDF, HTML, or Markdown).
+2. **Submit a query** to the LLM via the app interface.
+3. **View extracted claims** and their verification status directly in the dashboard.
+4. **Download** or **export** results for further use.
+
+---
+
+### Backend Workflow (For Reference Only)
+Internally, FORAGER follows this flow:
+- Ingestion → Chunking → Embedding → Claim Evaluation
+
+This process is fully automated through the UI.

@@ -8,7 +8,7 @@ Using the jsonl file with each line being a separate json representing a chunk..
 Potential next steps:
 Modify so embedder can take chunks from another file besides just chunks.jsonl, if necessary
 """
-
+__docformat__ = "google"
 import os 
 from sentence_transformers import SentenceTransformer
 import numpy as np
@@ -31,12 +31,13 @@ chunk_filepath = "FORAGER_corpus/heterogenous_integration/chunks/chunks.jsonl"
 test_chunk_filepath = "FORAGER_corpus/heterogenous_integration/chunks/test_chunks.jsonl"
 
 faiss_db_filepath = "FORAGER/vector_database/index_db.faiss"
+os.makedirs(os.path.dirname(faiss_db_filepath), exist_ok=True)
 
 def embed_chunks(data, m, n):
     """
     Takes one chunk at a time from the new additions to chunks.jsonl file (or other inputted file) and embeds it using BGE model
 
-    Arguments: 
+    Args: 
         filepath: The file path of the JSONL document containing the chunks genereated by ingestor.py and chunker.py
         m: Starting chunk entry
         n: Ending chunk entry
@@ -74,7 +75,7 @@ def initial_embed_and_build(filepath):
     """
     Run this once when first running FORAGER to embed the first set of chunks and create the FAISS database
 
-    Arguments:
+    Args:
         filepath: path to the JSONL file containing the chunks to be embedded
 
     Returns:
@@ -105,7 +106,7 @@ def add_to_FAISS(new_embedded_chunks):
     """
     Function to embed and add chunks from newly uploaded documents into FAISS
 
-    Arguments:
+    Args:
         new_embedded_chunks: New vectors to add to FAISS database
     """
 
@@ -116,14 +117,19 @@ def search_database(query, num_vectors):
     """
     Function to search the FAISS database for the closest k chunks to the query (based on dot product)
     
-    Arguments:
+    Args:
         query: User query or LLM response
         num_vectors: Number of closest vectors to return
+
+    Returns:
+        supporting_docs (list): A list of dictionaries. Each dictionary gives the rank, source, order, score, and text of each retrieved chunk.
     """
 
     global prefix
     global chunks
     global embeddings
+
+    supporting_docs = []
 
     # Embed query
     query_with_prefix = [prefix + query]
@@ -141,14 +147,26 @@ def search_database(query, num_vectors):
     print(f"\n\033[1;94mReturning the {num_vectors} most similar chunks for query: \"{query}\"\033[0m\n")
     # print(chunks)
     for rank, idx in enumerate(indices[0]):
-        print(f"{rank+1}. Source: {chunks[idx]["source_filename"]} \nChunk: {chunks[idx]["chunk_id"]} \nScore: {scores[0][rank]:.4f}\n")
-        print(f"{chunks[idx]["text"]}\n")
+        # print(f"{rank+1}. Source: {chunks[idx]['source_filename']} \nChunk: {chunks[idx]['chunk_id']} \nScore: {scores[0][rank]:.4f}\n")
+        # print(f"{chunks[idx]['text']}\n")
+        
+        chunk = chunks[idx]
+        chunk_result = {
+            "rank": rank + 1,
+            "source_filename": chunk["source_filename"],
+            "chunk_id": chunk["chunk_id"],
+            "score": float(scores[0][rank]),
+            "text": chunk["text"]
+        }
+        supporting_docs.append(chunk_result)
+
+    return supporting_docs
 
 def print_vector_in_array(embeddings, n):
     """
-    Prints a vector in the 2-D array of chunk vectors at entry n
+    Prints a vector in the 2-D array of chunk vectors at entry n.
 
-    Arguments:
+    Args:
         embeddings: 2-D array of chunk vectors
         n: row of array to print (which vector)
     """
@@ -159,7 +177,7 @@ def print_vector_in_FAISS(n):
     """
     Prints a specified vector in the FAISS database
 
-    Arguments: 
+    Args: 
         n: id of vector to print
     """
     print(f"Printing vector in FAISS index at entry {n}...")
@@ -197,9 +215,9 @@ else:
 
 
 # Test search
-test_query = "What is heterogeneous integration?"
-print(test_query)
-search_database(test_query, 5)
+# test_query = "What is heterogeneous integration?"
+# print(test_query)
+# search_database(test_query, 5)
 
 
 

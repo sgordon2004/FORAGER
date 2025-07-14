@@ -1,0 +1,222 @@
+"""
+This module serves as the BS detector. It splits the raw LLM claim into atomic claims and compares them to evidence.
+
+Although it is not currently used, this module outlines a method to use spaCy's part-of-speech (POS) recognition to extract
+atomic claims from LLM responses.
+
+spaCy is an open-source Python library for natural language processing (NLP). It handles tasks like sentence segmentation, 
+part-of-speech (POS) tagging, named entity recognition (NER), dependency parsing (how words relate gramatically), 
+and lemmatization (base forms of words).
+
+This module uses en_core_web_sm, one of spaCY's pretrained langauge models,
+to extract subject-verb-object_ (SVO) relationships from sentences, which helps isolate claims.
+"""
+
+__docformat__ = "google"
+from transformers import pipeline
+nli = pipeline("text-classification", model="facebook/bart-large-mnli")
+
+import spacy
+# Load pretrained language model
+nlp = spacy.load("en_core_web_sm")
+doc = nlp("Apple (the tech giant) is based in Cupertino.")
+
+# List of discourse markers to skip during extraction
+DISCOURSE_MARKERS = {"however", "although", "though", "meanwhile",
+                     "nevertheless", "nonetheless", "in contrast", "on the other hand"}
+
+def clean_subtree(subtree):
+    # Remove parentheticals from sentences
+    cleaned = []
+    inside_parens = 0
+    for t in subtree:
+        if t.text == "(":
+            inside_parens += 1
+            continue
+        elif t.text == ")":
+            inside_parens -= 1
+            continue
+        if inside_parens == 0 and t.text.lower() not in DISCOURSE_MARKERS:
+            cleaned.append(t.text)
+    return " ".join(cleaned)
+
+def extract_atomic_claims(text):
+    """
+    This method extracts individual, atomic claims from a passage, using a pretrained spaCy language model to do so.
+
+    Args:
+        text (str): The text from which to extract claims.
+    
+    Returns:
+        claims (list):  A list of atomic claims from the text.
+    """
+    doc = nlp(text) # Convert text to annnotated spaCy doc
+    claims = [] # Initialize empty list to hold all claims in text
+
+    # doc.sents is an iterator over the sentences in a processed document
+    for sent in doc.sents:
+
+        # Skip any non-assertive statements by looking for hedging words
+        if any(modal in sent.text.lower() for modal in ["might", "could", "if", "possibly", "maybe"]):
+            continue
+
+        subject, verb, object_ = None, None, None
+        passive_subject, agent = None, None
+
+        # Iterate through each token in the sentence
+        for token in sent:
+            # Identify the nominal subject
+            if token.dep_ == "nsubj":
+                # Grab entire phrase representing subject, not just the subject itself
+                subject = clean_subtree(token.subtree)
+
+            # Identify nominal subjects in the passive voice
+            elif token.dep_ == "nsubjpass":
+                passive_subject = clean_subtree(token.subtree)
+
+            elif token.dep_ == "ROOT":
+                verb_parts = []
+                
+                # Include auxiliaries like "is" and "was"
+                for child in token.children:
+                    if child.dep_ in ("aux", "auxpass"):
+                        verb_parts.append(child.lemma_)
+                
+                # Add main verb
+                verb_parts.append(token.lemma_)
+
+                # Include prepositional phrase (e.g., "in Cupertino")
+                for child in token.children:
+                    if child.dep_ == "prep":
+                        verb_parts.append(child.lemma_)
+                        for obj in child.children:
+                            if obj.dep_ == "pobj":
+                                verb_parts.append(obj.lemma_)
+                verb = " ".join(verb_parts)
+                # Find "by" + its object anywhere under the ROOT token
+                # Debugging statements
+                # print("\n[DEBUG] Verb subtree:")
+                for descendant in token.subtree: # look at all the children of the ROOT (verb)
+                    # print(descendant.text, descendant.dep_, descendant.head.text)
+                    if descendant.dep_ in ("prep", "agent") and descendant.text.lower() == "by":
+                        for child in descendant.children: # Look at all the grandchildren of the ROOT (verb)
+                            if child.dep_ == "pobj":
+                                agent = clean_subtree(child.subtree)
+            if token.dep_ == "xcomp":
+                object_ = clean_subtree(token.subtree)
+            elif token.dep_ in ("dobj", "attr", "pobj") and object_ is None:
+                object_ = clean_subtree(token.subtree)
+        
+        # Debugging statements
+        print("---")
+        print("SENTENCE:", sent.text)
+        print("PASSIVE_SUBJECT:", passive_subject)
+        print("AGENT:", agent)
+        print("VERB:", verb)
+
+        # Active voice
+        if subject and verb and object_:
+            claim = f"{subject} {verb} {object_}"
+            claims.append(claim)
+        # Passive voice -> rewrite to active
+        elif passive_subject and agent and verb:
+            claim = f"{agent} {verb} {passive_subject}"
+            claims.append(claim)
+        # Final fallback
+        elif passive_subject and verb:
+            claim = f"{passive_subject} {verb}"
+            claims.append(claim)
+
+    return claims
+
+def classify_claim_with_nli(claim: str, supporting_doc: str) -> str:
+    """
+    Classifies the claim based on a supporting_doc using NLI (entailment, neutral, contradiction).
+    This method uses Facebook's bart-large-mnli Natural Language Inference model based on BART architecture.
+    bart-large-mnli classifies the relationship between two pieces of text (a hypothesis and a premise) into one of three categories.
+
+    Args:
+        claim (str): The LLM-generated claim to be evaluated. The NLI uses this as the hypothesis.
+        supporting_doc (str): The retrieved context the LLM based its answer on. The NLI uses this as the premise.
+
+    Returns:
+        The degree to which the claim is supported by the document.
+
+            - "entailment": The claim is supported by the document
+            - "contradiction": The claim is directly contradicted by the document
+            - "neutral": The claim is neither supported nor contradicted by the document
+    """
+
+    input_pair = f"{claim} </s> {supporting_doc}"
+    result = nli(input_pair)[0]
+    label = result['label'].lower()     # entailment, contradiction, neutral
+    return label
+
+def detect_bs(claim: str, supporting_docs: list[str],
+              threshold_supported=0.75, threshold_contradicted=0.2) -> str:
+    """
+    Detects if a claim is Supported, Contradicted, or Unsupported by supporting_docs.
+    Prioritizes NLI (logical relation), then falls back to cosine similarity if needed.
+
+    Args:
+        claim (str): The LLM-generated claim to be inspected.
+        supporting_docs (list[str]): The documents retrieved from the knowledge base that the LLM based its claim on.
+        threshold_supported (float): The minimum vector similarity score between the claim and doc that is needed to classify a claim as supported by its docs.
+        threshold_contradicted (float): The maximum vector similarity score between the claim and doc that is needed to classify a claim as directly contradicted by its docs.
+
+    Returns:
+        The degree to which the claim is supported by the documents it used. Either Supported, Unsupported, or Contradicted.
+    """
+    from FORAGER.embedder import prefix, model
+    from sentence_transformers import util
+    
+    # NLI Voting Phase
+    contradiction_votes = 0
+    entailment_votes = 0
+
+    if not supporting_docs:
+        return "Unsupported"
+    
+    for doc in supporting_docs:
+        label = classify_claim_with_nli(claim, doc)
+        print(f"[DEBUG] Claim: {claim} | NLI: {label}")
+        if label == "contradiction":
+            contradiction_votes += 1
+        elif label == "entailment":
+            entailment_votes += 1
+        
+    if contradiction_votes >= len(supporting_docs) / 2 + 1:
+        return "Contradicted"
+    elif entailment_votes > 0:
+        return "Supported"
+    
+    # Embedding Similarity Phase (only runs if NLI is neutral)
+    claim_emb = model.encode([prefix + claim], normalize_embeddings=True).astype("float32")
+    support_embs = model.encode([prefix + doc for doc in supporting_docs],
+                                normalize_embeddings=True).astype("float32")
+    
+    similarities = util.cos_sim(claim_emb, support_embs)[0]
+    max_score = similarities.max().item()
+
+    if max_score >= threshold_supported:
+        return "Supported"
+    elif max_score <= threshold_contradicted:
+        return "Contradicted"
+    else:
+        return "Unsupported"
+    
+
+# for token in doc:
+#     print(f"{token.text:15} | {token.dep_:10} | {token.head.text:10} | {token.pos_:6} | {token.lemma_}")
+
+# text_1 = "TSMC is the global leader in semiconductor manufacturing. It produces chips for major firms like Apple and AMD. The company is headquartered in Hsinchu, Taiwan. Its revenue exceeded $70 billion in 2023. TSMC's advanced 3nm process began mass production in early 2023. If geopolitical tensions increase, the company might diversify its manufacturing locations."
+# text_2 = "Intel has invested billions in next-generation packaging technology. Its Foveros and EMIB technologies aim to enhance performance and reduce power consumption. Although it trails TSMC in overall market share, Intel plans to compete aggressively in advanced nodes. The company is based in Santa Clara, California. It might regain leadership by 2027 if its roadmap stays on track."
+# text_3 = "Research suggests that chiplet-based architectures improve performance per watt. AMD’s Ryzen processors use chiplets to separate compute and I/O functions. NVIDIA, on the other hand, focuses heavily on monolithic designs. If yields improve, more companies could shift to chiplet-based strategies. Some engineers argue that chiplets introduce interconnect complexity."
+# text_4 = "Apple designs its own chips using ARM architecture. These chips are manufactured by TSMC using cutting-edge nodes. Qualcomm and MediaTek also rely on TSMC for fabrication. In contrast, Intel manufactures most of its chips in-house. While Samsung produces both memory and logic chips, it lags behind TSMC in foundry services. Analysts believe that AI workloads will drive demand for 2.5D and 3D packaging."
+# text_5 = "TSMC might open a new fab in Germany. Some speculate that geopolitical pressures could accelerate this move. If subsidies are approved, the project will likely begin in 2026. However, no official confirmation has been released. The company declined to comment on its plans."
+
+# print(extract_atomic_claims(text_1))
+# print(extract_atomic_claims(text_2))
+# print(extract_atomic_claims(text_3))
+# print(extract_atomic_claims(text_4))
+# print(extract_atomic_claims(text_5))
