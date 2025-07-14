@@ -50,6 +50,9 @@ Thus, the final assembled claim is:
 
 """
 
+from transformers import pipeline
+nli = pipeline("text-classification", model="facebook/bart-large-mnli")
+
 import spacy
 # Load pretrained language model
 nlp = spacy.load("en_core_web_sm")
@@ -163,6 +166,69 @@ def extract_atomic_claims(text):
 
     return claims
 
+def classify_claim_with_nli(claim: str, supporting_doc: str) -> str:
+    """
+    Classifies the claim based on a supporting_doc using NLI (entailment, neutral, contradiction).
+
+    Args:
+        claim (str) : the LLM-generated claim to be evaluated
+        supporting_doc (str): the retrieved context the LLM based its answer on
+
+    Returns:
+        label (str): the degree to which the claim is supported by the document
+            "Entailment" -> The claim is supported by the document
+            "Contradiction" -> The claim is directly contradicted by the document
+            "Neutral" -> The claim is neither supported nor contradicted by the document
+    """
+
+    input_pair = f"{claim} </s> {supporting_doc}"
+    result = nli(input_pair)[0]
+    label = result['label'].lower()     # entailment, contradiction, neutral
+    return label
+
+def detect_bs(claim: str, supporting_docs: list[str],
+              threshold_supported=0.75, threshold_contradicted=0.2) -> str:
+    """
+    Detects if a claim is Supported, Contradicted, or Unsupported by supporting_docs.
+
+    Prioritizes NLI (logical relation), then falls back to cosine similarity if needed.
+    """
+    from FORAGER.embedder import prefix, model
+    from sentence_transformers import util
+    
+    # NLI Voting Phase
+    contradiction_votes = 0
+    entailment_votes = 0
+
+    if not supporting_docs:
+        return "Unsupported"
+    
+    for doc in supporting_docs:
+        label = classify_claim_with_nli(claim, doc)
+        if label == "contradiction":
+            contradiction_votes += 1
+        elif label == "entailment":
+            entailment_votes += 1
+        
+    if contradiction_votes > 0:
+        return "Contradicted"
+    elif entailment_votes > 0:
+        return "Supported"
+    
+    # Embedding Similarity Phase (only runs if NLI is neutral)
+    claim_emb = model.encode([prefix + claim], normalize_embeddings=True).astype("float32")
+    support_embs = model.encode([prefix + doc for doc in supporting_docs],
+                                normalize_embeddings=True).astype("float32")
+    
+    similarities = util.cos_sim(claim_emb, support_embs)[0]
+    max_score = similarities.max().item()
+
+    if max_score >= threshold_supported:
+        return "Supported"
+    elif max_score <= threshold_contradicted:
+        return "Contradicted"
+    else:
+        return "Unsupported"
 # for token in doc:
 #     print(f"{token.text:15} | {token.dep_:10} | {token.head.text:10} | {token.pos_:6} | {token.lemma_}")
 
