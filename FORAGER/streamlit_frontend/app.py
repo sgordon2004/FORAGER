@@ -2,115 +2,14 @@ import streamlit as st
 import pdfplumber
 from bs4 import BeautifulSoup
 import os
-import json
 import requests
 from dotenv import load_dotenv
-
-# FORAGER RAG - Full UI Structure (Commented Template)
-# D1.1: Input + Answer + Evaluation Flow (with layout comments)
-# ================================
-
-# import streamlit as st
-# import os
-# import json
-# import requests
-# from dotenv import load_dotenv
-
-# # Load environment variable (your GROQ API key)
-# load_dotenv()
-# GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-
-# # API endpoint and model details
-# GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions"
-# MODEL_NAME = "llama3-8b-8192"
-
-# # Page config
-# st.set_page_config(page_title="FORAGER RAG UI", layout="centered")
-# st.title("📄🔍 FORAGER RAG Document QA")
-
-# # --- Section 1: File Upload ---
-# # Upload a supported document (.pdf, .html, or .md)
-# uploaded_files = st.file_uploader("Upload a document:", type=["pdf", "html", "md"])
-
-# # --- Section 2: Question Input ---
-# # User can ask a question based on the document
-# user_question = st.text_input("Ask a question:")
-
-# # Submit button
-# submit_button = st.button("Submit")
-
-# # --- Section 3: Process Input and Display Answer ---
-# if uploaded_files and user_question and submit_button:
-
-#     st.info("Processing your request...")
-
-#     # Read file content (mock for now)
-#     file_content = uploaded_file.read().decode("utf-8", errors="ignore")
-
-#     # Prompt for the model
-#     prompt = f"""Given the following document:\n\n{file_content}\n\nAnswer the question:\n{user_question}"""
-#     payload = {
-#         "model": MODEL_NAME,
-#         "messages": [
-#             {"role": "system", "content": "You are an expert assistant for document QA."},
-#             {"role": "user", "content": prompt}
-#         ],
-#         "temperature": 0.2
-#     }
-#     headers = {
-#         "Authorization": f"Bearer {GROQ_API_KEY}",
-#         "Content-Type": "application/json"
-#     }
-
-#     # Call the API
-#     try:
-#         with st.spinner("⚙️ Contacting Groq API..."):
-#             response = requests.post(GROQ_ENDPOINT, json=payload, headers=headers)
-#             response.raise_for_status()
-#             result = response.json()
-#             answer = result["choices"][0]["message"]["content"]
-
-#         # Display the answer
-#         st.success("✅ Answer:")
-#         st.write(answer)
-
-#         # --- Section 4: Evaluation Flow ---
-#         st.markdown("---")
-#         st.markdown("### 📝 Help us improve:")
-
-#         # User feedback: thumbs up/down and confidence slider
-#         feedback_col1, feedback_col2 = st.columns(2)
-#         with feedback_col1:
-#             feedback_rating = st.radio("Was this answer helpful?", ["👍 Yes", "👎 No"], key="helpful_rating")
-
-#         with feedback_col2:
-#             feedback_confidence = st.slider("Confidence level:", 0, 100, 50, key="confidence_score")
-
-#         # Optional text feedback
-#         user_comments = st.text_area("Comments or corrections:")
-
-#         # Feedback submission
-#         if st.button("Submit Feedback"):
-#             st.success("✅ Thanks for your feedback!")
-#             # Feedback logging (you can save this to file/database later)
-#             print({
-#                 "question": user_question,
-#                 "answer": answer,
-#                 "helpful": feedback_rating,
-#                 "confidence_score": feedback_confidence,
-#                 "user_comment": user_comments
-#             })
-
-#     except Exception as e:
-#         st.error(f"❌ Error: {e}")
-
-# ---------- End of D1.1 UI Flow -------------
-
-import streamlit as st
-import os
 import json
-import requests
-from dotenv import load_dotenv
+import pandas as pd
+import datetime
+from fpdf import FPDF
+from io import BytesIO
+import time
 
 # Load environment variable
 load_dotenv()
@@ -301,6 +200,102 @@ if uploaded_files and user_question and (st.session_state.get("submitted", False
                     "similarity": attempt["similarity_score"]
                 }
                 mock_pll_logs.append(log_entry)
+            
+            # === Store export log in session state ===
+            if 'log_export_ready' not in st.session_state:
+                st.session_state['log_export_ready'] = False
+
+            # Metadata setup
+            log_export = {
+                "question": user_question,
+                "timestamp": datetime.datetime.now().isoformat(),
+                "pll_attempts": mock_pll_logs
+            }
+
+            st.session_state['log_export'] = log_export
+            st.session_state['log_export_ready'] = True
+
+            # === Export Feature UI ===
+            st.markdown("### 📥 Export PLL Logs")
+
+            if st.session_state['log_export_ready']:
+                # Track selection persistently
+                if "export_format" not in st.session_state:
+                    st.session_state["export_format"] = "JSON"
+
+                # Always render selectbox (outside the init block)
+                selected_format = st.selectbox("Choose download format", ["JSON", "TXT", "CSV", "PDF"])
+                if selected_format != st.session_state["export_format"]:
+                    st.session_state["export_format"] = selected_format
+                    st.rerun()
+
+                export_format = st.session_state["export_format"]
+
+                # JSON
+                if export_format == "JSON":
+                    log_json_str = json.dumps(st.session_state['log_export'], indent=2)
+                    st.download_button(
+                        label="📄 Download as JSON",
+                        data=log_json_str,
+                        file_name="pll_log.json",
+                        mime="application/json"
+                    )
+
+                # TXT
+                elif export_format == "TXT":
+                    log_txt_str = f"Question: {log_export['question']}\nTimestamp: {log_export['timestamp']}\n\n"
+                    for log in log_export["pll_attempts"]:
+                        log_txt_str += f"--- {log['step']} ({log['action']}) ---\n"
+                        log_txt_str += f"BS Label: {log['bs_label']}\n"
+                        log_txt_str += f"Confidence: {log['confidence']}\n"
+                        log_txt_str += f"Similarity: {log['similarity']}\n\n"
+                    st.download_button(
+                        label="📄 Download as TXT",
+                        data=log_txt_str,
+                        file_name="pll_log.txt",
+                        mime="text/plain"
+                    )
+
+                # CSV
+                elif export_format == "CSV":
+                    df = pd.DataFrame(log_export["pll_attempts"])
+                    csv_data = df.to_csv(index=False)
+                    st.download_button(
+                        label="📄 Download as CSV",
+                        data=csv_data,
+                        file_name="pll_log.csv",
+                        mime="text/csv"
+                    )
+
+                # PDF
+                elif export_format == "PDF":
+                    pdf = FPDF()
+                    pdf.add_page()
+                    pdf.set_font("Arial", size=12)
+                    pdf.cell(200, 10, txt="FORAGER PLL Log", ln=True, align="C")
+                    pdf.ln(10)
+                    pdf.multi_cell(0, 10, txt=f"Question: {log_export['question']}")
+                    pdf.multi_cell(0, 10, txt=f"Timestamp: {log_export['timestamp']}")
+                    pdf.ln(5)
+
+                    for log in log_export["pll_attempts"]:
+                        pdf.multi_cell(0, 10, txt=(
+                            f"{log['step']} ({log['action']})\n"
+                            f"BS Label: {log['bs_label']}\n"
+                            f"Confidence: {log['confidence']}\n"
+                            f"Similarity: {log['similarity']}\n"
+                        ))
+                        pdf.ln(2)
+
+                    pdf_output_str = pdf.output(dest='S').encode('latin-1')
+                    pdf_bytes = BytesIO(pdf_output_str)
+
+                    st.download_button(
+                        label="📄 Download as PDF",
+                        data=pdf_bytes,
+                        file_name="pll_log.pdf",
+                        mime="application/pdf"
+                    )
 
             # === User Feedback Section ===
             st.markdown("### 📝 User Feedback")
