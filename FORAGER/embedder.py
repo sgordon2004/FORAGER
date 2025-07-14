@@ -122,7 +122,7 @@ def search_database(query, num_vectors):
         num_vectors: Number of closest vectors to return
 
     Returns:
-        supporting_docs (list): A list of the top-k most relevant chunks relative to the query.
+        supporting_docs (list): A list of dictionaries. Each dictionary gives the rank, source, order, score, and text of each retrieved chunk.
     """
 
     global prefix
@@ -147,12 +147,24 @@ def search_database(query, num_vectors):
     print(f"\n\033[1;94mReturning the {num_vectors} most similar chunks for query: \"{query}\"\033[0m\n")
     # print(chunks)
     for rank, idx in enumerate(indices[0]):
-        print(f"{rank+1}. Source: {chunks[idx]['source_filename']} \nChunk: {chunks[idx]['chunk_id']} \nScore: {scores[0][rank]:.4f}\n")
-        print(f"{chunks[idx]['text']}\n")
+        # print(f"{rank+1}. Source: {chunks[idx]['source_filename']} \nChunk: {chunks[idx]['chunk_id']} \nScore: {scores[0][rank]:.4f}\n")
+        # print(f"{chunks[idx]['text']}\n")
+        
+        chunk = chunks[idx]
+        chunk_result = {
+            "rank": rank + 1,
+            "source_filename": chunk["source_filename"],
+            "chunk_id": chunk["chunk_id"],
+            "score": float(scores[0][rank]),
+            "text": chunk["text"]
+        }
+        supporting_docs.append(chunk_result)
+
+    return supporting_docs
 
 def print_vector_in_array(embeddings, n):
     """
-    Prints a vector in the 2-D array of chunk vectors at entry n
+    Prints a vector in the 2-D array of chunk vectors at entry n.
 
     Args:
         embeddings: 2-D array of chunk vectors
@@ -203,9 +215,9 @@ else:
 
 
 # Test search
-test_query = "What is heterogeneous integration?"
-print(test_query)
-search_database(test_query, 5)
+# test_query = "What is heterogeneous integration?"
+# print(test_query)
+# search_database(test_query, 5)
 
 
 
