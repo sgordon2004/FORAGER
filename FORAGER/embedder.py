@@ -5,9 +5,9 @@ Using the jsonl file with each line being a separate json representing a chunk..
 2. Stores each embedded chunk in FAISS database
 3. Includes search function
 
-Still need to do:
-1. Figure out how to add to existing FAISS database and not make a new one each time documents are uploaded
-    (add_to_index function?)
+Potential next steps:
+Implement a way to restart the database if a totally new set of chunks is passed in for some reason.
+Currently, it is assumed that any new chunks are added onto the end of the existing file indicated by chunk_filepath.
 """
 
 import os 
@@ -22,7 +22,6 @@ faiss_db = faiss.IndexFlatIP(dim)
 chunks = []
 embeddings = []
 prefix = "Represent this sentence for retrieval: "
-prev_chunk_num = 0
 
 # Start by preparing the embedding model
 model = SentenceTransformer("BAAI/bge-base-en-v1.5")
@@ -31,8 +30,6 @@ model = SentenceTransformer("BAAI/bge-base-en-v1.5")
 chunk_filepath = "FORAGER_corpus/heterogenous_integration/chunks/chunks.jsonl"
 
 test_chunk_filepath = "FORAGER_corpus/heterogenous_integration/chunks/test_chunks.jsonl"
-
-embeddings_filepath = "FORAGER/vector_database/embeddings.npy"
 
 faiss_db_filepath = "FORAGER/vector_database/index_db.faiss"
 
@@ -45,7 +42,7 @@ def embed_chunks(data, m, n):
         m: Starting chunk entry
         n: Ending chunk entry
     Returns:
-        A 2-D numpy array of vectors, each representing a chunk
+        embeddings: A 2-D numpy array of vectors, each representing a chunk
 
     Variable type info: 
         chunk - dictionary (and each line in the JSONL file is a chunk)
@@ -58,7 +55,6 @@ def embed_chunks(data, m, n):
 
     global prefix
     global embeddings
-    global prev_chunk_file_length
 
     # Select chunks to embed
     chunks_to_embed = data[m:n]
@@ -75,7 +71,7 @@ def embed_chunks(data, m, n):
     # Return the 2-D array of vectors
     return embeddings
 
-def initial_embed_and_build(filepath): # Figure out prev_chunk_num
+def initial_embed_and_build(filepath):
     """
     Run this once when first running FORAGER to embed the first set of chunks and create the FAISS database
 
@@ -83,10 +79,10 @@ def initial_embed_and_build(filepath): # Figure out prev_chunk_num
         filepath: path to the JSONL file containing the chunks to be embedded
 
     Returns:
-        New FAISS index stored in "FORAGER/vector_database/index_db.faiss"
+        embeddings: 2-D array of vectors
+        faiss_db: New FAISS index stored in "FORAGER/vector_database/index_db.faiss"
     """
     global faiss_db
-    global prev_chunk_num
     global chunks
 
     print(f"Filepath being used: {filepath}\n")
@@ -94,9 +90,6 @@ def initial_embed_and_build(filepath): # Figure out prev_chunk_num
 
     with open(filepath, "r", encoding="utf-8") as f:
         chunks = [json.loads(line) for line in f if line.strip()]
-
-    # Store length so we know if there are new chunks later
-    prev_chunk_num = len(chunks)
 
     # Embed all chunks initially in the JSONL and put them into the FAISS database
     embeddings = embed_chunks(chunks, 0, len(chunks))
@@ -109,29 +102,16 @@ def initial_embed_and_build(filepath): # Figure out prev_chunk_num
     print(f"\033[1;92m✅ FAISS database stored in {faiss_db_filepath}!\033[0m\n")
     return embeddings, faiss_db
 
-def add_to_FAISS(new_embedded_chunks): # Done
+def add_to_FAISS(new_embedded_chunks):
     """
     Function to embed and add chunks from newly uploaded documents into FAISS
 
-    Maybe track length of chunks.jsonl and iteratively add new chunks if the length is longer
-    Ex. chunks.jsonl is 801 lines now. Store this current length. Later, say the length is 900. 
-    Store this as a temporary variable, add lines 802-900, then replace the 801 with 900 for the current length
+    Arguments:
+        new_embedded_chunks: New vectors to add to FAISS database
     """
-
-    # global prev_chunk_file_length
-
-    # with open(filepath, "r", encoding="utf-8") as f:
-    #     updated_data = [json.loads(line) for line in f if line.strip()]
-    # new_chunk_file_length = len(updated_data)
-    # if (new_chunk_file_length <= prev_chunk_file_length):
-    #     print(f"\033[1;96mNo new chunks to embed!\033[0m\n")
-    # else:
-    #     # Get the new chunks
-    #     new_embedded = embed_chunks(updated_data, prev_chunk_file_length, new_chunk_file_length)
 
     faiss_db.add(new_embedded_chunks)
     faiss.write_index(faiss_db, faiss_db_filepath)
-    #prev_chunk_file_length = new_chunk_file_length
 
 def search_index(query, k):
     """
@@ -151,7 +131,6 @@ def search_index(query, k):
     query_emb = model.encode(query_with_prefix, normalize_embeddings = True).astype("float32")
 
     # Ensure k <= length of index
-    print(f"Length of faiss_db = {faiss_db.ntotal}\n")
     k = min(k, faiss_db.ntotal)
 
     # Search index
@@ -161,14 +140,12 @@ def search_index(query, k):
 
     # Show results
     print(f"\n\033[1;94mReturning the {k} most similar chunks for query: \"{query}\"\033[0m\n")
-    idx = 0
-    print(chunks)
+    # print(chunks)
     for rank, idx in enumerate(indices[0]):
-        print(f"Current idx value: {idx}\n")
-        print(f"{rank+1}. Source: {embeddings[idx]["source_filename"]} \nChunk: {chunks[idx]["chunk_id"]} \nScore: {scores[0][rank]:.4f}\n")
-        print(f"{embeddings[idx]["text"]}\n")
+        print(f"{rank+1}. Source: {chunks[idx]["source_filename"]} \nChunk: {chunks[idx]["chunk_id"]} \nScore: {scores[0][rank]:.4f}\n")
+        print(f"{chunks[idx]["text"]}\n")
 
-def print_vector_in_array(embeddings, n): # done
+def print_vector_in_array(embeddings, n):
     """
     Prints a vector in the 2-D array of chunk vectors at entry n
 
@@ -179,7 +156,7 @@ def print_vector_in_array(embeddings, n): # done
     print(f"Printing embedded vector at entry {n}...")
     print(f"{embeddings[n]}\n")
 
-def print_vector_in_FAISS(n): # done
+def print_vector_in_FAISS(n):
     """
     Prints a specified vector in the FAISS database
 
@@ -196,37 +173,30 @@ def print_vector_in_FAISS(n): # done
 
 # Read in the FAISS database if it exists, or embed chunks and make a new one if it doesn't
 if os.path.exists(faiss_db_filepath):
-    print("in if block")
     faiss_db = faiss.read_index(faiss_db_filepath)
-    print(f"FAISS db size: {faiss_db.ntotal}\n")
+    print(f"\033[1.96mFAISS database size: {faiss_db.ntotal}\033[0m\n")
 else:
-    print("in else block")
-    embed_array, faiss_db = initial_embed_and_build(test_chunk_filepath)
+    embed_array, faiss_db = initial_embed_and_build(chunk_filepath)
+    print(f"\033[1.96mFAISS database size: {faiss_db.ntotal}\033[0m\n")
 
-print(f"FAISS db size: {faiss_db.ntotal}\n")
-
-# Read in chunks.jsonl, check if more has been added
-with open(test_chunk_filepath, "r", encoding="utf-8") as f:
+# Read in chunks.jsonl
+with open(chunk_filepath, "r", encoding="utf-8") as f:
     chunks = [json.loads(line) for line in f if line.strip()]
+
+# Check if more has been added to chunks.jsonl
 if len(chunks) > faiss_db.ntotal:
-    print("in second if block")
     new_chunks = embed_chunks(chunks, faiss_db.ntotal, len(chunks))
     add_to_FAISS(new_chunks)
-    prev_chunk_num = len(chunks)
-    print(f"Updated prev_chunk_num value: {prev_chunk_num}\n")
-    print(f"Updated length of embeddings: {len(embeddings)}\n")
-    print(f"FAISS db size: {faiss_db.ntotal}\n")
+    print(f"\033[1.96mFAISS database size: {faiss_db.ntotal}\033[0m\n")
 else:
-    print("in second else block\n")
-    print("No new chunks to add to database\n")
-    print(f"Updated prev_chunk_num value: {prev_chunk_num}\n")
-    print(f"Updated length of embeddings: {len(embeddings)}\n")
-    print(f"FAISS db size: {faiss_db.ntotal}\n")
+    print(f"\033[1;92m✅ Database is up to date.\033[0m\n")
 
 
-# Testing
-# test_query = "What is required for an Si base?"
-# print(test_query)
-# search_index(test_query, 3)
+# Test search
+test_query = "What is heterogeneous integration?"
+print(test_query)
+search_index(test_query, 5)
+
+
 
 
