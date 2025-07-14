@@ -34,11 +34,20 @@ def extract_atomic_claims_llm(text: str) -> str:
     Returns:
         list[str]: List of atomic factual claims.
     """
+    import ast
     prompt = llm_claim_prompt.format(input_text=text)
     response = get_llm_response(prompt)
 
-    return(response)
+    try:
+        claims = ast.literal_eval(response)
+        if isinstance(claims, list):
+            return claims
+        else:
+            print("[WARNING] LLM returned non-list:", response)
+            return []
+    except Exception as e:
+        print(f"[ERROR] Failed to parse LLM response: {e}")
+        print(response)
+        return []
     
 test = "NVIDIA, the leader in graphics processing units, announced its latest AI chip in 2024. The chip is manufactured using TSMC’s 3nm process technology. Despite global supply chain disruptions, NVIDIA reported record quarterly revenue. Meanwhile, Intel continues to expand its foundry services but struggles to match TSMC’s efficiency. Apple has also shifted more chip production to TSMC to support its custom silicon roadmap."
-
-print(extract_atomic_claims_llm(test))
