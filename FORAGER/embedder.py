@@ -142,8 +142,8 @@ def search_database(query, num_vectors):
     print(f"\n\033[1;94mReturning the {num_vectors} most similar chunks for query: \"{query}\"\033[0m\n")
     # print(chunks)
     for rank, idx in enumerate(indices[0]):
-        print(f"{rank+1}. Source: {chunks[idx]["source_filename"]} \nChunk: {chunks[idx]["chunk_id"]} \nScore: {scores[0][rank]:.4f}\n")
-        print(f"{chunks[idx]["text"]}\n")
+        print(f"{rank+1}. Source: {chunks[idx]['source_filename']} \nChunk: {chunks[idx]['chunk_id']} \nScore: {scores[0][rank]:.4f}\n")
+        print(f"{chunks[idx]['text']}\n")
 
 def print_vector_in_array(embeddings, n):
     """
