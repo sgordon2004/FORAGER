@@ -18,6 +18,7 @@ from .formatter import format_json, load_json
 import re
 import time
 from .evaluator import run_eval_process
+from embedder import search_index
 
 # Load API key from environment
 load_dotenv()
@@ -267,6 +268,37 @@ def regenerate_with_strict_grounding(failed_evaluations, prompt_history, evaluat
 
     return revised_answers 
 
+def regenerate_or_retrieve_more(prompt, k=3):
+    """
+    Attempts to improve the response by retrieving more context from FAISS and regenerating using the same or modified prompt.
+
+    Args: 
+        prompt (str): The original user task or prompt.
+        k (int): Number of similar chunks to retrieve. 
+
+    Returns: 
+        str: A new candidate response.
+    """
+    #Retrieve similar chunks from the knowledge base 
+    print(f"\033[1;96m🔍 Retrieving top {k} relevant chunks...\033[0m")
+    chunks = search_index(prompt, k) # This already prints relevant chunks 
+
+    #Format the retrieved chunks into extra content (if search_index doesn't return text, you may need to extract it from your FAISS chunk list)
+    extra_context = "\n\n".join([chunk['text'] for chunk in chunks]) #Assuming chunks is a list of dicts
+
+    #Regenerate a response with more grounding 
+    grounded_prompt = f"""Use the information below to improve your answer: 
+
+{extra_context}
+
+Orginal Question: 
+{prompt}
+""" 
+    print (f"\033[1;96m🔍 Regenerating with grounded context...\033[0m")
+    new_response = get_llm_response(grounded_prompt)
+
+    return new_response
+
 def get_llm_response(prompt, max_retries=3):
     """
     Sends a prompt to the Groq LLM and retrieves the JSON response.
@@ -305,6 +337,8 @@ def get_llm_response(prompt, max_retries=3):
             else:
                 print("*** Max retries reached. Returning error message. ***\n")
                 return str(e)
+
+
 
 def save_prompt_history(prompt_history, round_number):
     """
