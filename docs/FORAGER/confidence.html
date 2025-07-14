@@ -90,7 +90,7 @@ accepted, discarded, or refined in subsequent iterations of the Prompt Lock Loop
 </span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a><span class="sd">documents. The confidence score can be used to determine whether the answer should be</span>
 </span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a><span class="sd">accepted, discarded, or refined in subsequent iterations of the Prompt Lock Loop (PLL).</span>
 </span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a>
+</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a><span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;google&quot;</span>
 </span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a><span class="k">def</span><span class="w"> </span><span class="nf">confidence_checker</span><span class="p">(</span><span class="n">eval_label</span><span class="p">,</span> <span class="n">similarity_score</span><span class="p">):</span>
 </span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a><span class="sd">    Determines a final confidence score or decision based on the evaluation label </span>
@@ -181,23 +181,34 @@ accepted, discarded, or refined in subsequent iterations of the Prompt Lock Loop
 (e.g., NLI classification) and the similarity score between the LLM response 
 and the supporting documents.</p>
 
-<p>Args:
-    eval_label (str): The classification label assigned to the answer, typically 
-                      values like 'Supported', 'Unsupported', or 'Contradicted'.
-    similarity_score (float): A numerical value representing the semantic similarity 
-                              between the LLM response and the supporting documents,
-                              typically ranging from 0 to 1.</p>
+<h6 id="arguments">Arguments:</h6>
 
-<p>Returns:
-    float: A final confidence score (or decision value) reflecting both logical 
-           consistency (from eval_label) and semantic alignment (from similarity_score).
-           This score can be used to determine whether to accept, discard, or 
-           regenerate the LLM answer within the FORAGER Prompt Lock Loop (PLL).</p>
+<ul>
+<li><strong>eval_label (str):</strong>  The classification label assigned to the answer, typically 
+values like 'Supported', 'Unsupported', or 'Contradicted'.</li>
+<li><strong>similarity_score (float):</strong>  A numerical value representing the semantic similarity 
+between the LLM response and the supporting documents,
+typically ranging from 0 to 1.</li>
+</ul>
 
-<p>Notes:
-    - 'Supported' responses will generally yield higher confidence.
-    - 'Unsupported' or 'Contradicted' responses will lower the confidence score, 
-      even if the similarity is high, helping to mitigate false positives.</p>
+<h6 id="returns">Returns:</h6>
+
+<blockquote>
+  <p>float: A final confidence score (or decision value) reflecting both logical 
+         consistency (from eval_label) and semantic alignment (from similarity_score).
+         This score can be used to determine whether to accept, discard, or 
+         regenerate the LLM answer within the FORAGER Prompt Lock Loop (PLL).</p>
+</blockquote>
+
+<h6 id="notes">Notes:</h6>
+
+<blockquote>
+  <ul>
+  <li>'Supported' responses will generally yield higher confidence.</li>
+  <li>'Unsupported' or 'Contradicted' responses will lower the confidence score, 
+  even if the similarity is high, helping to mitigate false positives.</li>
+  </ul>
+</blockquote>
 </div>
 
 

@@ -142,7 +142,7 @@ identify incorrect answers.</p>
 </span><span id="L-19"><a href="#L-19"><span class="linenos"> 19</span></a><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 </span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.evaluator</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_eval_process</span>
 </span><span id="L-21"><a href="#L-21"><span class="linenos"> 21</span></a><span class="c1"># from .embedder import search_index</span>
-</span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a>
+</span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a><span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;google&quot;</span>
 </span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a><span class="c1"># Load API key from environment</span>
 </span><span id="L-24"><a href="#L-24"><span class="linenos"> 24</span></a><span class="n">load_dotenv</span><span class="p">()</span>
 </span><span id="L-25"><a href="#L-25"><span class="linenos"> 25</span></a>
@@ -729,12 +729,18 @@ identify incorrect answers.</p>
 
             <div class="docstring"><p>Extracts and parses the JSON portion of the LLM's raw response.</p>
 
-<p>Args:
-    raw_response (str): The full string returned by the LLM.
-    batch_num (int, optional): Used for printing contextual error messages.</p>
+<h6 id="arguments">Arguments:</h6>
 
-<p>Returns:
-    dict: Parsed JSON answers, or an empty dict if parsing fails.</p>
+<ul>
+<li><strong>raw_response (str):</strong>  The full string returned by the LLM.</li>
+<li><strong>batch_num (int, optional):</strong>  Used for printing contextual error messages.</li>
+</ul>
+
+<h6 id="returns">Returns:</h6>
+
+<blockquote>
+  <p>dict: Parsed JSON answers, or an empty dict if parsing fails.</p>
+</blockquote>
 </div>
 
 
@@ -781,11 +787,17 @@ identify incorrect answers.</p>
 
             <div class="docstring"><p>Builds a prompt for a single question with options, formatted for LLM input.</p>
 
-<p>Args:
-    q (dict): A dictionary containing the question and its options.</p>
+<h6 id="arguments">Arguments:</h6>
 
-<p>Returns:
-    str: A formatted prompt string for the question.</p>
+<ul>
+<li><strong>q (dict):</strong>  A dictionary containing the question and its options.</li>
+</ul>
+
+<h6 id="returns">Returns:</h6>
+
+<blockquote>
+  <p>str: A formatted prompt string for the question.</p>
+</blockquote>
 </div>
 
 
@@ -885,11 +897,17 @@ identify incorrect answers.</p>
 
             <div class="docstring"><p>Loads a flat dictionary of questions (as used in rounds 1+) into a list format.</p>
 
-<p>Args:
-    test_file (str): The name of the test file to load, relative to FORAGER/data/.</p>
+<h6 id="arguments">Arguments:</h6>
 
-<p>Returns:
-    list: A list of question dictionaries, each with an "id" key (e.g., "Q1").</p>
+<ul>
+<li><strong>test_file (str):</strong>  The name of the test file to load, relative to FORAGER/data/.</li>
+</ul>
+
+<h6 id="returns">Returns:</h6>
+
+<blockquote>
+  <p>list: A list of question dictionaries, each with an "id" key (e.g., "Q1").</p>
+</blockquote>
 </div>
 
 
@@ -939,11 +957,17 @@ identify incorrect answers.</p>
 
             <div class="docstring"><p>Builds a prompt string from a batch of formatted questions for LLM input.</p>
 
-<p>Args:
-    formatted_batch (list): A list of dictionaries, each containing a question and its options.</p>
+<h6 id="arguments">Arguments:</h6>
 
-<p>Returns:
-    str: A complete prompt formatted for Groq's LLM with JSON instructions.</p>
+<ul>
+<li><strong>formatted_batch (list):</strong>  A list of dictionaries, each containing a question and its options.</li>
+</ul>
+
+<h6 id="returns">Returns:</h6>
+
+<blockquote>
+  <p>str: A complete prompt formatted for Groq's LLM with JSON instructions.</p>
+</blockquote>
 </div>
 
 
@@ -1041,12 +1065,18 @@ identify incorrect answers.</p>
 
             <div class="docstring"><p>Rewrites incorrect questions using their original prompts via LLM.</p>
 
-<p>Args:
-    incorrect_questions (dict): A dictionary of questions that were answered incorrectly.
-    prompt_history (dict): A dictionary containing the original prompts for each question.</p>
+<h6 id="arguments">Arguments:</h6>
 
-<p>Returns:
-    list: A list of restructured questino dicts with "input" and "options" keys.</p>
+<ul>
+<li><strong>incorrect_questions (dict):</strong>  A dictionary of questions that were answered incorrectly.</li>
+<li><strong>prompt_history (dict):</strong>  A dictionary containing the original prompts for each question.</li>
+</ul>
+
+<h6 id="returns">Returns:</h6>
+
+<blockquote>
+  <p>list: A list of restructured questino dicts with "input" and "options" keys.</p>
+</blockquote>
 </div>
 
 
@@ -1232,12 +1262,18 @@ identify incorrect answers.</p>
 
             <div class="docstring"><p>Sends a prompt to the Groq LLM and retrieves the JSON response.</p>
 
-<p>Args:
-    prompt (str): The input prompt to send to the LLM.
-    max_retries (int, optional): Number of retry attempts if the request fails. Defaults to 3.</p>
+<h6 id="arguments">Arguments:</h6>
 
-<p>Returns:
-    str: The LLM's raw response content or error message if all retries fail.</p>
+<ul>
+<li><strong>prompt (str):</strong>  The input prompt to send to the LLM.</li>
+<li><strong>max_retries (int, optional):</strong>  Number of retry attempts if the request fails. Defaults to 3.</li>
+</ul>
+
+<h6 id="returns">Returns:</h6>
+
+<blockquote>
+  <p>str: The LLM's raw response content or error message if all retries fail.</p>
+</blockquote>
 </div>
 
 
@@ -1281,13 +1317,19 @@ identify incorrect answers.</p>
 <p>This function creates a diirectory (if it doesn't exist) and writes the prompt
 history dictionary to a JSON file named according to the specified round number.</p>
 
-<p>Args:
-    prompt_history (dict): A dictionary containing question IDs (e.g., "Q1", "Q2", ...) as keys and their prompts as values.
-    round_number (int): The current evaluation round number (e.g., 0 for initial run), used to name the output file.</p>
+<h6 id="arguments">Arguments:</h6>
 
-<p>Side Effects:
-    Creates a JSON file at FORAGER/data/prompt_history/prompt_history_round_{round_number}.json
-    containing all question prompts used during evaluation.</p>
+<ul>
+<li><strong>prompt_history (dict):</strong>  A dictionary containing question IDs (e.g., "Q1", "Q2", ...) as keys and their prompts as values.</li>
+<li><strong>round_number (int):</strong>  The current evaluation round number (e.g., 0 for initial run), used to name the output file.</li>
+</ul>
+
+<h6 id="side-effects">Side Effects:</h6>
+
+<blockquote>
+  <p>Creates a JSON file at FORAGER/data/prompt_history/prompt_history_round_{round_number}.json
+  containing all question prompts used during evaluation.</p>
+</blockquote>
 </div>
 
 
@@ -1327,12 +1369,18 @@ history dictionary to a JSON file named according to the specified round number.
 
             <div class="docstring"><p>Saves restructured prompts to a JSON file for traceability and reuse.</p>
 
-<p>Args:
-    restructured (dict): Dictionary of restructured questions, keyed by question ID.
-    round_number (int): The round number to label the output file.</p>
+<h6 id="arguments">Arguments:</h6>
 
-<p>Side Effects:
-    Saves the file to FORAGER/data/new_prompts/restructured_prompts_round_<round_number>.json</p>
+<ul>
+<li><strong>restructured (dict):</strong>  Dictionary of restructured questions, keyed by question ID.</li>
+<li><strong>round_number (int):</strong>  The round number to label the output file.</li>
+</ul>
+
+<h6 id="side-effects">Side Effects:</h6>
+
+<blockquote>
+  <p>Saves the file to FORAGER/data/new_prompts/restructured_prompts_round_<round_number>.json</p>
+</blockquote>
 </div>
 
 
@@ -1379,13 +1427,19 @@ history dictionary to a JSON file named according to the specified round number.
 <p>This function creates a directory (if it doesn't exist) and writes the results dictionary
 to a file named according to the specified round number.</p>
 
-<p>Args:
-    results (dict): A dictionary mapping batch labels (e.g., "Batch_1", "Batch_2", ...) to their corresponding question and answer data.
-    round_number (int): The current evaluation round number (e.g., 0 for initial run), used to name the output file.</p>
+<h6 id="arguments">Arguments:</h6>
 
-<p>Side Effects:
-    Creates a JSON file at FORAGER/data/llm_responses/round_{round_number}_responses.json
-    containing all batches and their corresponding labeled questions.</p>
+<ul>
+<li><strong>results (dict):</strong>  A dictionary mapping batch labels (e.g., "Batch_1", "Batch_2", ...) to their corresponding question and answer data.</li>
+<li><strong>round_number (int):</strong>  The current evaluation round number (e.g., 0 for initial run), used to name the output file.</li>
+</ul>
+
+<h6 id="side-effects">Side Effects:</h6>
+
+<blockquote>
+  <p>Creates a JSON file at FORAGER/data/llm_responses/round_{round_number}_responses.json
+  containing all batches and their corresponding labeled questions.</p>
+</blockquote>
 </div>
 
 
@@ -1496,27 +1550,35 @@ for a single round of the prompt-lock loop. It loads the questions,
 builds prompts in batches, sends them to the LLM, parses responses, 
 attaches answers, and saves the results.</p>
 
-<p>Args:
-    test_file (str):
-        For round 0, this should be the filename of the original unlabeled question set
-        (e.g., "4_distractors.json"), located in FORAGER/data.</p>
+<h6 id="arguments">Arguments:</h6>
 
-<pre><code>    For rounds &gt;= 1, this should be the filename of the LM response file
-    from the previous round (e.g., "round_0_responses.json"), located in
-    FORAGER/data/llm_responses.
+<ul>
+<li><p><strong>test_file (str):</strong>  For round 0, this should be the filename of the original unlabeled question set
+(e.g., "4_distractors.json"), located in FORAGER/data.</p>
 
-round_number (int): The current evaluation round number, used to 
-                    label saved output files.
-</code></pre>
+<p>For rounds &gt;= 1, this should be the filename of the LM response file
+from the previous round (e.g., "round_0_responses.json"), located in
+FORAGER/data/llm_responses.</p></li>
+<li><strong>round_number (int):</strong>  The current evaluation round number, used to 
+label saved output files.</li>
+</ul>
 
-<p>Side Effects:
-    - Saves prompt history to 
-      <code>FORAGER/data/prompt_history/prompt_history_round_&lt;round_number&gt;.json</code>
-    - Saves LLM-labeled responses to 
-      <code>FORAGER/data/llm_responses/round_&lt;round_number&gt;_responses.json</code></p>
+<h6 id="side-effects">Side Effects:</h6>
 
-<p>Raises:
-    Prints warnings if the LLM response is missing or if JSON parsing fails.</p>
+<blockquote>
+  <ul>
+  <li>Saves prompt history to 
+  <code>FORAGER/data/prompt_history/prompt_history_round_&lt;round_number&gt;.json</code></li>
+  <li>Saves LLM-labeled responses to 
+  <code>FORAGER/data/llm_responses/round_&lt;round_number&gt;_responses.json</code></li>
+  </ul>
+</blockquote>
+
+<h6 id="raises">Raises:</h6>
+
+<ul>
+<li>Prints warnings if the LLM response is missing or if JSON parsing fails.</li>
+</ul>
 </div>
 
 
@@ -1551,8 +1613,11 @@ round_number (int): The current evaluation round number, used to
 Calls <code><a href="#run_round">run_round()</a></code> with <code>round_number=0</code> to evaluate the original question file.
 Also runs the evaluation process for Round 0.</p>
 
-<p>Args:
-    test_file (str): The name of the initial test file to evaluate (e.g., "4_distractors.json").</p>
+<h6 id="arguments">Arguments:</h6>
+
+<ul>
+<li><strong>test_file (str):</strong>  The name of the initial test file to evaluate (e.g., "4_distractors.json").</li>
+</ul>
 </div>
 
 

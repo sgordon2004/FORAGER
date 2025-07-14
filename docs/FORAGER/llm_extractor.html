@@ -60,7 +60,7 @@
                         <div class="pdoc-code codehilite"><pre><span></span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">FORAGER.runner</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_llm_response</span>
 </span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 </span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">dotenv</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dotenv</span>
-</span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a>
+</span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a><span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;google&quot;</span>
 </span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a><span class="n">llm_claim_prompt</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 </span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a><span class="s2">You are an information extraction engine. Your task is to extract all **atomic factual claims** from the input text below.</span>
 </span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a>
@@ -174,11 +174,17 @@
 
             <div class="docstring"><p>Extracts atomic factual claims from text using Groq LLM.</p>
 
-<p>Args:
-    text (str): Input text (paragraphs).</p>
+<h6 id="arguments">Arguments:</h6>
 
-<p>Returns:
-    list[str]: List of atomic factual claims.</p>
+<ul>
+<li><strong>text (str):</strong>  Input text (paragraphs).</li>
+</ul>
+
+<h6 id="returns">Returns:</h6>
+
+<blockquote>
+  <p>list[str]: List of atomic factual claims.</p>
+</blockquote>
 </div>
 
 

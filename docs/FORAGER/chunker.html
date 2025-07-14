@@ -77,7 +77,7 @@ It then wraps each chunk with metada and saves it as a JSONL.</p>
 </span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 </span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 </span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AutoTokenizer</span>
-</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a>
+</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a><span class="n">__docformat__</span> <span class="o">=</span> <span class="s2">&quot;google&quot;</span>
 </span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a><span class="c1"># Directory from which the JSONs are coming</span>
 </span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a><span class="n">input_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;FORAGER_corpus/heterogenous_integration/json&quot;</span><span class="p">)</span>
 </span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a><span class="c1"># Contains all of the JSON docs</span>
@@ -527,13 +527,19 @@ It then wraps each chunk with metada and saves it as a JSONL.</p>
 
             <div class="docstring"><p>This function chunks the text by the given window size and overlaps each chunk by the given overlap value.</p>
 
-<p>Args:
-    text (str): The text to be chunked. It comes from the document's JSON, in the "content" field.
-    window_size (int): The number of tokens per chunk. Default is 300.
-    overlap (int): The number of tokens each chunk shares with its predecessor to avoid losing context between chunks. Default is 50.</p>
+<h6 id="arguments">Arguments:</h6>
 
-<p>Returns:
-    chunks (list): A list of dicts. Each dict contains the chunk text and metadata.</p>
+<ul>
+<li><strong>text (str):</strong>  The text to be chunked. It comes from the document's JSON, in the "content" field.</li>
+<li><strong>window_size (int):</strong>  The number of tokens per chunk. Default is 300.</li>
+<li><strong>overlap (int):</strong>  The number of tokens each chunk shares with its predecessor to avoid losing context between chunks. Default is 50.</li>
+</ul>
+
+<h6 id="returns">Returns:</h6>
+
+<blockquote>
+  <p>chunks (list): A list of dicts. Each dict contains the chunk text and metadata.</p>
+</blockquote>
 </div>
 
 
