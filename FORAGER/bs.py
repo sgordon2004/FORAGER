@@ -49,7 +49,7 @@ Thus, the final assembled claim is:
     object_: the 3DIC market
 
 """
-
+__docformat__ = "google"
 from transformers import pipeline
 nli = pipeline("text-classification", model="facebook/bart-large-mnli")
 
@@ -171,14 +171,15 @@ def classify_claim_with_nli(claim: str, supporting_doc: str) -> str:
     Classifies the claim based on a supporting_doc using NLI (entailment, neutral, contradiction).
 
     Args:
-        claim (str) : the LLM-generated claim to be evaluated
-        supporting_doc (str): the retrieved context the LLM based its answer on
+        claim (str): The LLM-generated claim to be evaluated.
+        supporting_doc (str): The retrieved context the LLM based its answer on.
 
     Returns:
-        label (str): the degree to which the claim is supported by the document
-            "Entailment" -> The claim is supported by the document
-            "Contradiction" -> The claim is directly contradicted by the document
-            "Neutral" -> The claim is neither supported nor contradicted by the document
+        The degree to which the claim is supported by the document.
+
+            - "entailment": The claim is supported by the document
+            - "contradiction": The claim is directly contradicted by the document
+            - "neutral": The claim is neither supported nor contradicted by the document
     """
 
     input_pair = f"{claim} </s> {supporting_doc}"
@@ -230,6 +231,8 @@ def detect_bs(claim: str, supporting_docs: list[str],
         return "Contradicted"
     else:
         return "Unsupported"
+    
+    
 # for token in doc:
 #     print(f"{token.text:15} | {token.dep_:10} | {token.head.text:10} | {token.pos_:6} | {token.lemma_}")
 
