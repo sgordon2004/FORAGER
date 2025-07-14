@@ -21,3 +21,21 @@ git clone https://github.com/your-username/FORAGER.git
 cd FORAGER
 pip install -r requirements.txt
 ```
+
+## 📘 Usage
+
+FORAGER is accessible via a simple front-end interface; no coding is required.
+
+### Typical Flow via UI
+1. **Upload** your documents (PDF, HTML, or Markdown).
+2. **Submit a query** to the LLM via the app interface.
+3. **View extracted claims** and their verification status directly in the dashboard.
+4. **Download** or **export** results for further use.
+
+---
+
+### Backend Workflow (For Reference Only)
+Internally, FORAGER follows this flow:
+- Ingestion → Chunking → Embedding → Claim Evaluation
+
+This process is fully automated through the UI.
