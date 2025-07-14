@@ -36,9 +36,6 @@
             <li>
                     <a class="function" href="#extract_atomic_claims_llm">extract_atomic_claims_llm</a>
             </li>
-            <li>
-                    <a class="variable" href="#test">test</a>
-            </li>
     </ul>
 
 
@@ -115,10 +112,10 @@
 </span><span id="L-53"><a href="#L-53"><span class="linenos">53</span></a>        <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
 </span><span id="L-54"><a href="#L-54"><span class="linenos">54</span></a>        <span class="k">return</span> <span class="p">[]</span>
 </span><span id="L-55"><a href="#L-55"><span class="linenos">55</span></a>    
-</span><span id="L-56"><a href="#L-56"><span class="linenos">56</span></a><span class="n">test</span> <span class="o">=</span> <span class="s2">&quot;NVIDIA, the leader in graphics processing units, announced its latest AI chip in 2024. The chip is manufactured using TSMC’s 3nm process technology. Despite global supply chain disruptions, NVIDIA reported record quarterly revenue. Meanwhile, Intel continues to expand its foundry services but struggles to match TSMC’s efficiency. Apple has also shifted more chip production to TSMC to support its custom silicon roadmap.&quot;</span>
+</span><span id="L-56"><a href="#L-56"><span class="linenos">56</span></a><span class="c1"># test = &quot;NVIDIA, the leader in graphics processing units, announced its latest AI chip in 2024. The chip is manufactured using TSMC’s 3nm process technology. Despite global supply chain disruptions, NVIDIA reported record quarterly revenue. Meanwhile, Intel continues to expand its foundry services but struggles to match TSMC’s efficiency. Apple has also shifted more chip production to TSMC to support its custom silicon roadmap.&quot;</span>
 </span><span id="L-57"><a href="#L-57"><span class="linenos">57</span></a>
-</span><span id="L-58"><a href="#L-58"><span class="linenos">58</span></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[DEBUG] llm_extractor.py Sending input to LLM:</span><span class="se">\n</span><span class="si">{</span><span class="n">test</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</span><span id="L-59"><a href="#L-59"><span class="linenos">59</span></a><span class="nb">print</span><span class="p">(</span><span class="n">extract_atomic_claims_llm</span><span class="p">(</span><span class="n">test</span><span class="p">))</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos">58</span></a><span class="c1"># print(f&quot;[DEBUG] llm_extractor.py Sending input to LLM:\n{test}&quot;)</span>
+</span><span id="L-59"><a href="#L-59"><span class="linenos">59</span></a><span class="c1"># print(extract_atomic_claims_llm(test))</span>
 </span></pre></div>
 
 
@@ -184,19 +181,6 @@
     list[str]: List of atomic factual claims.</p>
 </div>
 
-
-                </section>
-                <section id="test">
-                    <div class="attr variable">
-            <span class="name">test</span>        =
-<input id="test-view-value" class="view-value-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-            <label class="view-value-button pdoc-button" for="test-view-value"></label><span class="default_value">&#39;NVIDIA, the leader in graphics processing units, announced its latest AI chip in 2024. The chip is manufactured using TSMC’s 3nm process technology. Despite global supply chain disruptions, NVIDIA reported record quarterly revenue. Meanwhile, Intel continues to expand its foundry services but struggles to match TSMC’s efficiency. Apple has also shifted more chip production to TSMC to support its custom silicon roadmap.&#39;</span>
-
-        
-    </div>
-    <a class="headerlink" href="#test"></a>
-    
-    
 
                 </section>
     </main>
