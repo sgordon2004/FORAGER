@@ -20,3 +20,4 @@ Clone the repository and install dependencies:
 git clone https://github.com/your-username/FORAGER.git
 cd FORAGER
 pip install -r requirements.txt
+```
