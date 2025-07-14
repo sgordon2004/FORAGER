@@ -31,6 +31,7 @@ chunk_filepath = "FORAGER_corpus/heterogenous_integration/chunks/chunks.jsonl"
 test_chunk_filepath = "FORAGER_corpus/heterogenous_integration/chunks/test_chunks.jsonl"
 
 faiss_db_filepath = "FORAGER/vector_database/index_db.faiss"
+os.makedirs(os.path.dirname(faiss_db_filepath), exist_ok=True)
 
 def embed_chunks(data, m, n):
     """
