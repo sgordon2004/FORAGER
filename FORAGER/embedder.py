@@ -1,13 +1,23 @@
 """
-What this file does:
-Using the jsonl file with each line being a separate json representing a chunk...
-1. Embeds each chunk
-2. Stores each embedded chunk in FAISS database
-3. Includes search function
+This module handles embedding of textual chunks and managing a FAISS vector database for efficient similarity search. 
+It is a core component of the FORAGER pipeline, enabling retrieval-augmented generation (RAG) by linking user queries 
+to relevant chunks of information from a preprocessed corpus.
 
-Potential next steps:
-Modify so embedder can take chunks from another file besides just chunks.jsonl, if necessary
+Core Functionality:
+1. Embeds each chunk from a JSONL file (where each line is a JSON object containing a chunk of text) using the BGE embedding model.
+2. Stores these embedded vectors in a FAISS database to enable fast nearest-neighbor search.
+3. Provides a search function to retrieve the most relevant chunks for any given query.
+
+Key Features:
+- Supports initial creation of the FAISS database or loading from an existing index.
+- Automatically updates the FAISS index if new chunks are appended to the source JSONL file.
+- Includes utility functions for debugging and inspecting vectors.
+
+Potential Extensions:
+- Can be modified to embed chunks from alternate sources beyond the default 'chunks.jsonl'.
+- Flexible enough to support future improvements in embedding models or chunking strategies.
 """
+
 __docformat__ = "google"
 import os 
 from sentence_transformers import SentenceTransformer
