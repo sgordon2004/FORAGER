@@ -18,26 +18,41 @@ accepted, discarded, or refined in subsequent iterations of the Prompt Lock Loop
 __docformat__ = "google"
 from embedder import search_database
 from bs import detect_bs
-from runner import get_llm_response
+# from runner import get_llm_response
 
 prompt = "Insert original or reworked prompt here"
 
-#Get llm response
-llm_response = get_llm_response(prompt)
+llm_response = "Random response here"
 
-#Set number of nearest-neighbor chunks to use to compute similarity score
-k = 5
+def get_label_and_score(llm_response):
+    """
+    Returns an evaluation label and a similarity score for a given LLM response.
 
-# Compare llm response to chunks in database
-results, scores = search_database(llm_response, k)
+    Arguments:
+        llm_response (str): The LLM's response to the user's prompt or a refined prompt
 
-# Compute the average of the scores of the top 5 most similar documents to get a sense
-# of how similar the llm's answer is to the database.
-similarity_score = sum(scores[0]) / len(scores[0])
-print(similarity_score)
+    Returns:
+        eval_label (str): Evaluation label from the BS detector, usually "Supported," 
+                            "Unsupported," or "Contradicted"
+        similarity_score (float): Decimal between 0 and 1 representing the average dot 
+                                    product similarity between the LLM's response and the
+                                    corpus.
+    """
+    #Set number of nearest-neighbor chunks to use to compute similarity score
+    k = 5
 
-# Get the evaluation label of the llm's response
-eval_label = detect_bs(llm_response, results)
+    # Compare llm response to chunks in database
+    results, scores = search_database(llm_response, k)
+
+    # Compute the average of the scores of the top 5 most similar documents to get a sense
+    # of how similar the llm's answer is to the database.
+    similarity_score = sum(scores[0]) / len(scores[0])
+    print(similarity_score)
+
+    # Get the evaluation label of the llm's response
+    eval_label = detect_bs(llm_response, results)
+
+    return eval_label, similarity_score
 
 def confidence_checker(eval_label, similarity_score):
     """
@@ -73,3 +88,10 @@ def confidence_checker(eval_label, similarity_score):
         confidence = "Zero Confidence"
     
     return confidence
+
+if __name__ == "__main__":
+    eval_label, similarity = get_label_and_score(llm_response)
+    confidence_label = confidence_checker(label, similarity)
+    print(eval_label)
+    print(similarity)
+    print(confidence_label)

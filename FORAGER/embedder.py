@@ -170,7 +170,7 @@ def search_database(query, num_vectors):
         }
         supporting_docs.append(chunk_result)
 
-    return supporting_docs
+    return supporting_docs, scores
 
 def print_vector_in_array(embeddings, n):
     """
