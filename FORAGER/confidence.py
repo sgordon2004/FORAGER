@@ -92,7 +92,7 @@ def confidence_checker(eval_label, similarity_score):
 
 if __name__ == "__main__":
     eval_label, similarity = get_label_and_score(llm_response)
-    confidence_label = confidence_checker(label, similarity)
+    confidence_label = confidence_checker(eval_label, similarity)
     print(eval_label)
     print(similarity)
     print(confidence_label)
