@@ -15,6 +15,7 @@ This module is intended to be used after generating an answer and retrieving sup
 documents. The confidence score can be used to determine whether the answer should be
 accepted, discarded, or refined in subsequent iterations of the Prompt Lock Loop (PLL).
 """
+
 __docformat__ = "google"
 from embedder import search_database
 from bs import detect_bs
