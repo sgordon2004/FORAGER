@@ -16,6 +16,29 @@ documents. The confidence score can be used to determine whether the answer shou
 accepted, discarded, or refined in subsequent iterations of the Prompt Lock Loop (PLL).
 """
 __docformat__ = "google"
+from embedder import search_database
+from bs import detect_bs
+from runner import get_llm_response
+
+prompt = "Insert original or reworked prompt here"
+
+#Get llm response
+llm_response = get_llm_response(prompt)
+
+#Set number of nearest-neighbor chunks to use to compute similarity score
+k = 5
+
+# Compare llm response to chunks in database
+results, scores = search_database(llm_response, k)
+
+# Compute the average of the scores of the top 5 most similar documents to get a sense
+# of how similar the llm's answer is to the database.
+similarity_score = sum(scores[0]) / len(scores[0])
+print(similarity_score)
+
+# Get the evaluation label of the llm's response
+eval_label = detect_bs(llm_response, results)
+
 def confidence_checker(eval_label, similarity_score):
     """
     Determines a final confidence score or decision based on the evaluation label 
