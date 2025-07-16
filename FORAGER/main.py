@@ -16,12 +16,14 @@ To run the full pipeline, execute this file directly:
 __docformat__ = "google"
 from dotenv import load_dotenv
 import os
-from FORAGER.embedder import faiss_db, chunks, model # Importing loaded FAISS and chunks 
+from embedder import faiss_db, chunks, model # Importing loaded FAISS and chunks 
 # from FORAGER.runner import initial_run
 # from FORAGER.evaluator import run_eval_process
 # from FORAGER.loop_controller import prompt_lock_loop
-# from FORAGER.pll_controller import run_pll_on_prompt
+from pll_controller import run_pll_on_prompt
 
+# clear existing locked_answers.json at start 
+open("locked_answers.json", "w").close()
 
 # # Entry point
 # if __name__ == "__main__":
@@ -43,6 +45,29 @@ from FORAGER.embedder import faiss_db, chunks, model # Importing loaded FAISS an
 #     prompt_lock_loop(test_file)
 
 #     # Evaluate improvement
+
+def main():
+    print("Welcome to FORAGER Prompt-Lock Loop System!")
+
+    while True: 
+        user_prompt = input("\n Please enter your question (or type 'exit' to quit): ").strip()
+        if user_prompt.lower() == "exit":
+            print("Exiting FORAGER. Goodbye!")
+            break
+        
+        print("\n Step 1: Getting relevant context...")
+        context_chunks = search_database(user_prompt)
+        print(f"Retrieved {len(context_chunks)} chunks.")
+        for i, chunk in enumerate(context_chunks):
+            print(f"Chunk {i+1}: {chunk[:100]}...") # Truncating for clarity
+        
+        print("\n Step 2: Running Prompt-Lock Loop...")
+        # Combine context into one prompt string 
+        full_prompt = f"{user_prompt}\n\nContext:\n" + "\n---\n".join(context_chunks)
+
+        # Generate a unique ID for this question 
+        question_id = str(uuid.uuid4())
+
 
 def retrieve_relevant_chunks(question, k=3):
     # Embed query
@@ -66,21 +91,25 @@ def build_prompt(context_chunks, question):
     return prompt
 
 
-if __name__ == "main":
+if __name__ == "__main__":
     load_dotenv()
     API_KEY = os.getenv("GROQ_API_KEY")
     print(f"\n Using API key: {API_KEY[:8]}...\n")
 
-    question = input("Enter your prompt: ")
+    task_prompt = input("Enter your prompt: ")
 
     #Step 1 - Retrieve relevant context chunks from KB via vector search
-    context_chunks = retrieve_relevant_chunks(question)
+    print("\n Retrieving relevant chunks...")
+    context_chunks = retrieve_relevant_chunks(task_prompt)
 
     #Step 2 - Build prompt for LLM 
-    prompt = build_prompt(context_chunks, question)
+    print("\n Building prompt...")
+    prompt = build_prompt(context_chunks, task_prompt)
 
     #Step 3 - Run PLL loop on this prompt (generate + self-check + improve)
-    # result = run_pll_on_prompt(prompt)
+    print("\n Running Prompt Lock Loop...")
+    result = run_pll_on_prompt(prompt)
 
-    # print("\n --- Final Answer ---")
-    # print (result["candidate"])   
+    print("\n --- Final Answer ---")
+    print (result["candidate"] if result["status"] == "success" else result ["best_guess"]["candidate"])   
+    

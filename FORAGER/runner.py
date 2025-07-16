@@ -14,12 +14,12 @@ import requests
 import os
 import json
 from dotenv import load_dotenv
-from .formatter import format_json, load_json
+from formatter import format_json, load_json
 import re
 import time
-from .evaluator import run_eval_process
-# from .embedder import search_index
-__docformat__ = "google"
+from evaluator import run_eval_process
+from embedder import search_index
+
 # Load API key from environment
 load_dotenv()
 
@@ -299,6 +299,36 @@ def regenerate_or_retrieve_more(prompt, k=3):
     new_response = get_llm_response(grounded_prompt)
 
     return new_response
+
+locked_answers = []
+def save_locked_answer(entry, filepath="locked_answers.json"):
+    # add new locekd answer to the list 
+    locked_answers.append(entry)
+    # save the entire list to the JSON file (overwrite each time)
+    with open(filepath, "w", encoding="utf-8") as f:
+        json.dump(locked_answers, f, indent=2, ensure_ascii=False)
+
+def lock_answer(question_id, final_answer, confidence_score, rationale=None):
+    """
+    Locks in the final answer for a given question, preventing further refinement.responses_file
+
+    Args: 
+        question_id (str): Unique identifier for the question or item.item
+        final_answer (str): The answer that is deemed final and correct.
+        confidence_score (float): The confidence score associated with the answer.
+        rationale (str, optional): Any rationale, justification, or support for the answer.
+    """
+    locked_entry = {
+        "question_id": question_id,
+        "answer": final_answer,
+        "confidence": confidence_score,
+        "locked": True,
+        "rationale": rationale,
+        "status": "locked"
+    }
+
+    save_locked_answer(locked_entry)
+    print(f" Locked in answer for Q{question_id}: {final_answer} (Confidence: {confidence_score})")
 
 def get_llm_response(prompt, max_retries=3):
     """
