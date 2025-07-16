@@ -73,48 +73,7 @@ llm_response_10 = "Heterogeneous integration refers to the use of advanced packa
 # 0.8357425
 # High Confidence
 
-def get_label_and_score(claim):
-    """
-    Returns an evaluation label and a similarity score for a given claim.
-
-    Arguments:
-        claim (str): A single claim extracted from the LLM's response to the prompt.
-
-    Returns:
-        eval_label (str): Evaluation label from the BS detector, usually "Supported," 
-                            "Unsupported," or "Contradicted"
-        similarity_score (float): Decimal between 0 and 1 representing the average dot 
-                                    product similarity between the LLM's response and the
-                                    corpus.
-    """
-
-    if llm_response:
-        # Set number of nearest-neighbor chunks to use to compute similarity score
-        k = 5
-
-        # Compare llm response to chunks in database
-        results = search_database(llm_response, k)
-
-        # Compute the average of the scores of the top 5 most similar documents to get a sense
-        # of how similar the llm's answer is to the database.
-        scores = []
-        for dict_ in results:
-            scores.append(dict_["score"])
-
-        similarity_score = sum(scores) / len(scores)
-        print(f"\033[1;96mSimilarity Score: {similarity_score}\033[0m")
-
-        # Get the evaluation label of the llm's response
-        eval_label = detect_bs(llm_response, results)
-
-        return eval_label, similarity_score
-    else:
-        print("\033[1;91mLLM did not give an output!\033[0m")
-        eval_label = "Contradicted"
-        similarity_score = 0
-        return eval_label, similarity_score
-
-def confidence_checker(eval_label, similarity_score):
+def check_confidence(claim, eval_label):
     """
     Determines a final confidence score or decision based on the evaluation label 
     (e.g., NLI classification) and the similarity score between the LLM response 
@@ -138,20 +97,36 @@ def confidence_checker(eval_label, similarity_score):
         - 'Unsupported' or 'Contradicted' responses will lower the confidence score, 
           even if the similarity is high, helping to mitigate false positives.
     """
+    if claim:
+        # Set number of nearest-neighbor chunks to use to compute similarity score
+        k = 5
+
+        # Compare llm response to nearest k chunks in database 
+        # Might have to change this to only search the chunks that were originally retrieved
+        results = search_database(claim, k)
+
+        # Compute the average of the scores of the top 5 most similar documents to get a sense
+        # of how similar the llm's answer is to the database.
+        scores = []
+        for dict_ in results:
+            scores.append(dict_["score"])
+
+        similarity_score = sum(scores) / len(scores)
+        print(f"\033[1;96mSimilarity Score: {similarity_score}\033[0m")
+    else:
+        print("\033[1;91mLLM did not give an output!\033[0m")
+        similarity_score = 0
+    
     if eval_label == "Supported" and similarity_score >= 0.75:
         confidence = "High Confidence"
     elif eval_label == "Supported" and similarity_score < 0.75:
         confidence = "Medium Confidence"
     elif eval_label == "Unsupported":
         confidence = "Low Confidence"
-    elif eval_label == "Contradicted":
+    elif eval_label == "Contradicted" or similarity_score == 0:
         confidence = "Zero Confidence"
     
     return confidence
 
 if __name__ == "__main__":
-    eval_label, similarity = get_label_and_score(llm_response_4)
-    confidence_label = confidence_checker(eval_label, similarity)
-    print(eval_label)
-    print(similarity)
-    print(confidence_label)
+    print(check_confidence(llm_response_4))
