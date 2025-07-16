@@ -211,22 +211,25 @@ def clear_database():
 
 # Read in the FAISS database if it exists, or embed chunks and make a new one if it doesn't
 
-if os.path.exists(faiss_db_filepath):
-    faiss_db = faiss.read_index(faiss_db_filepath)
-    print(f"\033[1;96mFAISS database size: {faiss_db.ntotal}\033[0m\n")
-else:
-    embed_array, faiss_db = initial_embed_and_build(chunk_filepath)
-    print(f"\033[1;96mFAISS database size: {faiss_db.ntotal}\033[0m\n")
+def initialize_faiss():
+    global faiss_db, chunks
+    
+    if os.path.exists(faiss_db_filepath):
+        faiss_db = faiss.read_index(faiss_db_filepath)
+        print(f"\033[1;96mFAISS database size: {faiss_db.ntotal}\033[0m\n")
+    else:
+        embed_array, faiss_db = initial_embed_and_build(chunk_filepath)
+        print(f"\033[1;96mFAISS database size: {faiss_db.ntotal}\033[0m\n")
 
 
 
-# Check if more has been added to chunks.jsonl
-if len(chunks) > faiss_db.ntotal:
-    new_chunks = embed_chunks(chunks, faiss_db.ntotal, len(chunks))
-    add_to_FAISS(new_chunks)
-    print(f"\033[1;96mFAISS database size: {faiss_db.ntotal}\033[0m\n")
-else:
-    print(f"\033[1;92m✅ Database is up to date.\033[0m\n")
+    # Check if more has been added to chunks.jsonl
+    if len(chunks) > faiss_db.ntotal:
+        new_chunks = embed_chunks(chunks, faiss_db.ntotal, len(chunks))
+        add_to_FAISS(new_chunks)
+        print(f"\033[1;96mFAISS database size: {faiss_db.ntotal}\033[0m\n")
+    else:
+        print(f"\033[1;92m✅ Database is up to date.\033[0m\n")
 
 # if __name__ == "__main__":
 
