@@ -36,7 +36,7 @@ prefix = "Represent this sentence for retrieval: "
 model = SentenceTransformer("BAAI/bge-base-en-v1.5")
 
 # Important filepaths listed here
-chunk_filepath = "FORAGER_corpus/heterogenous_integration/chunks/chunks.jsonl"
+chunk_filepath = "../FORAGER_corpus/heterogenous_integration/chunks/chunks.jsonl"
 
 test_chunk_filepath = "FORAGER_corpus/heterogenous_integration/chunks/test_chunks.jsonl"
 
@@ -81,25 +81,9 @@ def embed_chunks(data, m, n):
     # Return the 2-D array of vectors
     return embeddings
 
-# Read in the FAISS database if it exists, or embed chunks and make a new one if it doesn't
-if os.path.exists(faiss_db_filepath):
-    faiss_db = faiss.read_index(faiss_db_filepath)
-    print(f"\033[1;96mFAISS database size: {faiss_db.ntotal}\033[0m\n")
-else:
-    embed_array, faiss_db = initial_embed_and_build(chunk_filepath)
-    print(f"\033[1;96mFAISS database size: {faiss_db.ntotal}\033[0m\n")
-
 # Read in chunks.jsonl
 with open(chunk_filepath, "r", encoding="utf-8") as f:
     chunks = [json.loads(line) for line in f if line.strip()]
-
-# Check if more has been added to chunks.jsonl
-if len(chunks) > faiss_db.ntotal:
-    new_chunks = embed_chunks(chunks, faiss_db.ntotal, len(chunks))
-    add_to_FAISS(new_chunks)
-    print(f"\033[1;96mFAISS database size: {faiss_db.ntotal}\033[0m\n")
-else:
-    print(f"\033[1;92m✅ Database is up to date.\033[0m\n")
 
 def initial_embed_and_build(filepath):
     """
@@ -222,6 +206,24 @@ def clear_database():
 #----------------------------#
 # Execution                  #
 #----------------------------#
+
+# Read in the FAISS database if it exists, or embed chunks and make a new one if it doesn't
+if os.path.exists(faiss_db_filepath):
+    faiss_db = faiss.read_index(faiss_db_filepath)
+    print(f"\033[1;96mFAISS database size: {faiss_db.ntotal}\033[0m\n")
+else:
+    embed_array, faiss_db = initial_embed_and_build(chunk_filepath)
+    print(f"\033[1;96mFAISS database size: {faiss_db.ntotal}\033[0m\n")
+
+
+
+# Check if more has been added to chunks.jsonl
+if len(chunks) > faiss_db.ntotal:
+    new_chunks = embed_chunks(chunks, faiss_db.ntotal, len(chunks))
+    add_to_FAISS(new_chunks)
+    print(f"\033[1;96mFAISS database size: {faiss_db.ntotal}\033[0m\n")
+else:
+    print(f"\033[1;92m✅ Database is up to date.\033[0m\n")
 
 # if __name__ == "__main__":
 
