@@ -19,11 +19,57 @@ accepted, discarded, or refined in subsequent iterations of the Prompt Lock Loop
 __docformat__ = "google"
 from embedder import search_database
 from bs import detect_bs
-# from runner import get_llm_response
 
-prompt = "Insert original or reworked prompt here"
+# Test Cases
+llm_response_1 = "Random response here."
+# eval label: Supported
+# similarity score: 0.6053619
+# Confidence label: Medium
 
-llm_response = "Random response here"
+llm_response_2 = "Heterogeneous integration is the process of combining chips, chiplets, and other chip components into packages."
+# Supported
+# 0.82095444
+# High Confidence
+
+llm_response_3 = "George Washington was the first president of the United States."
+# Supported
+# 0.46574384
+# Medium
+
+llm_response_4 = "Heterogeneous integration is the process of singing a lullaby to put a baby to sleep."
+# Supported
+# 0.7159858
+# High Confidence
+
+llm_response_5 = "Heterogeneous integration involves chiplets."
+# Error??
+
+llm_response_6 = "Heterogeneous integration is important for the advancement of silicon chip design."
+# Supported
+# 0.8119961
+# High Confidence
+
+llm_response_7 = ""
+# Supported
+# 0.6606921
+# Medium
+
+llm_response_8 = "tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt."
+# Contradicted
+# 0.62369937
+# Zero Confidence
+
+llm_response_9 = "Heterogeneous integration is an outdated technology that has no relevance today." 
+# Supported
+# 0.6657399
+# Medium
+
+llm_response_10 = "Heterogeneous integration refers to the use of advanced packaging technologies " \
+                  "to combine smaller, discrete chiplets—physically realized and tested (hardened) pieces" \
+                  " of IP designed to each perform a particular logical function—into one system in package (SiP)."
+# Supported
+# 0.8357425
+# High Confidence
 
 def get_label_and_score(llm_response):
     """
@@ -39,7 +85,7 @@ def get_label_and_score(llm_response):
                                     product similarity between the LLM's response and the
                                     corpus.
     """
-    #Set number of nearest-neighbor chunks to use to compute similarity score
+    # Set number of nearest-neighbor chunks to use to compute similarity score
     k = 5
 
     # Compare llm response to chunks in database
@@ -48,7 +94,7 @@ def get_label_and_score(llm_response):
     # Compute the average of the scores of the top 5 most similar documents to get a sense
     # of how similar the llm's answer is to the database.
     similarity_score = sum(scores[0]) / len(scores[0])
-    print(similarity_score)
+    print(f"\033[1;96mSimilarity Score: {similarity_score}\033[0m")
 
     # Get the evaluation label of the llm's response
     eval_label = detect_bs(llm_response, results)
@@ -82,16 +128,16 @@ def confidence_checker(eval_label, similarity_score):
     if eval_label == "Supported" and similarity_score >= 0.7:
         confidence = "High Confidence"
     elif eval_label == "Supported" and similarity_score < 0.7:
-        confidence = "Medium"
+        confidence = "Medium Confidence"
     elif eval_label == "Unsupported":
-        confidence = "Low"
+        confidence = "Low Confidence"
     elif eval_label == "Contradicted":
         confidence = "Zero Confidence"
     
     return confidence
 
 if __name__ == "__main__":
-    eval_label, similarity = get_label_and_score(llm_response)
+    eval_label, similarity = get_label_and_score(llm_response_8)
     confidence_label = confidence_checker(eval_label, similarity)
     print(eval_label)
     print(similarity)
