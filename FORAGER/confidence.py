@@ -93,11 +93,15 @@ def get_label_and_score(llm_response):
         k = 5
 
         # Compare llm response to chunks in database
-        results, scores = search_database(llm_response, k)
+        results = search_database(llm_response, k)
 
         # Compute the average of the scores of the top 5 most similar documents to get a sense
         # of how similar the llm's answer is to the database.
-        similarity_score = sum(scores[0]) / len(scores[0])
+        scores = []
+        for dict_ in results:
+            scores.append(dict_["score"])
+
+        similarity_score = sum(scores) / len(scores)
         print(f"\033[1;96mSimilarity Score: {similarity_score}\033[0m")
 
         # Get the evaluation label of the llm's response

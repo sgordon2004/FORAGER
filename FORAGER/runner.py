@@ -14,11 +14,11 @@ import requests
 import os
 import json
 from dotenv import load_dotenv
-from formatter import format_json, load_json
+from FORAGER.formatter import format_json, load_json
 import re
 import time
-from evaluator import run_eval_process
-from embedder import search_index
+from FORAGER.evaluator import run_eval_process
+from FORAGER.embedder import search_database
 
 # Load API key from environment
 load_dotenv()
@@ -282,9 +282,9 @@ def regenerate_or_retrieve_more(prompt, k=3):
     extra_context = ""
     #Retrieve similar chunks from the knowledge base 
     print(f"\033[1;96m🔍 Retrieving top {k} relevant chunks...\033[0m")
-    # chunks = search_index(prompt, k) # This already prints relevant chunks 
+    # chunks = search_database(prompt, k) # This already prints relevant chunks 
 
-    #Format the retrieved chunks into extra content (if search_index doesn't return text, you may need to extract it from your FAISS chunk list)
+    #Format the retrieved chunks into extra content (if search_database doesn't return text, you may need to extract it from your FAISS chunk list)
     # extra_context = "\n\n".join([chunk['text'] for chunk in chunks]) #Assuming chunks is a list of dicts
 
     #Regenerate a response with more grounding 
