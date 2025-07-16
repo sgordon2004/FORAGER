@@ -230,7 +230,7 @@ def regenerate_with_strict_grounding(failed_evaluations, prompt_history, evaluat
     Regenerates previously incorrect answers using evaluator feedback and source grounding.
 
     Arguments: 
-      failed_evaluations(dict): A dictionary where keys are question IDs (e.g. "Q1") and values are the bad outputs.
+      failed_evaluations (dict): A dictionary where keys are question IDs (e.g. "Q1") and values are the bad outputs.
       prompt_history (dict): Dictionary of original task prompts (same format as your existing code).
       evaluator_feedbacks (dict): Dictionary of feedback strings per question ID (e.g. "Q1": "This claim was unsupported...").
       source_chunks (dict): Dictionary of RAG chunks per question ID used as grounding.
