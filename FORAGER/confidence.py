@@ -75,26 +75,23 @@ llm_response_10 = "Heterogeneous integration refers to the use of advanced packa
 
 def check_confidence(claim, eval_label):
     """
-    Determines a final confidence score or decision based on the evaluation label 
+    Determines a final confidence label based on the evaluation label 
     (e.g., NLI classification) and the similarity score between the LLM response 
     and the supporting documents.
 
     Args:
         eval_label (str): The classification label assigned to the answer, typically 
                           values like 'Supported', 'Unsupported', or 'Contradicted'.
-        similarity_score (float): A numerical value representing the semantic similarity 
-                                  between the LLM response and the supporting documents,
-                                  typically ranging from 0 to 1.
 
     Returns:
-        float: A final confidence score (or decision value) reflecting both logical 
+        confidence (str): A final confidence label reflecting both logical 
                consistency (from eval_label) and semantic alignment (from similarity_score).
-               This score can be used to determine whether to accept, discard, or 
+               This label can be used to determine whether to accept, discard, or 
                regenerate the LLM answer within the FORAGER Prompt Lock Loop (PLL).
 
     Notes:
         - 'Supported' responses will generally yield higher confidence.
-        - 'Unsupported' or 'Contradicted' responses will lower the confidence score, 
+        - 'Unsupported' or 'Contradicted' responses will lower the confidence, 
           even if the similarity is high, helping to mitigate false positives.
     """
     if claim:
