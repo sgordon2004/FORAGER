@@ -73,12 +73,12 @@ llm_response_10 = "Heterogeneous integration refers to the use of advanced packa
 # 0.8357425
 # High Confidence
 
-def get_label_and_score(llm_response):
+def get_label_and_score(claim):
     """
-    Returns an evaluation label and a similarity score for a given LLM response.
+    Returns an evaluation label and a similarity score for a given claim.
 
     Arguments:
-        llm_response (str): The LLM's response to the user's prompt or a refined prompt
+        claim (str): A single claim extracted from the LLM's response to the prompt.
 
     Returns:
         eval_label (str): Evaluation label from the BS detector, usually "Supported," 
