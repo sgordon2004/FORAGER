@@ -34,9 +34,9 @@ prefix = "Represent this sentence for retrieval: "
 
 # Start by preparing the embedding model
 model = SentenceTransformer("BAAI/bge-base-en-v1.5")
-
+print("Current working directory:", os.getcwd())
 # Important filepaths listed here
-chunk_filepath = "../FORAGER_corpus/heterogenous_integration/chunks/chunks.jsonl"
+chunk_filepath = "FORAGER_corpus/heterogenous_integration/chunks/chunks.jsonl"
 
 test_chunk_filepath = "FORAGER_corpus/heterogenous_integration/chunks/test_chunks.jsonl"
 

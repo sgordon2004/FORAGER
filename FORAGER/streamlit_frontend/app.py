@@ -10,6 +10,16 @@ import datetime
 from fpdf import FPDF
 from io import BytesIO
 import time
+import sys
+import os
+
+# Add the FORAGER directory to the Python path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+# Importing backend functions
+from bs import detect_bs
+from confidence import confidence_checker
+from runner import get_llm_response
+from embedder import search_database
 
 # Load environment variable
 load_dotenv()
@@ -19,57 +29,57 @@ GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions"
 MODEL_NAME = "llama3-8b-8192"
 
 # === Confidence Checker Placeholder ===
-def confidence_checker(eval_label, similarity_score):
-    if eval_label == "Supported" and similarity_score >= 0.7:
-        return "High Confidence"
-    elif eval_label == "Supported" and similarity_score < 0.7:
-        return "Medium Confidence"
-    elif eval_label == "Unsupported":
-        return "Low Confidence"
-    elif eval_label == "Contradicted":
-        return "Zero Confidence"
-    return "Unknown"
+# def confidence_checker(eval_label, similarity_score):
+#     if eval_label == "Supported" and similarity_score >= 0.7:
+#         return "High Confidence"
+#     elif eval_label == "Supported" and similarity_score < 0.7:
+#         return "Medium Confidence"
+#     elif eval_label == "Unsupported":
+#         return "Low Confidence"
+#     elif eval_label == "Contradicted":
+#         return "Zero Confidence"
+#     return "Unknown"
 
 # === Placeholder mock function for evaluation ===
-def mock_evaluate_answer(answer, doc_chunks):
-    eval_label = "Supported"
-    similarity_score = 0.76
-    confidence_label = confidence_checker(eval_label, similarity_score)
-    return {
-        "bs_label": eval_label,
-        "similarity_score": similarity_score,
-        "confidence_label": confidence_label
-    }
+# def mock_evaluate_answer(answer, doc_chunks):
+#     eval_label = "Supported"
+#     similarity_score = 0.76
+#     confidence_label = confidence_checker(eval_label, similarity_score)
+#     return {
+#         "bs_label": eval_label,
+#         "similarity_score": similarity_score,
+#         "confidence_label": confidence_label
+#     }
 
 # === Placeholder mock function for source chunks ===
-def mock_retrieve_chunks(doc_text, question):
-    return [
-        "Chunk 1: This section discusses the financial trends from 2020 to 2023.",
-        "Chunk 2: The document outlines how the budget increased due to policy shifts."
-    ]
+# def mock_retrieve_chunks(doc_text, question):
+#     return [
+#         "Chunk 1: This section discusses the financial trends from 2020 to 2023.",
+#         "Chunk 2: The document outlines how the budget increased due to policy shifts."
+#     ]
 
 # === RAG Simulation Function ===
-def mock_rag_pipeline(text, question):
-    chunks = mock_retrieve_chunks(text, question)
-    prompt = f"""Given the following document:\n\n{text}\n\nAnswer the question:\n{question}"""
-    payload = {
-        "model": MODEL_NAME,
-        "messages": [
-            {"role": "system", "content": "You are an expert assistant for document QA."},
-            {"role": "user", "content": prompt}
-        ],
-        "temperature": 0.2
-    }
-    headers = {
-        "Authorization": f"Bearer {GROQ_API_KEY}",
-        "Content-Type": "application/json"
-    }
-
-    response = requests.post(GROQ_ENDPOINT, json=payload, headers=headers)
-    response.raise_for_status()
-    result = response.json()
-    answer = result["choices"][0]["message"]["content"]
-    return answer, chunks, result
+# def mock_rag_pipeline(text, question):
+#     chunks = mock_retrieve_chunks(text, question)
+#     prompt = f"""Given the following document:\n\n{text}\n\nAnswer the question:\n{question}"""
+#     payload = {
+#         "model": MODEL_NAME,
+#         "messages": [
+#             {"role": "system", "content": "You are an expert assistant for document QA."},
+#             {"role": "user", "content": prompt}
+#         ],
+#         "temperature": 0.2
+#     }
+#     headers = {
+#         "Authorization": f"Bearer {GROQ_API_KEY}",
+#         "Content-Type": "application/json"
+#     }
+# 
+    # response = requests.post(GROQ_ENDPOINT, json=payload, headers=headers)
+    # response.raise_for_status()
+    # result = response.json()
+    # answer = result["choices"][0]["message"]["content"]
+    # return answer, chunks, result
 
 # === PLL PATH MOCK GENERATOR ===
 def generate_dynamic_pll_path(final_answer, final_bs, final_conf, final_similarity):
@@ -153,8 +163,33 @@ if uploaded_files and user_question and (st.session_state.get("submitted", False
 
     with st.spinner("⚙️ Processing with mock RAG pipeline..."):
         try:
-            answer, chunks, llm_json_response = mock_rag_pipeline(all_text, user_question)
-            eval_results = mock_evaluate_answer(answer, chunks)
+            # 1. Get answer from LLM
+            llm_json_response = get_llm_response(user_question)
+            answer = llm_json_response
+
+            # 2. Retrieve top-k chunks
+            retrieved_chunks = search_database(answer, num_vectors=5)
+            chunk_texts = [c["text"] for c in retrieved_chunks]
+
+            # 3. Calculate similarity
+            similarity_score = sum(c["score"] for c in retrieved_chunks) / len(retrieved_chunks)
+
+            # 4. BS detection
+            bs_label = detect_bs(answer, chunk_texts)
+
+            # 5. Confidence level
+            confidence_label = confidence_checker(bs_label, similarity_score)
+
+            # 6. Create eval_results (to keep rest of your code the same)
+            eval_results = {
+                "bs_label": bs_label,
+                "similarity_score": similarity_score,
+                "confidence_label": confidence_label
+            }
+            chunks = chunk_texts  # So you can reuse the variable for display
+
+
+
 
             # Reset rerun trigger
             st.session_state["force_rerun"] = False

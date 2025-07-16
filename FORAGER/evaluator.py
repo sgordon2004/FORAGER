@@ -14,7 +14,7 @@ TODO: Make evaluation for each round show up separately like in the llm_response
 
 __docformat__ = "google"
 import json
-from FORAGER.formatter import get_input_file
+from formatter import get_input_file
 import os
 
 def load_files(test_file, responses_file):

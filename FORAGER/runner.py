@@ -14,11 +14,11 @@ import requests
 import os
 import json
 from dotenv import load_dotenv
-from FORAGER.formatter import format_json, load_json
+from formatter import format_json, load_json
 import re
 import time
-from FORAGER.evaluator import run_eval_process
-from FORAGER.embedder import search_database
+from evaluator import run_eval_process
+from embedder import search_database
 
 # Load API key from environment
 load_dotenv()

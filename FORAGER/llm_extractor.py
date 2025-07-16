@@ -18,7 +18,7 @@ further validation in the FORAGER pipeline (e.g., via BS detection and confidenc
 
 """
 
-from FORAGER.runner import get_llm_response
+from runner import get_llm_response
 import json
 from dotenv import load_dotenv
 __docformat__ = "google"
