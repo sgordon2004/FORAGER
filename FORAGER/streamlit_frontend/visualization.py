@@ -1,94 +1,171 @@
-import json
 import pandas as pd
+import numpy as np
+import altair as alt
+import plotly.express as px
 import streamlit as st
-import matplotlib.pyplot as plt
-import os
 
-# Load incorrect questions
-with open("../data/incorrect_questions/incorrect_questions.json") as f:
-    incorrect_raw = json.load(f)
+# Page settings
+st.set_page_config(page_title="FORAGER Analytics", layout="wide")
 
-# Convert all incorrect keys to consistent QID format: "Q2", "Q17", etc.
-incorrect_qids = {f"Q{int(k)}" for k in incorrect_raw if k.isdigit()}
+st.markdown("""
+<style>
 
-# Load all LLM response rounds
-all_rows = []
+/* Background & text */
+[data-testid="stAppViewContainer"] {
+    background-color: #0e1117;
+    color: #E5E7EB;
+}
 
-for round_num in range(4):
-    file_path = f"../data/llm_responses/round_{round_num}_responses.json"
-    try:
-        with open(file_path) as f:
-            data = json.load(f)
-            st.success(f"✅ Loaded: {file_path}")
-            if data:
-                st.write(f"Sample from round {round_num}:", list(data.values())[0])
-    except FileNotFoundError:
-        st.warning(f"⚠️ File not found: {file_path}")
-        continue
-    except Exception as e:
-        st.error(f"❌ Failed to load {file_path}: {e}")
-        continue
+/* Sidebar */
+[data-testid="stSidebar"] {
+    background-color: #1c1f26;
+    color: #E5E7EB;
+    border-right: 1px solid #374151;
+}
 
-    q_counter = 1  # Index used for assigning qid if missing
-    for key, batch in data.items():
-        # Round 0 format
-        if isinstance(batch, dict) and "questions" in batch:
-            for q in batch["questions"]:
-                qid = f"Q{q_counter}"
-                all_rows.append({
-                    "index": q_counter,
-                    "round": round_num,
-                    "qid": qid,
-                    "input": q.get("input") or q.get("question"),
-                    "is_incorrect": qid in incorrect_qids
-                })
-                q_counter += 1
+/* Headings */
+h1, h2, h3, h4, h5 {
+    color: #F9FAFB;
+    font-weight: 600;
+}
 
-        # Rounds 1–3
-        elif isinstance(batch, dict) and "question" in batch:
-            qid = key  # Use "Q2", "Q17", etc.
-            all_rows.append({
-                "index": q_counter,
-                "round": round_num,
-                "qid": qid,
-                "input": batch.get("input") or batch.get("question"),
-                "is_incorrect": qid in incorrect_qids
-            })
-            q_counter += 1
+/* Metric box styling */
+[data-testid="stMetric"] {
+    background-color: #1f2937;
+    border-left: 6px solid #3B82F6;  /* blue by default */
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 10px;
+}
 
-        else:
-            st.warning(f"⚠️ Skipping malformed batch: {batch}")
+[data-testid="stMetricLabel"] {
+    color: #A1A1AA;
+}
 
-# Convert to DataFrame
-df = pd.DataFrame(all_rows)
+[data-testid="stMetricValue"] {
+    color: #10B981;
+    font-size: 24px;
+    font-weight: bold;
+}
 
-# displays rounds (mainly for checking that all rounds are going thru)
-st.write("Rounds present in dataset:", df["round"].unique())
-st.write("Shape of DataFrame:", df.shape)
-st.write("Unique QIDs by round:")
-st.dataframe(df.groupby("round")["qid"].unique().reset_index())
+/* Chart container */
+.element-container:has(.plotly-graph-div) {
+    background-color: #1f232b;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid #2d2f33;
+}
 
-# table
-st.subheader("Questions Across Rounds")
-st.dataframe(df.head(20))
+/* Dataframe tables */
+.css-1d391kg {
+    background-color: #1f2937;
+    border-radius: 6px;
+    padding: 10px;
+    color: #D1D5DB;
+    font-size: 14px;
+}
 
-# dot plot of retry attempts per question
-st.subheader("Retry Attempts per Question (Incorrect in Red)")
-fig, ax = plt.subplots(figsize=(10, 6))
+/* Expander */
+[data-testid="stExpander"] {
+    background-color: #1f232b;
+    border: 1px solid #374151;
+    border-radius: 6px;
+    padding: 0.5rem;
+}
 
-unique_qids = df["qid"].unique()
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-thumb {
+    background: #6b7280;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-track {
+    background: #1e1e1e;
+}
 
-for i, qid in enumerate(unique_qids):
-    group = df[df["qid"] == qid]
-    latest_round = group["round"].max()
-    still_incorrect = group[group["round"] == latest_round]["is_incorrect"].any()
-    color = "red" if still_incorrect else "blue"
-    ax.plot(group["round"], [i] * len(group), 'o-', color=color)
+</style>
+""", unsafe_allow_html=True)
 
-ax.set_xlabel("FORAGER Round")
-ax.set_ylabel("Question ID")
-ax.set_title("Retry Attempts per Question (Incorrect in Red)")
-ax.set_yticks(range(len(unique_qids)))
-ax.set_yticklabels(unique_qids)
+st.title("📊 FORAGER Analytics Dashboard")
 
-st.pyplot(fig)
+# PLL Statistics
+st.subheader("🔁 PLL Retry & Lock-in Rates")
+pll_data = pd.DataFrame({
+    'Run ID': [f'Run {i}' for i in range(1, 11)],
+    'Retry Rate (%)': np.random.randint(20, 80, size=10),
+    'Lock-in Rate (%)': np.random.randint(30, 95, size=10)
+})
+st.dataframe(pll_data)
+st.altair_chart(
+    alt.Chart(pll_data).transform_fold(
+        ['Retry Rate (%)', 'Lock-in Rate (%)'],
+        as_=['Type', 'Value']
+    ).mark_line(point=True).encode(
+        x='Run ID',
+        y='Value:Q',
+        color='Type:N'
+    ).properties(height=300),
+    use_container_width=True
+)
+
+# Confidence / Similarity
+st.subheader("📈 Confidence & Similarity Trends")
+conf_data = pd.DataFrame({
+    'Attempt': list(range(1, 11)),
+    'Confidence': np.random.uniform(0.6, 0.95, 10),
+    'Similarity': np.random.uniform(0.5, 0.9, 10)
+})
+st.altair_chart(
+    alt.Chart(conf_data).transform_fold(
+        ['Confidence', 'Similarity'],
+        as_=['Metric', 'Value']
+    ).mark_line(point=True).encode(
+        x='Attempt',
+        y='Value:Q',
+        color='Metric:N'
+    ).properties(height=300),
+    use_container_width=True
+)
+
+# BS Label Pie Chart
+st.subheader("🧪 BS Label Distribution")
+bs_data = pd.DataFrame({
+    'Label': ['Supported', 'Unsupported', 'Contradicted'],
+    'Count': [45, 30, 25]
+})
+st.plotly_chart(
+    px.pie(bs_data, names='Label', values='Count', title="Label Distribution"),
+    use_container_width=True
+)
+
+# Rephrased Output Comparison
+st.subheader("🧠 Output Comparison Across Rephrases")
+rephrase_data = pd.DataFrame({
+    'Prompt': [f'Prompt {i}' for i in range(1, 6)],
+    'Original Score': np.random.uniform(0.65, 0.9, 5),
+    'Rephrased Score': np.random.uniform(0.7, 0.95, 5)
+})
+st.dataframe(rephrase_data)
+st.altair_chart(
+    alt.Chart(rephrase_data).transform_fold(
+        ['Original Score', 'Rephrased Score'],
+        as_=['Version', 'Score']
+    ).mark_bar().encode(
+        x='Prompt:N',
+        y='Score:Q',
+        color='Version:N'
+    ).properties(height=300),
+    use_container_width=True
+)
+
+# Batch vs Single-Run Mode
+st.subheader("⚙️ Batch vs Single-Run Comparison")
+mode_data = pd.DataFrame({
+    'Metric': ['Accuracy', 'Confidence', 'Runtime (s)'],
+    'Batch Mode': [0.88, 0.9, 30],
+    'Single-Run': [0.81, 0.85, 15]
+})
+st.dataframe(mode_data)
+st.bar_chart(mode_data.set_index('Metric'), use_container_width=True)

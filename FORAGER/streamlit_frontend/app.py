@@ -12,6 +12,7 @@ from io import BytesIO
 import time
 import sys
 import os
+from pathlib import Path
 
 # Add the FORAGER directory to the Python path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -19,7 +20,9 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 from bs import detect_bs
 from confidence import check_confidence
 from runner import get_llm_response
-from embedder import search_database
+from embedder import initialize_faiss, embed_chunks, add_to_FAISS, search_database, faiss_db
+from chunker import chunk_text
+import uuid
 
 # Load environment variable
 load_dotenv()
@@ -138,22 +141,64 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# === Upload and Read Multiple Files ===
+# === Upload Files ===
 uploaded_files = st.file_uploader(
-    "Upload documents (PDF, HTML, or Markdown)",
-    type=["pdf", "html", "md"],
+    "Upload documents (PDF or HTML)",
+    type=["pdf", "html"],
     accept_multiple_files=True
 )
 
-all_text = ""
-if uploaded_files:
-    st.markdown("### 📂 Uploaded Files")
-    for file in uploaded_files:
-        content = file.read().decode("utf-8", errors="ignore")
-        all_text += content + "\n\n"
-        st.write(f"- {file.name}")
+# === Save to FORAGER input folders ===
+base_dir = Path("FORAGER/FORAGER_corpus/heterogenous_integration")
+html_dir = base_dir / "html"
+pdf_dir = base_dir / "pdf"
+
+# Ensure directories exist
+html_dir.mkdir(parents=True, exist_ok=True)
+pdf_dir.mkdir(parents=True, exist_ok=True)
+
+for file in uploaded_files:
+    file_ext = file.name.split(".")[-1].lower()
+    file_bytes = file.read()
+
+    if file_ext == "html":
+        save_path = html_dir / file.name
+    elif file_ext == "pdf":
+        save_path = pdf_dir / file.name
+    else:
+        st.warning(f"Unsupported file type: {file.name}")
+        continue
+
+    with open(save_path, "wb") as f:
+        f.write(file_bytes)
+
+    st.success(f"Uploaded and saved: {file.name}")
+
+if st.button("Run Text Extraction, Chunking, and Embedding"):
+    initialize_faiss()
+    with st.spinner("Running ingestion..."):
+        ingest_exit = os.system("python FORAGER/ingestor.py")
+    if ingest_exit != 0:
+        st.error("❌ Ingestion failed.")
+    else:
+        st.success("✅ Ingestion complete.")
+
+        with st.spinner("Running chunker..."):
+            chunk_exit = os.system("python FORAGER/chunker.py")
+        if chunk_exit != 0:
+            st.error("❌ Chunking failed.")
+        else:
+            st.success("✅ Chunking complete.")
+
+            with st.spinner("Running embedder..."):
+                embed_exit = os.system("python FORAGER/embedder.py")
+            if embed_exit != 0:
+                st.error("❌ Embedding failed.")
+            else:
+                st.success("✅ Embedding complete. Pipeline finished!")
 
 # === Question Input ===
+st.markdown("### 💬 Ask a Question")
 user_question = st.text_input("Ask a question based on the uploaded document(s):")
 if st.button("Submit"):
     st.session_state["submitted"] = True
