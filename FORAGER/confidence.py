@@ -39,7 +39,8 @@ llm_response_3 = "George Washington was the first president of the United States
 llm_response_4 = "Heterogeneous integration is the process of singing a lullaby to put a baby to sleep."
 # Supported
 # 0.7159858
-# High Confidence
+# Medium Confidence
+# Changed similarity threshold for high confidence from 0.7 to 0.75
 
 llm_response_5 = "Heterogeneous integration involves chiplets."
 # Error??
@@ -50,9 +51,10 @@ llm_response_6 = "Heterogeneous integration is important for the advancement of 
 # High Confidence
 
 llm_response_7 = ""
-# Supported
-# 0.6606921
-# Medium
+# Contradicted
+# 0
+# Zero Confidence
+# Caught this edge case
 
 llm_response_8 = "tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt."
 # Contradicted
@@ -85,21 +87,28 @@ def get_label_and_score(llm_response):
                                     product similarity between the LLM's response and the
                                     corpus.
     """
-    # Set number of nearest-neighbor chunks to use to compute similarity score
-    k = 5
 
-    # Compare llm response to chunks in database
-    results, scores = search_database(llm_response, k)
+    if llm_response:
+        # Set number of nearest-neighbor chunks to use to compute similarity score
+        k = 5
 
-    # Compute the average of the scores of the top 5 most similar documents to get a sense
-    # of how similar the llm's answer is to the database.
-    similarity_score = sum(scores[0]) / len(scores[0])
-    print(f"\033[1;96mSimilarity Score: {similarity_score}\033[0m")
+        # Compare llm response to chunks in database
+        results, scores = search_database(llm_response, k)
 
-    # Get the evaluation label of the llm's response
-    eval_label = detect_bs(llm_response, results)
+        # Compute the average of the scores of the top 5 most similar documents to get a sense
+        # of how similar the llm's answer is to the database.
+        similarity_score = sum(scores[0]) / len(scores[0])
+        print(f"\033[1;96mSimilarity Score: {similarity_score}\033[0m")
 
-    return eval_label, similarity_score
+        # Get the evaluation label of the llm's response
+        eval_label = detect_bs(llm_response, results)
+
+        return eval_label, similarity_score
+    else:
+        print("\033[1;91mLLM did not give an output!\033[0m")
+        eval_label = "Contradicted"
+        similarity_score = 0
+        return eval_label, similarity_score
 
 def confidence_checker(eval_label, similarity_score):
     """
@@ -125,9 +134,9 @@ def confidence_checker(eval_label, similarity_score):
         - 'Unsupported' or 'Contradicted' responses will lower the confidence score, 
           even if the similarity is high, helping to mitigate false positives.
     """
-    if eval_label == "Supported" and similarity_score >= 0.7:
+    if eval_label == "Supported" and similarity_score >= 0.75:
         confidence = "High Confidence"
-    elif eval_label == "Supported" and similarity_score < 0.7:
+    elif eval_label == "Supported" and similarity_score < 0.75:
         confidence = "Medium Confidence"
     elif eval_label == "Unsupported":
         confidence = "Low Confidence"
@@ -137,7 +146,7 @@ def confidence_checker(eval_label, similarity_score):
     return confidence
 
 if __name__ == "__main__":
-    eval_label, similarity = get_label_and_score(llm_response_8)
+    eval_label, similarity = get_label_and_score(llm_response_4)
     confidence_label = confidence_checker(eval_label, similarity)
     print(eval_label)
     print(similarity)
