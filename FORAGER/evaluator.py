@@ -12,10 +12,14 @@ Key Functions:
 TODO: Make evaluation for each round show up separately like in the llm_responses folder
 """
 
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 __docformat__ = "google"
 import json
-from formatter import get_input_file
-import os
+from FORAGER.formatter import get_input_file
+
 
 def load_files(test_file, responses_file):
 	"""

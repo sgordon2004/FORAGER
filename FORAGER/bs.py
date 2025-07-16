@@ -202,7 +202,7 @@ def detect_bs(claim: str, supporting_docs: list[str],
     
     # Embedding Similarity Phase (only runs if NLI is neutral)
     claim_emb = model.encode([prefix + claim], normalize_embeddings=True).astype("float32")
-    support_embs = model.encode([prefix + doc["text"] for doc in supporting_docs],
+    support_embs = model.encode([prefix + doc for doc in supporting_docs],
                                 normalize_embeddings=True).astype("float32")
     
     similarities = util.cos_sim(claim_emb, support_embs)[0]

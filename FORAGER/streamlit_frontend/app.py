@@ -17,7 +17,7 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 # Importing backend functions
 from bs import detect_bs
-from confidence import confidence_checker
+from confidence import check_confidence
 from runner import get_llm_response
 from embedder import search_database
 

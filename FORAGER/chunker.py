@@ -19,7 +19,9 @@ Intended Usage:
 Run this script directly to chunk all documents in the input directory and output them to a single JSONL file. 
 These chunks are later embedded and indexed for similarity search in the FORAGER system.
 """
-
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from pathlib import Path
 import json
 from transformers import AutoTokenizer

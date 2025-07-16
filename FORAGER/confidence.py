@@ -16,9 +16,12 @@ documents. The confidence score can be used to determine whether the answer shou
 accepted, discarded, or refined in subsequent iterations of the Prompt Lock Loop (PLL).
 """
 
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 __docformat__ = "google"
-from embedder import search_database
-from bs import detect_bs
+from FORAGER.embedder import search_database
+from FORAGER.bs import detect_bs
 
 # Test Cases
 llm_response_1 = "Random response here."
@@ -73,7 +76,7 @@ llm_response_10 = "Heterogeneous integration refers to the use of advanced packa
 # 0.8357425
 # High Confidence
 
-def check_confidence(claim, eval_label):
+def check_confidence(claim, eval_label, docs, k: int = 3):
     """
     Determines a final confidence label based on the evaluation label 
     (e.g., NLI classification) and the similarity score between the LLM response 
@@ -95,21 +98,16 @@ def check_confidence(claim, eval_label):
           even if the similarity is high, helping to mitigate false positives.
     """
     if claim:
-        # Set number of nearest-neighbor chunks to use to compute similarity score
-        k = 5
-
-        # Compare llm response to nearest k chunks in database 
-        # Might have to change this to only search the chunks that were originally retrieved
-        results = search_database(claim, k)
-
+        # Compare llm claim to nearest k chunks in database 
         # Compute the average of the scores of the top 5 most similar documents to get a sense
         # of how similar the llm's answer is to the database.
         scores = []
-        for dict_ in results:
+        for dict_ in docs:
             scores.append(dict_["score"])
+            print(f"\033[1;96mSimilarity Score: {dict_["score"]}\033[0m")
 
         similarity_score = sum(scores) / len(scores)
-        print(f"\033[1;96mSimilarity Score: {similarity_score}\033[0m")
+        # print(f"\033[1;96mSimilarity Score: {similarity_score}\033[0m")
     else:
         print("\033[1;91mLLM did not give an output!\033[0m")
         similarity_score = 0

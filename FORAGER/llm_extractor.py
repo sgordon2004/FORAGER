@@ -18,7 +18,11 @@ further validation in the FORAGER pipeline (e.g., via BS detection and confidenc
 
 """
 
-from runner import get_llm_response
+import os 
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from FORAGER.runner import get_llm_response
 import json
 from dotenv import load_dotenv
 __docformat__ = "google"

@@ -9,16 +9,17 @@ Key Functions:
 - initial_run(): Orchestrates the full prompt → response → evaluation pipeline.
 - rerun_incorrect(): Allows targeted re-evaluation of previously incorrect questions.
 """
-
-import requests
 import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+import requests
 import json
 from dotenv import load_dotenv
-from formatter import format_json, load_json
+from FORAGER.formatter import format_json, load_json
 import re
 import time
-from evaluator import run_eval_process
-from embedder import search_database
+from FORAGER.evaluator import run_eval_process
+from FORAGER.embedder import search_database
 
 # Load API key from environment
 load_dotenv()

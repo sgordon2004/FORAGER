@@ -8,11 +8,14 @@ Controls the closed feedback loop:
 - Tracks performance over multiple loops
 """
 
-import json
+
 import os
-from formatter import  load_json, clean_restructured_prompts
-from runner import get_llm_response, restructure_prompts, run_round, save_restructured_prompts
-from evaluator import run_eval_process
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+import json
+from FORAGER.formatter import  load_json, clean_restructured_prompts
+from FORAGER.runner import get_llm_response, restructure_prompts, run_round, save_restructured_prompts
+from FORAGER.evaluator import run_eval_process
 __docformat__ = "google"
 def prompt_lock_loop(start_file, max_rounds=3):
     """

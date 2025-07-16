@@ -1,9 +1,11 @@
 # PLL CONTROLLER
-
-from runner import get_llm_response, regenerate_with_strict_grounding, regenerate_or_retrieve_more, lock_answer
-from evaluator import evaluate
-from bs import detect_bs
-from embedder import confidence_checker
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from FORAGER.runner import get_llm_response, regenerate_with_strict_grounding, regenerate_or_retrieve_more, lock_answer
+from FORAGER.evaluator import evaluate
+from FORAGER.bs import detect_bs
+from FORAGER.embedder import confidence_checker
 
 def log(message):
     print(f"[PLL_LOG] {message}")

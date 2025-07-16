@@ -13,12 +13,15 @@ This script initiates the complete workflow:
 To run the full pipeline, execute this file directly:
     python main.py
 """
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 __docformat__ = "google"
 import uuid
 from dotenv import load_dotenv
-import os
-from embedder import faiss_db, chunks, model, search_database # Importing loaded FAISS and chunks 
-from pll_controller import run_pll_on_prompt
+
+from FORAGER.embedder import faiss_db, chunks, model, search_database # Importing loaded FAISS and chunks 
+from FORAGER.pll_controller import run_pll_on_prompt
 
 # clear existing locked_answers.json at start 
 open("locked_answers.json", "w").close()
