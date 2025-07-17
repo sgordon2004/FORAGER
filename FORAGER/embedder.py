@@ -89,6 +89,33 @@ def embed_chunks(data, m, n): # Working on speeding this up
     # Return the 2-D array of vectors
     return embeddings
 
+def get_chunk_embeddings(chunks):
+    """
+    Embeds a list of chunk texts.
+    """
+    global model, prefix
+    texts_with_prefix = [prefix + chunk for chunk in chunks]
+    embeddings = model.encode(texts_with_prefix, normalize_embeddings=True, batch_size=64, show_progress_bar=False).astype("float32")
+    return embeddings
+
+def cosine_similarity(vec1, vec2):
+    """
+    Compute cosine similarity between two vectors.
+    """
+    dot_product = np.dot(vec1, vec2)
+    norm_vec1 = np.linalg.norm(vec1)
+    norm_vec2 = np.linalg.norm(vec2)
+    return dot_product / (norm_vec1 * norm_vec2)
+
+def embed_text(text):
+    """
+    Embeds a single query or sentence using the BGE model.
+    """
+    global model, prefix
+    text_with_prefix = prefix + text
+    embedding = model.encode([text_with_prefix], normalize_embeddings=True).astype("float32")[0]
+    return embedding
+
 def initial_embed_and_build(filepath=chunk_filepath):
     """
     Run this once when first running FORAGER to embed the first set of chunks and create the FAISS database
@@ -127,13 +154,13 @@ def add_to_FAISS(new_embedded_chunks):
     faiss_db.add(new_embedded_chunks)
     faiss.write_index(faiss_db, faiss_db_filepath)
 
-def search_database(query, num_vectors):
+def search_database(query, top_k=3):
     """
     Function to search the FAISS database for the closest k chunks to the query (based on dot product)
     
     Args:
         query: User query or LLM response
-        num_vectors: Number of closest vectors to return
+        top_k: Number of closest vectors to return
 
     Returns:
         supporting_docs (list): A list of dictionaries. Each dictionary gives the rank, source, order, score, and text of each retrieved chunk.
@@ -151,15 +178,16 @@ def search_database(query, num_vectors):
     query_emb = model.encode(query_with_prefix, normalize_embeddings = True).astype("float32")
 
     # Ensure k <= length of index
-    num_vectors = min(num_vectors, faiss_db.ntotal)
+    top_k = min(top_k, faiss_db.ntotal)
 
     # Search index
-    scores, indices = faiss_db.search(query_emb, num_vectors)
+    top_k = min(top_k, faiss_db.ntotal)
+    scores, indices = faiss_db.search(query_emb, top_k)
     # print(f"Scores: \n{scores}\n")
     # print(f"indices: \n{indices}\n")
 
     # Show results
-    print(f"\n\033[1;94mReturning the {num_vectors} most similar chunks for query: \"{query}\"\033[0m\n")
+    print(f"\n\033[1;94mReturning the {top_k} most similar chunks for query: \"{query}\"\033[0m\n")
     # print(chunks)
     for rank, idx in enumerate(indices[0]):
         # print(f"{rank+1}. Source: {chunks[idx]['source_filename']} \nChunk: {chunks[idx]['chunk_id']} \nScore: {scores[0][rank]:.4f}\n")
