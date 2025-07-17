@@ -26,13 +26,15 @@ from pathlib import Path
 import json
 from transformers import AutoTokenizer
 __docformat__ = "google"
-# Directory from which the JSONs are coming
-input_dir = Path("FORAGER_corpus/heterogenous_integration/json")
+import streamlit as st
+
 # Contains all of the JSON docs
-all_docs = list(input_dir.glob("*.json"))
+
 
 # Load specific tokenizer
-tokenizer = AutoTokenizer.from_pretrained("NousResearch/Meta-Llama-3-8B-Instruct") # This is the same tokenizer that Groq uses
+@st.cache_resource
+def get_tokenizer():
+    return AutoTokenizer.from_pretrained("NousResearch/Meta-Llama-3-8B-Instruct") # This is the same tokenizer that Groq uses
 
 # Define the chunking function
 def chunk_text(text, window_size=300, overlap=50):
@@ -49,6 +51,7 @@ def chunk_text(text, window_size=300, overlap=50):
     """
     # Tokenize the content
     # Creates a list of all token IDs representing the entire doc's text
+    tokenizer = get_tokenizer()
     tokens = tokenizer.encode(text, add_special_tokens=False)
     # Initialize an empty list to store the chunks
     chunks = []
@@ -82,10 +85,13 @@ def chunk_text(text, window_size=300, overlap=50):
 
 def main():
     """
-    This method loads each JOSN doc from the corpus,
+    This method loads each JSON doc from the corpus,
     pulls the "content" field, chunks the text, and
     saves the chunks into a .jsonl file (with one chunk per line).
     """
+    # Directory from which the JSONs are coming
+    base_dir = Path(__file__).resolve().parent.parent / "FORAGER_corpus" / "heterogenous_integration" / "json"
+    all_docs = list(base_dir.glob("*.json"))
     # Create the output directory to store doc chunks
     output_path = Path("FORAGER_corpus/heterogenous_integration/chunks/chunks.jsonl")
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -114,4 +120,4 @@ def main():
 
     print(f"[OK] Finished chunking {len(all_docs)} documents.")
 
-main()
+# main()

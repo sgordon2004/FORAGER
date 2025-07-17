@@ -42,9 +42,8 @@ model = SentenceTransformer("BAAI/bge-base-en-v1.5")
 # Important filepaths listed here
 base_dir = os.path.dirname(os.path.abspath(__file__))
 chunk_filepath = os.path.join(base_dir, "..", "FORAGER_corpus", "heterogenous_integration", "chunks", "chunks.jsonl")
-faiss_db_filepath = os.path.join(base_dir, "vector_database", "index_db.faiss")
+faiss_db_filepath = os.path.join(base_dir, "..", "vector_database", "index_db.faiss")
 
-os.makedirs(os.path.dirname(faiss_db_filepath), exist_ok=True)
 
 def load_chunks():
     # global chunks
@@ -90,12 +89,12 @@ def embed_chunks(data, m, n): # Working on speeding this up
     # Return the 2-D array of vectors
     return embeddings
 
-def initial_embed_and_build():
+def initial_embed_and_build(filepath=chunk_filepath):
     """
     Run this once when first running FORAGER to embed the first set of chunks and create the FAISS database
 
     Args:
-        filepath: path to the JSONL file containing the chunks to be embedded
+        filepath (str): path to the JSONL file containing the chunks to be embedded
 
     Returns:
         embeddings: 2-D array of vectors
@@ -208,6 +207,9 @@ def clear_database():
 def initialize_faiss():
     
     global faiss_db #, chunks
+    global chunk_filepath, faiss_db_filepath
+    os.makedirs(os.path.dirname(chunk_filepath), exist_ok=True)
+    os.makedirs(os.path.dirname(faiss_db_filepath), exist_ok=True)
     
     # Read in the FAISS database if it exists, or embed chunks and make a new one if it doesn't
     if os.path.exists(faiss_db_filepath):
@@ -218,7 +220,7 @@ def initialize_faiss():
         print(f"Loading FAISS index took {end_time - start_time:.2f} seconds")
     else:
         start_time = time.time()
-        embed_array, faiss_db = initial_embed_and_build(chunk_filepath)
+        embed_array, faiss_db = initial_embed_and_build()
         end_time = time.time()
         print(f"Initial embed and build took {end_time - start_time:.2f} seconds")
         print(f"\033[1;96mFAISS database size: {faiss_db.ntotal}\033[0m\n")
