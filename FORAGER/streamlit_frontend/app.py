@@ -155,8 +155,11 @@ if uploaded_files and user_question and (st.session_state.get("submitted", False
         try:
             from test_pipeline import full_forager_pipeline
             print("Running before pope")
-            full_forager_pipeline(user_question)
-            print("Running")
+            answer, eval = full_forager_pipeline(user_question)
+            st.success("✅ LLM Answer")
+            st.write(answer)
+            st.markdown("### 🧪 Claim Evaluation Results")
+            st.json(eval)
 
             # # Reset rerun trigger
             st.session_state["force_rerun"] = False
