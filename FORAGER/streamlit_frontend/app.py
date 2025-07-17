@@ -157,7 +157,8 @@ if uploaded_files and user_question and (st.session_state.get("submitted", False
     with st.spinner("⚙️ Processing with mock RAG pipeline..."):
         try:
             from test_pipeline import full_forager_pipeline
-            print("Running before pope")
+
+            # Run the first portion of the FORAGER pipeline (function name misleading)
             answer, eval = full_forager_pipeline(user_question)
 
             final_claim = list(eval.keys())[0]
