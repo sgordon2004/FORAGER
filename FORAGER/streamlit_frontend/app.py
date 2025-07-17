@@ -1,11 +1,6 @@
 import streamlit as st
 import os
 from dotenv import load_dotenv
-import json
-import pandas as pd
-import datetime
-from fpdf import FPDF
-from io import BytesIO
 import time
 import sys
 import os
@@ -13,12 +8,6 @@ from pathlib import Path
 
 # Add the FORAGER directory to the Python path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-# Importing backend functions
-from bs import detect_bs
-from confidence import check_confidence
-from runner import get_llm_response
-
-from ingestor import extract_pdf, dump_pdf_text
 
 # Load environment variable
 load_dotenv()
@@ -93,10 +82,6 @@ base_dir = Path("FORAGER_corpus/heterogenous_integration")
 html_dir = base_dir / "html"
 pdf_dir = base_dir / "pdf"
 
-# Ensure directories exist
-html_dir.mkdir(parents=True, exist_ok=True)
-pdf_dir.mkdir(parents=True, exist_ok=True)
-
 for file in uploaded_files:
     file_ext = file.name.split(".")[-1].lower()
     file_bytes = file.read()
@@ -115,6 +100,7 @@ for file in uploaded_files:
     st.success(f"Uploaded and saved: {file.name}")
 
 if st.button("Run Text Extraction, Chunking, and Embedding"):
+    from ingestor import extract_pdf, dump_pdf_text
     from chunker import main
 
     # Placeholder slot in app to add and remove content at will
@@ -123,6 +109,11 @@ if st.button("Run Text Extraction, Chunking, and Embedding"):
     if not uploaded_files:
         st.warning("Please upload at least one document before running the pipeline.")
     else:
+        
+        # Ensure directories exist
+        html_dir.mkdir(parents=True, exist_ok=True)
+        pdf_dir.mkdir(parents=True, exist_ok=True)
+
         with status_placeholder.status("🚀 Starting full pipeline...", expanded=True) as status:
             try:
                 st.write("📄 Starting text extraction...")
@@ -335,52 +326,52 @@ if uploaded_files and user_question and (st.session_state.get("submitted", False
         except Exception as e:
             st.error(f"❌ Error: {e}")
     
-# === Dev Mode Debug Outputs ===
-if dev_mode:
-    st.markdown("### 🛠 Dev's Debugging Tools")
+# # === Dev Mode Debug Outputs ===
+# if dev_mode:
+#     st.markdown("### 🛠 Dev's Debugging Tools")
 
-    # Raw LLM Response
-    if show_llm_json:
-        st.markdown("#### 🧾 Raw LLM Output")
-        try:
-            st.json(llm_json_response)
-        except Exception as e:
-            st.warning(f"⚠️ LLM response not available or improperly formatted: {e}")
+#     # Raw LLM Response
+#     if show_llm_json:
+#         st.markdown("#### 🧾 Raw LLM Output")
+#         try:
+#             st.json(llm_json_response)
+#         except Exception as e:
+#             st.warning(f"⚠️ LLM response not available or improperly formatted: {e}")
 
-    # Evaluation JSON
-    if show_eval_json:
-        st.markdown("#### 🧪 Evaluation JSON")
-        try:
-            st.json(eval_results)
-        except Exception as e:
-            st.warning(f"⚠️ No evaluation results to display: {e}")
+#     # Evaluation JSON
+#     if show_eval_json:
+#         st.markdown("#### 🧪 Evaluation JSON")
+#         try:
+#             st.json(eval_results)
+#         except Exception as e:
+#             st.warning(f"⚠️ No evaluation results to display: {e}")
 
-    # Document Traceback
-    if show_traceback:
-        st.markdown("#### 📂 Uploaded Document Traceback")
-        if uploaded_files:
-            for file in uploaded_files:
-                st.markdown(f"- **Filename:** `{file.name}`")
-        else:
-            st.info("No documents uploaded.")
+#     # Document Traceback
+#     if show_traceback:
+#         st.markdown("#### 📂 Uploaded Document Traceback")
+#         if uploaded_files:
+#             for file in uploaded_files:
+#                 st.markdown(f"- **Filename:** `{file.name}`")
+#         else:
+#             st.info("No documents uploaded.")
 
-    # Retrieved Chunks
-    if show_chunks:
-        st.markdown("#### 🔗 Retrieved Chunks")
-        if 'chunks' in locals() and chunks:
-            for i, chunk in enumerate(chunks):
-                st.code(chunk.strip(), language="markdown")
-        else:
-            st.info("No chunks retrieved yet.")
+#     # Retrieved Chunks
+#     if show_chunks:
+#         st.markdown("#### 🔗 Retrieved Chunks")
+#         if 'chunks' in locals() and chunks:
+#             for i, chunk in enumerate(chunks):
+#                 st.code(chunk.strip(), language="markdown")
+#         else:
+#             st.info("No chunks retrieved yet.")
     
-    # PLL Logs
-    if show_logs and 'mock_pll_logs' in locals():
-        st.markdown("### 📜 PLL Event Logs")
-        for log in mock_pll_logs:
-            with st.expander(f"{log['step']}: {log['action']}", expanded=False):
-                st.markdown(f"- **BS Label:** `{log['bs_label']}`")
-                st.markdown(f"- **Confidence:** `{log['confidence']}`")
-                st.markdown(f"- **Similarity Score:** `{log['similarity']}`")
+#     # PLL Logs
+#     if show_logs and 'mock_pll_logs' in locals():
+#         st.markdown("### 📜 PLL Event Logs")
+#         for log in mock_pll_logs:
+#             with st.expander(f"{log['step']}: {log['action']}", expanded=False):
+#                 st.markdown(f"- **BS Label:** `{log['bs_label']}`")
+#                 st.markdown(f"- **Confidence:** `{log['confidence']}`")
+#                 st.markdown(f"- **Similarity Score:** `{log['similarity']}`")
 
-if st.button("Reset"):
-    st.session_state["submitted"] = False
+# if st.button("Reset"):
+#     st.session_state["submitted"] = False
