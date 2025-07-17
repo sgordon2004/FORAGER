@@ -113,13 +113,13 @@ def check_confidence(claim, eval_label, docs, k: int = 3):
         similarity_score = 0
     
     if eval_label == "Supported" and similarity_score >= 0.75:
-        confidence = "High Confidence"
+        confidence = "High"
     elif eval_label == "Supported" and similarity_score < 0.75:
-        confidence = "Medium Confidence"
+        confidence = "Medium"
     elif eval_label == "Unsupported":
-        confidence = "Low Confidence"
+        confidence = "Low"
     elif eval_label == "Contradicted" or similarity_score == 0:
-        confidence = "Zero Confidence"
+        confidence = "Zero"
     
     return confidence
 
