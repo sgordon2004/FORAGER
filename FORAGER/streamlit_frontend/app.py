@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 import time
 import sys
 import os
+os.environ["TOKENIZERS_PARALLELISM"] = "false" # Supress warnings from tokenizers library
 from pathlib import Path
 
 # Add the FORAGER directory to the Python path
@@ -149,7 +150,7 @@ if st.button("Submit"):
 
 # === Answer + Evaluation Display ===
 if uploaded_files and user_question and (st.session_state.get("submitted", False) or st.session_state.get("force_rerun", False)):
-
+    
     with st.spinner("⚙️ Processing with mock RAG pipeline..."):
         try:
             from test_pipeline import full_forager_pipeline
@@ -157,14 +158,10 @@ if uploaded_files and user_question and (st.session_state.get("submitted", False
             full_forager_pipeline(user_question)
             print("Running")
 
-
-
-
-
             # # Reset rerun trigger
-            # st.session_state["force_rerun"] = False
+            st.session_state["force_rerun"] = False
 
-            # # Display LLM Answer
+            # Display LLM Answer
             # st.success("✅ LLM Answer")
             # st.write(answer)
 

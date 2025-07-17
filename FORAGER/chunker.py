@@ -24,7 +24,6 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from pathlib import Path
 import json
-from transformers import AutoTokenizer
 __docformat__ = "google"
 import streamlit as st
 
@@ -34,6 +33,7 @@ import streamlit as st
 # Load specific tokenizer
 @st.cache_resource
 def get_tokenizer():
+    from transformers import AutoTokenizer
     return AutoTokenizer.from_pretrained("NousResearch/Meta-Llama-3-8B-Instruct") # This is the same tokenizer that Groq uses
 
 # Define the chunking function
