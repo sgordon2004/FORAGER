@@ -100,21 +100,18 @@ for file in uploaded_files:
     st.success(f"Uploaded and saved: {file.name}")
 
 if st.button("Run Text Extraction, Chunking, and Embedding"):
-    from ingestor import extract_pdf, dump_pdf_text
-    from chunker import main
-
     # Placeholder slot in app to add and remove content at will
     status_placeholder = st.empty()
 
     if not uploaded_files:
         st.warning("Please upload at least one document before running the pipeline.")
     else:
-        
-        # Ensure directories exist
-        html_dir.mkdir(parents=True, exist_ok=True)
-        pdf_dir.mkdir(parents=True, exist_ok=True)
-
         with status_placeholder.status("🚀 Starting full pipeline...", expanded=True) as status:
+            # Ensure directories exist
+            html_dir.mkdir(parents=True, exist_ok=True)
+            pdf_dir.mkdir(parents=True, exist_ok=True)
+            from ingestor import extract_pdf, dump_pdf_text
+            from chunker import main
             try:
                 st.write("📄 Starting text extraction...")
                 time.sleep(1)

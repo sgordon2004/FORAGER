@@ -83,7 +83,7 @@ def embed_chunks(data, m, n): # Working on speeding this up
     len_before_embed = len(embeddings)
 
     # Embed each chunk and normalize the resulting vector. Convert to float32 for insertion into FAISS index
-    embeddings = model.encode(texts, normalize_embeddings = True, batch_size = 512, show_progress_bar = True).astype("float32")
+    embeddings = model.encode(texts, normalize_embeddings = True, batch_size = 128, show_progress_bar = True).astype("float32")
     print(f"\033[1;92m✅ {len(embeddings) - len_before_embed} chunks successfully embedded!\033[0m\n")
 
     # Return the 2-D array of vectors
