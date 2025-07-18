@@ -1,0 +1,45 @@
+/* Reduce top margin */
+.block-container {
+    padding-top: 1rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+/* Widen main content */
+.main {
+    max-width: 95vw;
+}
+
+/* Optional: tweak sidebar */
+.sidebar-content {
+    padding-top: 1rem;
+}
+
+/* Center title */
+h1 {
+    text-align: center;
+}
+
+/* Color coded labels*/
+.claim-badge {
+    display: inline-block;
+    padding: 0.3em 0.8em;
+    font-size: 0.85em;
+    font-weight: 600;
+    color: white;
+    border-radius: 1em;
+    margin-right: 0.5em;
+}
+
+.supported {
+    background-color: #3CB371;
+}
+
+.rephrased {
+    background-color: #FFD700;
+    color: black; /* Yellow on white needs contrast */
+}
+
+.discarded {
+    background-color: #FF6347;
+}
