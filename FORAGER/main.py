@@ -20,16 +20,22 @@ __docformat__ = "google"
 import uuid
 from dotenv import load_dotenv
 
-from FORAGER.embedder import faiss_db, chunks, model, search_database # Importing loaded FAISS and chunks 
+from FORAGER.embedder import faiss_db, load_chunks, model, search_database # Importing loaded FAISS and chunks 
 from FORAGER.pll_controller import run_pll_on_prompt
+
+# Adding a filter for "No Context"
+def skip_evaluation(response: str) -> bool:
+    return "No Context" in response
 
 # clear existing locked_answers.json at start 
 open("locked_answers.json", "w").close()
 
 
 def main():
+    from embedder import initialize_faiss
     print("Welcome to FORAGER Prompt-Lock Loop System!")
-
+    initialize_faiss()
+    print(f"[DEBUG] FAISS database contains {faiss_db.ntotal} vectors after initialization.")
     while True: 
         user_prompt = input("\n Please enter your question (or type 'exit' to quit): ").strip()
         if user_prompt.lower() == "exit":
@@ -44,13 +50,28 @@ def main():
         
         print("\n Step 2: Running Prompt-Lock Loop...")
         # Combine context into one prompt string 
-        full_prompt = f"{user_prompt}\n\nContext:\n" + "\n---\n".join(context_chunks)
+        full_prompt = (
+            "If the context below is irrelevant or insufficient to answer the question, respond with exactly 'No Context'."
+            "Otherwise, answer best as you can based on the provided context.\n\n"
+            f"Question: {user_prompt}\n\nContext:\n" + "\n---\n".join(context_chunks)
+        )
 
         # Generate a unique ID for this question 
         question_id = str(uuid.uuid4())
 
+        # Check for missing context
+        if not context_chunks:
+            print("\n No context found. Skipping Prompt-Locked Loop and returning default response.")
+            default_response = "No Context"
+            print(f"Answer: {default_response}")
+            continue
+
         # Call PLL
         result = run_pll_on_prompt(full_prompt, question_id=question_id)
+
+        if result["candidate"].strip().upper() == "No Context":
+            print("\nLLM responded with 'No Context.' Skipping evaluation and logging.")
+            continue
 
         print("\n Step 3: Final Result:")
         if result["status"] == "locked":

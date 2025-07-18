@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import time
 import sys
 import os
-os.environ["TOKENIZERS_PARALLELISM"] = "false" # Supress warnings from tokenizers library
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 from pathlib import Path
 
 # Add the FORAGER directory to the Python path
@@ -101,18 +101,21 @@ for file in uploaded_files:
     st.success(f"Uploaded and saved: {file.name}")
 
 if st.button("Run Text Extraction, Chunking, and Embedding"):
+    from ingestor import extract_pdf, dump_pdf_text
+    from chunker import main
+
     # Placeholder slot in app to add and remove content at will
     status_placeholder = st.empty()
 
     if not uploaded_files:
         st.warning("Please upload at least one document before running the pipeline.")
     else:
+        
+        # Ensure directories exist
+        html_dir.mkdir(parents=True, exist_ok=True)
+        pdf_dir.mkdir(parents=True, exist_ok=True)
+
         with status_placeholder.status("🚀 Starting full pipeline...", expanded=True) as status:
-            # Ensure directories exist
-            html_dir.mkdir(parents=True, exist_ok=True)
-            pdf_dir.mkdir(parents=True, exist_ok=True)
-            from ingestor import extract_pdf, dump_pdf_text
-            from chunker import main
             try:
                 st.write("📄 Starting text extraction...")
                 time.sleep(1)
@@ -150,21 +153,48 @@ if st.button("Submit"):
 
 # === Answer + Evaluation Display ===
 if uploaded_files and user_question and (st.session_state.get("submitted", False) or st.session_state.get("force_rerun", False)):
-    
+
     with st.spinner("⚙️ Processing with mock RAG pipeline..."):
         try:
             from test_pipeline import full_forager_pipeline
-            print("Running before pope")
+
+            # Run the first portion of the FORAGER pipeline (function name misleading)
             answer, eval = full_forager_pipeline(user_question)
-            st.success("✅ LLM Answer")
-            st.write(answer)
-            st.markdown("### 🧪 Claim Evaluation Results")
-            st.json(eval)
 
+            # TODO: Replace with real eval outputs (this only works on the first claim, not the entire response)
+            final_claim = list(eval.keys())[0]
+            eval_label = eval[final_claim]["label"]
+            conf_label = eval[final_claim]["confidence"]
+            similarity_score = 0.0  # need to import relevant function and store the score to display later
+            print("Running")
+
+            # Display final LLM answer as a full-width block (trying out card/column style first)
+            st.markdown("### ✅ Final Evaluation Result")
+            st.markdown(f"**📝 Final Claim:**\n> {answer}")
+
+            # === Final Claim Display ===
+            st.markdown("### ✅ Final Evaluation Result")
+            st.markdown(f"**📝 Final Claim:**\n> {answer}")
+
+            # === Three Evaluation Labels in Cards ===
+            col1, col2, col3 = st.columns(3)
+
+            with col1:
+                st.markdown("#### 🧠 BS Label")
+                st.success(eval_label)  # Can change to st.markdown for custom color
+
+            with col2:
+                st.markdown("#### 📊 Confidence")
+                st.info(conf_label)
+
+            with col3:
+                st.markdown("#### 📐 Similarity Score")
+                st.warning(f"{similarity_score:.2f}")
+            
             # # Reset rerun trigger
-            st.session_state["force_rerun"] = False
+            # st.session_state["force_rerun"] = False
 
-            # Display LLM Answer
+            # # Display LLM Answer
             # st.success("✅ LLM Answer")
             # st.write(answer)
 
