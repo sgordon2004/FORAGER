@@ -111,7 +111,7 @@ def rerank_or_rephrase(question, claim, retrieved_docs_text, top_n=3):
     Rerank retrieved chunks based on claim similarity and rephrase claim accordingly.
     """
     log(f"🔎 Reranking chunks based on claim-to-chunk similarity for claim: {claim}")
-
+    
     # Step 1: Embed claim
     claim_embedding = embed_text(claim)
 
@@ -217,37 +217,99 @@ def pll(eval_label, confidence_label):
         log(f"⚠️ Unhandled label combo: eval={eval_label}, confidence={confidence_label}")
         return "REVIEW_MANUALLY"
 
-def handle_decision(decision, claim, claim_eval, question, retrieved_docs_text):
+def handle_decision(decision, claim, claim_eval, question):
     eval_label = claim_eval["label"]
     confidence = claim_eval["confidence"]
 
+    retrieved_docs_text = [doc["text"] for doc in claim_eval.get("supporting_chunks", [])]
+
     if decision == "LOCK":
         log(f"🔒 Locking claim: {claim}")
-        # Implement locking logic here
+        return None
     elif decision == "DISCARD":
         log(f"🗑️ Discarding claim: {claim}")
-        # Implement discard logic here
+        return None
     elif decision == "STRICT_REGENERATION":
         log(f"🔄 Strictly regenerating claim: {claim}")
-        regenerate_with_strict_grounding(question, claim, eval_label, confidence, retrieved_docs_text)
+        new_claim = regenerate_with_strict_grounding(question, claim, eval_label, confidence, retrieved_docs_text)
+        return new_claim
     elif decision == "RETRIEVE_MORE_OR_REPHRASE":
         log(f"♻️ Rephrasing or retrieving more for claim: {claim}")
-        retrieve_more_or_rephrase(question, claim)
+        new_claim = retrieve_more_or_rephrase(question, claim)
+        return new_claim
     elif decision == "RERANK_OR_REPHRASE":
         log(f"♻️ Reranking context and rephrasing claim: {claim}")
-        rerank_or_rephrase(question, claim, retrieved_docs_text)
+        new_claim = rerank_or_rephrase(question, claim, retrieved_docs_text)
+        return new_claim
     else:
         log(f"❓ Manual review needed for claim: {claim} with eval {claim_eval}")
+        return None
 
 
 
-def prompt_locked_loop(question, eval, retrieved_docs_text):
-    for claim_eval in eval:
-        claim = claim_eval["claim"]
-        eval_label = claim_eval["label"]
-        confidence_label = claim_eval["confidence"]
+def prompt_locked_loop(question, eval, max_retry=3):
+    from bs import detect_bs
+    from confidence import check_confidence
+    # Initialize log
+    pll_logs = []
+    pll_round = 1
 
-        decision = pll(eval_label, confidence_label)
+    while pll_round <= max_retry:
+        log(f"🔁 Starting PLL round {pll_round}")
+        round_log = {"pll_round": pll_round, "claims": []}
+        updated_claims = []
 
-        log(f"📌 Claim: {claim}\nDecision: {decision}")
-        handle_decision(decision, claim, claim_eval, question, retrieved_docs_text)
+        # Iterate over each atomic claim and its evaluation (label + confidence)
+        # and decide the PLL path for each claim
+        for claim, claim_eval in eval.items():
+            eval_label = claim_eval["label"]
+            confidence_label = claim_eval["confidence"]
+
+            decision = pll(eval_label, confidence_label)
+
+            log(f"📌 Claim: {claim}\nDecision: {decision}")
+
+            round_log["claims"].append({
+                "claim": claim,
+                "eval_label": eval_label,
+                "confidence_label": confidence_label,
+                "pll_decision": decision,
+                "reason": f"Decision {decision} due to eval {eval_label} and confidence {confidence_label}"
+            })
+
+            new_claim = handle_decision(decision, claim, claim_eval, question)
+            
+            if new_claim:
+                updated_claims.append(new_claim)
+    
+        pll_logs.append(round_log)
+        log(f"✅ Completed PLL round {pll_round}")
+
+        # Re-evaluate updated claims if any
+        if updated_claims:
+            log("🔄 Re-evaluating updated claims...")
+            new_eval = {}
+
+            for claim in updated_claims:
+                # Use supporting docs from retrieved context 
+                supporting_docs = claim_eval["supporting_chunks"]
+
+                # Detect BS and Confidence
+                label = detect_bs(claim, [doc["text"] for doc in supporting_docs])
+                confidence = check_confidence(claim, label, supporting_docs)
+
+                # Store re-evaluation result
+                new_eval[claim] = {
+                    "label": label,
+                    "confidence": confidence,
+                    "supporting_chunks": supporting_docs
+                }
+
+            eval = new_eval
+        else:
+            log(f"✅ No new claims to evaluate, carrying forward previous eval.")
+
+        pll_round += 1
+
+    log("🏁 Reached max PLL rounds, stopping.")
+    return pll_logs

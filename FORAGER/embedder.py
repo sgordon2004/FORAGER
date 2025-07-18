@@ -35,7 +35,7 @@ faiss_db = faiss.IndexFlatIP(dim)
 prefix = "Represent this sentence for retrieval: "
 
 # Start by preparing the embedding model
-model = SentenceTransformer("BAAI/bge-base-en-v1.5", device = "cuda")
+model = SentenceTransformer("BAAI/bge-base-en-v1.5")
 
 # Important filepaths listed here
 base_dir = os.path.dirname(os.path.abspath(__file__))
