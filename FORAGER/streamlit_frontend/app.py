@@ -161,6 +161,7 @@ if uploaded_files and user_question and (st.session_state.get("submitted", False
             # Run the first portion of the FORAGER pipeline (function name misleading)
             answer, eval = full_forager_pipeline(user_question)
 
+            # TODO: Replace with real eval outputs (this only works on the first claim, not the entire response)
             final_claim = list(eval.keys())[0]
             eval_label = eval[final_claim]["label"]
             conf_label = eval[final_claim]["confidence"]
