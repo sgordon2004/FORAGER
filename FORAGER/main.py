@@ -52,9 +52,6 @@ def main():
             "If the context below is irrelevant or insufficient to answer the question, respond with exactly 'No Context'."
             "Otherwise, answer best as you can based on the provided context.\n\n"
             f"Question: {user_prompt}\n\nContext:\n" + "\n---\n".join(context_chunks)
-                       
-                       
-        
         )
 
         # Generate a unique ID for this question 
