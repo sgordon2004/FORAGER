@@ -108,7 +108,14 @@ REVISED CLAIM (or appropriate rejection message):
 
     return regenerated_answer
 
-from FORAGER.embedder import embed_text, search_database, get_chunk_embeddings, cosine_similarity
+from FORAGER.embedder import FAISSEmbedder
+# Instantiate FAISSEmbedder object
+base_dir = os.path.dirname(os.path.abspath(__file__))
+chunk_filepath = os.path.join(base_dir, "..", "FORAGER_corpus", "heterogenous_integration", "chunks", "chunks.jsonl")
+faiss_db_filepath = os.path.join(base_dir, "vector_database", "index_db.faiss")
+embedder = FAISSEmbedder(chunk_path = chunk_filepath, faiss_db_path = faiss_db_filepath)
+embedder.initialize_faiss()
+# from FORAGER.embedder import embed_text, search_database, get_chunk_embeddings, cosine_similarity
 
 def rerank_or_rephrase(question, claim, retrieved_docs_text, top_n=3):
     """
@@ -117,13 +124,13 @@ def rerank_or_rephrase(question, claim, retrieved_docs_text, top_n=3):
     log(f"🔎 Reranking chunks based on claim-to-chunk similarity for claim: {claim}")
     
     # Step 1: Embed claim
-    claim_embedding = embed_text(claim)
+    claim_embedding = embedder.embed_text(claim)
 
     # Step 2: Embed each retrieved chunk
-    chunk_embeddings = get_chunk_embeddings(retrieved_docs_text)  # returns List[np.array]
+    chunk_embeddings = embedder.embed_chunks(retrieved_docs_text)  # returns List[np.array]
 
     # Step 3: Compute similarities
-    similarities = [cosine_similarity(claim_embedding, chunk_emb) for chunk_emb in chunk_embeddings]
+    similarities = [embedder.cosine_similarity(claim_embedding, chunk_emb) for chunk_emb in chunk_embeddings]
 
     # Step 4: Sort chunks by similarity
     ranked_chunks = [doc for _, doc in sorted(zip(similarities, retrieved_docs_text), key=lambda x: x[0], reverse=True)]
@@ -166,7 +173,7 @@ def retrieve_more_or_rephrase(question, claim, k=5):
     claim_query = f"{question}. Focus on: {claim}"
 
     # Step 2: Re-run retrieval using claim-augmented query
-    expanded_retrieval = search_database(claim_query, top_k=k)
+    expanded_retrieval = embedder.search_database(claim_query, top_k=k)
     expanded_context = [doc["text"] for doc in expanded_retrieval]
 
     # Step 3: Rephrase claim using expanded context
@@ -322,7 +329,7 @@ def prompt_locked_loop(question, eval, max_retry=3):
             new_eval = {}
 
             for claim in updated_claims:
-                supporting_docs = search_database(claim, top_k=3)
+                supporting_docs = embedder.search_database(claim, top_k=3)
                 label = detect_bs(claim, [doc["text"] for doc in supporting_docs])
                 confidence = check_confidence(claim, label, supporting_docs)
 

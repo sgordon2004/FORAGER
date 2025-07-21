@@ -20,7 +20,7 @@ __docformat__ = "google"
 import uuid
 from dotenv import load_dotenv
 
-from FORAGER.embedder import faiss_db, load_chunks, model, search_database # Importing loaded FAISS and chunks 
+# from FORAGER.embedder import get_FAISS_db, load_chunks, model, search_database # Importing loaded FAISS and chunks 
 from FORAGER.pll_controller import run_pll_on_prompt
 
 # Adding a filter for "No Context"
@@ -30,12 +30,18 @@ def skip_evaluation(response: str) -> bool:
 # clear existing locked_answers.json at start 
 open("locked_answers.json", "w").close()
 
+from embedder import FAISSEmbedder
 
 def main():
-    from embedder import initialize_faiss
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    chunk_filepath = os.path.join(base_dir, "..", "FORAGER_corpus", "heterogenous_integration", "chunks", "chunks.jsonl")
+    faiss_db_filepath = os.path.join(base_dir, "vector_database", "index_db.faiss")
+    embedder = FAISSEmbedder(chunk_path = chunk_filepath, faiss_db_path = faiss_db_filepath)
+    embedder.initialize_faiss()
     print("Welcome to FORAGER Prompt-Lock Loop System!")
-    initialize_faiss()
-    print(f"[DEBUG] FAISS database contains {faiss_db.ntotal} vectors after initialization.")
+    # initialize_faiss()
+    # faiss_db = get_faiss_db()
+    print(f"[DEBUG] FAISS database contains {embedder.get_faiss_db().ntotal} vectors after initialization.")
     while True: 
         user_prompt = input("\n Please enter your question (or type 'exit' to quit): ").strip()
         if user_prompt.lower() == "exit":
@@ -43,7 +49,8 @@ def main():
             break
         
         print("\n Step 1: Getting relevant context...")
-        context_chunks = search_database(user_prompt)
+        # context_chunks = search_database(user_prompt)
+        context_chunks = embedder.search_database(user_prompt)
         print(f"Retrieved {len(context_chunks)} chunks.")
         for i, chunk in enumerate(context_chunks):
             print(f"Chunk {i+1}: {chunk[:100]}...") # Truncating for clarity
