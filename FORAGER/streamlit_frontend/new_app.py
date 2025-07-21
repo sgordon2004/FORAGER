@@ -121,6 +121,7 @@ with tab_chat:
 
             # Run Prompt Locked Loop
             from pll_controller import prompt_locked_loop
+            status_placeholder.info("💾 Initializing Prompt Locked Loop...")
             pll_logs = prompt_locked_loop(user_question, claim_eval, max_retry=3)
             st.session_state["pll_logs"] = pll_logs
 
@@ -157,6 +158,29 @@ with tab_claims:
 with tab_metrics:
     st.header("📊 Metrics & Performance")
 
+    claim_eval = st.session_state.get("claim_eval", {})
+    pll_logs = st.session_state.get("pll_logs", [])
+
+    total_claims = len(claim_eval)
+    total_pll_rounds = len(pll_logs)
+
+    st.metric(label="Total Claims Generated", value=total_claims)
+    st.metric(label="Total PLL Rounds Executed", value=total_pll_rounds)
+
+    # Count labels
+    label_counts = {}
+    for info in claim_eval.values():
+        label = info.get("label", "N/A")
+        label_counts[label] = label_counts.get(label, 0) + 1
+
+    st.subheader("📊 CLaim Label Distribution")
+    st.bar_chart(label_counts)
+
+    # Optional: Show PLL decision paths
+    st.subheader("🪵 PLL Rounds Breakdown")
+    for round_log in pll_logs:
+        st.markdown(f"**PLL Round {round_log['pll_round']}** — {len(round_log['claims'])} claims processed")
+
 # Tab 5: PLL Logs + Developer's View
 with tab_logs:
     st.header("🪵 PLL Logs")
@@ -168,6 +192,10 @@ with tab_logs:
     else:
         for round_log in pll_logs:
             with st.expander(f"PLL Round {round_log['pll_round']}"):
+                if not round_log["claims"]:
+                    st.info("No claims were processed this round.")
+                    continue
+            
                 for claim_info in round_log["claims"]:
                     claim = claim_info["claim"]
                     decision = claim_info["pll_decision"]
