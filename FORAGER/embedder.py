@@ -38,7 +38,8 @@ import json
 # model = SentenceTransformer("BAAI/bge-base-en-v1.5")
 
 # Important filepaths listed here
-base_dir = os.path.dirname(os.path.abspath(__file__))
+# This should set base_dir to be the outer FORAGER folder
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 chunk_filepath = os.path.join(base_dir, "..", "FORAGER_corpus", "heterogenous_integration", "chunks", "chunks.jsonl")
 faiss_db_filepath = os.path.join(base_dir, "vector_database", "index_db.faiss")
 
@@ -64,6 +65,16 @@ class FAISSEmbedder:
         self.chunk_filepath = os.path.abspath(chunk_path)
         self.faiss_db_filepath = os.path.abspath(faiss_db_path)
         self.faiss_db = faiss.IndexFlatIP(dim)
+
+    @classmethod
+    def create_default(cls):
+        """
+        Creates the embedder object using default chunk and FAISS database paths.
+        """
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        chunk_path = os.path.join(base_dir, "FORAGER_corpus", "heterogenous_integration", "chunks", "chunks.jsonl")
+        index_path = os.path.join(base_dir, "vector_database", "index_db.faiss")
+        return cls(chunk_path=chunk_path, index_path=index_path)
 
     def initialize_faiss(self):
         """
@@ -202,9 +213,10 @@ class FAISSEmbedder:
 
 # For testing
 if __name__ == "__main__":
-    embedder = FAISSEmbedder()
-    embedder.initialize_faiss()
-    embedder.add_new_chunks()
+    print(base_dir)
+    # embedder = FAISSEmbedder()
+    # embedder.initialize_faiss()
+    # embedder.add_new_chunks()
 
 
 # Old version of embedder is below
