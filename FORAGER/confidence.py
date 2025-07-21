@@ -112,9 +112,9 @@ def check_confidence(claim, eval_label, docs, k: int = 3):
         print("\033[1;91mLLM did not give an output!\033[0m")
         similarity_score = 0
     
-    if eval_label == "Supported" and similarity_score >= 0.75:
+    if eval_label == "Supported" and similarity_score >= 0.7:
         confidence = "High"
-    elif eval_label == "Supported" and similarity_score < 0.75:
+    elif eval_label == "Supported" and similarity_score < 0.7:
         confidence = "Medium"
     elif eval_label == "Unsupported":
         confidence = "Low"
