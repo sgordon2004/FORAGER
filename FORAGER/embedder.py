@@ -62,7 +62,7 @@ class FAISSEmbedder:
         self.model = SentenceTransformer(model_name)
         self.prefix = "Represent this sentence for retrieval: "
         self.dim = dim
-        self.chunk_filepath = os.path.abspath(chunk_path)
+        self.chunk_filepath = chunk_path
         self.faiss_db_filepath = os.path.abspath(faiss_db_path)
         self.faiss_db = faiss.IndexFlatIP(dim)
 
