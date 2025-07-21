@@ -121,7 +121,7 @@ with tab_chat:
             # Initialize FAISS with the new chunks
             from FORAGER.embedder import FAISSEmbedder
             base_dir = os.path.dirname(os.path.abspath(__file__))
-            chunk_filepath = os.path.join(base_dir, "..", "FORAGER_corpus", "heterogenous_integration", "chunks", "chunks.jsonl")
+            chunk_filepath = os.path.join(base_dir, "..", "..", "FORAGER_corpus", "heterogenous_integration", "chunks", "chunks.jsonl")
             faiss_db_filepath = os.path.join(base_dir, "vector_database", "index_db.faiss")
             embedder = FAISSEmbedder(chunk_path = chunk_filepath, faiss_db_path = faiss_db_filepath)
             embedder.initialize_faiss()

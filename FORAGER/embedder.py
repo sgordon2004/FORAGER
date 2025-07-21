@@ -39,6 +39,7 @@ import json
 
 # Important filepaths listed here
 base_dir = os.path.dirname(os.path.abspath(__file__))
+print(base_dir)
 chunk_filepath = os.path.join(base_dir, "..", "FORAGER_corpus", "heterogenous_integration", "chunks", "chunks.jsonl")
 faiss_db_filepath = os.path.join(base_dir, "vector_database", "index_db.faiss")
 
@@ -61,7 +62,7 @@ class FAISSEmbedder:
         self.model = SentenceTransformer(model_name)
         self.prefix = "Represent this sentence for retrieval: "
         self.dim = dim
-        self.chunk_filepath = os.path.abspath(chunk_path)
+        self.chunk_filepath = chunk_path
         self.faiss_db_filepath = os.path.abspath(faiss_db_path)
         self.faiss_db = faiss.IndexFlatIP(dim)
 
