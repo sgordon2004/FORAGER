@@ -123,11 +123,12 @@ with tab_chat:
             st.markdown(f"**📝 Final Claim:**\n> {answer}")
             time.sleep(1)
 
-            # Run Prompt Locked Loop
-            from pll_controller import prompt_locked_loop
-            status_placeholder.info("💾 Initializing Prompt Locked Loop...")
-            pll_logs = prompt_locked_loop(user_question, claim_eval, max_retry=3)
-            st.session_state["pll_logs"] = pll_logs
+            # Run Prompt Locked Loop as long as question was not marked as irrelevant
+            if not (answer == "This question is unrelated to the documents in the knowledge base and cannot be answered using them."):
+                from pll_controller import prompt_locked_loop
+                status_placeholder.info("💾 Initializing Prompt Locked Loop...")
+                pll_logs = prompt_locked_loop(user_question, claim_eval, max_retry=3)
+                st.session_state["pll_logs"] = pll_logs
 
         # TODO: Move this to run after the final answer is locked.
         # status_placeholder.success("🎉 Full pipeline completed successfully!")

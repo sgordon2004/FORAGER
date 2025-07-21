@@ -73,6 +73,9 @@ def full_forager_pipeline(question: str, k: int = 3):
     # Step 2: Feed question and documents to LLM
     prompt = f"""
     You are answering the following question using ONLY the provided context. DO NOT use any outside knowledge at all.
+    If the question is irrelevant, meaning it is not at all related to any of the provided context, please answer with
+    EXACTLY the following: "This question is unrelated to the documents in the knowledge base and cannot be answered 
+    by them."
 
     Question: {question}
 
@@ -87,25 +90,32 @@ def full_forager_pipeline(question: str, k: int = 3):
     answer = get_llm_response(prompt)
     # print(f"✅ LLM Answer:\n{answer}")
 
-    # Step 4: Extract claims from LLM answer
-    claims = extract_atomic_claims_llm(answer) # a list of all the atomic claims made by the LLM
-
-    # Step 5: Run all claims through BS detector
-    eval = {} # dict to map claim to eval_label
-    for claim in claims:
-        label = detect_bs(claim, supporting_docs=retrieved_docs_text)
-        eval[claim] = label
-
-    # Run confidence checker
-    updated_eval = {}
-    for claim, label in eval.items():
-        confidence = check_confidence(claim, label, retrieved_docs)
-        updated_eval[claim] = {"label": label, "confidence": confidence, "supporting_chunks": retrieved_docs}
+    # Skip the remainder of the pipeline if the question is irrelevant.
+    if (answer == "This question is unrelated to the documents in the knowledge base and cannot be answered by them."):
+        eval = {"Unsupported", 0, ""}
+        return answer, eval
     
-    eval = updated_eval
-    print(eval)
+    # If the answer is relevant, perform the rest of the pipeline
+    else:
+        # Step 4: Extract claims from LLM answer
+        claims = extract_atomic_claims_llm(answer) # a list of all the atomic claims made by the LLM
 
-    return answer, eval
+        # Step 5: Run all claims through BS detector
+        eval = {} # dict to map claim to eval_label
+        for claim in claims:
+            label = detect_bs(claim, supporting_docs=retrieved_docs_text)
+            eval[claim] = label
+
+        # Run confidence checker
+        updated_eval = {}
+        for claim, label in eval.items():
+            confidence = check_confidence(claim, label, retrieved_docs)
+            updated_eval[claim] = {"label": label, "confidence": confidence, "supporting_chunks": retrieved_docs}
+        
+        eval = updated_eval
+        print(eval)
+
+        return answer, eval
 
 
 # dummy_eval = [
