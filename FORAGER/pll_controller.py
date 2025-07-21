@@ -93,7 +93,11 @@ INSTRUCTIONS:
 - Rewrite the claim ONLY IF it can be fully supported by the provided context.
 - If the context contradicts the claim, explain the contradiction briefly.
 - If the context does not support the claim, respond with: "❌ The claim is not supported by the provided context and should be discarded."
+- Keep the claim as **short and concise as possible** while preserving meaning.
 - Do NOT use any outside knowledge or make up information.
+- Avoid adding unnecessary qualifiers, explanations, or details.
+- Do NOT use any outside knowledge or make up information.
+- Do NOT include any text in your response other than the revised claim or rejection message. NO MESSAGES, NOTES, OR EXPLANATIONS.
 
 REVISED CLAIM (or appropriate rejection message):
 """
@@ -104,7 +108,14 @@ REVISED CLAIM (or appropriate rejection message):
 
     return regenerated_answer
 
-from FORAGER.embedder import embed_text, search_database, get_chunk_embeddings, cosine_similarity
+from FORAGER.embedder import FAISSEmbedder
+# Instantiate FAISSEmbedder object
+base_dir = os.path.dirname(os.path.abspath(__file__))
+chunk_filepath = os.path.join(base_dir, "..", "FORAGER_corpus", "heterogenous_integration", "chunks", "chunks.jsonl")
+faiss_db_filepath = os.path.join(base_dir, "vector_database", "index_db.faiss")
+embedder = FAISSEmbedder(chunk_path = chunk_filepath, faiss_db_path = faiss_db_filepath)
+embedder.initialize_faiss()
+# from FORAGER.embedder import embed_text, search_database, get_chunk_embeddings, cosine_similarity
 
 def rerank_or_rephrase(question, claim, retrieved_docs_text, top_n=3):
     """
@@ -113,13 +124,13 @@ def rerank_or_rephrase(question, claim, retrieved_docs_text, top_n=3):
     log(f"🔎 Reranking chunks based on claim-to-chunk similarity for claim: {claim}")
     
     # Step 1: Embed claim
-    claim_embedding = embed_text(claim)
+    claim_embedding = embedder.embed_text(claim)
 
     # Step 2: Embed each retrieved chunk
-    chunk_embeddings = get_chunk_embeddings(retrieved_docs_text)  # returns List[np.array]
+    chunk_embeddings = embedder.embed_chunks(retrieved_docs_text)  # returns List[np.array]
 
     # Step 3: Compute similarities
-    similarities = [cosine_similarity(claim_embedding, chunk_emb) for chunk_emb in chunk_embeddings]
+    similarities = [embedder.cosine_similarity(claim_embedding, chunk_emb) for chunk_emb in chunk_embeddings]
 
     # Step 4: Sort chunks by similarity
     ranked_chunks = [doc for _, doc in sorted(zip(similarities, retrieved_docs_text), key=lambda x: x[0], reverse=True)]
@@ -139,7 +150,11 @@ TOP CONTEXT:
 INSTRUCTIONS:
 - Rewrite the claim to more directly reflect the above context.
 - Only use the provided context.
+- Keep the claim as **short and concise as possible** while preserving meaning.
+- Do NOT use any outside knowledge or make up information.
+- Avoid adding unnecessary qualifiers, explanations, or details.
 - If the claim cannot be improved, respond: "❌ Claim should be discarded."
+- Do NOT include any text in your response other than the revised claim or rejection message. NO MESSAGES, NOTES, OR EXPLANATIONS.
 
 REPHRASED CLAIM:
 """
@@ -158,7 +173,7 @@ def retrieve_more_or_rephrase(question, claim, k=5):
     claim_query = f"{question}. Focus on: {claim}"
 
     # Step 2: Re-run retrieval using claim-augmented query
-    expanded_retrieval = search_database(claim_query, top_k=k)
+    expanded_retrieval = embedder.search_database(claim_query, top_k=k)
     expanded_context = [doc["text"] for doc in expanded_retrieval]
 
     # Step 3: Rephrase claim using expanded context
@@ -174,6 +189,7 @@ INSTRUCTIONS:
 - Rewrite the claim to be directly grounded in this new context.
 - Only use the provided context.
 - If the context does not support the claim, respond: "❌ Claim is unsupported and should be discarded."
+- Do NOT include any text in your response other than the revised claim or rejection message. NO MESSAGES, NOTES, OR EXPLANATIONS.
 
 REPHRASED CLAIM:
 """
@@ -250,51 +266,70 @@ def handle_decision(decision, claim, claim_eval, question):
 def prompt_locked_loop(question, eval, max_retry=3):
     from bs import detect_bs
     from confidence import check_confidence
+
     # Initialize log
     pll_logs = []
+    # Log the initial claims before PLL rounds start
+    initial_log = {
+        "pll_round": 0,
+        "claims": [
+            {
+                "claim": claim,
+                "eval_label": claim_eval["label"],
+                "confidence_label": claim_eval["confidence"],
+                "pll_decision": "Initial",
+                "reason": f"Initial evaluation detected {claim_eval['label']} with {claim_eval['confidence']} confidence."
+            }
+            for claim, claim_eval in eval.items()
+        ]
+    }
+    pll_logs.append(initial_log)
+    log("✅ Logged initial claims before starting PLL rounds.")
+
     pll_round = 1
+
+    # Store the original claim lengths for divergence detection
+    original_claim_lengths = {claim: len(claim.split()) for claim in eval.keys()}
 
     while pll_round <= max_retry:
         log(f"🔁 Starting PLL round {pll_round}")
-        round_log = {"pll_round": pll_round, "claims": []}
         updated_claims = []
 
-        # Iterate over each atomic claim and its evaluation (label + confidence)
-        # and decide the PLL path for each claim
+        # Step 1: Decide PLL action for each claim
         for claim, claim_eval in eval.items():
             eval_label = claim_eval["label"]
             confidence_label = claim_eval["confidence"]
 
             decision = pll(eval_label, confidence_label)
-
             log(f"📌 Claim: {claim}\nDecision: {decision}")
 
-            round_log["claims"].append({
-                "claim": claim,
-                "eval_label": eval_label,
-                "confidence_label": confidence_label,
-                "pll_decision": decision,
-                "reason": f"Decision {decision} due to eval {eval_label} and confidence {confidence_label}"
-            })
-
             new_claim = handle_decision(decision, claim, claim_eval, question)
-            
-            if new_claim:
-                updated_claims.append(new_claim)
-    
-        pll_logs.append(round_log)
-        log(f"✅ Completed PLL round {pll_round}")
 
-        # Re-evaluate updated claims if any
+            if new_claim is None:
+                log(f"🗑️ Discarding claim: {claim}")
+                continue
+
+            # Length check
+            new_claim_length = len(new_claim.split())
+            original_length = original_claim_lengths.get(claim, 1) # Avoid zero division
+            length_growth_ratio = new_claim_length / original_length
+
+            # Discard claims that have diverged too much in length (e.g., >1.5x original length)
+            if length_growth_ratio > 1.5:
+                    log(f"❌ Rephrased claim too verbose ({length_growth_ratio:.2f}x growth). Discarding.")
+                    continue
+            
+            updated_claims.append(new_claim)
+        
+        round_log = {"pll_round": pll_round, "claims": []}
+
+        # Step 2: Re-evaluate updated claims and log fresh evaluation results
         if updated_claims:
             log("🔄 Re-evaluating updated claims...")
             new_eval = {}
 
             for claim in updated_claims:
-                # Use supporting docs from retrieved context 
-                supporting_docs = claim_eval["supporting_chunks"]
-
-                # Detect BS and Confidence
+                supporting_docs = embedder.search_database(claim, top_k=3)
                 label = detect_bs(claim, [doc["text"] for doc in supporting_docs])
                 confidence = check_confidence(claim, label, supporting_docs)
 
@@ -305,11 +340,27 @@ def prompt_locked_loop(question, eval, max_retry=3):
                     "supporting_chunks": supporting_docs
                 }
 
+                round_log["claims"].append({
+                    "claim": claim,
+                    "eval_label": label,
+                    "confidence_label": confidence,
+                    "pll_decision": "Reevaluated after processing",
+                    "reason": f"Post-PLL reevaluation detected {label} with {confidence} confidence."
+                })
+
             eval = new_eval
         else:
-            log(f"✅ No new claims to evaluate, carrying forward previous eval.")
+            log("✅ No new claims generated this round, stopping PLL.")
+            eval = {}
 
+        # Log the round results
+        pll_logs.append(round_log)
+        log(f"✅ Completed PLL round {pll_round}")
         pll_round += 1
 
-    log("🏁 Reached max PLL rounds, stopping.")
+        if not updated_claims:
+            log("🏁 No claims left to process, stopping PLL.")
+            break # Exit early if no claims left
+
+    log("🏁 Reached max PLL rounds or no more claims to process, stopping.")
     return pll_logs

@@ -19,7 +19,7 @@ from FORAGER.formatter import format_json, load_json
 import re
 import time
 from FORAGER.evaluator import run_eval_process
-from FORAGER.embedder import search_database
+from FORAGER.embedder import FAISSEmbedder
 
 # Load API key from environment
 load_dotenv()

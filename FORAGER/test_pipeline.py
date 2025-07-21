@@ -4,7 +4,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 
 from FORAGER.llm_extractor import extract_atomic_claims_llm
 from FORAGER.bs import detect_bs
-from FORAGER.embedder import search_database, initialize_faiss
+from FORAGER.embedder import FAISSEmbedder
 from FORAGER.runner import get_llm_response
 from FORAGER.confidence import check_confidence
 from FORAGER.pll_controller import prompt_locked_loop
@@ -51,12 +51,16 @@ def full_forager_pipeline(question: str, k: int = 3):
         }
     """
     print("✅ Starting full_forager_pipeline()...")
-    initialize_faiss()
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    chunk_filepath = os.path.join(base_dir, "..", "FORAGER_corpus", "heterogenous_integration", "chunks", "chunks.jsonl")
+    faiss_db_filepath = os.path.join(base_dir, "vector_database", "index_db.faiss")
+    embedder = FAISSEmbedder(chunk_path = chunk_filepath, faiss_db_path = faiss_db_filepath)
+    embedder.initialize_faiss()
     print("✅ FAISS initialized in pipeline scope.")
 
     # Step 1: Retrieve documents
     try:
-        retrieved_docs = search_database(question, k)
+        retrieved_docs = embedder.search_database(question, k)
         print(f"✅ Retrieved {len(retrieved_docs)} docs")
     except Exception as e:
         print(f"❌ Error during search_database(): {type(e).__name__}: {e}")

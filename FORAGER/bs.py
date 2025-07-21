@@ -189,7 +189,7 @@ def detect_bs(claim: str, supporting_docs: list[str],
     
     for doc in supporting_docs:
         label = classify_claim_with_nli(claim, doc)
-        print(f"[DEBUG] Claim: {claim} | Doc: {doc} | NLI: {label}")
+        print(f"\n\n[DEBUG] Claim: {claim} \n| Doc: {doc} \n| NLI: \n{label}")
         if label == "contradiction":
             contradiction_votes += 1
         elif label == "entailment":
