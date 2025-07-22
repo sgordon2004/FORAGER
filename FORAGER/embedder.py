@@ -49,7 +49,7 @@ class FAISSEmbedder:
     """
     def __init__(self, model_name = "BAAI/bge-base-en-v1.5", dim = 768, 
                  chunk_path = None, 
-                 faiss_db_path = None):
+                 index_path = None):
         """
         Constructor for the embedder object.
 
@@ -63,7 +63,7 @@ class FAISSEmbedder:
         self.prefix = "Represent this sentence for retrieval: "
         self.dim = dim
         self.chunk_filepath = os.path.abspath(chunk_path) if chunk_path else None
-        self.faiss_db_filepath = os.path.abspath(faiss_db_path) if faiss_db_path else None
+        self.faiss_db_filepath = os.path.abspath(index_path) if index_path else None
         self.faiss_db = faiss.IndexFlatIP(dim)
 
     @classmethod
