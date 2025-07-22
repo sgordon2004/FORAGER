@@ -235,7 +235,7 @@ with tab_chat:
                 time.sleep(1)
 
                 # Run Prompt Locked Loop as long as question was not marked as irrelevant
-                if not (answer == "This question is unrelated to the documents in the knowledge base and cannot be answered using them."):
+                if (answer != "This question is unrelated to the documents in the knowledge base and cannot be answered by them."):
                     from pll_controller import prompt_locked_loop
                     status_placeholder.info("💾 Initializing Prompt Locked Loop...")
                     pll_logs = prompt_locked_loop(embedder, user_question, claim_eval, max_retry=3)
