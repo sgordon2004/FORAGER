@@ -118,12 +118,10 @@ with tab_chat:
             status_placeholder.success("✅ Chunking complete!")
 
             status_placeholder.info("💾 Initializing FAISS...")
-            # Initialize FAISS with the new chunks
+            # Initialize FAISS with the new chunks - this will hopefully be the only embedder
+            # object that needs to be created
             from FORAGER.embedder import FAISSEmbedder
-            base_dir = os.path.dirname(os.path.abspath(__file__))
-            chunk_filepath = os.path.join(base_dir, "..", "..", "FORAGER_corpus", "heterogenous_integration", "chunks", "chunks.jsonl")
-            faiss_db_filepath = os.path.join(base_dir, "vector_database", "index_db.faiss")
-            embedder = FAISSEmbedder(chunk_path = chunk_filepath, faiss_db_path = faiss_db_filepath)
+            embedder = FAISSEmbedder.create_default()
             embedder.initialize_faiss()
             time.sleep(1)
             status_placeholder.success("✅ FAISS initialized!")
@@ -141,7 +139,7 @@ with tab_chat:
             status_placeholder.info("🤖 Generating answer via LLM...")
             from test_pipeline import full_forager_pipeline
             # Run the first portion of the FORAGER pipeline (function name misleading)
-            answer, claim_eval = full_forager_pipeline(user_question)
+            answer, claim_eval = full_forager_pipeline(embedder, user_question)
             # st.markdown(f"full_forager_pipeline() returned `claim_eval`: {claim_eval}")
             st.session_state["answer"] = answer
             st.session_state["claim_eval"] = claim_eval
