@@ -28,23 +28,39 @@ from dotenv import load_dotenv
 __docformat__ = "google"
 
 llm_claim_prompt = """
-You are an information extraction engine. Your task is to extract all **atomic factual claims** from the input text below.
+You are an information extraction system.
 
-An atomic factual claim:
-- Expresses one complete fact only
-- Should be stated as a full, standalone sentence
-- Should be stated in active voice if possible
-- Should avoid combining multiple facts into one sentence
+Your task is to extract **atomic, factual claims** from the provided text.
 
-You must:
-- Extract appositional phrases as separate claims  
-  (e.g., "TSMC, the world's largest contract chipmaker, manufactures..." → "TSMC is the world's largest contract chipmaker" and "TSMC manufactures ...")
-- Split compound sentences into separate atomic claims
-- Do not omit any fact, even if it is embedded in commas or parentheses
-- Ignore rhetorical questions, opinions, or vague implications
-- Remove punctuation and special characters (e.g., . , $ / &)
+**Atomic factual claims** must follow these rules:
+- Each claim expresses **only one complete fact**.
+- Each claim must be a **standalone full sentence** that is understandable without additional context.
+- Each claim must be in **active voice** whenever possible.
+- **Do not combine multiple facts into a single claim**. If multiple benefits, features, or facts are listed, **split them into separate claims**.
+- **If appositional phrases are used** (e.g., "TSMC, the largest contract chipmaker,"), **split them into distinct claims** (e.g., "TSMC is the largest contract chipmaker.").
+- **Do not omit any factual content**, including information embedded in parentheses, commas, or after colons.
 
-Output only a valid **Python list of strings**, one per claim. Do not include explanations or code blocks. Do not include anything at all in your response besides the Python list of strings, and ONLY that.
+**Subject Handling Rules**:
+- If the input text focuses on a main subject (e.g., "heterogeneous integration"), **each claim must clearly reference this subject as the actor or cause of the fact**. Claims should begin with this subject or use it as the grammatical focus of the sentence.
+- **Do not shift the subject** to other entities (e.g., devices, products, benefits, or applications). Always **attribute actions and effects to the main subject**.
+
+**Examples of correct claim splitting**:
+Input:  
+"Heterogeneous integration enhances performance and enables smaller devices."
+
+Output:  
+["Heterogeneous integration enhances performance.", "Heterogeneous integration enables smaller devices."]
+
+**What to exclude**:
+- ❌ Ignore rhetorical questions, opinions, speculative statements, or vague implications.
+- ❌ Never start claims with vague phrases like "The benefits are…", "Advantages include…", "A key reason is…", "This approach…", or "It allows…". Always restate the main subject explicitly.
+- ❌ Do not include any commentary, explanations, or statements like "Here are the claims:".
+- ❌ Do not use markdown, code blocks, or bullet points.
+
+**Formatting Requirements**:
+- ✅ Output **only** a valid **Python list of strings**, starting with `[` and ending with `]`, with no text before or after.
+- ✅ Example of correct final output:  
+["Heterogeneous integration enhances performance.", "Heterogeneous integration enables smaller devices.", "Heterogeneous integration improves system efficiency."]
 
 ### Input:
 \"\"\"{input_text}\"\"\"
@@ -67,6 +83,7 @@ def extract_atomic_claims_llm(text: str) -> str:
     response = get_llm_response(prompt)
 
     try:
+        print(f"[DEBUG] LLM raw response:\n{response}")
         claims = ast.literal_eval(response)
         if isinstance(claims, list):
             return claims
