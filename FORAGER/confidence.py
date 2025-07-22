@@ -120,6 +120,9 @@ def check_confidence(claim, eval_label, docs, k: int = 3):
         confidence = "Low"
     elif eval_label == "Contradicted" or similarity_score == 0:
         confidence = "Zero"
+    else:
+        print(f"[WARN] Unrecognized eval_label: {eval_label}. Defaulting to Low confidence.")
+        confidence = "Low"
     
     return confidence
 

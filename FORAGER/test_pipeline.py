@@ -63,7 +63,7 @@ def full_forager_pipeline(embedder: FAISSEmbedder, question: str, k: int = 3):
         raise e
     
     retrieved_docs_text = [doc["text"] for doc in retrieved_docs]
-    print(f"Chunks used for answer: {retrieved_docs_text}")
+    # print(f"Chunks used for answer: {retrieved_docs_text}")
     retrieved_docs_combined = "\n\n".join([doc["text"] for doc in retrieved_docs])
     
     # Step 2: Feed question and documents to LLM
@@ -118,7 +118,7 @@ def full_forager_pipeline(embedder: FAISSEmbedder, question: str, k: int = 3):
             updated_eval[claim] = {"label": label, "confidence": confidence, "supporting_chunks": retrieved_docs}
         
         eval = updated_eval
-        print(eval)
+        # print(eval)
 
         return answer, eval
 

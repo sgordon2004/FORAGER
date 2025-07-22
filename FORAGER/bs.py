@@ -164,7 +164,7 @@ def classify_claim_with_nli(claim: str, supporting_doc: str) -> str:
     return label
 
 def detect_bs(embedder: FAISSEmbedder, claim: str, supporting_docs: list[str],
-              threshold_supported=0.75, threshold_contradicted=0.2) -> str:
+              threshold_supported=0.70, threshold_contradicted=0.2) -> str:
     """
     Detects if a claim is Supported, Contradicted, or Unsupported by supporting_docs.
     Prioritizes NLI (logical relation), then falls back to cosine similarity if needed.
@@ -190,7 +190,7 @@ def detect_bs(embedder: FAISSEmbedder, claim: str, supporting_docs: list[str],
     
     for doc in supporting_docs:
         label = classify_claim_with_nli(claim, doc)
-        print(f"\n\n[DEBUG] Claim: {claim} \n| Doc: {doc} \n| NLI: \n{label}")
+        # print(f"\n\n[DEBUG] Claim: {claim} \n| Doc: {doc} \n| NLI: \n{label}")
         if label == "contradiction":
             contradiction_votes += 1
         elif label == "entailment":
@@ -204,16 +204,14 @@ def detect_bs(embedder: FAISSEmbedder, claim: str, supporting_docs: list[str],
     # Embedding Similarity Phase (only runs if NLI is neutral)
     # embedder = FAISSEmbedder.create_default()
     claim_emb = embedder.embed_text(claim)
-    for doc in supporting_docs:
-        support_embs = embedder.embed_text(doc)
-    # claim_emb = model.encode([prefix + claim], normalize_embeddings=True).astype("float32")
-    # support_embs = model.encode([prefix + doc for doc in supporting_docs],
-    #                             normalize_embeddings=True).astype("float32")
-    
+    support_embs = [embedder.embed_text(doc) for doc in supporting_docs]
     similarities = util.cos_sim(claim_emb, support_embs)[0]
     max_score = similarities.max().item()
 
-    if max_score >= threshold_supported:
+    if "by definition" in claim or "refers to" in claim.lower():
+        if max_score >= 0.7:
+            return "Supported"
+    elif max_score >= threshold_supported:
         return "Supported"
     elif max_score <= threshold_contradicted:
         return "Contradicted"

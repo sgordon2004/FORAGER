@@ -256,7 +256,8 @@ with tab_claims:
 
             with st.expander("📜 Supporting Chunks"):
                 for idx, chunk in enumerate(supporting_chunks, 1):
-                    st.markdown(f"**Chunk {idx}:**\n> {chunk['text']}")
+                    formatted_chunk = chunk["text"].replace("\n", "\n> ")
+                    st.markdown(f"> **Chunk {idx}:**  \n> {formatted_chunk}")
 # Tab 4: Metrics & Performance
 with tab_metrics:
     st.header("📊 Metrics & Performance")
