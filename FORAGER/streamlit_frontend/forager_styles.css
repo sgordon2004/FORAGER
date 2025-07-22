@@ -43,3 +43,50 @@ h1 {
 .discarded {
     background-color: #FF6347;
 }
+
+/* Base tag card */
+.tag-card {
+    background-color: #2c2f33;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.15);
+    margin-bottom: 10px;
+    color: #f5f5f5;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.tag-card h4 {
+    margin: 0 0 5px;
+}
+
+.final-claim-card {
+    background-color: #2c2f33;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    margin-top: 10px;
+    margin-bottom: 20px;
+    color: #f5f5f5;
+}
+
+/* BS Label colors */
+.bs-Supported h4     { color: #2ECC71; }
+.bs-Unsupported h4   { color: #E74C3C; }
+.bs-Contradicted h4  { color: #8E44AD; }
+
+/* Confidence colors */
+.confidence-High h4    { color: #2ECC71; }
+.confidence-Medium h4  { color: #F1C40F; }
+.confidence-Low h4     { color: #E67E22; }
+.confidence-Zero h4    { color: #E74C3C; }
+
+/* Similarity thresholds */
+.similarity-high h4   { color: #2ECC71; }
+.similarity-medium h4 { color: #F1C40F; }
+.similarity-low h4    { color: #E74C3C; }
+
+.final-claim-card h4 {
+    color: #9be7ff;
+    margin-bottom: 10px;
+}
