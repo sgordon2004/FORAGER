@@ -68,10 +68,19 @@ def full_forager_pipeline(embedder: FAISSEmbedder, question: str, k: int = 3):
     
     # Step 2: Feed question and documents to LLM
     prompt = f"""
-    You are answering the following question using ONLY the provided context. DO NOT use any outside knowledge at all.
-    If the question is irrelevant, meaning it is not at all related to any of the provided context, please answer with
-    EXACTLY the following: "This question is unrelated to the documents in the knowledge base and cannot be answered 
-    by them."
+    You are answering the following question using ONLY the provided context. 
+
+    Guidelines:
+    - Use the terminology and phrasing directly from the context.
+    - Do NOT generalize to vague or abstract terms (e.g., do NOT replace "components" or "technologies" with "functions").
+    - Do NOT mention the existence of a context or use phrases like "according to the context" or "according to the documents".
+    - Do NOT mention source IDs, authors, document numbers, or citations.
+    - Tailor your answer to the type of question being asked:
+        - If the question asks for a **definition**, give a full and accurate definition using exact terms from the context.
+        - If the question asks for an **explanation**, provide a clear explanation reflecting the context phrasing.
+        - If the question asks for **examples, comparisons, or lists**, answer naturally while strictly staying within the context.
+        - If the question is **unanswerable from the context**, respond with: 
+        "This question is unrelated to the documents in the knowledge base and cannot be answered by them."
 
     Question: {question}
 
