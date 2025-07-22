@@ -8,6 +8,8 @@ from pathlib import Path
 # Paths to delete
 paths_to_delete = [
     "FORAGER_corpus/heterogenous_integration/chunks",
+    "FORAGER_corpus/heterogenous_integration/htmls",
+    "FORAGER_corpus/heterogenous_integration/pdfs",
     "FORAGER_corpus/heterogenous_integration/html_text",
     "FORAGER_corpus/heterogenous_integration/pdf_text",
     "FORAGER_corpus/heterogenous_integration/json",
