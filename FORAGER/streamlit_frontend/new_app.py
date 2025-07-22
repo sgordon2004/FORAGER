@@ -125,6 +125,7 @@ with tab_chat:
             from FORAGER.embedder import FAISSEmbedder
             embedder = FAISSEmbedder.create_default()
             embedder.initialize_faiss()
+            st.session_state["embedder"] = embedder
             time.sleep(1)
             status_placeholder.success("✅ FAISS initialized!")
 
@@ -139,90 +140,94 @@ with tab_chat:
         if st.button("Submit Question") and user_question:
             st.session_state["submitted"] = True
             status_placeholder.info("🤖 Generating answer via LLM...")
-            from test_pipeline import full_forager_pipeline
-            # Run the first portion of the FORAGER pipeline (function name misleading)
-            answer, claim_eval = full_forager_pipeline(embedder, user_question)
-            # st.markdown(f"full_forager_pipeline() returned `claim_eval`: {claim_eval}")
-            st.session_state["answer"] = answer
-            st.session_state["claim_eval"] = claim_eval
+            embedder = st.session_state.get("embedder")
+            if embedder is None:
+                st.warning("⚠️ Please process documents first to initialize the embedder.")
+            else:
+                from test_pipeline import full_forager_pipeline
+                # Run the first portion of the FORAGER pipeline (function name misleading)
+                answer, claim_eval = full_forager_pipeline(embedder, user_question)
+                # st.markdown(f"full_forager_pipeline() returned `claim_eval`: {claim_eval}")
+                st.session_state["answer"] = answer
+                st.session_state["claim_eval"] = claim_eval
 
-            # Display the summary cards
-            answer = st.session_state.get("answer", "❓ No answer available")
-            claim_eval = st.session_state.get("claim_eval", {})
+                # Display the summary cards
+                answer = st.session_state.get("answer", "❓ No answer available")
+                claim_eval = st.session_state.get("claim_eval", {})
 
-            if claim_eval:
-                final_claim, info = list(claim_eval.items())[0]
-                label = info.get("label", "N/A")
-                confidence = info.get("confidence", "N/A")
-                similarity = info.get("similarity", "N/A")
+                if claim_eval:
+                    final_claim, info = list(claim_eval.items())[0]
+                    label = info.get("label", "N/A")
+                    confidence = info.get("confidence", "N/A")
+                    similarity = info.get("similarity", "N/A")
 
-                st.markdown("## 🧾 Answer Summary")
+                    st.markdown("## 🧾 Answer Summary")
 
-                # Dynamic tag colors
-                bs_color = get_color_for_value("bs", label)
-                conf_color = get_color_for_value("confidence", confidence)
-                sim_color = get_color_for_value("similarity", similarity)
+                    # Dynamic tag colors
+                    bs_color = get_color_for_value("bs", label)
+                    conf_color = get_color_for_value("confidence", confidence)
+                    sim_color = get_color_for_value("similarity", similarity)
 
-                # === Tag cards row ===
-                col1, col2, col3 = st.columns(3)
+                    # === Tag cards row ===
+                    col1, col2, col3 = st.columns(3)
 
-                tag_style = """
-                    background-color: #2c2f33;
-                    padding: 15px;
-                    border-radius: 10px;
-                    box-shadow: 0 0 8px rgba(0,0,0,0.15);
-                    margin-bottom: 10px;
-                    color: #f5f5f5;
-                    text-align: center;
-                    transition: all 0.3s ease;
-                """
+                    tag_style = """
+                        background-color: #2c2f33;
+                        padding: 15px;
+                        border-radius: 10px;
+                        box-shadow: 0 0 8px rgba(0,0,0,0.15);
+                        margin-bottom: 10px;
+                        color: #f5f5f5;
+                        text-align: center;
+                        transition: all 0.3s ease;
+                    """
 
-                with col1:
+                    with col1:
+                        st.markdown(f"""
+                            <div style="{tag_style}">
+                                <h4 style="color:{bs_color};">🧪 BS Label</h4>
+                                <p><b>{label}</b></p>
+                            </div>
+                        """, unsafe_allow_html=True)
+
+                    with col2:
+                        st.markdown(f"""
+                            <div style="{tag_style}">
+                                <h4 style="color:{conf_color};">🔐 Confidence</h4>
+                                <p><b>{confidence}</b></p>
+                            </div>
+                        """, unsafe_allow_html=True)
+
+                    with col3:
+                        st.markdown(f"""
+                            <div style="{tag_style}">
+                                <h4 style="color:{sim_color};">📈 Similarity</h4>
+                                <p><b>{similarity}</b></p>
+                            </div>
+                        """, unsafe_allow_html=True)
+
+                    # === Final Claim full-width card ===
                     st.markdown(f"""
-                        <div style="{tag_style}">
-                            <h4 style="color:{bs_color};">🧪 BS Label</h4>
-                            <p><b>{label}</b></p>
+                        <div style="background-color: #2c2f33;
+                                    padding: 20px;
+                                    border-radius: 10px;
+                                    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+                                    margin-top: 10px;
+                                    margin-bottom: 20px;
+                                    color: #f5f5f5;">
+                            <h4 style="color:#9be7ff;">📝 Final Claim</h4>
+                            <p style="font-size: 14px;">{answer}</p>
                         </div>
                     """, unsafe_allow_html=True)
+            
+                time.sleep(1)
 
-                with col2:
-                    st.markdown(f"""
-                        <div style="{tag_style}">
-                            <h4 style="color:{conf_color};">🔐 Confidence</h4>
-                            <p><b>{confidence}</b></p>
-                        </div>
-                    """, unsafe_allow_html=True)
-
-                with col3:
-                    st.markdown(f"""
-                        <div style="{tag_style}">
-                            <h4 style="color:{sim_color};">📈 Similarity</h4>
-                            <p><b>{similarity}</b></p>
-                        </div>
-                    """, unsafe_allow_html=True)
-
-                # === Final Claim full-width card ===
-                st.markdown(f"""
-                    <div style="background-color: #2c2f33;
-                                padding: 20px;
-                                border-radius: 10px;
-                                box-shadow: 0 0 10px rgba(0,0,0,0.2);
-                                margin-top: 10px;
-                                margin-bottom: 20px;
-                                color: #f5f5f5;">
-                        <h4 style="color:#9be7ff;">📝 Final Claim</h4>
-                        <p style="font-size: 14px;">{answer}</p>
-                    </div>
-                """, unsafe_allow_html=True)
-           
-            time.sleep(1)
-
-            # Run Prompt Locked Loop as long as question was not marked as irrelevant
-            if not (answer == "This question is unrelated to the documents in the knowledge base and cannot be answered using them."):
-                from pll_controller import prompt_locked_loop
-                status_placeholder.info("💾 Initializing Prompt Locked Loop...")
-                pll_logs = prompt_locked_loop(user_question, claim_eval, max_retry=3)
-                st.session_state["pll_logs"] = pll_logs
+                # Run Prompt Locked Loop as long as question was not marked as irrelevant
+                if not (answer == "This question is unrelated to the documents in the knowledge base and cannot be answered using them."):
+                    from pll_controller import prompt_locked_loop
+                    status_placeholder.info("💾 Initializing Prompt Locked Loop...")
+                    pll_logs = prompt_locked_loop(embedder, user_question, claim_eval, max_retry=3)
+                    st.session_state["pll_logs"] = pll_logs
 
         # TODO: Move this to run after the final answer is locked.
         # status_placeholder.success("🎉 Full pipeline completed successfully!")
