@@ -7,13 +7,13 @@ from FORAGER.bs import detect_bs
 from FORAGER.embedder import FAISSEmbedder
 from FORAGER.runner import get_llm_response
 from FORAGER.confidence import check_confidence
-from FORAGER.pll_controller import prompt_locked_loop
+# from FORAGER.pll_controller import prompt_locked_loop
 print("✅ test_pipeline.py successfully imported")
 
 # Uncomment if running directly
 # initialize_faiss()
 
-def full_forager_pipeline(question: str, k: int = 3):
+def full_forager_pipeline(embedder: FAISSEmbedder, question: str, k: int = 3):
     """
     Runs the full FORAGER pipeline to answer a user question with traceable, grounded context.
 
@@ -51,10 +51,6 @@ def full_forager_pipeline(question: str, k: int = 3):
         }
     """
     print("✅ Starting full_forager_pipeline()...")
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    chunk_filepath = os.path.join(base_dir, "..", "FORAGER_corpus", "heterogenous_integration", "chunks", "chunks.jsonl")
-    faiss_db_filepath = os.path.join(base_dir, "vector_database", "index_db.faiss")
-    embedder = FAISSEmbedder(chunk_path = chunk_filepath, faiss_db_path = faiss_db_filepath)
     embedder.initialize_faiss()
     print("✅ FAISS initialized in pipeline scope.")
 
@@ -103,7 +99,7 @@ def full_forager_pipeline(question: str, k: int = 3):
         # Step 5: Run all claims through BS detector
         eval = {} # dict to map claim to eval_label
         for claim in claims:
-            label = detect_bs(claim, supporting_docs=retrieved_docs_text)
+            label = detect_bs(embedder, claim, supporting_docs=retrieved_docs_text)
             eval[claim] = label
 
         # Run confidence checker

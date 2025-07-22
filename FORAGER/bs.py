@@ -27,6 +27,7 @@ from transformers import pipeline
 nli = pipeline("text-classification", model="facebook/bart-large-mnli")
 
 import spacy
+from FORAGER.embedder import FAISSEmbedder
 # Load pretrained language model
 nlp = spacy.load("en_core_web_sm")
 doc = nlp("Apple (the tech giant) is based in Cupertino.")
@@ -162,7 +163,7 @@ def classify_claim_with_nli(claim: str, supporting_doc: str) -> str:
     label = result['label'].lower()     # entailment, contradiction, neutral
     return label
 
-def detect_bs(claim: str, supporting_docs: list[str],
+def detect_bs(embedder: FAISSEmbedder, claim: str, supporting_docs: list[str],
               threshold_supported=0.75, threshold_contradicted=0.2) -> str:
     """
     Detects if a claim is Supported, Contradicted, or Unsupported by supporting_docs.
@@ -177,7 +178,7 @@ def detect_bs(claim: str, supporting_docs: list[str],
     Returns:
         The degree to which the claim is supported by the documents it used. Either Supported, Unsupported, or Contradicted.
     """
-    from FORAGER.embedder import prefix, model
+    # from FORAGER.embedder import FAISSEmbedder
     from sentence_transformers import util
     
     # NLI Voting Phase
@@ -201,9 +202,13 @@ def detect_bs(claim: str, supporting_docs: list[str],
         return "Supported"
     
     # Embedding Similarity Phase (only runs if NLI is neutral)
-    claim_emb = model.encode([prefix + claim], normalize_embeddings=True).astype("float32")
-    support_embs = model.encode([prefix + doc for doc in supporting_docs],
-                                normalize_embeddings=True).astype("float32")
+    # embedder = FAISSEmbedder.create_default()
+    claim_emb = embedder.embed_text(claim)
+    for doc in supporting_docs:
+        support_embs = embedder.embed_text(doc)
+    # claim_emb = model.encode([prefix + claim], normalize_embeddings=True).astype("float32")
+    # support_embs = model.encode([prefix + doc for doc in supporting_docs],
+    #                             normalize_embeddings=True).astype("float32")
     
     similarities = util.cos_sim(claim_emb, support_embs)[0]
     max_score = similarities.max().item()
