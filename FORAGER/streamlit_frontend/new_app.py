@@ -97,11 +97,24 @@ with tab_chat:
                 file_bytes = file.read()
 
                 if file_ext == "html":
-                    save_path = html_dir / file.name
+                    from ingestor import clean_html, html_text_dir, json_dir
+                    # Temporarily save uploaded file
+                    html_upload_dir = base_dir / "htmls"
+                    input_path = html_upload_dir / file.name
+                    html_upload_dir.mkdir(parents=True, exist_ok=True)
+                    with open(input_path, "wb") as f:
+                        f.write(file_bytes)
+                    clean_html(input_path, html_text_dir, json_dir)
+
                 elif file_ext == "pdf":
                     # Extract text from PDF
                     from extractor import extract_pdf
                     from ingestor import dump_pdf_text
+                    pdf_upload_dir = base_dir / "pdfs"
+                    input_path = pdf_upload_dir / file.name
+                    pdf_upload_dir.mkdir(parents=True, exist_ok=True)
+                    with open(input_path, "wb") as f:
+                        f.write(file_bytes)
                     text = extract_pdf(file.name)
                     # Save text to pdf_text + create .json metadata file
                     dump_pdf_text(file.name, text)
@@ -235,6 +248,59 @@ with tab_chat:
 # Tab 2: Knowledge Base Management
 with tab_knowledge_base:
     st.header("📚 Knowledge Base Management")
+    
+    html_upload_dir = base_dir / "htmls"
+    pdf_upload_dir = base_dir / "pdfs"
+
+    html_upload_dir.mkdir(parents=True, exist_ok=True)
+    pdf_upload_dir.mkdir(parents=True, exist_ok=True)
+
+    st.markdown("### 📂 Existing Uploaded Documents")
+
+    # Show HTML files
+    html_files = list(html_upload_dir.glob("*.html"))
+    if html_files:
+        st.markdown("#### 🟣 HTML Files")
+        for file_path in html_files:
+            with st.expander(f"{file_path.name}"):
+                st.code(file_path.read_text(encoding="utf-8")[:1000] + "..." if file_path.stat().st_size > 1000 else file_path.read_text(encoding="utf-8"), language="html")
+                if st.button(f"🗑️ Delete {file_path.name}"):
+                    file_path.unlink()
+                    st.success(f"Deleted {file_path.name}")
+                    st.experimental_rerun()
+
+    # Show PDF files
+    pdf_files = list(pdf_upload_dir.glob("*.pdf"))
+    if pdf_files:
+        st.markdown("#### 🔵 PDF Files")
+        for file_path in pdf_files:
+            with st.expander(f"{file_path.name}"):
+                st.write(f"Size: {file_path.stat().st_size / 1024:.2f} KB")
+                if st.button(f"🗑️ Delete {file_path.name}"):
+                    file_path.unlink()
+                    st.success(f"Deleted {file_path.name}")
+                    st.experimental_rerun()
+
+    st.markdown("---")
+    st.markdown("### ➕ Upload More Files")
+    more_files = st.file_uploader("Upload additional documents (PDF or HTML)", type=["pdf", "html"], accept_multiple_files=True, key="additional_uploads")
+
+    if more_files:
+        for file in more_files:
+            file_ext = file.name.split(".")[-1].lower()
+            file_bytes = file.read()
+            if file_ext == "html":
+                save_path = html_upload_dir / file.name
+            elif file_ext == "pdf":
+                save_path = pdf_upload_dir / file.name
+            else:
+                st.warning(f"Unsupported file type: {file.name}")
+                continue
+
+            with open(save_path, "wb") as f:
+                f.write(file_bytes)
+            st.success(f"✅ Uploaded {file.name}")
+        st.experimental_rerun()
 
 # Tab 3: Steb-by-step claims breakdown
 with tab_claims:
