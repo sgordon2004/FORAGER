@@ -121,10 +121,12 @@ with tab_chat:
             # Initialize FAISS with the new chunks
             from FORAGER.embedder import FAISSEmbedder
             base_dir = os.path.dirname(os.path.abspath(__file__))
-            chunk_filepath = os.path.join(base_dir, "..", "FORAGER_corpus", "heterogenous_integration", "chunks", "chunks.jsonl")
+            chunk_filepath = os.path.join(base_dir, "..", "..", "FORAGER_corpus", "heterogenous_integration", "chunks", "chunks.jsonl")
             faiss_db_filepath = os.path.join(base_dir, "vector_database", "index_db.faiss")
             embedder = FAISSEmbedder(chunk_path = chunk_filepath, faiss_db_path = faiss_db_filepath)
             embedder.initialize_faiss()
+            print("Resolved chunk filepath:", embedder.chunk_filepath)
+            print("File exists:", os.path.exists(embedder.chunk_filepath))
             time.sleep(1)
             status_placeholder.success("✅ FAISS initialized!")
 
@@ -154,7 +156,10 @@ with tab_chat:
                 final_claim, info = list(claim_eval.items())[0]
                 label = info.get("label", "N/A")
                 confidence = info.get("confidence", "N/A")
-                similarity = info.get("similarity", "N/A")
+                # similarity = info.get("similarity", "N/A")
+                chunks = info.get("supporting_chunks", [])
+                scores = [doc.get("score", 0) for doc in chunks if "score" in doc]
+                similarity = round(sum(scores) / len(scores), 3) if scores else "N/A"
 
                 st.markdown("## 🧾 Answer Summary")
 
