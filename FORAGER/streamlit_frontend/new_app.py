@@ -38,35 +38,6 @@ with st.sidebar:
     st.markdown("### 🚦 Pipeline Status")
     status_placeholder = st.empty()
 
-# === FINAL RESULT COLOR CODING DISPLAY LOGIC ===
-def get_color_for_value(label_type, value):
-    if label_type == "confidence":
-        return {
-            "High": "#2ECC71",      # Green
-            "Medium": "#F1C40F",    # Yellow
-            "Low": "#E67E22",       # Orange
-            "Zero": "#E74C3C",      # Red
-        }.get(value, "#BDC3C7")     # Default grey
-
-    if label_type == "bs":
-        return {
-            "Supported": "#2ECC71",
-            "Unsupported": "#E74C3C",
-            "Contradicted": "#8E44AD",
-        }.get(value, "#BDC3C7")
-
-    if label_type == "similarity":
-        try:
-            score = float(value)
-            if score >= 0.7:
-                return "#2ECC71"
-            elif score >= 0.4:
-                return "#F1C40F"
-            else:
-                return "#E74C3C"
-        except:
-            return "#BDC3C7"  # default gray for "N/A"
-
 # Tab 1: Chat & Final Answer
 with tab_chat:
     st.header("💬 Chat & Final Answer")
@@ -171,63 +142,56 @@ with tab_chat:
                     final_claim, info = list(claim_eval.items())[0]
                     label = info.get("label", "N/A")
                     confidence = info.get("confidence", "N/A")
-                    similarity = info.get("similarity", "N/A")
+                    # similarity = info.get("similarity", "N/A")
+                    chunks = info.get("supporting_chunks", [])
+                    scores = [doc.get("score", 0) for doc in chunks if "score" in doc]
+                    similarity = round(sum(scores) / len(scores), 3) if scores else "N/A"
 
                     st.markdown("## 🧾 Answer Summary")
 
                     # Dynamic tag colors
-                    bs_color = get_color_for_value("bs", label)
-                    conf_color = get_color_for_value("confidence", confidence)
-                    sim_color = get_color_for_value("similarity", similarity)
+                    bs_class = f"bs-{label}"
+                    conf_class = f"confidence-{confidence}"
+                    try:
+                        sim_class = (
+                            "similarity-high" if float(similarity) >= 0.7 else
+                            "similarity-medium" if float(similarity) >= 0.4 else
+                            "similarity-low"
+                        )
+                    except:
+                        sim_class = "similarity-low"
 
                     # === Tag cards row ===
                     col1, col2, col3 = st.columns(3)
 
-                    tag_style = """
-                        background-color: #2c2f33;
-                        padding: 15px;
-                        border-radius: 10px;
-                        box-shadow: 0 0 8px rgba(0,0,0,0.15);
-                        margin-bottom: 10px;
-                        color: #f5f5f5;
-                        text-align: center;
-                        transition: all 0.3s ease;
-                    """
-
                     with col1:
                         st.markdown(f"""
-                            <div style="{tag_style}">
-                                <h4 style="color:{bs_color};">🧪 BS Label</h4>
+                            <div class="tag-card {bs_class}">
+                                <h4>🧪 BS Label</h4>
                                 <p><b>{label}</b></p>
                             </div>
                         """, unsafe_allow_html=True)
 
                     with col2:
                         st.markdown(f"""
-                            <div style="{tag_style}">
-                                <h4 style="color:{conf_color};">🔐 Confidence</h4>
+                            <div class="tag-card {conf_class}">
+                                <h4>🔐 Confidence</h4>
                                 <p><b>{confidence}</b></p>
                             </div>
                         """, unsafe_allow_html=True)
 
                     with col3:
                         st.markdown(f"""
-                            <div style="{tag_style}">
-                                <h4 style="color:{sim_color};">📈 Similarity</h4>
+                            <div class="tag-card {sim_class}">
+                                <h4>📈 Similarity</h4>
                                 <p><b>{similarity}</b></p>
                             </div>
                         """, unsafe_allow_html=True)
-
-                    # === Final Claim full-width card ===
+                    
+                    # Final Claim
                     st.markdown(f"""
-                        <div style="background-color: #2c2f33;
-                                    padding: 20px;
-                                    border-radius: 10px;
-                                    box-shadow: 0 0 10px rgba(0,0,0,0.2);
-                                    margin-top: 10px;
-                                    margin-bottom: 20px;
-                                    color: #f5f5f5;">
-                            <h4 style="color:#9be7ff;">📝 Final Claim</h4>
+                        <div class="final-claim-card">
+                            <h4>📝 Final Claim</h4>
                             <p style="font-size: 14px;">{answer}</p>
                         </div>
                     """, unsafe_allow_html=True)
