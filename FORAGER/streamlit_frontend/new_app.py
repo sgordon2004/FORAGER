@@ -85,7 +85,6 @@ with tab_chat:
 
     # Begin document processing when button is clicked
     if st.button("Process Document(s)"):
-        from ingestor import extract_pdf, dump_pdf_text
 
         if not uploaded_files:
             status_placeholder.warning("⚠️ No documents uploaded.")
@@ -101,6 +100,8 @@ with tab_chat:
                     save_path = html_dir / file.name
                 elif file_ext == "pdf":
                     # Extract text from PDF
+                    from extractor import extract_pdf
+                    from ingestor import dump_pdf_text
                     text = extract_pdf(file.name)
                     # Save text to pdf_text + create .json metadata file
                     dump_pdf_text(file.name, text)
