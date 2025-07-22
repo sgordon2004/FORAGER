@@ -240,6 +240,8 @@ with tab_chat:
                     status_placeholder.info("💾 Initializing Prompt Locked Loop...")
                     pll_logs = prompt_locked_loop(embedder, user_question, claim_eval, max_retry=3)
                     st.session_state["pll_logs"] = pll_logs
+                else:
+                    print(f"Prompt Locked Loop skipped due to irrelevant question.")
 
         # TODO: Move this to run after the final answer is locked.
         # status_placeholder.success("🎉 Full pipeline completed successfully!")
