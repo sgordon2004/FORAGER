@@ -83,6 +83,10 @@ with tab_chat:
     html_dir = base_dir / "html"
     pdf_dir = base_dir / "pdf"
 
+    # Create the embedder object - this should be the only embedder object needed
+    from FORAGER.embedder import FAISSEmbedder
+    embedder = FAISSEmbedder.create_default()
+    
     # Begin document processing when button is clicked
     if st.button("Process Document(s)"):
 
@@ -119,13 +123,7 @@ with tab_chat:
             status_placeholder.success("✅ Chunking complete!")
 
             status_placeholder.info("💾 Initializing FAISS...")
-            # Initialize FAISS with the new chunks - this will hopefully be the only embedder
-            # object that needs to be created
-            from FORAGER.embedder import FAISSEmbedder
-            base_dir = os.path.dirname(os.path.abspath(__file__))
-            chunk_filepath = os.path.join(base_dir, "..", "FORAGER_corpus", "heterogenous_integration", "chunks", "chunks.jsonl")
-            faiss_db_filepath = os.path.join(base_dir, "vector_database", "index_db.faiss")
-            embedder = FAISSEmbedder(chunk_path = chunk_filepath, faiss_db_path = faiss_db_filepath)
+            # Initialize FAISS with the new chunks
             embedder.initialize_faiss()
             time.sleep(1)
             status_placeholder.success("✅ FAISS initialized!")
@@ -162,64 +160,64 @@ with tab_chat:
                 confidence = info.get("confidence", "N/A")
                 similarity = info.get("similarity", "N/A")
 
-                    st.markdown("## 🧾 Answer Summary")
+                st.markdown("## 🧾 Answer Summary")
 
-                    # Dynamic tag colors
-                    bs_color = get_color_for_value("bs", label)
-                    conf_color = get_color_for_value("confidence", confidence)
-                    sim_color = get_color_for_value("similarity", similarity)
+                # Dynamic tag colors
+                bs_color = get_color_for_value("bs", label)
+                conf_color = get_color_for_value("confidence", confidence)
+                sim_color = get_color_for_value("similarity", similarity)
 
-                    # === Tag cards row ===
-                    col1, col2, col3 = st.columns(3)
+                # === Tag cards row ===
+                col1, col2, col3 = st.columns(3)
 
-                    tag_style = """
-                        background-color: #2c2f33;
-                        padding: 15px;
-                        border-radius: 10px;
-                        box-shadow: 0 0 8px rgba(0,0,0,0.15);
-                        margin-bottom: 10px;
-                        color: #f5f5f5;
-                        text-align: center;
-                        transition: all 0.3s ease;
-                    """
+                tag_style = """
+                    background-color: #2c2f33;
+                    padding: 15px;
+                    border-radius: 10px;
+                    box-shadow: 0 0 8px rgba(0,0,0,0.15);
+                    margin-bottom: 10px;
+                    color: #f5f5f5;
+                    text-align: center;
+                    transition: all 0.3s ease;
+                """
 
-                    with col1:
-                        st.markdown(f"""
-                            <div style="{tag_style}">
-                                <h4 style="color:{bs_color};">🧪 BS Label</h4>
-                                <p><b>{label}</b></p>
-                            </div>
-                        """, unsafe_allow_html=True)
-
-                    with col2:
-                        st.markdown(f"""
-                            <div style="{tag_style}">
-                                <h4 style="color:{conf_color};">🔐 Confidence</h4>
-                                <p><b>{confidence}</b></p>
-                            </div>
-                        """, unsafe_allow_html=True)
-
-                    with col3:
-                        st.markdown(f"""
-                            <div style="{tag_style}">
-                                <h4 style="color:{sim_color};">📈 Similarity</h4>
-                                <p><b>{similarity}</b></p>
-                            </div>
-                        """, unsafe_allow_html=True)
-
-                    # === Final Claim full-width card ===
+                with col1:
                     st.markdown(f"""
-                        <div style="background-color: #2c2f33;
-                                    padding: 20px;
-                                    border-radius: 10px;
-                                    box-shadow: 0 0 10px rgba(0,0,0,0.2);
-                                    margin-top: 10px;
-                                    margin-bottom: 20px;
-                                    color: #f5f5f5;">
-                            <h4 style="color:#9be7ff;">📝 Final Claim</h4>
-                            <p style="font-size: 14px;">{answer}</p>
+                        <div style="{tag_style}">
+                            <h4 style="color:{bs_color};">🧪 BS Label</h4>
+                            <p><b>{label}</b></p>
                         </div>
                     """, unsafe_allow_html=True)
+
+                with col2:
+                    st.markdown(f"""
+                        <div style="{tag_style}">
+                            <h4 style="color:{conf_color};">🔐 Confidence</h4>
+                            <p><b>{confidence}</b></p>
+                        </div>
+                    """, unsafe_allow_html=True)
+
+                with col3:
+                    st.markdown(f"""
+                        <div style="{tag_style}">
+                            <h4 style="color:{sim_color};">📈 Similarity</h4>
+                            <p><b>{similarity}</b></p>
+                        </div>
+                    """, unsafe_allow_html=True)
+
+                # === Final Claim full-width card ===
+                st.markdown(f"""
+                    <div style="background-color: #2c2f33;
+                                padding: 20px;
+                                border-radius: 10px;
+                                box-shadow: 0 0 10px rgba(0,0,0,0.2);
+                                margin-top: 10px;
+                                margin-bottom: 20px;
+                                color: #f5f5f5;">
+                        <h4 style="color:#9be7ff;">📝 Final Claim</h4>
+                        <p style="font-size: 14px;">{answer}</p>
+                    </div>
+                """, unsafe_allow_html=True)
             
                 time.sleep(1)
 
