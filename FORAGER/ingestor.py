@@ -70,7 +70,7 @@ def dump_pdf_text(filename, text):
     #     f.write(text)
     # print(f"Extracted text saved to {filepath}")
 
-    # cleaned = "\n".join(line.strip() for line in text.splitlines() if line.strip())
+    cleaned = "\n".join(line.strip() for line in text.splitlines() if line.strip())
 
     # Save .json
     json_output = {
