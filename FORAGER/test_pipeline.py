@@ -99,7 +99,7 @@ def full_forager_pipeline(embedder: FAISSEmbedder, question: str, k: int = 3):
     if (answer == "This question is unrelated to the documents in the knowledge base and cannot be answered by them."):
         # print(answer)
         eval = {}
-        eval[0] = {"label": "Unsupported", "confidence": 0, "supporting_chunks": retrieved_docs}
+        eval[0] = {"label": "Unsupported", "confidence": "Zero", "supporting_chunks": retrieved_docs}
         return answer, eval
     
     # If the answer is relevant, perform the rest of the pipeline
