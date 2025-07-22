@@ -91,11 +91,12 @@ AVAILABLE CONTEXT:
 {chr(10).join(retrieved_docs_text)}
 
 INSTRUCTIONS:
-- Rewrite the claim ONLY IF it can be fully supported by the provided context.
+- Rewrite the claim ONLY if it can be fully supported by the provided context, ensuring the claim is as short and concise as possible while preserving meaning:
+- Focus strictly on the central fact.
+- Do NOT restate examples or explanations from the context.
+- Avoid phrases like “this enables” or “which allows”; directly state the key fact.
 - If the context contradicts the claim, explain the contradiction briefly.
 - If the context does not support the claim, respond with: "❌ The claim is not supported by the provided context and should be discarded."
-- Keep the claim as **short and concise as possible** while preserving meaning.
-- Do NOT use any outside knowledge or make up information.
 - Avoid adding unnecessary qualifiers, explanations, or details.
 - Do NOT use any outside knowledge or make up information.
 - Do NOT include any text in your response other than the revised claim or rejection message. NO MESSAGES, NOTES, OR EXPLANATIONS.
@@ -139,11 +140,9 @@ TOP CONTEXT:
 {chr(10).join(top_chunks)}
 
 INSTRUCTIONS:
-- Rewrite the claim to more directly reflect the above context.
-- Only use the provided context.
-- Keep the claim as **short and concise as possible** while preserving meaning.
+- Rewrite the claim to more directly reflect the context, while keeping it as short and concise as possible.
+- Avoid repeating phrases from the context verbatim.
 - Do NOT use any outside knowledge or make up information.
-- Avoid adding unnecessary qualifiers, explanations, or details.
 - If the claim cannot be improved, respond: "❌ Claim should be discarded."
 - Do NOT include any text in your response other than the revised claim or rejection message. NO MESSAGES, NOTES, OR EXPLANATIONS.
 
@@ -261,6 +260,8 @@ def prompt_locked_loop(embedder: FAISSEmbedder, question, eval, max_retry=3):
     from bs import detect_bs
     from confidence import check_confidence
 
+    # List for final claims that survive PLL
+    final_locked_claims = []
     # Initialize log
     pll_logs = []
     # Log the initial claims before PLL rounds start
@@ -309,7 +310,7 @@ def prompt_locked_loop(embedder: FAISSEmbedder, question, eval, max_retry=3):
             length_growth_ratio = new_claim_length / original_length
 
             # Discard claims that have diverged too much in length (e.g., >1.5x original length)
-            if length_growth_ratio > 1.5:
+            if length_growth_ratio > 2.5:
                     log(f"❌ Rephrased claim too verbose ({length_growth_ratio:.2f}x growth). Discarding.")
                     continue
             
@@ -326,6 +327,25 @@ def prompt_locked_loop(embedder: FAISSEmbedder, question, eval, max_retry=3):
                 supporting_docs = embedder.search_database(claim, top_k=3)
                 label = detect_bs(embedder, claim, [doc["text"] for doc in supporting_docs])
                 confidence = check_confidence(claim, label, supporting_docs)
+
+                # Locking check
+                if label == "Supported" and confidence == "High":
+                    log(f"✅ Locking claim after re-evaluation: {claim}")
+                    round_log["claims"].append({
+                    "claim": claim,
+                    "eval_label": label,
+                    "confidence_label": confidence,
+                    "pll_decision": "Locked after re-evaluation",
+                    "reason": "Claim auto-locked after reevaluation with high confidence and support."
+                })
+                    final_locked_claims.append({
+                        "claim": claim,
+                        "label": label,
+                        "confidence": confidence,
+                        "supporting_chunks": supporting_docs
+                    })
+                    # Skip further processing of this claim
+                    continue
 
                 # Store re-evaluation result
                 new_eval[claim] = {

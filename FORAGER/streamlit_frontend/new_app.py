@@ -53,6 +53,8 @@ with tab_chat:
     base_dir = Path("FORAGER_corpus/heterogenous_integration")
     html_dir = base_dir / "html"
     pdf_dir = base_dir / "pdf"
+    html_upload_dir = base_dir / "htmls"
+    pdf_upload_dir = base_dir / "pdfs"
 
     # Begin document processing when button is clicked
     if st.button("Process Document(s)"):
@@ -70,7 +72,7 @@ with tab_chat:
                 if file_ext == "html":
                     from ingestor import clean_html, html_text_dir, json_dir
                     # Temporarily save uploaded file
-                    html_upload_dir = base_dir / "htmls"
+                    
                     input_path = html_upload_dir / file.name
                     html_upload_dir.mkdir(parents=True, exist_ok=True)
                     with open(input_path, "wb") as f:
@@ -81,7 +83,7 @@ with tab_chat:
                     # Extract text from PDF
                     from extractor import extract_pdf
                     from ingestor import dump_pdf_text
-                    pdf_upload_dir = base_dir / "pdfs"
+                    
                     input_path = pdf_upload_dir / file.name
                     pdf_upload_dir.mkdir(parents=True, exist_ok=True)
                     with open(input_path, "wb") as f:
@@ -115,7 +117,7 @@ with tab_chat:
             st.session_state["documents_processed"] = True
             status_placeholder.success("✅ Documents processed!")
     # Run question process only if documents have been processed
-    if st.session_state.get("documents_processed"):
+    if any([list(html_upload_dir.glob("*.html")), list(pdf_upload_dir.glob("*.pdf"))]):
         # Question input section
         st.markdown("### 💬 Ask a Question")
         user_question = st.text_input("Query the knowledge base: ")
@@ -206,6 +208,8 @@ with tab_chat:
                     st.session_state["pll_logs"] = pll_logs
                 else:
                     print(f"Prompt Locked Loop skipped due to irrelevant question.")
+
+                last_round_claims = pll_logs[-1]["claims"]
 
         # TODO: Move this to run after the final answer is locked.
         # status_placeholder.success("🎉 Full pipeline completed successfully!")
