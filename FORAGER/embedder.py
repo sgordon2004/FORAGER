@@ -196,6 +196,7 @@ class FAISSEmbedder:
         vec = self.faiss_db.reconstruct(index)
         print(f"Vector at index {index}:\n{vec}\n")
 
+    @staticmethod
     def cosine_similarity(vec1, vec2):
         """
         Computes cosine similarity between two vectors.
