@@ -20,61 +20,61 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 __docformat__ = "google"
-from FORAGER.embedder import search_database
-from FORAGER.bs import detect_bs
+# from FORAGER.embedder import search_database
+# from FORAGER.bs import detect_bs
 
-# Test Cases
-llm_response_1 = "Random response here."
-# eval label: Supported
-# similarity score: 0.6053619
-# Confidence label: Medium
+# Uncomment to run test cases
+# llm_response_1 = "Random response here."
+# # eval label: Supported
+# # similarity score: 0.6053619
+# # Confidence label: Medium
 
-llm_response_2 = "Heterogeneous integration is the process of combining chips, chiplets, and other chip components into packages."
-# Supported
-# 0.82095444
-# High Confidence
+# llm_response_2 = "Heterogeneous integration is the process of combining chips, chiplets, and other chip components into packages."
+# # Supported
+# # 0.82095444
+# # High Confidence
 
-llm_response_3 = "George Washington was the first president of the United States."
-# Supported
-# 0.46574384
-# Medium
+# llm_response_3 = "George Washington was the first president of the United States."
+# # Supported
+# # 0.46574384
+# # Medium
 
-llm_response_4 = "Heterogeneous integration is the process of singing a lullaby to put a baby to sleep."
-# Supported
-# 0.7159858
-# Medium Confidence
-# Changed similarity threshold for high confidence from 0.7 to 0.75
+# llm_response_4 = "Heterogeneous integration is the process of singing a lullaby to put a baby to sleep."
+# # Supported
+# # 0.7159858
+# # Medium Confidence
+# # Changed similarity threshold for high confidence from 0.7 to 0.75
 
-llm_response_5 = "Heterogeneous integration involves chiplets."
-# Error??
+# llm_response_5 = "Heterogeneous integration involves chiplets."
+# # Error??
 
-llm_response_6 = "Heterogeneous integration is important for the advancement of silicon chip design."
-# Supported
-# 0.8119961
-# High Confidence
+# llm_response_6 = "Heterogeneous integration is important for the advancement of silicon chip design."
+# # Supported
+# # 0.8119961
+# # High Confidence
 
-llm_response_7 = ""
-# Contradicted
-# 0
-# Zero Confidence
-# Caught this edge case
+# llm_response_7 = ""
+# # Contradicted
+# # 0
+# # Zero Confidence
+# # Caught this edge case
 
-llm_response_8 = "tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt."
-# Contradicted
-# 0.62369937
-# Zero Confidence
+# llm_response_8 = "tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt."
+# # Contradicted
+# # 0.62369937
+# # Zero Confidence
 
-llm_response_9 = "Heterogeneous integration is an outdated technology that has no relevance today." 
-# Supported
-# 0.6657399
-# Medium
+# llm_response_9 = "Heterogeneous integration is an outdated technology that has no relevance today." 
+# # Supported
+# # 0.6657399
+# # Medium
 
-llm_response_10 = "Heterogeneous integration refers to the use of advanced packaging technologies " \
-                  "to combine smaller, discrete chiplets—physically realized and tested (hardened) pieces" \
-                  " of IP designed to each perform a particular logical function—into one system in package (SiP)."
-# Supported
-# 0.8357425
-# High Confidence
+# llm_response_10 = "Heterogeneous integration refers to the use of advanced packaging technologies " \
+#                   "to combine smaller, discrete chiplets—physically realized and tested (hardened) pieces" \
+#                   " of IP designed to each perform a particular logical function—into one system in package (SiP)."
+# # Supported
+# # 0.8357425
+# # High Confidence
 
 def check_confidence(claim, eval_label, docs, k: int = 3):
     """
@@ -123,5 +123,6 @@ def check_confidence(claim, eval_label, docs, k: int = 3):
     
     return confidence
 
-if __name__ == "__main__":
-    print(check_confidence(llm_response_4))
+# Uncomment to run test cases
+# if __name__ == "__main__":
+#     print(check_confidence(llm_response_4))

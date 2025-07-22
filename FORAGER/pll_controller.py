@@ -4,6 +4,7 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from FORAGER.runner import get_llm_response, regenerate_with_strict_grounding, regenerate_or_retrieve_more, lock_answer
 from FORAGER.evaluator import evaluate
+from FORAGER.embedder import FAISSEmbedder
 
 def log(message):
     print(f"[PLL_LOG] {message}")
@@ -108,16 +109,7 @@ REVISED CLAIM (or appropriate rejection message):
 
     return regenerated_answer
 
-from FORAGER.embedder import FAISSEmbedder
-# Instantiate FAISSEmbedder object
-base_dir = os.path.dirname(os.path.abspath(__file__))
-chunk_filepath = os.path.join(base_dir, "..", "FORAGER_corpus", "heterogenous_integration", "chunks", "chunks.jsonl")
-faiss_db_filepath = os.path.join(base_dir, "vector_database", "index_db.faiss")
-embedder = FAISSEmbedder(chunk_path = chunk_filepath, faiss_db_path = faiss_db_filepath)
-embedder.initialize_faiss()
-# from FORAGER.embedder import embed_text, search_database, get_chunk_embeddings, cosine_similarity
-
-def rerank_or_rephrase(question, claim, retrieved_docs_text, top_n=3):
+def rerank_or_rephrase(embedder: FAISSEmbedder, question, claim, retrieved_docs_text, top_n=3):
     """
     Rerank retrieved chunks based on claim similarity and rephrase claim accordingly.
     """
@@ -163,7 +155,7 @@ REPHRASED CLAIM:
 
     return rephrased_claim
 
-def retrieve_more_or_rephrase(question, claim, k=5):
+def retrieve_more_or_rephrase(embedder: FAISSEmbedder, question, claim, k=5):
     """
     Expands retrieval based on claim and optionally rephrases the claim after refreshing context.
     """
@@ -233,7 +225,7 @@ def pll(eval_label, confidence_label):
         log(f"⚠️ Unhandled label combo: eval={eval_label}, confidence={confidence_label}")
         return "REVIEW_MANUALLY"
 
-def handle_decision(decision, claim, claim_eval, question):
+def handle_decision(embedder: FAISSEmbedder, decision, claim, claim_eval, question):
     eval_label = claim_eval["label"]
     confidence = claim_eval["confidence"]
 
@@ -251,19 +243,17 @@ def handle_decision(decision, claim, claim_eval, question):
         return new_claim
     elif decision == "RETRIEVE_MORE_OR_REPHRASE":
         log(f"♻️ Rephrasing or retrieving more for claim: {claim}")
-        new_claim = retrieve_more_or_rephrase(question, claim)
+        new_claim = retrieve_more_or_rephrase(embedder, question, claim)
         return new_claim
     elif decision == "RERANK_OR_REPHRASE":
         log(f"♻️ Reranking context and rephrasing claim: {claim}")
-        new_claim = rerank_or_rephrase(question, claim, retrieved_docs_text)
+        new_claim = rerank_or_rephrase(embedder, question, claim, retrieved_docs_text)
         return new_claim
     else:
         log(f"❓ Manual review needed for claim: {claim} with eval {claim_eval}")
         return None
 
-
-
-def prompt_locked_loop(question, eval, max_retry=3):
+def prompt_locked_loop(embedder: FAISSEmbedder, question, eval, max_retry=3):
     from bs import detect_bs
     from confidence import check_confidence
 
@@ -303,7 +293,7 @@ def prompt_locked_loop(question, eval, max_retry=3):
             decision = pll(eval_label, confidence_label)
             log(f"📌 Claim: {claim}\nDecision: {decision}")
 
-            new_claim = handle_decision(decision, claim, claim_eval, question)
+            new_claim = handle_decision(embedder, decision, claim, claim_eval, question)
 
             if new_claim is None:
                 log(f"🗑️ Discarding claim: {claim}")
@@ -330,7 +320,7 @@ def prompt_locked_loop(question, eval, max_retry=3):
 
             for claim in updated_claims:
                 supporting_docs = embedder.search_database(claim, top_k=3)
-                label = detect_bs(claim, [doc["text"] for doc in supporting_docs])
+                label = detect_bs(embedder, claim, [doc["text"] for doc in supporting_docs])
                 confidence = check_confidence(claim, label, supporting_docs)
 
                 # Store re-evaluation result

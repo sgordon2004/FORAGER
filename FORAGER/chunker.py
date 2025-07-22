@@ -92,6 +92,7 @@ def main():
     # Directory from which the JSONs are coming
     base_dir = Path(__file__).resolve().parent.parent / "FORAGER_corpus" / "heterogenous_integration" / "json"
     all_docs = list(base_dir.glob("*.json"))
+    print(f"[DEBUG] Found {len(all_docs)} JSON files to chunk.")
     # Create the output directory to store doc chunks
     output_path = Path("FORAGER_corpus/heterogenous_integration/chunks/chunks.jsonl")
     output_path.parent.mkdir(parents=True, exist_ok=True)

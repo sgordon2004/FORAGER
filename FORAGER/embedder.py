@@ -38,22 +38,49 @@ import json
 # model = SentenceTransformer("BAAI/bge-base-en-v1.5")
 
 # Important filepaths listed here
-base_dir = os.path.dirname(os.path.abspath(__file__))
+# This should set base_dir to be the outer FORAGER folder
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 chunk_filepath = os.path.join(base_dir, "..", "FORAGER_corpus", "heterogenous_integration", "chunks", "chunks.jsonl")
 faiss_db_filepath = os.path.join(base_dir, "vector_database", "index_db.faiss")
 
 class FAISSEmbedder:
+    """
+    This class contains all of the variables and functions for the embedder.
+    """
     def __init__(self, model_name = "BAAI/bge-base-en-v1.5", dim = 768, 
-                 chunk_path = "FORAGER_corpus/heterogenous_integration/chunks/chunks.jsonl", 
-                 faiss_db_path = "vector_database/index_db.faiss"):
+                 chunk_path = None, 
+                 index_path = None):
+        """
+        Constructor for the embedder object.
+
+        Arguments:
+            model_name (str): Embedding model to use
+            dim (int): Number of dimensions that embedded vectors have
+            chunk_filepath (str): File path to chunk file
+            faiss_db_filepath (str): File path to FAISS database
+        """
         self.model = SentenceTransformer(model_name)
         self.prefix = "Represent this sentence for retrieval: "
         self.dim = dim
-        self.chunk_filepath = os.path.abspath(chunk_path)
-        self.faiss_db_filepath = os.path.abspath(faiss_db_path)
+        self.chunk_filepath = os.path.abspath(chunk_path) if chunk_path else None
+        self.faiss_db_filepath = os.path.abspath(index_path) if index_path else None
         self.faiss_db = faiss.IndexFlatIP(dim)
 
+    @classmethod
+    def create_default(cls):
+        """
+        Creates the embedder object using default chunk and FAISS database paths.
+        """
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        chunk_path = os.path.join(base_dir, "FORAGER_corpus", "heterogenous_integration", "chunks", "chunks.jsonl")
+        index_path = os.path.join(base_dir, "vector_database", "index_db.faiss")
+        return cls(chunk_path=chunk_path, index_path=index_path)
+
     def initialize_faiss(self):
+        """
+        This function ensures that the chunk and FAISS database filepaths exist. It then reads in the FAISS database
+        if it exists or creates one if it doesn't.
+        """
         os.makedirs(os.path.dirname(self.chunk_filepath), exist_ok = True)
         os.makedirs(os.path.dirname(self.faiss_db_filepath), exist_ok = True)
 
@@ -65,16 +92,32 @@ class FAISSEmbedder:
             self.initial_embed_and_build()
     
     def load_chunks(self):
+        """
+        This function loads in chunks from the specified chunk file.
+
+        Returns: List of chunks contained in the chunk file
+        """
         with open(self.chunk_filepath, "r", encoding="utf-8") as f:
             return [json.loads(line) for line in f if line.strip()]
 
     def embed_chunks(self, chunks):
+        """
+        Takes one chunk at a time from the new additions to chunks.jsonl file (or other inputted file) and embeds it using BGE model
+
+        Args: 
+            chunks (list): List of chunks to embed
+        Returns:
+            embeddings (ndarray): A 2-D numpy array of vectors with each vector representing a chunk
+        """
         texts = [self.prefix + chunk["text"] for chunk in chunks]
         embeddings = self.model.encode(texts, normalize_embeddings=True, batch_size=32, show_progress_bar=True).astype("float32")
         print(f"\033[1;92m✅ {len(chunks)} chunks successfully embedded!\033[0m\n")
         return embeddings
 
     def initial_embed_and_build(self):
+        """
+        This function sets up the FAISS database for the first time.
+        """
         chunks = self.load_chunks()
         embeddings = self.embed_chunks(chunks)
         self.faiss_db.add(embeddings)
@@ -82,10 +125,29 @@ class FAISSEmbedder:
         print(f"\033[1;92m✅ FAISS database created and stored!\033[0m\n")
 
     def embed_text(self, text):
+        """
+        Embeds a single query or sentence using the BGE model.
+
+        Arguments:
+            text (str): Text to embed
+        Returns:
+            embedding (vector): Vector representing the text
+        """
         embedding = self.model.encode([self.prefix + text], normalize_embeddings=True).astype("float32")[0]
         return embedding
 
     def search_database(self, query, top_k=3):
+        """
+        Function to search the FAISS database for the closest k chunks to the query (based on dot product).
+        
+        Args:
+            query: User query or LLM response
+            top_k: Number of closest vectors to return
+
+        Returns:
+            results (list): A list of dictionaries. Each dictionary gives the rank, source, order, score, and 
+            text of each retrieved chunk.
+        """
         chunks = self.load_chunks()
         query_vec = self.embed_text(query).reshape(1, -1)
         top_k = min(top_k, self.faiss_db.ntotal)
@@ -106,6 +168,10 @@ class FAISSEmbedder:
         return results
 
     def add_new_chunks(self):
+        """
+        This function checks if more chunks have been added to chunks.jsonl. If so, the chunks are embedded and added
+        to the FAISS database.
+        """
         chunks = self.load_chunks()
         current_total = self.faiss_db.ntotal
         if len(chunks) > current_total:
@@ -117,16 +183,22 @@ class FAISSEmbedder:
             print("\033[1;92m✅ FAISS database is up to date.\033[0m\n")
 
     def clear_database(self):
+        """
+        Resets the FAISS database, if needed.
+        """
         self.faiss_db.reset()
         print("\033[1;91mFAISS database cleared.\033[0m\n")
 
     def print_vector(self, index):
+        """
+        Prints vector at a certain location in the FAISS database, if needed.
+        """
         vec = self.faiss_db.reconstruct(index)
         print(f"Vector at index {index}:\n{vec}\n")
 
     def cosine_similarity(vec1, vec2):
         """
-        Compute cosine similarity between two vectors.
+        Computes cosine similarity between two vectors.
         """
         dot_product = np.dot(vec1, vec2)
         norm_vec1 = np.linalg.norm(vec1)
@@ -134,13 +206,20 @@ class FAISSEmbedder:
         return dot_product / (norm_vec1 * norm_vec2)
 
     def get_faiss_db(self):
+        """
+        Returns the FAISS database for use in other files.
+        """
         return self.faiss_db
 
 # For testing
 if __name__ == "__main__":
-    embedder = FAISSEmbedder()
-    embedder.initialize_faiss()
-    embedder.add_new_chunks()
+    print(base_dir)
+    # embedder = FAISSEmbedder()
+    # embedder.initialize_faiss()
+    # embedder.add_new_chunks()
+
+
+# Old version of embedder is below
 
 # def load_chunks(filepath):
 #     with open(filepath, "r", encoding="utf-8") as f:
@@ -380,9 +459,7 @@ if __name__ == "__main__":
 # def get_FAISS_db():
     # global faiss_db
     # return faiss_db
-#----------------------------#
-# Execution                  #
-#----------------------------#
+
 
 
 

@@ -7,13 +7,13 @@ from FORAGER.bs import detect_bs
 from FORAGER.embedder import FAISSEmbedder
 from FORAGER.runner import get_llm_response
 from FORAGER.confidence import check_confidence
-from FORAGER.pll_controller import prompt_locked_loop
+# from FORAGER.pll_controller import prompt_locked_loop
 print("✅ test_pipeline.py successfully imported")
 
 # Uncomment if running directly
 # initialize_faiss()
 
-def full_forager_pipeline(question: str, k: int = 3):
+def full_forager_pipeline(embedder: FAISSEmbedder, question: str, k: int = 3):
     """
     Runs the full FORAGER pipeline to answer a user question with traceable, grounded context.
 
@@ -51,10 +51,6 @@ def full_forager_pipeline(question: str, k: int = 3):
         }
     """
     print("✅ Starting full_forager_pipeline()...")
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    chunk_filepath = os.path.join(base_dir, "..", "FORAGER_corpus", "heterogenous_integration", "chunks", "chunks.jsonl")
-    faiss_db_filepath = os.path.join(base_dir, "vector_database", "index_db.faiss")
-    embedder = FAISSEmbedder(chunk_path = chunk_filepath, faiss_db_path = faiss_db_filepath)
     embedder.initialize_faiss()
     print("✅ FAISS initialized in pipeline scope.")
 
@@ -72,7 +68,19 @@ def full_forager_pipeline(question: str, k: int = 3):
     
     # Step 2: Feed question and documents to LLM
     prompt = f"""
-    You are answering the following question using ONLY the provided context. DO NOT use any outside knowledge at all.
+    You are answering the following question using ONLY the provided context. 
+
+    Guidelines:
+    - Use the terminology and phrasing directly from the context.
+    - Do NOT generalize to vague or abstract terms (e.g., do NOT replace "components" or "technologies" with "functions").
+    - Do NOT mention the existence of a context or use phrases like "according to the context" or "according to the documents".
+    - Do NOT mention source IDs, authors, document numbers, or citations.
+    - Tailor your answer to the type of question being asked:
+        - If the question asks for a **definition**, give a full and accurate definition using exact terms from the context.
+        - If the question asks for an **explanation**, provide a clear explanation reflecting the context phrasing.
+        - If the question asks for **examples, comparisons, or lists**, answer naturally while strictly staying within the context.
+        - If the question is **unanswerable from the context**, respond with: 
+        "This question is unrelated to the documents in the knowledge base and cannot be answered by them."
 
     Question: {question}
 
@@ -87,25 +95,32 @@ def full_forager_pipeline(question: str, k: int = 3):
     answer = get_llm_response(prompt)
     # print(f"✅ LLM Answer:\n{answer}")
 
-    # Step 4: Extract claims from LLM answer
-    claims = extract_atomic_claims_llm(answer) # a list of all the atomic claims made by the LLM
-
-    # Step 5: Run all claims through BS detector
-    eval = {} # dict to map claim to eval_label
-    for claim in claims:
-        label = detect_bs(claim, supporting_docs=retrieved_docs_text)
-        eval[claim] = label
-
-    # Run confidence checker
-    updated_eval = {}
-    for claim, label in eval.items():
-        confidence = check_confidence(claim, label, retrieved_docs)
-        updated_eval[claim] = {"label": label, "confidence": confidence, "supporting_chunks": retrieved_docs}
+    # Skip the remainder of the pipeline if the question is irrelevant.
+    if (answer == "This question is unrelated to the documents in the knowledge base and cannot be answered by them."):
+        eval = {"Unsupported", 0, ""}
+        return answer, eval
     
-    eval = updated_eval
-    print(eval)
+    # If the answer is relevant, perform the rest of the pipeline
+    else:
+        # Step 4: Extract claims from LLM answer
+        claims = extract_atomic_claims_llm(answer) # a list of all the atomic claims made by the LLM
 
-    return answer, eval
+        # Step 5: Run all claims through BS detector
+        eval = {} # dict to map claim to eval_label
+        for claim in claims:
+            label = detect_bs(embedder, claim, supporting_docs=retrieved_docs_text)
+            eval[claim] = label
+
+        # Run confidence checker
+        updated_eval = {}
+        for claim, label in eval.items():
+            confidence = check_confidence(claim, label, retrieved_docs)
+            updated_eval[claim] = {"label": label, "confidence": confidence, "supporting_chunks": retrieved_docs}
+        
+        eval = updated_eval
+        print(eval)
+
+        return answer, eval
 
 
 # dummy_eval = [

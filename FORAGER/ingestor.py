@@ -66,9 +66,9 @@ def dump_pdf_text(filename, text):
         text (str): The extracted text to be saved.
     """
     filepath = pdf_text_dir / f"{Path(filename).stem}.txt"
-    with open(filepath, 'w', encoding="utf-8") as f:
-        f.write(text)
-    print(f"Extracted text saved to {filepath}")
+    # with open(filepath, 'w', encoding="utf-8") as f:
+    #     f.write(text)
+    # print(f"Extracted text saved to {filepath}")
 
     cleaned = "\n".join(line.strip() for line in text.splitlines() if line.strip())
 
