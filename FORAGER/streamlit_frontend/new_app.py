@@ -84,7 +84,7 @@ with tab_chat:
     pdf_dir = base_dir / "pdf"
 
     # Create the embedder object - this should be the only embedder object needed
-    from FORAGER.embedder import FAISSEmbedder
+    from embedder import FAISSEmbedder
     embedder = FAISSEmbedder.create_default()
     
     # Begin document processing when button is clicked
