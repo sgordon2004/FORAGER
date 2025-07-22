@@ -10,8 +10,10 @@ pdf_text_dir.mkdir(exist_ok=True)
 def extract_pdf(filename):
     file = pdf_dir / filename
     output_file = pdf_text_dir
+    file_name_with_ext = file.name
+    file_stem = Path(file_name_with_ext).stem # Name without extension
     doc = pymupdf.open(file)
-    with open(output_file / f"{filename}.txt", "w", encoding="utf-8") as f:
+    with open(output_file / f"{file_stem}.txt", "w", encoding="utf-8") as f:
         for page_num, page in enumerate(doc):
             page_height = page.rect.height
             page_width = page.rect.width
@@ -19,7 +21,7 @@ def extract_pdf(filename):
             if not blocks:
                 continue
             blocks = sorted(blocks, key=lambda b: (b[1], b[0]))
-            f.write(f"\n--- Page {page_num + 1} ---\n\n")
+            # f.write(f"\n--- Page {page_num + 1} ---\n\n")
             for block in blocks:
                 x0, y0, x1, y1, text, block_no, block_type, *_ = block
                 text_lower = text.lower().strip()
@@ -31,8 +33,8 @@ def extract_pdf(filename):
                     continue
                 f.write(text.strip() + "\n")
 
+    return text
+
 def extract_all_pdfs():
     for file_path in pdf_dir.glob("*.pdf"):
         extract_pdf(file_path.name)
-
-extract_all_pdfs()
