@@ -119,8 +119,7 @@ def rerank_or_rephrase(embedder: FAISSEmbedder, question, claim, retrieved_docs_
     claim_embedding = embedder.embed_text(claim)
 
     # Step 2: Embed each retrieved chunk
-    chunk_embeddings = embedder.embed_chunks(retrieved_docs_text)  # returns List[np.array]
-
+    chunk_embeddings = embedder.embed_chunks([{"text": t} for t in retrieved_docs_text])
     # Step 3: Compute similarities
     similarities = [embedder.cosine_similarity(claim_embedding, chunk_emb) for chunk_emb in chunk_embeddings]
 
@@ -206,8 +205,13 @@ def pll(eval_label, confidence_label):
             log("✅ Confident but unsupported: Possibly correct but unverifiable.")
             return "RETRIEVE_MORE_OR_REPHRASE"
         else:
-            log("❌ Low-confidence unsupported: Discarding claim.")
-            return "DISCARD"
+            # --- OLD LOGIC ---
+            # log("❌ Low-confidence unsupported: Discarding claim.")
+            # return "DISCARD"
+
+            # --- NEW LOGIC ---
+            log("❌ Low-confidence and unsupported: Rephrasing prompt")
+            return "RERANK_OR_REPHRASE"
         
     elif eval_label == "Contradicted":
         log("🚨 Contradicted by evidence: Blocking or forcing strict grounding.")
