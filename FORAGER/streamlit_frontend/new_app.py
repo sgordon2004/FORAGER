@@ -102,7 +102,6 @@ with tab_chat:
                     # Extract text from PDF
                     from extractor import extract_pdf
                     from ingestor import dump_pdf_text
-                    print(f"Filename: {file.name}")
                     text = extract_pdf(file.name)
                     # Save text to pdf_text + create .json metadata file
                     dump_pdf_text(file.name, text)

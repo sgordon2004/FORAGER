@@ -13,6 +13,8 @@ def extract_pdf(filename):
     file_name_with_ext = file.name
     file_stem = Path(file_name_with_ext).stem # Name without extension
     doc = pymupdf.open(file)
+
+    full_text = ""
     with open(output_file / f"{file_stem}.txt", "w", encoding="utf-8") as f:
         for page_num, page in enumerate(doc):
             page_height = page.rect.height
@@ -31,9 +33,11 @@ def extract_pdf(filename):
                     continue
                 if text_lower.startswith(("fig.", "figure", "table", "downloaded from")):
                     continue
-                f.write(text.strip() + "\n")
+                cleaned_text = text.strip()
+                f.write(cleaned_text + "\n")
+                full_text += cleaned_text + "\n"
 
-    return text
+    return full_text
 
 def extract_all_pdfs():
     for file_path in pdf_dir.glob("*.pdf"):
