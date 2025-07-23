@@ -111,7 +111,7 @@ class FAISSEmbedder:
             embeddings (ndarray): A 2-D numpy array of vectors with each vector representing a chunk
         """
 
-        texts = [self.prefix + chunk["text"] for chunk in chunks]
+        texts = [self.prefix + chunk if isinstance(chunk, str) else chunk["text"] for chunk in chunks]
         embeddings = self.model.encode(texts, normalize_embeddings=True, batch_size=32, show_progress_bar=True).astype("float32")
         print(f"\033[1;92m✅ {len(chunks)} chunks successfully embedded!\033[0m\n")
         return embeddings
