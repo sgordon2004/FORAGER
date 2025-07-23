@@ -2,66 +2,23 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from FORAGER.runner import get_llm_response, regenerate_with_strict_grounding, regenerate_or_retrieve_more, lock_answer
-from FORAGER.evaluator import evaluate
+from FORAGER.runner import get_llm_response
 from FORAGER.embedder import FAISSEmbedder
+from typing import List, Tuple
 
 def log(message):
     print(f"[PLL_LOG] {message}")
-
-
-def run_pll_on_prompt(task_prompt,question_id="Q1", max_attempts=5, threshold=0.9):
-    log(f"Starting PLL Controller with prompt: {task_prompt}")
-    history = []
-    for atttempt in range(max_attempts):
-        candidate = get_llm_response(task_prompt)
-        eval_result = evaluate(candidate)
-
-        score = eval_result.get("score", 0)
-        label = eval_result.get("label", "unkown")
-        eval_label = eval_result.get("eval_label", "unknown")
-        confidence_label = eval_result.get("confidence", "unknown")
-        rationale = eval_result.get("rationale", None)
-
-        history.append({
-            "candidate": candidate,
-            "score": score,
-            "label": label,
-            "eval_label": eval_label,
-            "confidence_label": confidence_label
-        })
-
-        if eval_label == "Unsupported":
-            if confidence_label == "Medium":
-                log("Answer is confident but unsupported - likely true but unverifiable.")
-                candidate = regenerate_or_retrieve_more()
-            else:
-                log("Answer is low-confidence and unsupported - discard.")
-        elif eval_label == "Contradicted":
-            log("Contradiction with evidence - block or alert.")
-            candidate = regenerate_with_strict_grounding()
-        elif eval_label == "Supported":
-            if confidence_label == "High Confidence":
-                lock_answer(
-                    question_id=question_id,
-                    final_answer = candidate,
-                    confidence_score = score,
-                    rationale = rationale
-                )
-                return {"status": "locked", "candidate": candidate, "history": history}
-
-            else: 
-                log("Weak semantic match despite support - rephrase or rerank.")
-        
-        if score >= threshold and label == "correct":
-            return {"status": "success", "candidate": candidate, "history": history}
-
-    best_guess = max(history, key=lambda x: x["score"])
-    return {"status": "fail", "best_guess": best_guess, "history": history}
     
-def regenerate_with_strict_grounding(question, claim, eval_label, confidence_label, retrieved_docs_text):
+def regenerate_with_strict_grounding(question, claim, eval_label, confidence_label, retrieved_docs: List[str]):
     """
-    Regenerates the answer or sub-answer based on a single failed claim and source grounding.
+    Regenerates a revised version of a calim using strict grounding from provided context.
+
+    This function prompts an LLM to rewrite the claim only if it is fully supported by the
+    retrieved documents. It enforces tight constraints to avoid hallucination or speculative
+    phrasing, ensuring the revised claim is short, factual, and faithful to the source material.
+
+    If the claim cannot be supported or is contradicted by the evidence, a standardized rejection
+    message is returned.
 
     Args:
         question (str): Original user question.
@@ -72,90 +29,128 @@ def regenerate_with_strict_grounding(question, claim, eval_label, confidence_lab
         retrieved_docs_text (List[str]): Retrieved grounding context chunks.
 
     Returns:
-        str: A regenerated answer focused on the claim with strict grounding.
+        str: A regenerated version of the claim grounded strictly in the provided context,
+            or a rejection message if it cannot be supported.
     """
 
+    # System Prompt - Defines LLM behavior and expected return format
     prompt = f"""
-You are evaluating a specific claim made about the following question:
+                You are evaluating a specific claim made about the following question:
 
-QUESTION:
-{question}
+                QUESTION:
+                {question}
 
-CLAIM TO EVALUATE:
-"{claim}"
+                CLAIM TO EVALUATE:
+                "{claim}"
 
-EVALUATION LABEL: {eval_label}
-CONFIDENCE LEVEL: {confidence_label}
+                EVALUATION LABEL: {eval_label}
+                CONFIDENCE LEVEL: {confidence_label}
 
-AVAILABLE CONTEXT:
-{chr(10).join(retrieved_docs_text)}
+                AVAILABLE CONTEXT:
+                {chr(10).join(retrieved_docs_text)}
 
-INSTRUCTIONS:
-- Rewrite the claim ONLY if it can be fully supported by the provided context, ensuring the claim is as short and concise as possible while preserving meaning:
-- Focus strictly on the central fact.
-- Do NOT restate examples or explanations from the context.
-- Avoid phrases like “this enables” or “which allows”; directly state the key fact.
-- If the context contradicts the claim, explain the contradiction briefly.
-- If the context does not support the claim, respond with: "❌ The claim is not supported by the provided context and should be discarded."
-- Avoid adding unnecessary qualifiers, explanations, or details.
-- Do NOT use any outside knowledge or make up information.
-- Do NOT include any text in your response other than the revised claim or rejection message. NO MESSAGES, NOTES, OR EXPLANATIONS.
+                INSTRUCTIONS:
+                - Rewrite the claim ONLY if it can be fully supported by the provided context, ensuring the claim is as short and concise as possible while preserving meaning:
+                - Focus strictly on the central fact.
+                - Do NOT restate examples or explanations from the context.
+                - Avoid phrases like “this enables” or “which allows”; directly state the key fact.
+                - If the context contradicts the claim, explain the contradiction briefly.
+                - If the context does not support the claim, respond with: "❌ The claim is not supported by the provided context and should be discarded."
+                - Avoid adding unnecessary qualifiers, explanations, or details.
+                - Do NOT use any outside knowledge or make up information.
+                - Do NOT include any text in your response other than the revised claim or rejection message. NO MESSAGES, NOTES, OR EXPLANATIONS.
 
-REVISED CLAIM (or appropriate rejection message):
-"""
+                REVISED CLAIM (or appropriate rejection message):
+            """
 
     print(f"🔄 Regenerating claim with strict grounding:\nClaim: {claim}\nEval: {eval_label}, Confidence: {confidence_label}")
     regenerated_answer = get_llm_response(prompt)
-    print(f"✅ Regenerated Answer for Claim:\n{regenerated_answer}")
+    print(f"✅ Regenerated Claim :\n{regenerated_answer}")
 
     return regenerated_answer
 
-def rerank_or_rephrase(embedder: FAISSEmbedder, question, claim, retrieved_docs_text, top_n=3):
+def rerank_or_rephrase(embedder: FAISSEmbedder, question, claim, retrieved_docs: List[dict], top_n=3):
     """
-    Rerank retrieved chunks based on claim similarity and rephrase claim accordingly.
+    Reranks retrieved chunks based on their semantic similarity to the claim and rephrases
+    the claim using the most relevant context.
+
+    This function enhances the grounding of a claim by first computing the similarity
+    between the claim and each retrieved context chunk, selecting the top-N most relevant chunks,
+    and prompting an LLM to rephrase the claim strictly based on that context.
+
+    Args:
+        embedder (FAISSEmbedder): An embedder instance used to compute embeddings and similarity between claim and context.
+        question (str): The original question asked by the user from which the claim was derived.
+        claim (str): The atomic claim to be rephrased.
+        retrieved_docs (List[dict]): A list of dictionaries. Each dictionary key is a chunk and values are scores, id, etc.
+        top_n (int): The number of most relevant chunks to retrieve. Defaults to 3.
+
+    Returns:
+        str: A rephrased version of the claim grounded in the top-ranked context,
+            or a rejection message if the claim cannot be improved.
+        list: A list of strings storing the newly ranked chunks.
     """
     log(f"🔎 Reranking chunks based on claim-to-chunk similarity for claim: {claim}")
-    
-    # Step 1: Embed claim
+
+    # Step 1: Embed original claim
     claim_embedding = embedder.embed_text(claim)
 
     # Step 2: Embed each retrieved chunk
-    chunk_embeddings = embedder.embed_chunks([{"text": t} for t in retrieved_docs_text])
-    # Step 3: Compute similarities
+    chunk_embeddings = embedder.embed_chunks(retrieved_docs)
+
+    # Step 3: Compute claim-chunk similarities
     similarities = [embedder.cosine_similarity(claim_embedding, chunk_emb) for chunk_emb in chunk_embeddings]
 
     # Step 4: Sort chunks by similarity
-    ranked_chunks = [doc for _, doc in sorted(zip(similarities, retrieved_docs_text), key=lambda x: x[0], reverse=True)]
+    ranked_chunks = [doc for _, doc in sorted(zip(similarities, retrieved_docs), key=lambda x: x[0], reverse=True)]
 
     # Step 5: Select top-N chunks
     top_chunks = ranked_chunks[:top_n]
 
     # Step 6: Rephrase claim using top-ranked context
+    # System Prompt - Defines LLM behavior and expected return format
     prompt = f"""
-QUESTION: {question}
+                QUESTION: {question}
 
-CLAIM TO IMPROVE: "{claim}"
+                CLAIM TO IMPROVE: "{claim}"
 
-TOP CONTEXT:
-{chr(10).join(top_chunks)}
+                TOP CONTEXT:
+                {chr(10).join(top_chunks)}
 
-INSTRUCTIONS:
-- Rewrite the claim to more directly reflect the context, while keeping it as short and concise as possible.
-- Avoid repeating phrases from the context verbatim.
-- Do NOT use any outside knowledge or make up information.
-- If the claim cannot be improved, respond: "❌ Claim should be discarded."
-- Do NOT include any text in your response other than the revised claim or rejection message. NO MESSAGES, NOTES, OR EXPLANATIONS.
+                INSTRUCTIONS:
+                - Rewrite the claim to more directly reflect the context, while keeping it as short and concise as possible.
+                - Avoid repeating phrases from the context verbatim.
+                - Do NOT use any outside knowledge or make up information.
+                - If the claim cannot be improved, respond: "❌ Claim should be discarded."
+                - Do NOT include any text in your response other than the revised claim or rejection message. NO MESSAGES, NOTES, OR EXPLANATIONS.
 
-REPHRASED CLAIM:
-"""
+                REPHRASED CLAIM:
+            """
     rephrased_claim = get_llm_response(prompt)
     log(f"✅ Rephrased Claim:\n{rephrased_claim}")
 
-    return rephrased_claim
+    return rephrased_claim, top_chunks
 
-def retrieve_more_or_rephrase(embedder: FAISSEmbedder, question, claim, k=5):
+def retrieve_more_or_rephrase(embedder: FAISSEmbedder, question, claim, k=5) -> Tuple[str, List[str]]:
     """
-    Expands retrieval based on claim and optionally rephrases the claim after refreshing context.
+    Retrieves additional context based on the atomic claim and rephrases the claim using
+    the newly retrieved grounding.
+    
+    This function reformulates the search query to emphasize the claim itself, retrieves
+    fresh supporting context from the vector database, and prompts and LLM to revise the claim
+    strictly based on that context. It is used when the original evidence is insufficient
+    to validate or rephrase the claim confidently.
+
+    Args:
+        embedder (FAISSEmbedder): An embedder instance used as the semantic search engine for context retrieval.
+        question (str): The original user question that led to the atomic claim.
+        claim (str): The atomic claim to be re-evaluated and rephrased.
+        k (int): The number of top documents to retrieve using the updated query. Defaults to 5.
+
+    Returns:
+        str: A revised claim grounded in the newly retrieved context, or a rejection message 
+            if the claim remains unsupported.
+        list: A list of the newly retrieved chunks.
     """
     log(f"🔎 Expanding retrieval focused on claim: {claim}")
 
@@ -168,36 +163,47 @@ def retrieve_more_or_rephrase(embedder: FAISSEmbedder, question, claim, k=5):
 
     # Step 3: Rephrase claim using expanded context
     prompt = f"""
-QUESTION: {question}
+                QUESTION: {question}
 
-CLAIM TO IMPROVE: "{claim}"
+                CLAIM TO IMPROVE: "{claim}"
 
-EXPANDED CONTEXT:
-{chr(10).join(expanded_context)}
+                EXPANDED CONTEXT:
+                {chr(10).join(chunk for chunk in top_chunks)}
 
-INSTRUCTIONS:
-- Rewrite the claim to be directly grounded in this new context.
-- Only use the provided context.
-- If the context does not support the claim, respond: "❌ Claim is unsupported and should be discarded."
-- Do NOT include any text in your response other than the revised claim or rejection message. NO MESSAGES, NOTES, OR EXPLANATIONS.
+                INSTRUCTIONS:
+                - Rewrite the claim to be directly grounded in this new context.
+                - Only use the provided context.
+                - If the context does not support the claim, respond: "❌ Claim is unsupported and should be discarded."
+                - Do NOT include any text in your response other than the revised claim or rejection message. NO MESSAGES, NOTES, OR EXPLANATIONS.
 
-REPHRASED CLAIM:
-"""
+                REPHRASED CLAIM:
+            """
+    
     improved_claim = get_llm_response(prompt)
     log(f"✅ Rephrased Claim after expanded retrieval:\n{improved_claim}")
 
-    return improved_claim
+    return improved_claim, expanded_context
 
 def pll(eval_label, confidence_label):
     """
-    Makes a decision for a single claim based on its evaluation and confidence.
+    Determines the appropriate Prompt Locked Loop (PLL) action for a given claim based on its
+    evaluation label and confidence level.
+
+    This function acts as the decision policy layer of the PLL pipeline, using predefined rules
+    to route each claim through an appropriate refinement path (e.g., reranking, regeneration, discard).
 
     Args:
-        eval_label (str): The evaluation label assigned to the claim by the BS detector.
-        confidence_label (str): The confidence level assigned to the claim by the confidence checker.
+        eval_label (str): The evaluation label assigned to the claim by the BS detector (e.g., "Supported", "Unsupported", "Contradicted").
+        confidence_label (str): The confidence level assigned to the claim by the confidence checker (e.g., "High", "Medium", "Low", "Zero").
     
     Return:
-        str: The PLL path the claim should follow.
+        str: The decision path to apply to the claim. One of:
+            - "LOCK": Claim is accepted as valid and does not require changes.
+            - "DISCARD": Claim is rejected and removed from further consideration.
+            - "RERANK_OR_REPHRASE": Claim should be rephrased using existing context.
+            - "RETRIEVE_MORE_OR_REPHRASE": Claim should trigger retrieval of additional context, then be rephrased.
+            - "STRICT_REGENERATION": Claim should be regenerated with stricter grounding constraints.
+            - "REVIEW_MANUALLY": The system cannot determine a clear decision path; requires manual review.
     """
     if eval_label == "Unsupported":
         if confidence_label in ["Medium", "High"]:
@@ -229,10 +235,30 @@ def pll(eval_label, confidence_label):
         return "REVIEW_MANUALLY"
 
 def handle_decision(embedder: FAISSEmbedder, decision, claim, claim_eval, question):
+    """
+    Handles a PLL decision for a given claim by executing the appropriate corrective action,
+    such as reranking, rephrasing, or strict regeneration.
+
+    This function serves as a dispatch mechanism, applying the specified `decision` to the claim
+    using the appropriate transformation strategy. It uses retrieved context to guide rephrasing
+    or regeneration and returns the updated version of the claim, if applicable.
+
+    Args:
+        embedder (FAISSEmbedder): An embedder instance used for chunk retrieval and similarity computation.
+        decision (str): The decision strategy returned by the PLL logic (e.g., "LOCK", "DISCARD", "STRICT_REGENERATION").
+        claim (str): The atomic claim to be acted on.
+        claim_eval (dict): The evaluation result for the claim, including 'label', 'confidence', and optionally 'supporting_chunks'.
+        question (str): The original user question associated with the claim.
+
+    Returns:
+        str or None: A revised claim string if the claim is rephrased or regenerated.
+                     Returns None if the claim is locked, discarded, or marked for manual review.
+    """
     eval_label = claim_eval["label"]
     confidence = claim_eval["confidence"]
 
-    retrieved_docs_text = [doc["text"] for doc in claim_eval.get("supporting_chunks", [])]
+    retrieved_docs = claim_eval
+    retrieved_docs_text = claim_eval["supporting_chunks"]
 
     if decision == "LOCK":
         log(f"🔒 Locking claim: {claim}")
@@ -243,28 +269,53 @@ def handle_decision(embedder: FAISSEmbedder, decision, claim, claim_eval, questi
     elif decision == "STRICT_REGENERATION":
         log(f"🔄 Strictly regenerating claim: {claim}")
         new_claim = regenerate_with_strict_grounding(question, claim, eval_label, confidence, retrieved_docs_text)
-        return new_claim
+        return new_claim, retrieved_docs_text
     elif decision == "RETRIEVE_MORE_OR_REPHRASE":
         log(f"♻️ Rephrasing or retrieving more for claim: {claim}")
-        new_claim = retrieve_more_or_rephrase(embedder, question, claim)
-        return new_claim
+        new_claim, used_chunks = retrieve_more_or_rephrase(embedder, question, claim)
+        return new_claim, used_chunks
     elif decision == "RERANK_OR_REPHRASE":
         log(f"♻️ Reranking context and rephrasing claim: {claim}")
-        new_claim = rerank_or_rephrase(embedder, question, claim, retrieved_docs_text)
-        return new_claim
+        new_claim, used_chunks = rerank_or_rephrase(embedder, question, claim, retrieved_docs)
+        return new_claim, used_chunks
     else:
         log(f"❓ Manual review needed for claim: {claim} with eval {claim_eval}")
         return None
 
 def prompt_locked_loop(embedder: FAISSEmbedder, question, eval, max_retry=3):
+    """
+    Runs the Prompt Locked Loop (PLL) on a set of evaluated atomic claims, iteratively
+    refining and re-evaluating them to improve grounding and reliability.
+
+    This function filters out high-confidence supported claims entering the loop,
+    then processes the rest through multiple PLL rounds. Each round evaluates unsupported
+    or contradicted claims using actions such as rephrasing, reranking context, or strict
+    regeneration based on their evaluation and confidence. Claims are re-evaluated after each
+    round. Claims that become high-confidence and supported after re-evaluation are locked
+    and preserved.
+
+    Args:
+        embedder (FAISSEmbedder): An embedder instance used for semantic search and similarity operations.
+        question (str): The original user question the claims are generated for.
+        eval (dict): A dictionary where keys are atomic claims and values are their evaluation results,
+            including 'label', 'confidence', and optionally 'supporting_chunks'.
+        max_retry (int): The maximum number of PLL iterations to perform. Defaults to 3.
+
+    Returns:
+        tuple[list[dict], list[dict]]:
+            - A list of dictionaries loging each PLL round, including claim decisions and reasoning.
+            - A list of final locked claims that are supported with high confidence, each with its metadata.
+    """
     from bs import detect_bs
     from confidence import check_confidence
 
-    # List for final claims that survive PLL
+    # Create a list for final claims (Supported + High Confidence)
     final_locked_claims = []
-    # Initialize log
+
+    # Initialize a Prompt Locked Loop Log to store the details of all the round's results
     pll_logs = []
-    # Log the initial claims before PLL rounds start
+
+    # Log the initial claims and evaluation before PLL rounds start
     initial_log = {
         "pll_round": 0,
         "claims": [
@@ -281,21 +332,29 @@ def prompt_locked_loop(embedder: FAISSEmbedder, question, eval, max_retry=3):
     pll_logs.append(initial_log)
     log("✅ Logged initial claims before starting PLL rounds.")
 
-    pll_round = 1
+    # --- VERBOSITY FILTER ---
+        # Compares the length of rephrased claims to the length of the original,
+        # unmodified claim. If the rephrased claim ever becomes more than 2.5 times longer than
+        # its original, it is discarded.
 
     # Store the original claim lengths for divergence detection
     original_claim_lengths = {claim: len(claim.split()) for claim in eval.keys()}
+    # --------------------------------
     
+    # Initiate a Round Log to store the PLL details for the pre-PLL evaluation round
     round_log = {"pll_round": "Pre-PLL Lock", "claims": []}
-    # Lock any Supporteed + High Connfidence Claims before PLL begins
+
+    # Step 1: Pre-PLL Check
+        # - Check if any LLM claims are Supported + High confidence immediately after initial generation
+        # - If so, lock them and remove them from further PLL evaluation
     for claim, claim_eval in eval.items():
         label = claim_eval["label"]
         confidence = claim_eval["confidence"]
         supporting_docs = claim_eval.get("supporting_chunks", [])
 
-        # Locking check
         if label == "Supported" and confidence == "High":
             log(f"✅ Locking claim before PLL: {claim}")
+            # Update the round log to include these locked claims
             round_log["claims"].append({
                 "claim": claim,
                 "eval_label": label,
@@ -303,6 +362,7 @@ def prompt_locked_loop(embedder: FAISSEmbedder, question, eval, max_retry=3):
                 "pll_decision": "Locked before PLL",
                 "reason": "Claim auto-locked with high confidence and support."
             })
+            # Update the list of locked claims
             final_locked_claims.append({
                         "claim": claim,
                         "label": label,
@@ -311,16 +371,25 @@ def prompt_locked_loop(embedder: FAISSEmbedder, question, eval, max_retry=3):
             })
             # Skip further processing of this claim
             continue
+
+    # Append this pre-round log to the PLL Log
     pll_logs.append(round_log)
-    # Remove pre-locked claims from eval to avoid reprocessing
+
+    # Remove any immediately-locked claims to avoid further PLL processing
     eval = {
         claim: claim_eval
         for claim, claim_eval in eval.items()
         if not (claim_eval["label"] == "Supported" and claim_eval["confidence"] == "High")
     }
 
+    # Step 2: Initiate the Prompt Locked Loop
+    # Variable to track PLL rounds
+    pll_round = 1
+
     while pll_round <= max_retry:
         log(f"🔁 Starting PLL round {pll_round}")
+
+        # A list to keep track of rephrased claims
         updated_claims = []
 
         # Step 1: Decide PLL action for each claim
@@ -331,35 +400,38 @@ def prompt_locked_loop(embedder: FAISSEmbedder, question, eval, max_retry=3):
             decision = pll(eval_label, confidence_label)
             log(f"📌 Claim: {claim}\nDecision: {decision}")
 
-            new_claim = handle_decision(embedder, decision, claim, claim_eval, question)
+            # Apply the decision and store the rephrased claim (or None or standardized message if the claim could not be supported)
+            new_claim, used_chunks = handle_decision(embedder, decision, claim, claim_eval, question)
 
+            # new_claim will be None if the claim could not be supported
             if new_claim is None:
                 log(f"🗑️ Discarding claim: {claim}")
                 continue
 
-            # Length check
+            # VERBOSITY CHECK
             new_claim_length = len(new_claim.split())
             original_length = original_claim_lengths.get(claim, 1) # Avoid zero division
             length_growth_ratio = new_claim_length / original_length
 
-            # Discard claims that have diverged too much in length (e.g., >1.5x original length)
+            # Discard claims that have diverged too much in length (e.g., >2.5x original length)
             if length_growth_ratio > 2.5:
                     log(f"❌ Rephrased claim too verbose ({length_growth_ratio:.2f}x growth). Discarding.")
                     continue
             
-            updated_claims.append(new_claim)
+            # Save the new rephrased claim to the list of ALL rephrased claims
+            updated_claims.append((new_claim, used_chunks))
         
+        # Initalize a new Round Log to store PLL details of rounds 1+
         round_log = {"pll_round": pll_round, "claims": []}
 
-        # Step 2: Re-evaluate updated claims and log fresh evaluation results
+        # Step 3: Re-evaluate all updated claims and log fresh evaluation results
         if updated_claims:
             log("🔄 Re-evaluating updated claims...")
             new_eval = {}
 
-            for claim in updated_claims:
-                supporting_docs = embedder.search_database(claim, top_k=3)
-                label = detect_bs(embedder, claim, [doc["text"] for doc in supporting_docs])
-                confidence = check_confidence(claim, label, supporting_docs)
+            for claim, supporting_docs in updated_claims:
+                label = detect_bs(embedder, claim, supporting_docs)
+                confidence = check_confidence(embedder, claim, label, supporting_docs)
 
                 # Locking check
                 if label == "Supported" and confidence == "High":
@@ -412,34 +484,43 @@ def prompt_locked_loop(embedder: FAISSEmbedder, question, eval, max_retry=3):
     log("🏁 Reached max PLL rounds or no more claims to process, stopping.")
     return pll_logs, final_locked_claims
 
-
-from runner import get_llm_response
-
 def synthesize_final_answer(question: str, locked_claims: list[str]) -> str:
     """
     Uses LLM to generate a final, fluent answer based on locked claims.
-    """
-    if not locked_claims:
-        return "No claims were validated to answer the question."
+
+    Args:
+        question (str): The original question asked by the user.
+        locked_claims (list): All of the locked claims (Supported + High Confidence) returned by the LLM.
     
+    Returns:
+        str: The final well-supported answer to the user's original question, synthesized by the LLM.
+             Turns the scattered, context-less atomic claims into a complete, more human-sounding answer.
+    """
+    # Extracts the text content of the locked claims
     claims_text = "\n".join(f"-{claim}" for claim in locked_claims)
 
+    # System Prompt - Defines LLM behavior and expected return format
     prompt = f"""
-You are a helpful scientific assistant summarizing findings based on reliable information.
+                You are a helpful scientific assistant summarizing findings based on reliable information.
 
-QUESTION:
-{question}
+                QUESTION:
+                {question}
 
-LOCKED CLAIMS:
-{claims_text}
+                LOCKED CLAIMS:
+                {claims_text}
 
-TASK:
-- Synthesize a clear, human-readable answer based on the locked claims.
-- Write in a concise and informative tone.
-- You may reorder or combine claims, but do not introduce any information not in the list.
-- The result should be a single coherent paragraph.
-- Do NOT include any bullet points or numbered lists in your output.
+                TASK:
+                - Synthesize a clear, human-readable answer based on the locked claims.
+                - Write in a concise and informative tone.
+                - You may reorder or combine claims, but do not introduce any information not in the list.
+                - The result should be a single coherent paragraph.
+                - Do NOT include any bullet points or numbered lists in your output.
 
-FINAL ANSWER:
-"""
+                FINAL ANSWER:
+            """
+    
+    # Fallback - Runs if there are no locked claims to synthesize into a complete answer
+    if not locked_claims:
+        return "No claims were validated to answer the question."
+
     return get_llm_response(prompt).strip()

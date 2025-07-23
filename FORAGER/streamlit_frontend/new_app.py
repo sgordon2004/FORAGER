@@ -44,7 +44,7 @@ with tab_chat:
 
     # File upload section
     uploaded_files = st.file_uploader(
-        "Upload documents (PDF or HTML)",
+        "Upload documents",
         type=["pdf", "html"],
         accept_multiple_files=True
     )

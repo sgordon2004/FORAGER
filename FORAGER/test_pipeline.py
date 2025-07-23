@@ -116,7 +116,7 @@ def full_forager_pipeline(embedder: FAISSEmbedder, question: str, k: int = 3):
         # Run confidence checker
         updated_eval = {}
         for claim, label in eval.items():
-            confidence = check_confidence(claim, label, retrieved_docs)
+            confidence = check_confidence(embedder, claim, label, retrieved_docs_text)
             updated_eval[claim] = {"label": label, "confidence": confidence, "supporting_chunks": retrieved_docs}
         
         eval = updated_eval
