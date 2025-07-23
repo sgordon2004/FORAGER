@@ -285,6 +285,39 @@ def prompt_locked_loop(embedder: FAISSEmbedder, question, eval, max_retry=3):
 
     # Store the original claim lengths for divergence detection
     original_claim_lengths = {claim: len(claim.split()) for claim in eval.keys()}
+    
+    round_log = {"pll_round": "Pre-PLL Lock", "claims": []}
+    # Lock any Supporteed + High Connfidence Claims before PLL begins
+    for claim, claim_eval in eval.items():
+        label = claim_eval["label"]
+        confidence = claim_eval["confidence"]
+        supporting_docs = claim_eval.get("supporting_chunks", [])
+
+        # Locking check
+        if label == "Supported" and confidence == "High":
+            log(f"✅ Locking claim before PLL: {claim}")
+            round_log["claims"].append({
+                "claim": claim,
+                "eval_label": label,
+                "confidence_label": confidence,
+                "pll_decision": "Locked before PLL",
+                "reason": "Claim auto-locked with high confidence and support."
+            })
+            final_locked_claims.append({
+                        "claim": claim,
+                        "label": label,
+                        "confidence": confidence,
+                        "supporting_chunks": supporting_docs
+            })
+            # Skip further processing of this claim
+            continue
+    pll_logs.append(round_log)
+    # Remove pre-locked claims from eval to avoid reprocessing
+    eval = {
+        claim: claim_eval
+        for claim, claim_eval in eval.items()
+        if not (claim_eval["label"] == "Supported" and claim_eval["confidence"] == "High")
+    }
 
     while pll_round <= max_retry:
         log(f"🔁 Starting PLL round {pll_round}")

@@ -54,7 +54,7 @@ Output:
 **What to exclude**:
 - ❌ Ignore rhetorical questions, opinions, speculative statements, or vague implications.
 - ❌ Never start claims with vague phrases like "The benefits are…", "Advantages include…", "A key reason is…", "This approach…", or "It allows…". Always restate the main subject explicitly.
-- ❌ Do not include any commentary, explanations, or statements like "Here are the claims:".
+- ❌ DO NOT include any commentary, explanations, or statements like "Here are the claims:" or "Here is the output:".
 - ❌ Do not use markdown, code blocks, or bullet points.
 
 **Formatting Requirements**:
