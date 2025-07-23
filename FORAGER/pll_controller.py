@@ -377,4 +377,36 @@ def prompt_locked_loop(embedder: FAISSEmbedder, question, eval, max_retry=3):
             break # Exit early if no claims left
 
     log("🏁 Reached max PLL rounds or no more claims to process, stopping.")
-    return pll_logs
+    return pll_logs, final_locked_claims
+
+
+from runner import get_llm_response
+
+def synthesize_final_answer(question: str, locked_claims: list[str]) -> str:
+    """
+    Uses LLM to generate a final, fluent answer based on locked claims.
+    """
+    if not locked_claims:
+        return "No claims were validated to answer the question."
+    
+    claims_text = "\n".join(f"-{claim}" for claim in locked_claims)
+
+    prompt = f"""
+You are a helpful scientific assistant summarizing findings based on reliable information.
+
+QUESTION:
+{question}
+
+LOCKED CLAIMS:
+{claims_text}
+
+TASK:
+- Synthesize a clear, human-readable answer based on the locked claims.
+- Write in a concise and informative tone.
+- You may reorder or combine claims, but do not introduce any information not in the list.
+- The result should be a single coherent paragraph.
+- Do NOT include any bullet points or numbered lists in your output.
+
+FINAL ANSWER:
+"""
+    return get_llm_response(prompt).strip()

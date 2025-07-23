@@ -193,7 +193,7 @@ with tab_chat:
                     # Final Claim
                     st.markdown(f"""
                         <div class="final-claim-card">
-                            <h4>📝 Final Claim</h4>
+                            <h4>📝 Initial Claim</h4>
                             <p style="font-size: 14px;">{answer}</p>
                         </div>
                     """, unsafe_allow_html=True)
@@ -204,8 +204,9 @@ with tab_chat:
                 if (answer != "This question is unrelated to the documents in the knowledge base and cannot be answered by them."):
                     from pll_controller import prompt_locked_loop
                     status_placeholder.info("💾 Initializing Prompt Locked Loop...")
-                    pll_logs = prompt_locked_loop(embedder, user_question, claim_eval, max_retry=3)
+                    pll_logs, locked_claims = prompt_locked_loop(embedder, user_question, claim_eval, max_retry=3)
                     st.session_state["pll_logs"] = pll_logs
+                    st.session_state["locked_claims"] = locked_claims
                 else:
                     print(f"Prompt Locked Loop skipped due to irrelevant question.")
 
@@ -214,6 +215,13 @@ with tab_chat:
         # TODO: Move this to run after the final answer is locked.
         # status_placeholder.success("🎉 Full pipeline completed successfully!")
         # st.balloons()
+        from pll_controller import synthesize_final_answer
+        locked_claims = st.session_state.get("locked_claims", [])
+        human_answer = synthesize_final_answer(user_question, [c["claim"] for c in locked_claims])
+        if human_answer:
+            st.markdown("## Final Synthesized Answer")
+            st.markdown(f"> {human_answer}")
+
 
 # Tab 2: Knowledge Base Management
 with tab_knowledge_base:
