@@ -102,13 +102,30 @@ class FAISSEmbedder:
 
     def embed_chunks(self, chunks):
         """
-        Takes one chunk at a time from the new additions to chunks.jsonl file (or other inputted file) and embeds it using BGE model
+        Embeds chunks from a specified list of chunks to embed
 
         Args: 
             chunks (list): List of chunks to embed
         Returns:
             embeddings (ndarray): A 2-D numpy array of vectors with each vector representing a chunk
         """
+
+        texts = [self.prefix + chunk["text"] for chunk in chunks]
+        embeddings = self.model.encode(texts, normalize_embeddings=True, batch_size=32, show_progress_bar=True).astype("float32")
+        print(f"\033[1;92m✅ {len(chunks)} chunks successfully embedded!\033[0m\n")
+        return embeddings
+    
+    def embed_chunks_from_json(self):
+        """
+        Embeds all chunks currently in chunks.jsonl
+
+        Args: 
+            chunks (list): List of chunks to embed
+        Returns:
+            embeddings (ndarray): A 2-D numpy array of vectors with each vector representing a chunk
+        """
+
+        chunks = self.load_chunks()
         texts = [self.prefix + chunk["text"] for chunk in chunks]
         embeddings = self.model.encode(texts, normalize_embeddings=True, batch_size=32, show_progress_bar=True).astype("float32")
         print(f"\033[1;92m✅ {len(chunks)} chunks successfully embedded!\033[0m\n")
@@ -118,8 +135,8 @@ class FAISSEmbedder:
         """
         This function sets up the FAISS database for the first time.
         """
-        chunks = self.load_chunks()
-        embeddings = self.embed_chunks(chunks)
+        #chunks = self.load_chunks()
+        embeddings = self.embed_chunks_from_json()
         self.faiss_db.add(embeddings)
         faiss.write_index(self.faiss_db, self.faiss_db_filepath)
         print(f"\033[1;92m✅ FAISS database created and stored!\033[0m\n")
@@ -171,6 +188,9 @@ class FAISSEmbedder:
         """
         This function checks if more chunks have been added to chunks.jsonl. If so, the chunks are embedded and added
         to the FAISS database.
+
+        Note: This function assumes new chunks are always added to the end of the chunks.jsonl file, which I realized
+        is not true. It's better to just use embed_chunks now.
         """
         chunks = self.load_chunks()
         current_total = self.faiss_db.ntotal
@@ -181,6 +201,17 @@ class FAISSEmbedder:
             print(f"\033[1;96mFAISS database updated. New size: {self.faiss_db.ntotal}\033[0m\n")
         else:
             print("\033[1;92m✅ FAISS database is up to date.\033[0m\n")
+
+    def add_to_faiss(self, new_embeddings):
+        """
+        Function to embed and add chunks from newly uploaded documents into FAISS
+
+        Args:
+            new_embedded_chunks: New vectors to add to FAISS database
+        """
+        self.faiss_db.add(new_embeddings)
+        faiss.write_index(self.faiss_db, faiss_db_filepath)
+        print(f"\033[1;96mFAISS database updated. New size: {self.faiss_db.ntotal}\033[0m\n")
 
     def clear_database(self):
         """

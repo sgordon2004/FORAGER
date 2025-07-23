@@ -110,6 +110,9 @@ with tab_chat:
             from FORAGER.embedder import FAISSEmbedder
             embedder = FAISSEmbedder.create_default()
             embedder.initialize_faiss()
+            # Find best spot for where we should be checking for new chunks
+            # embeddings = embedder.embed_chunks()
+            # embedder.add_to_faiss(embeddings)
             st.session_state["embedder"] = embedder
             time.sleep(1)
             status_placeholder.success("✅ FAISS initialized!")
@@ -245,7 +248,7 @@ with tab_knowledge_base:
                 if st.button(f"🗑️ Delete {file_path.name}"):
                     file_path.unlink()
                     st.success(f"Deleted {file_path.name}")
-                    st.experimental_rerun()
+                    st.rerun()
 
     # Show PDF files
     pdf_files = list(pdf_upload_dir.glob("*.pdf"))
@@ -257,14 +260,16 @@ with tab_knowledge_base:
                 if st.button(f"🗑️ Delete {file_path.name}"):
                     file_path.unlink()
                     st.success(f"Deleted {file_path.name}")
-                    st.experimental_rerun()
+                    st.rerun()
 
     st.markdown("---")
     st.markdown("### ➕ Upload More Files")
     more_files = st.file_uploader("Upload additional documents (PDF or HTML)", type=["pdf", "html"], accept_multiple_files=True, key="additional_uploads")
 
     if more_files:
-        for file in more_files:
+        # Read and store all new file data to prevent .read() issues later
+        uploaded_file_data = [(file, file.read()) for file in more_files]
+        for file, file_bytes in uploaded_file_data:
             file_ext = file.name.split(".")[-1].lower()
             file_bytes = file.read()
             if file_ext == "html":
@@ -278,7 +283,61 @@ with tab_knowledge_base:
             with open(save_path, "wb") as f:
                 f.write(file_bytes)
             st.success(f"✅ Uploaded {file.name}")
-        st.experimental_rerun()
+        
+        # Process new documents just like in Tab 1
+        if st.button("Process New Document(s)"):
+            status_placeholder.info("📄 Starting text extraction...")
+            # Extract text from uploaded files
+            for file, file_bytes in uploaded_file_data:
+                # Isolate file extension and read bytes
+                file_ext = file.name.split(".")[-1].lower()
+                # file_bytes = file.read()
+
+                if file_ext == "html":
+                    from ingestor import clean_html, html_text_dir, json_dir
+                    # Temporarily save uploaded file
+                    
+                    input_path = html_upload_dir / file.name
+                    html_upload_dir.mkdir(parents=True, exist_ok=True)
+                    with open(input_path, "wb") as f:
+                        f.write(file_bytes)
+                    clean_html(input_path, html_text_dir, json_dir)
+
+                elif file_ext == "pdf":
+                    # Extract text from PDF
+                    from extractor import extract_pdf
+                    from ingestor import dump_pdf_text
+                    
+                    input_path = pdf_upload_dir / file.name
+                    pdf_upload_dir.mkdir(parents=True, exist_ok=True)
+                    with open(input_path, "wb") as f:
+                        f.write(file_bytes)
+                    text = extract_pdf(file.name)
+                    # Save text to pdf_text + create .json metadata file
+                    dump_pdf_text(file.name, text)
+                else:
+                    st.warning(f"Unsupported file type: {file.name}")
+                    continue
+            time.sleep(1)
+            status_placeholder.success("✅ Text extraction complete!")
+
+            status_placeholder.info("🔗 Chunking documents...")
+            from chunker import main as chunker_main
+            # Chunk all the .JSON metadata files, chunk them, and save to chunks.jsonl
+            chunker_main()
+            time.sleep(1)
+            status_placeholder.success("✅ Chunking complete!")
+            status_placeholder.info("💾 Adding to FAISS...")
+            # Creating temporary second embedder object because I can't access the first one here
+            from embedder import FAISSEmbedder
+            embedder2 = FAISSEmbedder.create_default()
+            new_embeddings = embedder2.embed_chunks_from_json()
+            embedder2.add_to_faiss(new_embeddings)
+            st.session_state["embedder2"] = embedder2
+            time.sleep(1)
+            status_placeholder.success("✅ New documents processed!")
+
+        # st.rerun()
 
 # Tab 3: Steb-by-step claims breakdown
 with tab_claims:
