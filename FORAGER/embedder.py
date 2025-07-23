@@ -26,6 +26,7 @@ from sentence_transformers import SentenceTransformer
 import numpy as np
 import faiss
 import json
+from typing import List
 
 # Important filepaths listed here
 # This should set base_dir to be the outer FORAGER folder
@@ -90,7 +91,7 @@ class FAISSEmbedder:
         with open(self.chunk_filepath, "r", encoding="utf-8") as f:
             return [json.loads(line) for line in f if line.strip()]
 
-    def embed_chunks(self, chunks):
+    def embed_chunks(self, chunks: List[dict]):
         """
         Embeds chunks from a specified list of chunks to embed
 
@@ -116,7 +117,7 @@ class FAISSEmbedder:
         """
 
         chunks = self.load_chunks()
-        texts = [self.prefix + chunk["text"] for chunk in chunks]
+        texts = [self.prefix + chunk if isinstance(chunk, str) else chunk["text"] for chunk in chunks]
         embeddings = self.model.encode(texts, normalize_embeddings=True, batch_size=32, show_progress_bar=True).astype("float32")
         print(f"\033[1;92m✅ {len(chunks)} chunks successfully embedded!\033[0m\n")
         return embeddings

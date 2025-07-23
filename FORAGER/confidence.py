@@ -18,6 +18,8 @@ accepted, discarded, or refined in subsequent iterations of the Prompt Lock Loop
 
 import os
 import sys
+from embedder import FAISSEmbedder
+from typing import List, Tuple
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 __docformat__ = "google"
 # from FORAGER.embedder import search_database
@@ -76,7 +78,7 @@ __docformat__ = "google"
 # # 0.8357425
 # # High Confidence
 
-def check_confidence(claim, eval_label, docs, k: int = 3):
+def check_confidence(embedder: FAISSEmbedder, claim, eval_label, supporting_docs: List[str], k: int = 3):
     """
     Determines a final confidence label based on the evaluation label 
     (e.g., NLI classification) and the similarity score between the LLM response 
@@ -101,13 +103,16 @@ def check_confidence(claim, eval_label, docs, k: int = 3):
         # Compare llm claim to nearest k chunks in database 
         # Compute the average of the scores of the top 5 most similar documents to get a sense
         # of how similar the llm's answer is to the database.
-        scores = []
-        for dict_ in docs:
-            scores.append(dict_["score"])
-            print(f"\033[1;96mSimilarity Score: {dict_["score"]}\033[0m")
+        claim_embedding = embedder.embed_text(claim)
+        doc_embeddings = [embedder.embed_text(doc) for doc in supporting_docs]
 
-        similarity_score = sum(scores) / len(scores)
-        # print(f"\033[1;96mSimilarity Score: {similarity_score}\033[0m")
+        scores = [
+            embedder.cosine_similarity(claim_embedding, doc_embedding)
+            for doc_embedding in doc_embeddings
+        ]
+        
+        similarity_score = sum(scores) / len(scores) if scores else 0
+        print(f"\033[1;96mSimilarity Score: {similarity_score}\033[0m")
     else:
         print("\033[1;91mLLM did not give an output!\033[0m")
         similarity_score = 0
