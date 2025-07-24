@@ -204,14 +204,14 @@ with tab_chat:
                 time.sleep(1)
 
                 # Run Prompt Locked Loop as long as question was not marked as irrelevant
-                if (answer != "This question is unrelated to the documents in the knowledge base and cannot be answered by them."):
-                    from pll_controller import prompt_locked_loop
-                    status_placeholder.info("💾 Initializing Prompt Locked Loop...")
-                    pll_logs, locked_claims = prompt_locked_loop(embedder, user_question, claim_eval, max_retry=3)
-                    st.session_state["pll_logs"] = pll_logs
-                    st.session_state["locked_claims"] = locked_claims
-                else:
-                    print(f"Prompt Locked Loop skipped due to irrelevant question.")
+                # if (answer != "This question cannot be answered by the information in the knowledge base."):
+                from pll_controller import prompt_locked_loop
+                status_placeholder.info("💾 Initializing Prompt Locked Loop...")
+                pll_logs, locked_claims = prompt_locked_loop(embedder, user_question, claim_eval, max_retry=3)
+                st.session_state["pll_logs"] = pll_logs
+                st.session_state["locked_claims"] = locked_claims
+                # else:
+                #     print(f"Prompt Locked Loop skipped due to unanswerable question.")
 
                 last_round_claims = pll_logs[-1]["claims"]
 

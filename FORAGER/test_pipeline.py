@@ -65,6 +65,10 @@ def full_forager_pipeline(embedder: FAISSEmbedder, question: str, k: int = 3):
     retrieved_docs_text = [doc["text"] for doc in retrieved_docs]
     # print(f"Chunks used for answer: {retrieved_docs_text}")
     retrieved_docs_combined = "\n\n".join([doc["text"] for doc in retrieved_docs])
+
+    # Note: I took this part out 
+    # - If the question is **unanswerable from the context**, respond with: 
+    # "This question cannot be answered by the information in the knowledge base."
     
     # Step 2: Feed question and documents to LLM
     prompt = f"""
@@ -79,8 +83,7 @@ def full_forager_pipeline(embedder: FAISSEmbedder, question: str, k: int = 3):
         - If the question asks for a **definition**, give a full and accurate definition using exact terms from the context.
         - If the question asks for an **explanation**, provide a clear explanation reflecting the context phrasing.
         - If the question asks for **examples, comparisons, or lists**, answer naturally while strictly staying within the context.
-        - If the question is **unanswerable from the context**, respond with: 
-        "This question is unrelated to the documents in the knowledge base and cannot be answered by them."
+
 
     Question: {question}
 
@@ -95,35 +98,35 @@ def full_forager_pipeline(embedder: FAISSEmbedder, question: str, k: int = 3):
     answer = get_llm_response(prompt)
     # print(f"✅ LLM Answer:\n{answer}")
 
-    # Skip the remainder of the pipeline if the question is irrelevant.
-    if (answer == "This question is unrelated to the documents in the knowledge base and cannot be answered by them."):
-        # print(answer)
-        eval = {}
-        eval[0] = {"label": "Unsupported", "confidence": "Zero", "supporting_chunks": retrieved_docs}
-        return answer, eval
+    # # Skip the remainder of the pipeline if the question is irrelevant.
+    # if (answer == "This question cannot be answered by the information in the knowledge base."):
+    #     # print(answer)
+    #     eval = {}
+    #     eval[0] = {"label": "N/A", "confidence": "N/A", "supporting_chunks": retrieved_docs}
+    #     return answer, eval
     
-    # If the answer is relevant, perform the rest of the pipeline
-    else:
+    # # If the answer is relevant, perform the rest of the pipeline
+    # else:
         # Step 4: Extract claims from LLM answer
-        claims = extract_atomic_claims_llm(answer) # a list of all the atomic claims made by the LLM
+    claims = extract_atomic_claims_llm(answer) # a list of all the atomic claims made by the LLM
 
-        # Step 5: Run all claims through BS detector
-        eval = {} # dict to map claim to eval_label
-        for claim in claims:
-            label = detect_bs(embedder, claim, supporting_docs=retrieved_docs_text)
-            eval[claim] = label
+    # Step 5: Run all claims through BS detector
+    eval = {} # dict to map claim to eval_label
+    for claim in claims:
+        label = detect_bs(embedder, claim, supporting_docs=retrieved_docs_text)
+        eval[claim] = label
 
-        # Run confidence checker
-        updated_eval = {}
-        for claim, label in eval.items():
-            confidence = check_confidence(embedder, claim, label, retrieved_docs_text)
-            updated_eval[claim] = {"label": label, "confidence": confidence, "supporting_chunks": retrieved_docs}
-        
-        eval = updated_eval
-        print("💋")
-        print(eval)
+    # Run confidence checker
+    updated_eval = {}
+    for claim, label in eval.items():
+        confidence = check_confidence(embedder, claim, label, retrieved_docs_text)
+        updated_eval[claim] = {"label": label, "confidence": confidence, "supporting_chunks": retrieved_docs}
+    
+    eval = updated_eval
+    print("💋")
+    print(eval)
 
-        return answer, eval
+    return answer, eval
 
 
 # dummy_eval = [
