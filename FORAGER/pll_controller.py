@@ -492,7 +492,7 @@ def prompt_locked_loop(embedder: FAISSEmbedder, question, eval, max_retry=3):
 
             # VERBOSITY CHECK
             # Discard claims that have diverged too much in length (e.g., >2.5x original length)
-            MAX_REPHRASED_WORDS = 30
+            MAX_REPHRASED_WORDS = 40
             if len(new_claim.split()) > MAX_REPHRASED_WORDS:
                     log(f"❌ Rephrased claim too LONG ({len(new_claim.split())} words). Discarding.")
                     log(f"📏 Rephrased claim length: {len(new_claim.split())} words (limit: {MAX_REPHRASED_WORDS})")

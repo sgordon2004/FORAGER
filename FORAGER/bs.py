@@ -204,7 +204,10 @@ def detect_bs(embedder: FAISSEmbedder, claim: str, supporting_docs: list[str],
     # Embedding Similarity Phase (only runs if NLI is neutral)
     # embedder = FAISSEmbedder.create_default()
     claim_emb = embedder.embed_text(claim)
-    support_embs = [embedder.embed_text(doc) for doc in supporting_docs]
+    support_embs = [
+        embedder.embed_text(doc["text"]) if isinstance(doc, dict) else embedder.embed_text(doc)
+        for doc in supporting_docs
+    ]
     similarities = util.cos_sim(claim_emb, support_embs)[0]
     max_score = similarities.max().item()
 
