@@ -216,14 +216,15 @@ with tab_chat:
                 last_round_claims = pll_logs[-1]["claims"]
 
         # TODO: Move this to run after the final answer is locked.
-        # status_placeholder.success("🎉 Full pipeline completed successfully!")
-        # st.balloons()
+        
         from pll_controller import synthesize_final_answer
         locked_claims = st.session_state.get("locked_claims", [])
         human_answer = synthesize_final_answer(user_question, [c["claim"] for c in locked_claims])
         if human_answer:
             st.markdown("## Final Synthesized Answer")
             st.markdown(f"> {human_answer}")
+            status_placeholder.success("🎉 Full pipeline completed successfully!")
+            st.balloons()
 
 
 # Tab 2: Knowledge Base Management
