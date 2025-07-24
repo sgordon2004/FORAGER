@@ -69,46 +69,120 @@ def regenerate_with_strict_grounding(question, claim, eval_label, confidence_lab
 
     return regenerated_answer
 
+# def rerank_or_rephrase(embedder: FAISSEmbedder, question, claim, retrieved_docs: List[dict], top_n=3):
+#     """
+#     Reranks retrieved chunks based on their semantic similarity to the claim and rephrases
+#     the claim using the most relevant context.
+
+#     This function enhances the grounding of a claim by first computing the similarity
+#     between the claim and each retrieved context chunk, selecting the top-N most relevant chunks,
+#     and prompting an LLM to rephrase the claim strictly based on that context.
+
+#     Args:
+#         embedder (FAISSEmbedder): An embedder instance used to compute embeddings and similarity between claim and context.
+#         question (str): The original question asked by the user from which the claim was derived.
+#         claim (str): The atomic claim to be rephrased.
+#         retrieved_docs (List[dict]): A list of dictionaries. Each dictionary key is a chunk and values are scores, id, etc.
+#         top_n (int): The number of most relevant chunks to retrieve. Defaults to 3.
+
+#     Returns:
+#         str: A rephrased version of the claim grounded in the top-ranked context,
+#             or a rejection message if the claim cannot be improved.
+#         list: A list of strings storing the newly ranked chunks.
+#     """
+#     log(f"🔎 Reranking chunks based on claim-to-chunk similarity for claim: {claim}")
+    
+#     # Step 1: Embed original claim
+#     claim_embedding = embedder.embed_text(claim)
+
+#     # Step 2: Embed each retrieved chunk
+#     chunk_embeddings = embedder.embed_chunks(retrieved_docs)
+
+#     # Step 3: Compute claim-chunk similarities
+#     similarities = [embedder.cosine_similarity(claim_embedding, chunk_emb) for chunk_emb in chunk_embeddings]
+
+#     # Step 4: Sort chunks by similarity
+#     ranked_chunks = [doc for _, doc in sorted(zip(similarities, retrieved_docs), key=lambda x: x[0], reverse=True)]
+
+#     # Step 5: Select top-N chunks
+#     top_chunks = ranked_chunks[:top_n]
+
+#     # Step 6: Rephrase claim using top-ranked context
+#     # System Prompt - Defines LLM behavior and expected return format
+#     prompt = f"""
+#                 QUESTION: {question}
+
+#                 CLAIM TO IMPROVE: "{claim}"
+
+#                 TOP CONTEXT:
+#                 {chr(10).join(top_chunks)}
+
+#                 INSTRUCTIONS:
+#                 - Rewrite the claim to more directly reflect the context, while keeping it as short and concise as possible.
+#                 - Avoid repeating phrases from the context verbatim.
+#                 - Do NOT use any outside knowledge or make up information.
+#                 - If the claim cannot be improved, respond: "❌ Claim should be discarded."
+#                 - Do NOT include any text in your response other than the revised claim or rejection message. NO MESSAGES, NOTES, OR EXPLANATIONS.
+
+#                 REPHRASED CLAIM:
+#             """
+#     rephrased_claim = get_llm_response(prompt)
+#     log(f"✅ Rephrased Claim:\n{rephrased_claim}")
+
+#     return rephrased_claim, top_chunks
+
+
 def rerank_or_rephrase(embedder: FAISSEmbedder, question, claim, retrieved_docs: List[dict], top_n=3):
     """
-    Reranks retrieved chunks based on their semantic similarity to the claim and rephrases
-    the claim using the most relevant context.
-
-    This function enhances the grounding of a claim by first computing the similarity
-    between the claim and each retrieved context chunk, selecting the top-N most relevant chunks,
-    and prompting an LLM to rephrase the claim strictly based on that context.
+    Reranks retrieved chunks based on max sentence-level similarity to the claim,
+    and rephrases the claim using the most relevant full chunks.
 
     Args:
         embedder (FAISSEmbedder): An embedder instance used to compute embeddings and similarity between claim and context.
         question (str): The original question asked by the user from which the claim was derived.
         claim (str): The atomic claim to be rephrased.
-        retrieved_docs (List[dict]): A list of dictionaries. Each dictionary key is a chunk and values are scores, id, etc.
+        retrieved_docs (List[dict]): A list of dictionaries, each with a 'text' key (chunk) and optional metadata.
         top_n (int): The number of most relevant chunks to retrieve. Defaults to 3.
 
     Returns:
         str: A rephrased version of the claim grounded in the top-ranked context,
-            or a rejection message if the claim cannot be improved.
-        list: A list of strings storing the newly ranked chunks.
+             or a rejection message if the claim cannot be improved.
+        list: A list of strings storing the newly ranked full chunk texts.
     """
-    log(f"🔎 Reranking chunks based on claim-to-chunk similarity for claim: {claim}")
+    from sentence_transformers.util import cos_sim
+    import re
 
-    # Step 1: Embed original claim
+    def split_into_sentences(text):
+        return [s.strip() for s in re.split(r'(?<=[.!?]) +', text) if len(s.strip()) > 10]
+
+    log(f"🔎 Sentence-aware reranking for claim: {claim}")
+
     claim_embedding = embedder.embed_text(claim)
 
-    # Step 2: Embed each retrieved chunk
-    chunk_embeddings = embedder.embed_chunks(retrieved_docs)
+    chunk_scores = []
+    print(f"retrieved docs: {retrieved_docs}")
+    for chunk in retrieved_docs["supporting_chunks"]:
+        print(f"Chunk format: {chunk}")
+        full_text = chunk["text"]
+        sentences = split_into_sentences(full_text)
 
-    # Step 3: Compute claim-chunk similarities
-    similarities = [embedder.cosine_similarity(claim_embedding, chunk_emb) for chunk_emb in chunk_embeddings]
+        if not sentences:
+            continue
 
-    # Step 4: Sort chunks by similarity
-    ranked_chunks = [doc for _, doc in sorted(zip(similarities, retrieved_docs), key=lambda x: x[0], reverse=True)]
+        sentence_embeddings = [embedder.embed_text(sentence) for sentence in sentences]
+        max_score = max(
+            float(cos_sim(claim_embedding, s_emb))
+            for s_emb in sentence_embeddings
+        )
+        chunk_scores.append((max_score, full_text))
 
-    # Step 5: Select top-N chunks
-    top_chunks = ranked_chunks[:top_n]
+    # Rank by max sentence similarity
+    chunk_scores.sort(reverse=True, key=lambda x: x[0])
+    top_chunks = [chunk for _, chunk in chunk_scores[:top_n]]
 
-    # Step 6: Rephrase claim using top-ranked context
-    # System Prompt - Defines LLM behavior and expected return format
+    top_texts = set(top_chunks)
+
+    # Rephrase the claim using the top full chunks
     prompt = f"""
                 QUESTION: {question}
 
@@ -129,8 +203,13 @@ def rerank_or_rephrase(embedder: FAISSEmbedder, question, claim, retrieved_docs:
     rephrased_claim = get_llm_response(prompt)
     log(f"✅ Rephrased Claim:\n{rephrased_claim}")
 
-    return rephrased_claim, top_chunks
-
+    # Use original dicts from retrieved_docs["supporting_chunks"] where the text matches
+    used_chunks = [
+        chunk for chunk in retrieved_docs["supporting_chunks"]
+        if chunk["text"] in top_texts
+    ]
+    return rephrased_claim, used_chunks
+    
 def retrieve_more_or_rephrase(embedder: FAISSEmbedder, question, claim, k=5) -> Tuple[str, List[str]]:
     """
     Retrieves additional context based on the atomic claim and rephrases the claim using
@@ -257,8 +336,9 @@ def handle_decision(embedder: FAISSEmbedder, decision, claim, claim_eval, questi
     eval_label = claim_eval["label"]
     confidence = claim_eval["confidence"]
 
-    retrieved_docs = claim_eval
-    retrieved_docs_text = claim_eval["supporting_chunks"]
+    print(f"⚠️⚠️⚠️ Value of `claim_eval` in handle_decision ⚠️⚠️⚠️\n{claim_eval}")
+    retrieved_docs = claim_eval # with metadata
+    retrieved_docs_text = [claim_eval["supporting_chunks"][i]["text"] for i, claim in enumerate(claim_eval.items())]
 
     if decision == "LOCK":
         log(f"🔒 Locking claim: {claim}")
@@ -381,7 +461,8 @@ def prompt_locked_loop(embedder: FAISSEmbedder, question, eval, max_retry=3):
         for claim, claim_eval in eval.items()
         if not (claim_eval["label"] == "Supported" and claim_eval["confidence"] == "High")
     }
-
+    print(f"\n‼️ STATE OF `eval` IN prompted_lock_loop() BEFORE PLL ROUND 1 ‼️\n")
+    print(eval)
     # Step 2: Initiate the Prompt Locked Loop
     # Variable to track PLL rounds
     pll_round = 1
@@ -400,6 +481,7 @@ def prompt_locked_loop(embedder: FAISSEmbedder, question, eval, max_retry=3):
             decision = pll(eval_label, confidence_label)
             log(f"📌 Claim: {claim}\nDecision: {decision}")
 
+            print(f"claim_eval: {claim_eval}")
             # Apply the decision and store the rephrased claim (or None or standardized message if the claim could not be supported)
             new_claim, used_chunks = handle_decision(embedder, decision, claim, claim_eval, question)
 
@@ -409,13 +491,11 @@ def prompt_locked_loop(embedder: FAISSEmbedder, question, eval, max_retry=3):
                 continue
 
             # VERBOSITY CHECK
-            new_claim_length = len(new_claim.split())
-            original_length = original_claim_lengths.get(claim, 1) # Avoid zero division
-            length_growth_ratio = new_claim_length / original_length
-
             # Discard claims that have diverged too much in length (e.g., >2.5x original length)
-            if length_growth_ratio > 2.5:
-                    log(f"❌ Rephrased claim too verbose ({length_growth_ratio:.2f}x growth). Discarding.")
+            MAX_REPHRASED_WORDS = 30
+            if len(new_claim.split()) > MAX_REPHRASED_WORDS:
+                    log(f"❌ Rephrased claim too LONG ({len(new_claim.split())} words). Discarding.")
+                    log(f"📏 Rephrased claim length: {len(new_claim.split())} words (limit: {MAX_REPHRASED_WORDS})")
                     continue
             
             # Save the new rephrased claim to the list of ALL rephrased claims
