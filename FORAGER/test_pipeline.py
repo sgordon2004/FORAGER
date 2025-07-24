@@ -120,7 +120,8 @@ def full_forager_pipeline(embedder: FAISSEmbedder, question: str, k: int = 3):
             updated_eval[claim] = {"label": label, "confidence": confidence, "supporting_chunks": retrieved_docs}
         
         eval = updated_eval
-        # print(eval)
+        print("💋")
+        print(eval)
 
         return answer, eval
 

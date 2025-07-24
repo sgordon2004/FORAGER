@@ -104,7 +104,10 @@ def check_confidence(embedder: FAISSEmbedder, claim, eval_label, supporting_docs
         # Compute the average of the scores of the top 5 most similar documents to get a sense
         # of how similar the llm's answer is to the database.
         claim_embedding = embedder.embed_text(claim)
-        doc_embeddings = [embedder.embed_text(doc) for doc in supporting_docs]
+        doc_embeddings = [
+            embedder.embed_text(doc["text"]) if isinstance(doc, dict) else embedder.embed_text(doc)
+            for doc in supporting_docs
+        ]
 
         scores = [
             embedder.cosine_similarity(claim_embedding, doc_embedding)
