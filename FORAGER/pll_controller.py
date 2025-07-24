@@ -47,7 +47,7 @@ def regenerate_with_strict_grounding(question, claim, eval_label, confidence_lab
                 CONFIDENCE LEVEL: {confidence_label}
 
                 AVAILABLE CONTEXT:
-                {chr(10).join(retrieved_docs_text)}
+                {chr(10).join(retrieved_docs)}
 
                 INSTRUCTIONS:
                 - Rewrite the claim ONLY if it can be fully supported by the provided context, ensuring the claim is as short and concise as possible while preserving meaning:
@@ -247,7 +247,7 @@ def retrieve_more_or_rephrase(embedder: FAISSEmbedder, question, claim, k=5) -> 
                 CLAIM TO IMPROVE: "{claim}"
 
                 EXPANDED CONTEXT:
-                {chr(10).join(chunk for chunk in top_chunks)}
+                {chr(10).join(chunk for chunk in expanded_context)} # chr(10) == '/n'
 
                 INSTRUCTIONS:
                 - Rewrite the claim to be directly grounded in this new context.

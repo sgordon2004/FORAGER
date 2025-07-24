@@ -206,8 +206,12 @@ with tab_chat:
                 # Run Prompt Locked Loop as long as question was not marked as irrelevant
                 # if (answer != "This question cannot be answered by the information in the knowledge base."):
                 from pll_controller import prompt_locked_loop
+                import time
                 status_placeholder.info("💾 Initializing Prompt Locked Loop...")
+                start_time = time.perf_counter()
                 pll_logs, locked_claims = prompt_locked_loop(embedder, user_question, claim_eval, max_retry=3)
+                pipeline_runtime = time.perf_counter() - start_time
+                st.session_state["pipeline_runtime"] = pipeline_runtime
                 st.session_state["pll_logs"] = pll_logs
                 st.session_state["locked_claims"] = locked_claims
                 # else:
@@ -362,9 +366,21 @@ with tab_claims:
                 for idx, chunk in enumerate(supporting_chunks, 1):
                     formatted_chunk = chunk["text"].replace("\n", "\n> ")
                     st.markdown(f"> **Chunk {idx}:**  \n> {formatted_chunk}")
+
 # Tab 4: Metrics & Performance
 with tab_metrics:
     st.header("📊 Metrics & Performance")
+
+    # Create columns to show high-level Key Performance Indicators (KPIs)
+    col1, col2, col3, col4 = st.columns(4)
+    col1.metric("🔍 Claims Evaluated", len(st.session_state.get("claim_eval", "N/A")))
+    col2.metric("✅ Locked Claims", len(st.session_state.get("locked_claims", "N/A")))
+    col3.metric("♻️ PLL Rounds", len(st.session_state.get("pll_logs", "N/A")))
+    runtime = st.session_state.get("pipeline_runtime", None)
+    if isinstance(runtime, (int, float)):
+        col4.metric("⏱️ Total Runtime", f"{runtime:.2f}s")
+    else:
+        col4.metric("⏱️ Total Runtime", "N/A")
 
     claim_eval = st.session_state.get("claim_eval", {})
     pll_logs = st.session_state.get("pll_logs", [])
