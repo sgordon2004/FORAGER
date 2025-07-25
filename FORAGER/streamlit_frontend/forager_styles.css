@@ -69,7 +69,20 @@ h1 {
     margin-bottom: 20px;
     color: #f5f5f5;
 }
+.bs-Supported {
+  color: #2ECC71;
+  font-weight: bold;
+}
 
+.bs-Unsupported {
+  color: #E74C3C;
+  font-weight: bold;
+}
+
+.bs-Contradicted {
+  color: #8E44AD;
+  font-weight: bold;
+}
 /* BS Label colors */
 .bs-Supported h4     { color: #2ECC71; }
 .bs-Unsupported h4   { color: #E74C3C; }
@@ -89,4 +102,19 @@ h1 {
 .final-claim-card h4 {
     color: #9be7ff;
     margin-bottom: 10px;
+}
+
+.confidence-High {
+  color: #2e86de;
+  font-weight: bold;
+}
+
+.confidence-Medium {
+  color: #f39c12;
+  font-weight: bold;
+}
+
+.confidence-Low {
+  color: #e74c3c;
+  font-weight: bold;
 }

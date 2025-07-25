@@ -461,6 +461,9 @@ def prompt_locked_loop(embedder: FAISSEmbedder, question, eval, max_retry=3):
     while pll_round <= max_retry:
         log(f"🔁 Starting PLL round {pll_round}")
 
+        # Initalize a new Round Log to store PLL details of rounds 1+
+        round_log = {"pll_round": pll_round, "claims": []}
+
         # A list to keep track of rephrased claims
         updated_claims = []
 
@@ -478,11 +481,25 @@ def prompt_locked_loop(embedder: FAISSEmbedder, question, eval, max_retry=3):
 
             if new_claim.strip().lower() in {"❌ claim should be discarded.", "claim should be discarded"}:
                 log(f"🗑️ Discarding claim: '{claim}' due to discard signal")
-                continue  # Skip adding to new_eval or future rounds
+                round_log["claims"].append({
+                    "claim": claim,
+                    "eval_label": eval_label,
+                    "confidence_label": confidence_label,
+                    "pll_decision": "Discarded by LLM",
+                    "reason": "LLM response indicated claim should be discarded after reranking/rephrasing."
+                })
+                continue
 
             # new_claim will be None if the claim could not be supported
             if new_claim is None:
                 log(f"🗑️ Discarding claim: {claim}")
+                round_log["claims"].append({
+                    "claim": claim,
+                    "eval_label": eval_label,
+                    "confidence_label": confidence_label,
+                    "pll_decision": "Discarded by LLM",
+                    "reason": "LLM response indicated claim should be discarded after reranking/rephrasing."
+                })
                 continue
 
             # VERBOSITY CHECK
@@ -491,13 +508,19 @@ def prompt_locked_loop(embedder: FAISSEmbedder, question, eval, max_retry=3):
             if len(new_claim.split()) > MAX_REPHRASED_WORDS:
                     log(f"❌ Rephrased claim too LONG ({len(new_claim.split())} words). Discarding.")
                     log(f"📏 Rephrased claim length: {len(new_claim.split())} words (limit: {MAX_REPHRASED_WORDS})")
+                    round_log["claims"].append({
+                        "claim": claim,
+                        "eval_label": eval_label,
+                        "confidence_label": confidence_label,
+                        "pll_decision": "Discarded by LLM",
+                        "reason": "LLM response indicated claim should be discarded after reranking/rephrasing."
+                    })
                     continue
             
             # Save the new rephrased claim to the list of ALL rephrased claims
             updated_claims.append((new_claim, used_chunks))
         
-        # Initalize a new Round Log to store PLL details of rounds 1+
-        round_log = {"pll_round": pll_round, "claims": []}
+        
 
         # Step 3: Re-evaluate all updated claims and log fresh evaluation results
         if updated_claims:

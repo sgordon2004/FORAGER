@@ -377,6 +377,7 @@ with tab_claims:
             final_status = "❓ Unknown"
             final_rephrased = None
             was_locked_pre_pll = False
+            was_discarded = False
 
             # Step 1: Find the last index where the original claim appears
             for idx, round_log in enumerate(pll_logs):
@@ -391,27 +392,60 @@ with tab_claims:
             if was_locked_pre_pll:
                 final_status = "🔒 Locked before PLL"
             elif last_seen_index is not None:
-                # Look ahead for next rephrased version, skipping Pre-PLL Lock
+                current_version = original_claim
                 for j in range(last_seen_index + 1, len(pll_logs)):
                     next_log = pll_logs[j]
                     if next_log.get("pll_round") == "Pre-PLL Lock":
                         continue
                     for claim_info in next_log["claims"]:
-                        if claim_info["claim"] != original_claim:
-                            final_rephrased = claim_info["claim"]
+                        if claim_info["claim"] != current_version:
+                            # Found a rephrased version
+                            current_version = claim_info["claim"]
+                            final_rephrased = current_version
                             decision = claim_info.get("pll_decision", "N/A")
                             round_label = next_log.get("pll_round", f"index {j}")
                             final_status = f"🔁 Rephrased → `{decision}` in round {round_label}"
+                            if decision.lower().startswith("discarded"):
+                                was_discarded = True
+                            break  # stop inner loop, move to next round
+                        elif claim_info["claim"] == current_version:
+                            decision = claim_info.get("pll_decision", "")
+                            if decision.lower().startswith("discarded"):
+                                was_discarded = True
+                                round_label = next_log.get("pll_round", f"index {j}")
+                                final_status = f"🗑️ Discarded in round {round_label}"
                             break
-                    break  # Only check one valid round after
 
             # Render UI
             st.markdown(f"### 📝 Claim: {original_claim}")
-            st.markdown(f"- **Initial Evaluation:** `{eval_info.get('label', 'N/A')}`")
-            st.markdown(f"- **Initial Confidence:** `{eval_info.get('confidence', 'N/A')}`")
-            st.markdown(f"- **Final PLL Status:** {final_status}")
-            if final_rephrased:
+            label = eval_info.get("label", "N/A")
+            label_class = f"bs-{label}"  # e.g., bs-Supported or bs-Unsupported
+            st.markdown(f"""<div><b>• Initial Evaluation:</b> <span class="{label_class}">{label}</span></div>""", unsafe_allow_html=True)
+            confidence = eval_info.get("confidence", "N/A")
+            conf_class = f"confidence-{confidence}"  # e.g., confidence-High
+            st.markdown(f"""<div><b>• Initial Confidence:</b> <span class="{conf_class}">{confidence}</span></div>""", unsafe_allow_html=True)
+            st.markdown(f"""<div><b>• Final PLL Status:</b> {final_status}</div>""", unsafe_allow_html=True)
+            if was_discarded:
+                st.markdown("❌ **Final Rephrased Claim was discarded by the LLM.**")
+            elif final_rephrased:
                 st.markdown(f"🔁 **Final Rephrased Claim:** {final_rephrased}")
+
+            # Show PLL trace per claim
+            with st.expander("🔎 PLL Trace"):
+                for j, round_log in enumerate(pll_logs):
+                    round_label = round_log.get("pll_round", f"index {j}")
+                    for claim_info in round_log["claims"]:
+                        if claim_info["claim"] == original_claim or claim_info["claim"] == final_rephrased:
+                            rephrased = claim_info.get("claim", "N/A")
+                            eval_label = claim_info.get("eval_label", "N/A")
+                            confidence = claim_info.get("confidence_label", "N/A")
+                            action = claim_info.get("pll_decision")
+
+                            st.markdown(f"**▶️ PLL Round {round_label}**")
+                            st.markdown(f"- Rephrased: \"{rephrased}\"")
+                            st.markdown(f"- Confidence: {confidence}")
+                            st.markdown(f"- Action: {action}")
+                            st.markdown("---")
 
             with st.expander("📥 Supporting Chunks"):
                 for idx, chunk in enumerate(eval_info.get("supporting_chunks", []), 1):
