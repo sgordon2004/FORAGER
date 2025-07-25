@@ -411,17 +411,8 @@ def prompt_locked_loop(embedder: FAISSEmbedder, question, eval, max_retry=3):
     }
     pll_logs.append(initial_log)
     log("✅ Logged initial claims before starting PLL rounds.")
-
-    # --- VERBOSITY FILTER ---
-        # Compares the length of rephrased claims to the length of the original,
-        # unmodified claim. If the rephrased claim ever becomes more than 2.5 times longer than
-        # its original, it is discarded.
-
-    # Store the original claim lengths for divergence detection
-    original_claim_lengths = {claim: len(claim.split()) for claim in eval.keys()}
-    # --------------------------------
     
-    # Initiate a Round Log to store the PLL details for the pre-PLL evaluation round
+    # Initialize a Round Log to store the PLL details for the pre-PLL evaluation round
     round_log = {"pll_round": "Pre-PLL Lock", "claims": []}
 
     # Step 1: Pre-PLL Check
@@ -484,6 +475,10 @@ def prompt_locked_loop(embedder: FAISSEmbedder, question, eval, max_retry=3):
             print(f"claim_eval: {claim_eval}")
             # Apply the decision and store the rephrased claim (or None or standardized message if the claim could not be supported)
             new_claim, used_chunks = handle_decision(embedder, decision, claim, claim_eval, question)
+
+            if new_claim.strip().lower() in {"❌ claim should be discarded.", "claim should be discarded"}:
+                log(f"🗑️ Discarding claim: '{claim}' due to discard signal")
+                continue  # Skip adding to new_eval or future rounds
 
             # new_claim will be None if the claim could not be supported
             if new_claim is None:
@@ -562,7 +557,27 @@ def prompt_locked_loop(embedder: FAISSEmbedder, question, eval, max_retry=3):
             break # Exit early if no claims left
 
     log("🏁 Reached max PLL rounds or no more claims to process, stopping.")
-    return pll_logs, final_locked_claims
+
+    # Loop through the remaining elements in eval
+    # At this point, eval should only have claims that are NOT Supported + High confidence
+    # Keep track of Supported + Medium confidence claims
+    medium_confidence_claims = []
+
+    for claim, claim_eval in eval.items():
+        label = claim_eval["label"]
+        confidence = claim_eval["confidence"]
+        supporting_docs = claim_eval.get("supporting_chunks", [])
+
+        # Add all Supported + Medium confidence claims to medium_confidence_claims
+        if label == "Supported" and confidence == "Medium":
+            medium_confidence_claims.append({
+                "claim": claim,
+                "label": label,
+                "confidence": confidence,
+                "supporting_chunks": supporting_docs
+            })
+
+    return pll_logs, final_locked_claims, medium_confidence_claims
 
 def synthesize_final_answer(question: str, locked_claims: list[str]) -> str:
     """

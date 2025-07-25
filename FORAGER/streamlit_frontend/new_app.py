@@ -130,7 +130,14 @@ with tab_chat:
             status_placeholder.info("🤖 Generating answer via LLM...")
             embedder = st.session_state.get("embedder")
             if embedder is None:
-                st.warning("⚠️ Please process documents first to initialize the embedder.")
+                from FORAGER.embedder import FAISSEmbedder
+                embedder = FAISSEmbedder.create_default()
+                try:
+                    embedder.initialize_faiss() # Load existing FAISS index if present
+                    st.session_state["embedder"] = embedder
+                except Exception as e:
+                    st.warning("⚠️ Could not initialize FAISS index. Please upload and process documents first.")
+                    st.stop()
             else:
                 from test_pipeline import full_forager_pipeline
                 # Run the first portion of the FORAGER pipeline (function name misleading)
@@ -209,11 +216,12 @@ with tab_chat:
                 import time
                 status_placeholder.info("💾 Initializing Prompt Locked Loop...")
                 start_time = time.perf_counter()
-                pll_logs, locked_claims = prompt_locked_loop(embedder, user_question, claim_eval, max_retry=3)
+                pll_logs, locked_claims, medium_confidence_claims = prompt_locked_loop(embedder, user_question, claim_eval, max_retry=3)
                 pipeline_runtime = time.perf_counter() - start_time
                 st.session_state["pipeline_runtime"] = pipeline_runtime
                 st.session_state["pll_logs"] = pll_logs
                 st.session_state["locked_claims"] = locked_claims
+                st.session_state["medium_confidence_claims"] = medium_confidence_claims
                 # else:
                 #     print(f"Prompt Locked Loop skipped due to unanswerable question.")
 
@@ -227,6 +235,11 @@ with tab_chat:
         if human_answer:
             st.markdown("## Final Synthesized Answer")
             st.markdown(f"> {human_answer}")
+            st.markdown("#### The following claims were also found to likely be true, though with slightly lower confidence: ")
+            medium_confidence_claims = st.session_state.get("medium_confidence_claims", [])
+            if medium_confidence_claims:
+                for claim in medium_confidence_claims:
+                    st.markdown(f"- {claim['claim']}")
             status_placeholder.success("🎉 Full pipeline completed successfully!")
             st.balloons()
 
