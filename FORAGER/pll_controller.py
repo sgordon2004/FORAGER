@@ -610,6 +610,7 @@ def synthesize_final_answer(question: str, locked_claims: list[str]) -> str:
                 - You may reorder or combine claims, but do not introduce any information not in the list.
                 - The result should be a single coherent paragraph.
                 - Do NOT include any bullet points or numbered lists in your output.
+                - Do NOT use any outside information at all, whatsoever.
 
                 FINAL ANSWER:
             """

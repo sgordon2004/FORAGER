@@ -94,24 +94,12 @@ def full_forager_pipeline(embedder: FAISSEmbedder, question: str, k: int = 3):
     """
 
     # Step 3: Get the LLM's answer
-    # print(f"Prompt to LLM:\n{prompt}")
     answer = get_llm_response(prompt)
-    # print(f"✅ LLM Answer:\n{answer}")
-
-    # # Skip the remainder of the pipeline if the question is irrelevant.
-    # if (answer == "This question cannot be answered by the information in the knowledge base."):
-    #     # print(answer)
-    #     eval = {}
-    #     eval[0] = {"label": "N/A", "confidence": "N/A", "supporting_chunks": retrieved_docs}
-    #     return answer, eval
-    
-    # # If the answer is relevant, perform the rest of the pipeline
-    # else:
-        # Step 4: Extract claims from LLM answer
-    claims = extract_atomic_claims_llm(answer) # a list of all the atomic claims made by the LLM
+    # Step 4: Extract atomic claims
+    claims = extract_atomic_claims_llm(answer)
 
     # Step 5: Run all claims through BS detector
-    eval = {} # dict to map claim to eval_label
+    eval = {}
     for claim in claims:
         label = detect_bs(embedder, claim, supporting_docs=retrieved_docs_text)
         eval[claim] = label
@@ -122,6 +110,7 @@ def full_forager_pipeline(embedder: FAISSEmbedder, question: str, k: int = 3):
         confidence = check_confidence(embedder, claim, label, retrieved_docs_text)
         updated_eval[claim] = {"label": label, "confidence": confidence, "supporting_chunks": retrieved_docs}
     
+    # Update eval to store the confidence checker results
     eval = updated_eval
     print("💋")
     print(eval)
