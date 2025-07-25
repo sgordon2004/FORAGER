@@ -505,21 +505,49 @@ with tab_logs:
         st.info("No PLL logs available. Submit a question in the Chat tab to generate logs.")
     else:
         for round_log in pll_logs:
-            with st.expander(f"PLL Round {round_log['pll_round']}" if round_log['pll_round'] != 0 else "Initial Claims (Pre-PLL)"):
+            round_label = round_log["pll_round"]
+            expander_title = "Initial Claim Evaluation (Pre-PLL)" if round_label == 0 else f"PLL Round {round_label}"
+            with st.expander(f"▶️ {expander_title}", expanded=False):
                 if not round_log["claims"]:
                     st.info("No claims were processed this round.")
                     continue
-            
-                for claim_info in round_log["claims"]:
-                    claim = claim_info["claim"]
-                    decision = claim_info["pll_decision"]
-                    reason = claim_info["reason"]
 
-                    st.markdown(f"""
-                    - **Claim:** {claim}
-                    - **Decision:** `{decision}`
-                    - **Reason:** {reason}         
-                    """)
+                for claim_info in round_log["claims"]:
+                    claim_text = claim_info.get("claim", "❓")
+                    decision = claim_info.get("pll_decision", "N/A")
+                    confidence = claim_info.get("confidence_label", "N/A")
+                    label = claim_info.get("eval_label", "N/A")
+                    reason = claim_info.get("reason", "No reason provided.")
+
+                    rephrased_from = claim_info.get("original_claim")
+                    was_rephrased = bool(rephrased_from and rephrased_from != claim_text)
+
+                    st.markdown(f"---")
+                    st.markdown(f"**📝 Claim:** {claim_text}")
+                    st.markdown(f"- **Decision:** `{decision}`")
+                    st.markdown(f"- **Confidence:** `{confidence}`")
+                    st.markdown(f"- **Label:** `{label}`")
+                    if was_rephrased:
+                        st.markdown(f"- **Rephrased from:** _{rephrased_from}_")
+                    st.markdown(f"- **Reason:** {reason}")
+
+                    # Optional metadata
+                    metadata = claim_info.get("metadata", {})
+                    if metadata:
+                        st.markdown("###### 🧬 Metadata:")
+                        if "similarity_scores" in metadata:
+                            st.markdown(f"- Similarity Scores: {metadata['similarity_scores']}")
+                        if "supporting_chunks" in metadata:
+                            st.markdown(f"- Supporting Chunk IDs: {metadata['supporting_chunks']}")
+                        if "rephrase_count" in metadata:
+                            st.markdown(f"- Rephrase Round Count: {metadata['rephrase_count']}")
+                        if "rerank_method" in metadata:
+                            st.markdown(f"- Rerank Method Used: {metadata['rerank_method']}")
+    locked_claims = st.session_state.get("locked_claims", [])
+    if locked_claims:
+        with st.expander("✅ Final Locked Claims", expanded=False):
+            for c in locked_claims:
+                st.markdown(f"- {c['claim']}")
 # === INPUT INGESTION PROCESS === #
 
 
