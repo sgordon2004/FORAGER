@@ -179,7 +179,15 @@ with tab_chat:
                     with col1:
                         st.markdown(f"""
                             <div class="tag-card {bs_class}">
-                                <h4>🧪 BS Label</h4>
+                                <div style="display: inline-flex; align-items: center; gap: 6px;">
+                                    <h4 style="margin: 0;">🧪 BS Label</h4>
+                                    <div class="tooltip" style="cursor: pointer; font-size: 18px; line-height: 1;">ℹ️
+                                        <span class="tooltiptext">This label indicates how well the LLM's claims 
+                                        are supported by the provided knowledge base. Possible labels are "Supported", 
+                                        "Unsupported", or "Contradicted". "Unsupported" or "Contradicted" labels mean 
+                                        that the model may have been inaccurate or hallucinated claims.</span>
+                                    </div>
+                                </div>
                                 <p><b>{label}</b></p>
                             </div>
                         """, unsafe_allow_html=True)
