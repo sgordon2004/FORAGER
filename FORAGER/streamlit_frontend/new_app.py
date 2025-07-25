@@ -365,24 +365,60 @@ with tab_knowledge_base:
 with tab_claims:
     st.header("📑 Claims Breakdown")
 
-    final_claims = st.session_state.get("claim_eval", {})
+    # The initial claims before PLL
+    initial_claim_eval = st.session_state.get("claim_eval", {})
+    # The evolution of all claims through the PLL
+    pll_logs = st.session_state.get("pll_logs", [])
 
-    if not final_claims:
+    if not initial_claim_eval:
         st.info("No claims available. Submit a question in the Chat tab to generate claims.")
     else:
-        for claim, info in final_claims.items():
-            label = info.get("label", "N/A")
-            confidence = info.get("confidence", "N/A")
-            supporting_chunks = info.get("supporting_chunks", [])
+        for original_claim, eval_info in initial_claim_eval.items():
+            final_status = "❓ Unknown"
+            final_rephrased = None
+            was_locked_pre_pll = False
 
-            st.markdown(f"### 📝 Claim: {claim}")
-            st.markdown(f"- **Evaluation:** `{label}`")
-            st.markdown(f"- **Confidence:** `{confidence}`")
+            # Step 1: Find the last index where the original claim appears
+            for idx, round_log in enumerate(pll_logs):
+                for claim_info in round_log["claims"]:
+                    if claim_info["claim"] == original_claim:
+                        last_seen_index = idx
+                        if round_log.get("pll_round") == "Pre-PLL Lock":
+                            was_locked_pre_pll = True
+                        break  # Only one match per round
 
-            with st.expander("📜 Supporting Chunks"):
-                for idx, chunk in enumerate(supporting_chunks, 1):
-                    formatted_chunk = chunk["text"].replace("\n", "\n> ")
-                    st.markdown(f"> **Chunk {idx}:**  \n> {formatted_chunk}")
+            # Step 2: Determine final status
+            if was_locked_pre_pll:
+                final_status = "🔒 Locked before PLL"
+            elif last_seen_index is not None:
+                # Look ahead for next rephrased version, skipping Pre-PLL Lock
+                for j in range(last_seen_index + 1, len(pll_logs)):
+                    next_log = pll_logs[j]
+                    if next_log.get("pll_round") == "Pre-PLL Lock":
+                        continue
+                    for claim_info in next_log["claims"]:
+                        if claim_info["claim"] != original_claim:
+                            final_rephrased = claim_info["claim"]
+                            decision = claim_info.get("pll_decision", "N/A")
+                            round_label = next_log.get("pll_round", f"index {j}")
+                            final_status = f"🔁 Rephrased → `{decision}` in round {round_label}"
+                            break
+                    break  # Only check one valid round after
+
+            # Render UI
+            st.markdown(f"### 📝 Claim: {original_claim}")
+            st.markdown(f"- **Initial Evaluation:** `{eval_info.get('label', 'N/A')}`")
+            st.markdown(f"- **Initial Confidence:** `{eval_info.get('confidence', 'N/A')}`")
+            st.markdown(f"- **Final PLL Status:** {final_status}")
+            if final_rephrased:
+                st.markdown(f"🔁 **Final Rephrased Claim:** {final_rephrased}")
+
+            with st.expander("📥 Supporting Chunks"):
+                for idx, chunk in enumerate(eval_info.get("supporting_chunks", []), 1):
+                    text = chunk.get("text", "").replace("\n", "\n> ")
+                    st.markdown(f"> **Chunk {idx}:**\n> {text}")
+
+
 
 # Tab 4: Metrics & Performance
 with tab_metrics:
@@ -392,7 +428,7 @@ with tab_metrics:
     col1, col2, col3, col4 = st.columns(4)
     col1.metric("🔍 Claims Evaluated", len(st.session_state.get("claim_eval", "N/A")))
     col2.metric("✅ Locked Claims", len(st.session_state.get("locked_claims", "N/A")))
-    col3.metric("♻️ PLL Rounds", len(st.session_state.get("pll_logs", "N/A")))
+    col3.metric("♻️ PLL Rounds", len(st.session_state.get("pll_logs", "N/A")) - 2) # Subtract 2 because PLL Logs has Round 0 and Pre-PLL Lock which aren't actual rounds
     runtime = st.session_state.get("pipeline_runtime", None)
     if isinstance(runtime, (int, float)):
         col4.metric("⏱️ Total Runtime", f"{runtime:.2f}s")
@@ -427,12 +463,15 @@ with tab_logs:
     st.header("🪵 PLL Logs")
 
     pll_logs = st.session_state.get("pll_logs", [])
+    st.markdown(pll_logs)
+    st.markdown("\n")
+    st.markdown(claim_eval)
 
     if not pll_logs:
         st.info("No PLL logs available. Submit a question in the Chat tab to generate logs.")
     else:
         for round_log in pll_logs:
-            with st.expander(f"PLL Round {round_log['pll_round']}"):
+            with st.expander(f"PLL Round {round_log['pll_round']}" if round_log['pll_round'] != 0 else "Initial Claims (Pre-PLL)"):
                 if not round_log["claims"]:
                     st.info("No claims were processed this round.")
                     continue
