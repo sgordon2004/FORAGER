@@ -226,6 +226,10 @@ with tab_chat:
         human_answer = synthesize_final_answer(user_question, [c["claim"] for c in locked_claims])
         if human_answer:
             st.markdown("## Final Synthesized Answer")
+            st.markdown(f"""
+                        <p style="font-size: 14px;">All LLM claims in the answer below were marked as 
+                        Supported and High Confidence.</p>
+                        """, unsafe_allow_html=True)
             st.markdown(f"> {human_answer}")
             status_placeholder.success("🎉 Full pipeline completed successfully!")
             st.balloons()
