@@ -128,7 +128,7 @@ pip install -r requirements.txt
 
 ## 📖 API Documentation
 Looking for function-level documentation?  
-Check out the full [FORAGER API Reference](https://sgordon2004.github.io/FORAGER/FORAGER/bs.html) 📚
+Check out the full [FORAGER API Reference](https://sgordon2004.github.io/FORAGER/FORAGER.html) 📚
 
 ## 📘 Usage
 FORAGER is accessible via a simple front-end interface; no coding is required.
