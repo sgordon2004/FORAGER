@@ -220,19 +220,3 @@ def detect_bs(embedder: FAISSEmbedder, claim: str, supporting_docs: list[str],
         return "Contradicted"
     else:
         return "Unsupported"
-    
-
-# for token in doc:
-#     print(f"{token.text:15} | {token.dep_:10} | {token.head.text:10} | {token.pos_:6} | {token.lemma_}")
-
-# text_1 = "TSMC is the global leader in semiconductor manufacturing. It produces chips for major firms like Apple and AMD. The company is headquartered in Hsinchu, Taiwan. Its revenue exceeded $70 billion in 2023. TSMC's advanced 3nm process began mass production in early 2023. If geopolitical tensions increase, the company might diversify its manufacturing locations."
-# text_2 = "Intel has invested billions in next-generation packaging technology. Its Foveros and EMIB technologies aim to enhance performance and reduce power consumption. Although it trails TSMC in overall market share, Intel plans to compete aggressively in advanced nodes. The company is based in Santa Clara, California. It might regain leadership by 2027 if its roadmap stays on track."
-# text_3 = "Research suggests that chiplet-based architectures improve performance per watt. AMD’s Ryzen processors use chiplets to separate compute and I/O functions. NVIDIA, on the other hand, focuses heavily on monolithic designs. If yields improve, more companies could shift to chiplet-based strategies. Some engineers argue that chiplets introduce interconnect complexity."
-# text_4 = "Apple designs its own chips using ARM architecture. These chips are manufactured by TSMC using cutting-edge nodes. Qualcomm and MediaTek also rely on TSMC for fabrication. In contrast, Intel manufactures most of its chips in-house. While Samsung produces both memory and logic chips, it lags behind TSMC in foundry services. Analysts believe that AI workloads will drive demand for 2.5D and 3D packaging."
-# text_5 = "TSMC might open a new fab in Germany. Some speculate that geopolitical pressures could accelerate this move. If subsidies are approved, the project will likely begin in 2026. However, no official confirmation has been released. The company declined to comment on its plans."
-
-# print(extract_atomic_claims(text_1))
-# print(extract_atomic_claims(text_2))
-# print(extract_atomic_claims(text_3))
-# print(extract_atomic_claims(text_4))
-# print(extract_atomic_claims(text_5))
