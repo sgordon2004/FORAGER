@@ -154,12 +154,6 @@ streamlit run FORAGER/streamlit_frontend/new_app.py
 6. **Export Results**
 - Save the final claims and metadata as .jsonl for downstream use.
 
-### 🖥️ Typical Flow via UI
-1. **Upload** your documents (PDF, HTML, or Markdown).
-2. **Submit a query** to the LLM via the app interface.
-3. **View extracted claims** and their verification status directly in the dashboard.
-4. **Download** or **export** results for further use.
-
 ## Roadmap
 - [ ] Support for .txt, hyperlink, and .md ingestion
 - [ ] User-specified model selection
