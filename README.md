@@ -1,7 +1,57 @@
 # FORAGER
 
-**FORAGER** (Fact-Oriented Responsible AI-Guided Engineering Research) is a verification pipeline designed to improve trust in Large Language Models (LLMs). It combines **Prompt Lock Looping**, **Retrieval-Augmented Generation (RAG)**, and **Natural Language Inference (NLI)** techniques to validate AI-generated claims against reliable evidence.
+_A trust-first RAG pipeline for validating LLM outputs._
 
+## What is FORAGER?
+**FORAGER** (Fact-Oriented Responsible AI-Guided Engineering Research) is a verification pipeline designed to improve trust in Large Language Models (LLMs). It combines **Prompt-Locked Looping**, **Retrieval-Augmented Generation (RAG)**, and **Natural Language Inference (NLI)** techniques to validate AI-generated claims against reliable evidence.
+
+FORAGER is built for **domains where factual accuracy is non-negotiable**, like engineering research, scientific documentation, and techincal reports. LLM output is often treated as a *black box*, where what you see is what you get, and the process that derived the output is mysterious to the user. FORAGER serves to make the reasoning process completely transparent by indentifying, scoring, and verifying each claim the LLM makes.
+
+Its modular design gives devleopers and users the freedom to:
+- Plug in custom document sets (PDF & HTML)
+    - *More formats to come!*
+- *(Eventually)* swap in different LLM or NLI models
+- Trace claim evolution acorss multiple verification rounds
+
+FORAGER is well-suited to **high-stakes, document-grounded question answering**, where citations, traceability, and accuracy matter as much as fluency.
+
+## FORAGER Tech Stack
+
+## How FORAGER Works
+### Ingestion
+FORAGER begins by ingesting source documents. These are PDFs and HTML files that the user has collected, all about a specific topic of interest to the user. For example, a professor may choose to upload her lecture notes and textbook, or a computer engineer may choose to upload all of his project requirements. These documents are stored locally on the user's machine.
+
+### Chunking
+Once a corpus has been uploaded, FORAGER chunks all of the documents into sections of 300 [**tokens**](https://learn.microsoft.com/en-us/dotnet/ai/conceptual/understanding-tokens) each, with an overlap of 50 tokens between each chunk. This overlap prevents context from being lost between chunks.
+
+### Embedding
+Each chunk is then embedded into a [**vector**](https://www.pinecone.io/learn/vector-embeddings/), which is a list of 700+ numbers that represents the **semantic content** of the chunk. Each vector represents what the chunk actually *means*, as opposed to what it says. For example, "cut" and "slice", despite being different words, generally mean the same thing (to divide into pieces with a knife), and can be said to have similar semantic content.
+
+Each vector embedding is stored in the FAISS index, a database that allows vectors to be queried and retrieved.
+
+### Claim Extraction
+When the LLM generates a response to a user's question, the generated response is parsed to isolate **atomic claims**. Each atomic claim must express only one complete fact in a standalone full sentence that is understandable without additonal context. This step is crucial to enable full traceability. When interacting with LLMs traditionally, the answer to your question may be 8 sentence paragraph, but there may only be 3 or 4 actual atomic claims within that paragraph.
+
+### BS Detection
+This is the first step in FORAGER's claim evaluation process. It is meant to, well—detect BS. The BS Detector uses [**Natural Language Inference (NLI)**](https://en.wikipedia.org/wiki/Textual_entailment) to check whether a claim is entailed, contradicted, or neutral with respect to the document(s) it is based in. In cases where NLI is neutral or uncertain, the BS Detector falls back to **vector similarity**. The primary goal of this step is to validate factual alignment between LLM-generated claims and the retrieved documents. The BS Detector assigns each claim a label of "Supported", "Unsupported", or "Contradicted", depending on the degree of entailment between the claim and its supporting document(s). The BS Detector can be thought of as a fact-checking judge asking "Is this claim logically and semantically supported by the source documents?".
+
+### Confidence Checking
+If the BS Detector is a fact-checking judge, the Confidence Checker is an assistant that says "I am X% sure that the judge made the right call here". It assesses how reliable or certain the BS Detector's label is by incorporating the length/clarity of the supporting evidence, agreement among multiple supporting chunks, and how far the similarity score is from the thresholds. It determines whether a claim's status is trustworthy enough to lock in the Prompt Locked Loop.
+
+### Locking / Rephrasing
+This is the Prompt-Locked Loop, the main engine of the pipeline. Claims enter the Prompt Lock Loop and exit when they are "locked," meaning that they are deemed "Supported" and "High Confidence" by the BS Detector and Confidence Checker, respectively. If a claim does not lock (it is not reliable enough to exit yet), FORAGER will either:
+- Rephrase the original claim using the LLM to better reflect its supporting document(s), or
+- Rerank the retrieved chunks and re-evaluate with the same claim.
+
+This process repeats, refining and retrying, until the claim locks, or the system gives up after a specific number of iterations, since the claim can no longer be improved. This mechanism enforces stability and trustworthiness, rather than simply accepting the LLM's first response. It ensures that the final claims are not only plausible but backed by evidence and verfiably correct.
+
+## Why FORAGER Matters
+The use of LLMs is quickly becoming, if it has not already become, the norm in today's world. Whether you are a freshman in high school, a doctoral student, or the CEO of a Fortune 500 company, you have more than likely implemented LLMs in your day-to-day in some form. While this often makes our lives more convenient, LLMs are far from perfect. They consistently fail to output what you wanted, [hallucinate false information](https://en.wikipedia.org/wiki/Hallucination_(artificial_intelligence)), and flat-out lie. Even though almost everyone uses LLMs, almost nobody actually understands how the LLM comes up with their answers. This unreliability prevents LLMs from being utilized to their fullest potential, especially in high-stakes and mission-critical settings, where accuracy is of utmost importance.
+
+FORAGER enters to engender trust into AI. FORAGER enables LLMs to frame their answers with hard evidence and showcase their reasoning. This is more than *Chain-of-Thought* reasoning, where all reasoning is based solely on the model's training data, internal and unverified. FORAGER adds a layer of **real-world verification** on top of LLM reasoning. By validating each **atomic claim** the LLM makes, FORAGER unlocks a level of auditability that has yet to be seen with LLMs.
+
+## What is a **Prompt-Locked Loop**?
+**Prompt-locked Loop** is a term coined by our team to refer to the main control mechanism behind FORAGER that iteratively refines AI-generated claims until they "lock" into a stable, supported, and high-confidence output. Computer engineers may notice the obvious inspiration we took from [**Phase-locked loop**](https://en.wikipedia.org/wiki/Phase-locked_loop), which synchronizes an output signal with a reference signal in computer electronics. Much how a Phase Lock Loop aligns those signals, out Prompt Locked Loop aligns an AI-generated claim with ground-truth documents.
 ---
 
 ## 🚀 Features
