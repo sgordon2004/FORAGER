@@ -7,11 +7,6 @@ from FORAGER.bs import detect_bs
 from FORAGER.embedder import FAISSEmbedder
 from FORAGER.runner import get_llm_response
 from FORAGER.confidence import check_confidence
-# from FORAGER.pll_controller import prompt_locked_loop
-print("✅ test_pipeline.py successfully imported")
-
-# Uncomment if running directly
-# initialize_faiss()
 
 def generate_and_evaluate_claims(embedder: FAISSEmbedder, question: str, k: int = 3):
     """
@@ -107,17 +102,3 @@ def generate_and_evaluate_claims(embedder: FAISSEmbedder, question: str, k: int 
     print(eval)
 
     return answer, eval
-
-
-# dummy_eval = [
-#     {"claim": "3D HI reduces wiring length.", "label": "Unsupported", "confidence": "Medium"},
-#     {"claim": "3D HI increases flexibility.", "label": "Supported", "confidence": "Low"},
-# ]
-# from ingestor import extract_all_pdfs
-# from chunker import main
-# dummy_docs = ["3D HI allows better interconnect density.", "It may lead to better performance due to shorter connections."]
-# extract_all_pdfs()
-# main()
-# initialize_faiss()
-
-# prompt_locked_loop("What are some benefits of 3D HI?", dummy_eval, dummy_docs)

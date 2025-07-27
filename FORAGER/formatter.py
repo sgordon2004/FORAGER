@@ -40,9 +40,6 @@ def load_json(filepath):
         print(f"Loading {filepath}...\n")
         return json.load(f)
 
-# # Set batch size
-# batch_size = 5
-
 # Creates batches of 5 questions each
 
 def format_json(data, batch_size=5):

@@ -94,8 +94,3 @@ def extract_atomic_claims_llm(text: str) -> str:
         print(f"[ERROR] Failed to parse LLM response: {e}")
         print(response)
         return []
-    
-# test = "NVIDIA, the leader in graphics processing units, announced its latest AI chip in 2024. The chip is manufactured using TSMC’s 3nm process technology. Despite global supply chain disruptions, NVIDIA reported record quarterly revenue. Meanwhile, Intel continues to expand its foundry services but struggles to match TSMC’s efficiency. Apple has also shifted more chip production to TSMC to support its custom silicon roadmap."
-
-# print(f"[DEBUG] llm_extractor.py Sending input to LLM:\n{test}")
-# print(extract_atomic_claims_llm(test))

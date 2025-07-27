@@ -120,5 +120,3 @@ def main():
                 f_out.write(json.dumps(out) + "\n")
 
     print(f"[OK] Finished chunking {len(all_docs)} documents.")
-
-# main()

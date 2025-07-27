@@ -202,6 +202,3 @@ def extract_all_html():
     for html_path in html_dir.glob("*.html"):
         output_path = clean_html(html_path, html_text_dir, json_dir)
         print(f"Cleaned HTML saved to {output_path}")
-
-# extract_all_html()
-# extract_all_pdfs()

@@ -126,7 +126,6 @@ class FAISSEmbedder:
         """
         This function sets up the FAISS database for the first time.
         """
-        #chunks = self.load_chunks()
         embeddings = self.embed_chunks_from_json()
         self.faiss_db.add(embeddings)
         faiss.write_index(self.faiss_db, self.faiss_db_filepath)
@@ -216,33 +215,5 @@ class FAISSEmbedder:
         """
         vec = self.faiss_db.reconstruct(index)
         print(f"Vector at index {index}:\n{vec}\n")
-
-    # def add_new_chunks(self):
-    #     """
-    #     This function checks if more chunks have been added to chunks.jsonl. If so, the chunks are embedded and added
-    #     to the FAISS database.
-
-    #     Note: This function assumes new chunks are always added to the end of the chunks.jsonl file, which I realized
-    #     is not true. It's better to just use embed_chunks now.
-    #     """
-    #     chunks = self.load_chunks()
-    #     current_total = self.faiss_db.ntotal
-    #     if len(chunks) > current_total:
-    #         new_embeddings = self.embed_chunks(chunks[current_total:])
-    #         self.faiss_db.add(new_embeddings)
-    #         faiss.write_index(self.faiss_db, self.faiss_db_filepath)
-    #         print(f"\033[1;96mFAISS database updated. New size: {self.faiss_db.ntotal}\033[0m\n")
-    #     else:
-    #         print("\033[1;92m✅ FAISS database is up to date.\033[0m\n")
-
-# # For testing
-# if __name__ == "__main__":
-#     print(base_dir)
-#     # embedder = FAISSEmbedder()
-#     # embedder.initialize_faiss()
-#     # embedder.add_new_chunks()
-
-# Deleted old (non-class) version of embedder because it was no longer necessary. Look for a commit 
-# before 7/23/25 4:05 PM to restore it if needed.
 
 
