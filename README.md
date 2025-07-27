@@ -55,12 +55,11 @@ FORAGER is built with a modular, research-focused stack that balances LLM flexib
 - **Markdown / YAML** – Configurable prompts and evaluation logs
 
 ## ⚙️ How FORAGER Works
+FORAGER operates through three main subprocesses: Document Ingestion, Claim Evaluation, and the Prompt-Locked Loop.
 
 <p align="center">
   <img src="https://sgordon-demo-s3.s3.us-east-2.amazonaws.com/High-Level+FORAGER+Flowchart.png" alt="FORAGER Pipeline" width="400"/>
 </p>
-
-FORAGER operates through three main subprocesses: Document Ingestion, Claim Evaluation, and the Prompt-Locked Loop.
 
 ### 📥 Ingestion
 FORAGER begins by ingesting source documents. These are PDFs and HTML files that the user has collected, all about a specific topic of interest to the user. For example, a professor may choose to upload her lecture notes and textbook, or a computer engineer may choose to upload all of his project requirements. These documents are stored locally on the user's machine.
