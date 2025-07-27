@@ -14,9 +14,14 @@ Its modular design gives devleopers and users the freedom to:
 - Plug in custom document sets (PDF & HTML)
     - *More formats to come!*
 - *(Eventually)* swap in different LLM or NLI models
-- Trace claim evolution acorss multiple verification rounds
+- Trace claim evolution across multiple verification rounds
 
 FORAGER is well-suited to **high-stakes, document-grounded question answering**, where citations, traceability, and accuracy matter as much as fluency.
+
+## 💡 Why FORAGER Matters
+The use of LLMs is quickly becoming, if it has not already become, the norm in today's world. Whether you are a freshman in high school, a doctoral student, or the CEO of a Fortune 500 company, you have more than likely implemented LLMs in your day-to-day in some form. While this often makes our lives more convenient, LLMs are far from perfect. They consistently fail to output what you wanted, [hallucinate false information](https://en.wikipedia.org/wiki/Hallucination_(artificial_intelligence)), and flat-out lie. Even though almost everyone uses LLMs, almost nobody actually understands how the LLM comes up with their answers. This unreliability prevents LLMs from being utilized to their fullest potential, especially in high-stakes and mission-critical settings, where accuracy is of utmost importance.
+
+FORAGER enters to engender trust into AI. FORAGER enables LLMs to frame their answers with hard evidence and showcase their reasoning. This is more than *Chain-of-Thought* reasoning, where all reasoning is based solely on the model's training data, internal and unverified. FORAGER adds a layer of **real-world verification** on top of LLM reasoning. By validating each **atomic claim** the LLM makes, FORAGER unlocks a level of auditability that has yet to be seen with LLMs.
 
 ## 🧱 FORAGER Tech Stack
 FORAGER is built with a modular, research-focused stack that balances LLM flexibility with rigorous verification.
@@ -96,11 +101,6 @@ This process repeats, refining and retrying, until the claim locks, or the syste
   <img src="https://sgordon-demo-s3.s3.us-east-2.amazonaws.com/Prompt+Locked+Loop+FORAGER+Flowchart.png" alt="FORAGER Pipeline" width="400"/>
 </p>
 
-## 💡 Why FORAGER Matters
-The use of LLMs is quickly becoming, if it has not already become, the norm in today's world. Whether you are a freshman in high school, a doctoral student, or the CEO of a Fortune 500 company, you have more than likely implemented LLMs in your day-to-day in some form. While this often makes our lives more convenient, LLMs are far from perfect. They consistently fail to output what you wanted, [hallucinate false information](https://en.wikipedia.org/wiki/Hallucination_(artificial_intelligence)), and flat-out lie. Even though almost everyone uses LLMs, almost nobody actually understands how the LLM comes up with their answers. This unreliability prevents LLMs from being utilized to their fullest potential, especially in high-stakes and mission-critical settings, where accuracy is of utmost importance.
-
-FORAGER enters to engender trust into AI. FORAGER enables LLMs to frame their answers with hard evidence and showcase their reasoning. This is more than *Chain-of-Thought* reasoning, where all reasoning is based solely on the model's training data, internal and unverified. FORAGER adds a layer of **real-world verification** on top of LLM reasoning. By validating each **atomic claim** the LLM makes, FORAGER unlocks a level of auditability that has yet to be seen with LLMs.
-
 ## 🔁 What is the Prompt-Locked Loop?
 **Prompt-locked Loop** is a term coined by our team to refer to the main control mechanism behind FORAGER that iteratively refines AI-generated claims until they "lock" into a stable, supported, and high-confidence output. Computer engineers may notice the obvious inspiration we took from [**Phase-locked loop**](https://en.wikipedia.org/wiki/Phase-locked_loop), which synchronizes an output signal with a reference signal in computer electronics. Much how a Phase Lock Loop aligns those signals, out Prompt Locked Loop aligns an AI-generated claim with ground-truth documents.
 
@@ -129,11 +129,3 @@ FORAGER is accessible via a simple front-end interface; no coding is required.
 2. **Submit a query** to the LLM via the app interface.
 3. **View extracted claims** and their verification status directly in the dashboard.
 4. **Download** or **export** results for further use.
-
----
-
-### ⚙️ Backend Workflow (For Reference Only)
-Internally, FORAGER follows this flow:
-- Ingestion → Chunking → Embedding → Claim Evaluation
-
-This process is fully automated through the UI.
