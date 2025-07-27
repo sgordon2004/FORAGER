@@ -55,7 +55,6 @@ FORAGER enters to engender trust into AI. FORAGER enables LLMs to frame their an
 
 ## What is a Prompt-Locked Loop?
 **Prompt-locked Loop** is a term coined by our team to refer to the main control mechanism behind FORAGER that iteratively refines AI-generated claims until they "lock" into a stable, supported, and high-confidence output. Computer engineers may notice the obvious inspiration we took from [**Phase-locked loop**](https://en.wikipedia.org/wiki/Phase-locked_loop), which synchronizes an output signal with a reference signal in computer electronics. Much how a Phase Lock Loop aligns those signals, out Prompt Locked Loop aligns an AI-generated claim with ground-truth documents.
----
 
 ## 🚀 Features
 - ✅ Multi-stage claim verification
