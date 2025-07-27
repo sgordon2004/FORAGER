@@ -139,10 +139,10 @@ with tab_chat:
                     st.warning("⚠️ Could not initialize FAISS index. Please upload and process documents first.")
                     st.stop()
             else:
-                from test_pipeline import full_forager_pipeline
+                from test_pipeline import generate_and_evaluate_claims
                 # Run the first portion of the FORAGER pipeline (function name misleading)
-                answer, claim_eval = full_forager_pipeline(embedder, user_question)
-                # st.markdown(f"full_forager_pipeline() returned `claim_eval`: {claim_eval}")
+                answer, claim_eval = generate_and_evaluate_claims(embedder, user_question)
+                # st.markdown(f"generate_and_evaluate_claims() returned `claim_eval`: {claim_eval}")
                 st.session_state["answer"] = answer
                 st.session_state["claim_eval"] = claim_eval
 
@@ -222,7 +222,7 @@ with tab_chat:
                 # if (answer != "This question cannot be answered by the information in the knowledge base."):
                 from pll_controller import prompt_locked_loop
                 import time
-                status_placeholder.info("💾 Initializing Prompt Locked Loop...")
+                status_placeholder.info("🔁 Executing Prompt Locked Loop...")
                 start_time = time.perf_counter()
                 pll_logs, locked_claims, medium_confidence_claims = prompt_locked_loop(embedder, user_question, claim_eval, max_retry=3)
                 pipeline_runtime = time.perf_counter() - start_time
@@ -436,23 +436,35 @@ with tab_claims:
             if was_discarded:
                 st.markdown("❌ **Final Rephrased Claim was discarded by the LLM.**")
             elif final_rephrased:
-                st.markdown(f"🔁 **Final Rephrased Claim:** {final_rephrased}")
+                st.markdown(f"""<div><b>• Final Rephrased Claim:</b> {final_rephrased}</div>""", unsafe_allow_html=True)
 
             # Show PLL trace per claim
             with st.expander("🔎 PLL Trace"):
-                for j, round_log in enumerate(pll_logs):
-                    round_label = round_log.get("pll_round", f"index {j}")
-                    for claim_info in round_log["claims"]:
-                        if claim_info["claim"] == original_claim or claim_info["claim"] == final_rephrased:
-                            rephrased = claim_info.get("claim", "N/A")
-                            eval_label = claim_info.get("eval_label", "N/A")
-                            confidence = claim_info.get("confidence_label", "N/A")
-                            action = claim_info.get("pll_decision")
+                # Step 1: Build full rephrasing lineage by following `original_claim` links
+                lineage = []
+                seen = set()
+                queue = [original_claim]
 
+                while queue:
+                    current = queue.pop(0)
+                    if current in seen:
+                        continue
+                    seen.add(current)
+                    lineage.append(current)
+                    for round_log in pll_logs:
+                        for claim_info in round_log["claims"]:
+                            if claim_info.get("original_claim") == current:
+                                queue.append(claim_info["claim"])
+
+                # Step 2: Display all rounds where claims in the lineage appear
+                for round_log in pll_logs:
+                    round_label = round_log.get("pll_round", "N/A")
+                    for claim_info in round_log["claims"]:
+                        if claim_info["claim"] in lineage:
                             st.markdown(f"**▶️ PLL Round {round_label}**")
-                            st.markdown(f"- Rephrased: \"{rephrased}\"")
-                            st.markdown(f"- Confidence: {confidence}")
-                            st.markdown(f"- Action: {action}")
+                            st.markdown(f"- Rephrased: \"{claim_info['claim']}\"")
+                            st.markdown(f"- Confidence: {claim_info.get('confidence_label', 'N/A')}")
+                            st.markdown(f"- Action: {claim_info.get('pll_decision', 'N/A')}")
                             st.markdown("---")
 
             with st.expander("📥 Supporting Chunks"):
@@ -505,9 +517,6 @@ with tab_logs:
     st.header("🪵 PLL Logs")
 
     pll_logs = st.session_state.get("pll_logs", [])
-    st.markdown(pll_logs)
-    st.markdown("\n")
-    st.markdown(claim_eval)
 
     if not pll_logs:
         st.info("No PLL logs available. Submit a question in the Chat tab to generate logs.")
