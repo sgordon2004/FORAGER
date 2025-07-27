@@ -154,7 +154,7 @@ streamlit run FORAGER/streamlit_frontend/new_app.py
 6. **Export Results**
 - Save the final claims and metadata as .jsonl for downstream use.
 
-## Roadmap
+## 🚧 Roadmap
 - [ ] Support for .txt, hyperlink, and .md ingestion
 - [ ] User-specified model selection
 - [ ] NLP claim extraction using spaCy
