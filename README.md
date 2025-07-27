@@ -130,8 +130,38 @@ pip install -r requirements.txt
 
 FORAGER is accessible via a simple front-end interface; no coding is required.
 
+1. **Start the App**
+- Run the following command from the root `FORAGER` folder:
+```bash
+streamlit run FORAGER/streamlit_frontend/new_app.py
+```
+
+2. **Upload Source Documents**
+- Supports: PDF, HTML (more formats coming soon)
+- Documents are stored locally and embedded automatically once the "Process Document(s)" button is clicked
+
+3. **Submit a Question**
+- Enter your research or task-related question (e.g., "How does chiplet integration affect power efficiency?")
+
+4. **Inspect Verified Claims**
+- View atomic claims extracted from the LLM's answer in the Claims Breakdown tab.
+- Each claim is labeled as Supported, Unsupported, or Contradicted.
+- Confidence level and supporting document chunks are shown.
+
+5. **Trace Claim Evolution**
+- For claims that are refined or rephrased, the full Prompt-Locked Loop trace is shown, round-by-round, in the Claims Breakdown tab.
+
+6. **Export Results**
+- Save the final claims and metadata as .jsonl for downstream use.
+
 ### 🖥️ Typical Flow via UI
 1. **Upload** your documents (PDF, HTML, or Markdown).
 2. **Submit a query** to the LLM via the app interface.
 3. **View extracted claims** and their verification status directly in the dashboard.
 4. **Download** or **export** results for further use.
+
+## Roadmap
+- [ ] Support for .txt, hyperlink, and .md ingestion
+- [ ] User-specified model selection
+- [ ] NLP claim extraction using spaCy
+- [ ] Exportable JSONL showing results
