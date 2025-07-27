@@ -18,7 +18,7 @@ accepted, discarded, or refined in subsequent iterations of the Prompt Lock Loop
 
 import os
 import sys
-from embedder import FAISSEmbedder
+from FORAGER.embedder import FAISSEmbedder
 from typing import List, Tuple
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 __docformat__ = "google"

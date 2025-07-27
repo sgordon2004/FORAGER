@@ -5,7 +5,7 @@ import re
 base = Path("FORAGER_corpus/heterogenous_integration") # Base directory for the FORAGER corpus's HI information
 pdf_dir = base / "pdf" # Sub-directory containing PDF files
 pdf_text_dir = base / "pdf_text"
-pdf_text_dir.mkdir(exist_ok=True)
+pdf_text_dir.mkdir(parents=True, exist_ok=True)
 
 def extract_pdf(filename):
     file = pdf_dir / filename

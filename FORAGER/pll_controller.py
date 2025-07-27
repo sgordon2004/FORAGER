@@ -452,8 +452,12 @@ def prompt_locked_loop(embedder: FAISSEmbedder, question, eval, max_retry=3):
         for claim, claim_eval in eval.items()
         if not (claim_eval["label"] == "Supported" and claim_eval["confidence"] == "High")
     }
+
+    # Debugging print statements
+    # TODO: Remove later
     print(f"\n‼️ STATE OF `eval` IN prompted_lock_loop() BEFORE PLL ROUND 1 ‼️\n")
     print(eval)
+
     # Step 2: Initiate the Prompt Locked Loop
     # Variable to track PLL rounds
     pll_round = 1
@@ -473,9 +477,12 @@ def prompt_locked_loop(embedder: FAISSEmbedder, question, eval, max_retry=3):
             confidence_label = claim_eval["confidence"]
 
             decision = pll(eval_label, confidence_label)
-            log(f"📌 Claim: {claim}\nDecision: {decision}")
 
+            # Debug Prints
+            # TODO: Remove later
+            log(f"📌 Claim: {claim}\nDecision: {decision}")
             print(f"claim_eval: {claim_eval}")
+
             # Apply the decision and store the rephrased claim (or None or standardized message if the claim could not be supported)
             new_claim, used_chunks = handle_decision(embedder, decision, claim, claim_eval, question)
 
@@ -512,13 +519,17 @@ def prompt_locked_loop(embedder: FAISSEmbedder, question, eval, max_retry=3):
                         "claim": claim,
                         "eval_label": eval_label,
                         "confidence_label": confidence_label,
-                        "pll_decision": "Discarded by LLM",
-                        "reason": "LLM response indicated claim should be discarded after reranking/rephrasing."
+                        "pll_decision": "Discarded",
+                        "reason": "Maximum word length (40) exceeded"
                     })
                     continue
             
             # Save the new rephrased claim to the list of ALL rephrased claims
-            updated_claims.append((new_claim, used_chunks))
+            updated_claims.append({
+                "claim": new_claim,
+                "original_claim": claim,
+                "supporting_chunks": used_chunks
+            })
         
         
 
@@ -527,7 +538,10 @@ def prompt_locked_loop(embedder: FAISSEmbedder, question, eval, max_retry=3):
             log("🔄 Re-evaluating updated claims...")
             new_eval = {}
 
-            for claim, supporting_docs in updated_claims:
+            for updated in updated_claims:
+                claim = updated["claim"]
+                supporting_docs = updated["supporting_chunks"]
+                original_claim = updated["original_claim"]
                 label = detect_bs(embedder, claim, supporting_docs)
                 confidence = check_confidence(embedder, claim, label, supporting_docs)
 
@@ -535,12 +549,13 @@ def prompt_locked_loop(embedder: FAISSEmbedder, question, eval, max_retry=3):
                 if label == "Supported" and confidence == "High":
                     log(f"✅ Locking claim after re-evaluation: {claim}")
                     round_log["claims"].append({
-                    "claim": claim,
-                    "eval_label": label,
-                    "confidence_label": confidence,
-                    "pll_decision": "Locked after re-evaluation",
-                    "reason": "Claim auto-locked after reevaluation with high confidence and support."
-                })
+                        "claim": claim,
+                        "original_claim": original_claim,
+                        "eval_label": label,
+                        "confidence_label": confidence,
+                        "pll_decision": "Locked after re-evaluation",
+                        "reason": "Claim auto-locked after reevaluation with high confidence and support."
+                    })
                     final_locked_claims.append({
                         "claim": claim,
                         "label": label,
@@ -559,6 +574,7 @@ def prompt_locked_loop(embedder: FAISSEmbedder, question, eval, max_retry=3):
 
                 round_log["claims"].append({
                     "claim": claim,
+                    "original_claim": original_claim,
                     "eval_label": label,
                     "confidence_label": confidence,
                     "pll_decision": "Reevaluated after processing",
