@@ -53,7 +53,7 @@ The use of LLMs is quickly becoming, if it has not already become, the norm in t
 
 FORAGER enters to engender trust into AI. FORAGER enables LLMs to frame their answers with hard evidence and showcase their reasoning. This is more than *Chain-of-Thought* reasoning, where all reasoning is based solely on the model's training data, internal and unverified. FORAGER adds a layer of **real-world verification** on top of LLM reasoning. By validating each **atomic claim** the LLM makes, FORAGER unlocks a level of auditability that has yet to be seen with LLMs.
 
-## What is a **Prompt-Locked Loop**?
+## What is a Prompt-Locked Loop?
 **Prompt-locked Loop** is a term coined by our team to refer to the main control mechanism behind FORAGER that iteratively refines AI-generated claims until they "lock" into a stable, supported, and high-confidence output. Computer engineers may notice the obvious inspiration we took from [**Phase-locked loop**](https://en.wikipedia.org/wiki/Phase-locked_loop), which synchronizes an output signal with a reference signal in computer electronics. Much how a Phase Lock Loop aligns those signals, out Prompt Locked Loop aligns an AI-generated claim with ground-truth documents.
 ---
 
