@@ -104,11 +104,18 @@ This process repeats, refining and retrying, until the claim locks, or the syste
 **Prompt-locked Loop** is a term coined by our team to refer to the main control mechanism behind FORAGER that iteratively refines AI-generated claims until they "lock" into a stable, supported, and high-confidence output. Computer engineers may notice the obvious inspiration we took from [**Phase-locked loop**](https://en.wikipedia.org/wiki/Phase-locked_loop), which synchronizes an output signal with a reference signal in computer electronics. Much how a Phase Lock Loop aligns those signals, out Prompt Locked Loop aligns an AI-generated claim with ground-truth documents.
 
 ## 🚀 Features
-- ✅ Multi-stage claim verification
-- ✅ BS Detector leveraging `facebook/bart-large-mnli`
-- ✅ Modular ingestion, chunking, and embedding pipelines
-- ✅ Structured JSONL formatting and claim aggregation
-- ✅ Supports engineering research domains (e.g., semiconductors, HI)
+- 🔍 Claim-by-Claim Verification
+    - FORAGER splits the LLM's answer into standalone atomic claims and verifies each one individually, rather than treating the response as a whole.
+- 🤖 BS Detection with NLI
+    - Uses facebook/bart-large-mnli to evaluate whether claims are supported, unsupported, or contradicted by the retrieved evidence.
+- 🔁 Prompt-Locked Loop
+    - Iteratively rephrases or re-evaluates claims until they meet both factual alignment and confidence thresholds, ensuring only trustworthy outputs are locked.
+- 🧩 Modular Pipeline
+    - Swap components in and out (LLMs, NLI models, document sources, or chunking strategies) with little friction.
+- 📄 Structured Outputs
+    - Export results as JSONL for downstream use, including full claim metadata and traces.
+🧪 Built for High-Stakes QA
+    - Designed with scientific, engineering, and techincal domains in mind, where factual precision and auditability is needed.
 
 ## 🛠️ Installation
 
