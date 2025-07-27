@@ -1,4 +1,7 @@
 # FORAGER
+<p align="center">
+  <img src="https://sgordon-demo-s3.s3.us-east-2.amazonaws.com/IMG_6709.jpeg" alt="FORAGER Logo" width="200"/>
+</p>
 
 _A trust-first RAG pipeline for validating LLM outputs._
 
