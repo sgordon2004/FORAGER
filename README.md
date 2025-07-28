@@ -10,7 +10,7 @@ _A trust-first RAG pipeline for validating LLM outputs._
 
 FORAGER is built for **domains where factual accuracy is non-negotiable**, like engineering research, scientific documentation, and techincal reports. LLM output is often treated as a *black box*, where what you see is what you get, and the process that derived the output is mysterious to the user. FORAGER serves to make the reasoning process completely transparent by indentifying, scoring, and verifying each claim the LLM makes.
 
-Its modular design gives devleopers and users the freedom to:
+Its modular design gives developers and users the freedom to:
 - Plug in custom document sets (PDF & HTML)
     - *More formats to come!*
 - *(Eventually)* swap in different LLM or NLI models
@@ -73,7 +73,7 @@ Each chunk is then embedded into a [**vector**](https://www.pinecone.io/learn/ve
 Each vector embedding is stored in the FAISS index, a database that allows vectors to be queried and retrieved.
 
 ### 🧠 Claim Extraction
-When the LLM generates a response to a user's question, the generated response is parsed to isolate **atomic claims**. Each atomic claim must express only one complete fact in a standalone full sentence that is understandable without additonal context. This step is crucial to enable full traceability. When interacting with LLMs traditionally, the answer to your question may be 8 sentence paragraph, but there may only be 3 or 4 actual atomic claims within that paragraph.
+When the LLM generates a response to a user's question, the generated response is parsed to isolate **atomic claims**. Each atomic claim must express only one complete fact in a standalone full sentence that is understandable without additonal context. This step is crucial to enable full traceability. When interacting with LLMs traditionally, the answer to your question may be an 8 sentence paragraph, but there may only be 3 or 4 actual atomic claims within that paragraph.
 
 <p align="center">
   <img src="https://sgordon-demo-s3.s3.us-east-2.amazonaws.com/Doc+Ingestion+FORAGER+Flowchart.png" alt="FORAGER Pipeline" width="400"/>
@@ -101,7 +101,7 @@ This process repeats, refining and retrying, until the claim locks, or the syste
 </p>
 
 ## 🔁 What is the Prompt-Locked Loop?
-**Prompt-locked Loop** is a term coined by our team to refer to the main control mechanism behind FORAGER that iteratively refines AI-generated claims until they "lock" into a stable, supported, and high-confidence output. Computer engineers may notice the obvious inspiration we took from [**Phase-locked loop**](https://en.wikipedia.org/wiki/Phase-locked_loop), which synchronizes an output signal with a reference signal in computer electronics. Much how a Phase Lock Loop aligns those signals, out Prompt Locked Loop aligns an AI-generated claim with ground-truth documents.
+**Prompt-locked Loop** is a term coined by our team to refer to the main control mechanism behind FORAGER that iteratively refines AI-generated claims until they "lock" into a stable, supported, and high-confidence output. Computer engineers may notice the obvious inspiration we took from [**Phase-locked loop**](https://en.wikipedia.org/wiki/Phase-locked_loop), which synchronizes an output signal with a reference signal in computer electronics. Much how a Phase Lock Loop aligns those signals, our Prompt Locked Loop aligns an AI-generated claim with ground-truth documents.
 
 ## 🚀 Features
 - 🔍 Claim-by-Claim Verification
@@ -115,7 +115,7 @@ This process repeats, refining and retrying, until the claim locks, or the syste
 - 📄 Structured Outputs
     - Export results as JSONL for downstream use, including full claim metadata and traces.
 🧪 Built for High-Stakes QA
-    - Designed with scientific, engineering, and techincal domains in mind, where factual precision and auditability is needed.
+    - Designed with scientific, engineering, and technical domains in mind, where factual precision and auditability is needed.
 
 ## 📘 Usage
 FORAGER is accessible via a simple front-end interface; no coding is required.
