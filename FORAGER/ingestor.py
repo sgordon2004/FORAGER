@@ -202,3 +202,54 @@ def extract_all_html():
     for html_path in html_dir.glob("*.html"):
         output_path = clean_html(html_path, html_text_dir, json_dir)
         print(f"Cleaned HTML saved to {output_path}")
+
+def process_txt_file(input_path: Path, output_dir: Path, json_dir: Path) -> Path:
+    """
+    Processes a plain .txt file: reads, cleans, and stores its contents and metadata.
+
+    Args:
+        input_path (Path): Path to the .txt file to process.
+        output_dir (Path): Directory to store the cleaned text file.
+        json_dir (Path): Directory to store the metadata JSON file.
+
+    Returns:
+        Path: Path to the saved cleaned .txt file.
+    """
+    text = input_path.read_text(encoding='utf-8')
+
+    # Clean: strip blank lines and whitespace
+    cleaned = "\n".join(line.strip() for line in text.splitlines() if line.strip())
+
+    if not cleaned:
+        print(f"[WARNING] Empty or uncleanable content in {input_path.name}")
+        return None
+
+    output_dir.mkdir(exist_ok=True)
+    output_path = output_dir / input_path.name
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write(cleaned)
+
+    # Save .json metadata
+    json_output = {
+        "source_filename": input_path.name,
+        "title": input_path.stem,
+        "content": cleaned,
+        "content_length": len(cleaned),
+        "num_paragraphs": cleaned.count("\n")
+    }
+
+    json_dir.mkdir(exist_ok=True)
+    json_path = json_dir / (input_path.stem + ".json")
+    with open(json_path, "w", encoding="utf-8") as jf:
+        json.dump(json_output, jf, indent=2)
+
+    print(f"[OK] Processed text and JSON for {input_path.name}")
+    return output_path
+
+txt_dir = base / "txt"
+txt_text_dir = base / "txt_text"
+
+def extract_all_txt():
+    for txt_path in txt_dir.glob("*.txt"):
+        output_path = process_txt_file(txt_path, txt_text_dir, json_dir)
+        print(f"Cleaned TXT saved to {output_path}")
