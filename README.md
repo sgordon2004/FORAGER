@@ -117,19 +117,6 @@ This process repeats, refining and retrying, until the claim locks, or the syste
 🧪 Built for High-Stakes QA
     - Designed with scientific, engineering, and techincal domains in mind, where factual precision and auditability is needed.
 
-## 🛠️ Installation
-
-Clone the repository and install dependencies:
-```bash
-git clone https://github.com/your-username/FORAGER.git
-cd FORAGER
-pip install -r requirements.txt
-```
-
-## 📖 API Documentation
-Looking for function-level documentation?  
-Check out the full [FORAGER API Reference](https://sgordon2004.github.io/FORAGER/FORAGER.html) 📚
-
 ## 📘 Usage
 FORAGER is accessible via a simple front-end interface; no coding is required.
 
@@ -156,6 +143,18 @@ streamlit run FORAGER/streamlit_frontend/new_app.py
 
 6. **Export Results**
 - Save the final claims and metadata as .jsonl for downstream use.
+
+## 🛠️ Installation
+Clone the repository and install dependencies:
+```bash
+git clone https://github.com/your-username/FORAGER.git
+cd FORAGER
+pip install -r requirements.txt
+```
+
+## 📖 API Documentation
+Looking for function-level documentation?  
+Check out the full [FORAGER API Reference](https://sgordon2004.github.io/FORAGER/FORAGER.html) 📚
 
 ## 🚧 Roadmap
 - [ ] Support for .txt, hyperlink, and .md ingestion
