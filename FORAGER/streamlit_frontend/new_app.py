@@ -33,11 +33,12 @@ st.title("📄🔍 FORAGER")
 tab_chat, tab_knowledge_base, tab_claims, tab_metrics, tab_logs = st.tabs(
     ["💬 Chat & Answer", "📚 Knowledge Base", "📑 Claims Breakdown", "📊 Metrics & Performance", "📜 PLL Logs"])
 
-# Create sidebar for status updates
+# Sidebar for status updates
 with st.sidebar:
     st.markdown("### 🚦 Pipeline Status")
     status_placeholder = st.empty()
 
+# Tab 1: Chat Tab (LLM Interaction)
 with tab_chat:
     st.markdown("""
         <div class="chat-header" style="text-align: center;">
@@ -72,14 +73,6 @@ with tab_chat:
         label_visibility="collapsed"
     )
     st.markdown('</div>', unsafe_allow_html=True)
-
-    # st.markdown('<div class="centered-uploader"><div class="uploader-box">', unsafe_allow_html=True)
-    # uploaded_files = st.file_uploader(
-    #     "Upload documents (PDF or HTML)",
-    #     type=["pdf", "html"],
-    #     accept_multiple_files=True
-    # )
-    # st.markdown('</div></div>', unsafe_allow_html=True)
 
     # === File Handling & Processing ===
     base_dir = Path("FORAGER_corpus/heterogenous_integration")
@@ -270,7 +263,7 @@ with tab_chat:
             status_placeholder.success("🎉 Full pipeline completed successfully!")
             st.balloons()
 
-
+# Tab 2: Knowledge Base
 with tab_knowledge_base:
 
     st.header("📚 Knowledge Base Management")
@@ -509,7 +502,7 @@ with tab_claims:
                 st.markdown(f"""<div><b>• Final Rephrased Claim:</b> {final_rephrased}</div>""", unsafe_allow_html=True)
 
             # PLL Trace
-            with st.expander("🔎 PLL Trace"):
+            with st.expander("🔎 Claim Evolution"):
                 lineage, seen, queue = [], set(), [original_claim]
                 while queue:
                     current = queue.pop(0)
@@ -522,54 +515,46 @@ with tab_claims:
                             if claim_info.get("original_claim") == current:
                                 queue.append(claim_info["claim"])
 
-                for round_log in pll_logs:
-                    round_label = round_log.get("pll_round", "N/A")
-                    for claim_info in round_log["claims"]:
-                        if claim_info["claim"] in lineage:
-                            st.markdown(f"**▶️ PLL Round {round_label}**")
-                            st.markdown(f"- Rephrased: \"{claim_info['claim']}\"")
-                            st.markdown(f"- Confidence: {claim_info.get('confidence_label', 'N/A')}")
-                            st.markdown(f"- Action: {claim_info.get('pll_decision', 'N/A')}")
-                            st.markdown("---")
+                if was_locked_pre_pll:
+                    st.markdown("""
+                    > 🔒 **Locked Before PLL**
+                    > This claim was finalized during the initial evaluation and did not participate in any rephrasing or confidence-based updates.
+                    """)
+                else:
+                    for round_log in pll_logs:
+                        round_label = round_log.get("pll_round", "N/A")
+                        for claim_info in round_log["claims"]:
+                            if claim_info["claim"] in lineage:
+                                if str(round_label) == "0":
+                                    st.markdown(f"**▶️ Initial LLM Response**")
+                                    st.markdown(f"- **Claim:** {original_claim}")
+                                elif round_label == "Pre-PLL Lock":
+                                    st.markdown(f"Pre-PLL Evaluation")
+                                
+                                st.markdown(f"**▶️ PLL Round {round_label}**")
+                                st.markdown(f"- Rephrased: \"{claim_info['claim']}\"")
+                                st.markdown(f"- Confidence: {claim_info.get('confidence_label', 'N/A')}")
+                                st.markdown(f"- Action: {claim_info.get('pll_decision', 'N/A')}")
+                                st.markdown("---")
 
             # Supporting Chunks
             with st.expander("📥 Supporting Chunks"):
                 for idx, chunk in enumerate(eval_info.get("supporting_chunks", []), 1):
+                    title = chunk.get("source_filename", "")
                     text = chunk.get("text", "").replace("\n", "\n> ")
-                    st.markdown(f"> **Chunk {idx}:**\n> {text}")
-
-            st.markdown(f"### 📝 Claim: {original_claim}")
-            st.markdown(f"""
-                <p><strong>Evaluation:</strong> 
-                <span class="label-tag eval-{label}">
-                    {label}
-                </span></p>
-            """, unsafe_allow_html=True)
-
-            st.markdown(f"""
-                <p><strong>Confidence:</strong> 
-                <span class="label-tag conf-{confidence}">
-                    {confidence}
-                </span></p>
-            """, unsafe_allow_html=True)
-
-            with st.expander("📜 Supporting Chunks"):
-                for idx, chunk in enumerate(eval_info.get("supporting_chunks", []), 1):
-                    formatted_chunk = chunk["text"].replace("\n", "\n> ")
-                    st.markdown(f"> **Chunk {idx}:**  \n> {formatted_chunk}")
+                    st.markdown(f"**Source {idx}:** {title}")
+                    st.markdown(f"> {text}")
 
 # Tab 4: Metrics & Performance
-# Tab 4: Metrics & Performance
-import plotly.express as px
-import pandas as pd
-
 with tab_metrics:
+    import plotly.express as px
+    import pandas as pd
     # Get data
     claim_eval = st.session_state.get("claim_eval", {})
     pll_logs = st.session_state.get("pll_logs", [])
 
     total_claims = len(claim_eval)
-    total_pll_rounds = len(pll_logs)
+    total_pll_rounds = len(pll_logs) - 2
     total_claims_in_rounds = sum(len(log["claims"]) for log in pll_logs)
 
     # Visualization data prep
@@ -707,13 +692,12 @@ with tab_logs:
         st.info("No PLL logs available. Submit a question in the Chat tab to generate logs.")
     else:
         for round_log in pll_logs:
+            if not round_log["claims"]:
+                continue  # Skip rounds with no claims
+
             round_label = round_log["pll_round"]
             expander_title = "Initial Claim Evaluation (Pre-PLL)" if round_label == 0 else f"PLL Round {round_label}"
             with st.expander(f"▶️ {expander_title}", expanded=False):
-                if not round_log["claims"]:
-                    st.info("No claims were processed this round.")
-                    continue
-
                 for claim_info in round_log["claims"]:
                     claim_text = claim_info.get("claim", "❓")
                     decision = claim_info.get("pll_decision", "N/A")
