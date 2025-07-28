@@ -538,6 +538,26 @@ with tab_claims:
                     text = chunk.get("text", "").replace("\n", "\n> ")
                     st.markdown(f"> **Chunk {idx}:**\n> {text}")
 
+            st.markdown(f"### 📝 Claim: {original_claim}")
+            st.markdown(f"""
+                <p><strong>Evaluation:</strong> 
+                <span class="label-tag eval-{label}">
+                    {label}
+                </span></p>
+            """, unsafe_allow_html=True)
+
+            st.markdown(f"""
+                <p><strong>Confidence:</strong> 
+                <span class="label-tag conf-{confidence}">
+                    {confidence}
+                </span></p>
+            """, unsafe_allow_html=True)
+
+            with st.expander("📜 Supporting Chunks"):
+                for idx, chunk in enumerate(eval_info.get("supporting_chunks", []), 1):
+                    formatted_chunk = chunk["text"].replace("\n", "\n> ")
+                    st.markdown(f"> **Chunk {idx}:**  \n> {formatted_chunk}")
+
 # Tab 4: Metrics & Performance
 # Tab 4: Metrics & Performance
 import plotly.express as px
