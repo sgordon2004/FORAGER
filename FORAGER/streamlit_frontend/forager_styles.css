@@ -190,7 +190,7 @@ h1 {
     transform: translateX(-50%);
     opacity: 0;
     transition: opacity 0.3s;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .tooltip:hover .tooltiptext {
