@@ -4,11 +4,12 @@ import re
 
 base = Path("FORAGER_corpus/heterogenous_integration") # Base directory for the FORAGER corpus's HI information
 pdf_dir = base / "pdf" # Sub-directory containing PDF files
+alt_pdf_dir = base / "pdfs" # Sub-directory PDFs are in when uploaded via Streamlit
 pdf_text_dir = base / "pdf_text"
 pdf_text_dir.mkdir(parents=True, exist_ok=True)
 
 def extract_pdf(filename):
-    file = pdf_dir / filename
+    file = pdf_dir / filename if (pdf_dir / filename).exists() else (alt_pdf_dir / filename)
     output_file = pdf_text_dir
     file_name_with_ext = file.name
     file_stem = Path(file_name_with_ext).stem # Name without extension

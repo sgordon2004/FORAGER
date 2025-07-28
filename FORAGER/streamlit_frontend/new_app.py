@@ -241,26 +241,17 @@ with tab_chat:
     st.markdown('<div class="centered-uploader">', unsafe_allow_html=True)
     uploaded_files = st.file_uploader(
         "Upload documents",
-        type=["pdf", "html"],
-        accept_multiple_files=True,
-        label_visibility="collapsed"
+        type=["pdf", "html", "txt"],
+        accept_multiple_files=True
     )
-    st.markdown('</div>', unsafe_allow_html=True)
 
-    # st.markdown('<div class="centered-uploader"><div class="uploader-box">', unsafe_allow_html=True)
-    # uploaded_files = st.file_uploader(
-    #     "Upload documents (PDF or HTML)",
-    #     type=["pdf", "html"],
-    #     accept_multiple_files=True
-    # )
-    # st.markdown('</div></div>', unsafe_allow_html=True)
-
-    # === File Handling & Processing ===
+    # Paths to uploaded files
     base_dir = Path("FORAGER_corpus/heterogenous_integration")
     html_dir = base_dir / "html"
     pdf_dir = base_dir / "pdf"
     html_upload_dir = base_dir / "htmls"
     pdf_upload_dir = base_dir / "pdfs"
+    txt_upload_dir = base_dir / "txts"
 
     if st.button("Process"):
         if not uploaded_files:
@@ -290,6 +281,14 @@ with tab_chat:
                         f.write(file_bytes)
                     text = extract_pdf(file.name)
                     dump_pdf_text(file.name, text)
+                elif file_ext == "txt":
+                    from ingestor import extract_all_txt
+
+                    input_path = txt_upload_dir / file.name
+                    txt_upload_dir.mkdir(parents=True, exist_ok=True)
+                    with open(input_path, "wb") as f:
+                        f.write(file_bytes)
+                    extract_all_txt()
                 else:
                     st.warning(f"Unsupported file type: {file.name}")
                     continue
