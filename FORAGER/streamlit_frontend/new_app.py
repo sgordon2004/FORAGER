@@ -38,180 +38,6 @@ with st.sidebar:
     st.markdown("### 🚦 Pipeline Status")
     status_placeholder = st.empty()
 
-# Tab 1: Chat & Answer
-# with tab_chat:
-#     st.header("💬 Chat & Final Answer")
-
-#     # File upload section
-#     uploaded_files = st.file_uploader(
-#         "Upload documents (PDF or HTML)",
-#         type=["pdf", "html"],
-#         accept_multiple_files=True
-#     )
-
-#     # Paths to uploaded files
-#     base_dir = Path("FORAGER_corpus/heterogenous_integration")
-#     html_dir = base_dir / "html"
-#     pdf_dir = base_dir / "pdf"
-
-#     # Begin document processing when button is clicked
-#     if st.button("Process Document(s)"):
-
-#         if not uploaded_files:
-#             status_placeholder.warning("⚠️ No documents uploaded.")
-#         else:
-#             status_placeholder.info("📄 Starting text extraction...")
-#             # Extract text from uploaded files
-#             for file in uploaded_files:
-#                 # Isolate file extension and read bytes
-#                 file_ext = file.name.split(".")[-1].lower()
-#                 file_bytes = file.read()
-
-#                 if file_ext == "html":
-#                     from ingestor import clean_html, html_text_dir, json_dir
-#                     # Temporarily save uploaded file
-#                     html_upload_dir = base_dir / "htmls"
-#                     input_path = html_upload_dir / file.name
-#                     html_upload_dir.mkdir(parents=True, exist_ok=True)
-#                     with open(input_path, "wb") as f:
-#                         f.write(file_bytes)
-#                     clean_html(input_path, html_text_dir, json_dir)
-
-#                 elif file_ext == "pdf":
-#                     # Extract text from PDF
-#                     from extractor import extract_pdf
-#                     from ingestor import dump_pdf_text
-#                     pdf_upload_dir = base_dir / "pdfs"
-#                     input_path = pdf_upload_dir / file.name
-#                     pdf_upload_dir.mkdir(parents=True, exist_ok=True)
-#                     with open(input_path, "wb") as f:
-#                         f.write(file_bytes)
-#                     text = extract_pdf(file.name)
-#                     # Save text to pdf_text + create .json metadata file
-#                     dump_pdf_text(file.name, text)
-#                 else:
-#                     st.warning(f"Unsupported file type: {file.name}")
-#                     continue
-#             time.sleep(1)
-#             status_placeholder.success("✅ Text extraction complete!")
-
-#             status_placeholder.info("🔗 Chunking documents...")
-#             from chunker import main as chunker_main
-#             # Chunk all the .JSON metadata files, chunk them, and save to chunks.jsonl
-#             chunker_main()
-#             time.sleep(1)
-#             status_placeholder.success("✅ Chunking complete!")
-
-#             status_placeholder.info("💾 Initializing FAISS...")
-#             # Initialize FAISS with the new chunks - this will hopefully be the only embedder
-#             # object that needs to be created
-#             from FORAGER.embedder import FAISSEmbedder
-#             embedder = FAISSEmbedder.create_default()
-#             embedder.initialize_faiss()
-#             st.session_state["embedder"] = embedder
-#             time.sleep(1)
-#             status_placeholder.success("✅ FAISS initialized!")
-
-#             st.session_state["documents_processed"] = True
-#             status_placeholder.success("✅ Documents processed!")
-
-#     # Run question process only if documents have been processed
-#     if st.session_state.get("documents_processed"):
-#         # Question input section
-#         st.markdown("### 💬 Ask a Question")
-#         user_question = st.text_input("Query the knowledge base: ")
-
-#         if st.button("Submit Question") and user_question:
-#             st.session_state["submitted"] = True
-#             status_placeholder.info("🤖 Generating answer via LLM...")
-#             embedder = st.session_state.get("embedder")
-#             if embedder is None:
-#                 st.warning("⚠️ Please process documents first to initialize the embedder.")
-#             else:
-#                 from test_pipeline import full_forager_pipeline
-#                 # Run the first portion of the FORAGER pipeline (function name misleading)
-#                 answer, claim_eval = full_forager_pipeline(embedder, user_question)
-#                 # st.markdown(f"full_forager_pipeline() returned `claim_eval`: {claim_eval}")
-#                 st.session_state["answer"] = answer
-#                 st.session_state["claim_eval"] = claim_eval
-
-#                 # Display the summary cards
-#                 answer = st.session_state.get("answer", "❓ No answer available")
-#                 claim_eval = st.session_state.get("claim_eval", {})
-
-#                 if claim_eval:
-#                     final_claim, info = list(claim_eval.items())[0]
-#                     label = info.get("label", "N/A")
-#                     confidence = info.get("confidence", "N/A")
-#                     # similarity = info.get("similarity", "N/A")
-#                     chunks = info.get("supporting_chunks", [])
-#                     scores = [doc.get("score", 0) for doc in chunks if "score" in doc]
-#                     similarity = round(sum(scores) / len(scores), 3) if scores else "N/A"
-
-#                     st.markdown("## 🧾 Answer Summary")
-
-#                     # Dynamic tag colors
-#                     bs_class = f"bs-{label}"
-#                     conf_class = f"confidence-{confidence}"
-#                     try:
-#                         sim_class = (
-#                             "similarity-high" if float(similarity) >= 0.7 else
-#                             "similarity-medium" if float(similarity) >= 0.4 else
-#                             "similarity-low"
-#                         )
-#                     except:
-#                         sim_class = "similarity-low"
-
-#                     # === Tag cards row ===
-#                     col1, col2, col3 = st.columns(3)
-
-#                     with col1:
-#                         st.markdown(f"""
-#                             <div class="tag-card {bs_class}">
-#                                 <h4>🧪 BS Label</h4>
-#                                 <p><b>{label}</b></p>
-#                             </div>
-#                         """, unsafe_allow_html=True)
-
-#                     with col2:
-#                         st.markdown(f"""
-#                             <div class="tag-card {conf_class}">
-#                                 <h4>🔐 Confidence</h4>
-#                                 <p><b>{confidence}</b></p>
-#                             </div>
-#                         """, unsafe_allow_html=True)
-
-#                     with col3:
-#                         st.markdown(f"""
-#                             <div class="tag-card {sim_class}">
-#                                 <h4>📈 Similarity</h4>
-#                                 <p><b>{similarity}</b></p>
-#                             </div>
-#                         """, unsafe_allow_html=True)
-                    
-#                     # Final Claim
-#                     st.markdown(f"""
-#                         <div class="final-claim-card">
-#                             <h4>📝 Final Claim</h4>
-#                             <p style="font-size: 14px;">{answer}</p>
-#                         </div>
-#                     """, unsafe_allow_html=True)
-            
-#                 time.sleep(1)
-
-#                 # Run Prompt Locked Loop as long as question was not marked as irrelevant
-#                 if (answer != "This question is unrelated to the documents in the knowledge base and cannot be answered by them."):
-#                     from pll_controller import prompt_locked_loop
-#                     status_placeholder.info("💾 Initializing Prompt Locked Loop...")
-#                     pll_logs = prompt_locked_loop(embedder, user_question, claim_eval, max_retry=3)
-#                     st.session_state["pll_logs"] = pll_logs
-#                 else:
-#                    print(f"Prompt Locked Loop skipped due to irrelevant question.")
-
-        # TODO: Move this to run after the final answer is locked.
-        # status_placeholder.success("🎉 Full pipeline completed successfully!")
-        # st.balloons()
-
 with tab_chat:
     st.markdown("""
         <div class="chat-header" style="text-align: center;">
@@ -482,39 +308,39 @@ with tab_knowledge_base:
 
     st.header("📚 Knowledge Base Management")
     
-    html_upload_dir = base_dir / "htmls"
-    pdf_upload_dir = base_dir / "pdfs"
+    # html_upload_dir = base_dir / "htmls"
+    # pdf_upload_dir = base_dir / "pdfs"
 
-    html_upload_dir.mkdir(parents=True, exist_ok=True)
-    pdf_upload_dir.mkdir(parents=True, exist_ok=True)
+    # html_upload_dir.mkdir(parents=True, exist_ok=True)
+    # pdf_upload_dir.mkdir(parents=True, exist_ok=True)
 
-    st.markdown("### 📂 Existing Uploaded Documents")
+    # st.markdown("### 📂 Existing Uploaded Documents")
 
-    # Show HTML files
-    html_files = list(html_upload_dir.glob("*.html"))
-    if html_files:
-        st.markdown("#### 🟣 HTML Files")
-        for file_path in html_files:
-            with st.expander(f"{file_path.name}"):
-                st.code(file_path.read_text(encoding="utf-8")[:1000] + "..." if file_path.stat().st_size > 1000 else file_path.read_text(encoding="utf-8"), language="html")
-                if st.button(f"🗑️ Delete {file_path.name}"):
-                    file_path.unlink()
-                    st.success(f"Deleted {file_path.name}")
-                    st.rerun()
+    # # Show HTML files
+    # html_files = list(html_upload_dir.glob("*.html"))
+    # if html_files:
+    #     st.markdown("#### 🟣 HTML Files")
+    #     for file_path in html_files:
+    #         with st.expander(f"{file_path.name}"):
+    #             st.code(file_path.read_text(encoding="utf-8")[:1000] + "..." if file_path.stat().st_size > 1000 else file_path.read_text(encoding="utf-8"), language="html")
+    #             if st.button(f"🗑️ Delete {file_path.name}"):
+    #                 file_path.unlink()
+    #                 st.success(f"Deleted {file_path.name}")
+    #                 st.rerun()
 
-    # Show PDF files
-    pdf_files = list(pdf_upload_dir.glob("*.pdf"))
-    if pdf_files:
-        st.markdown("#### 🔵 PDF Files")
-        for file_path in pdf_files:
-            with st.expander(f"{file_path.name}"):
-                st.write(f"Size: {file_path.stat().st_size / 1024:.2f} KB")
-                if st.button(f"🗑️ Delete {file_path.name}"):
-                    file_path.unlink()
-                    st.success(f"Deleted {file_path.name}")
-                    st.rerun()
+    # # Show PDF files
+    # pdf_files = list(pdf_upload_dir.glob("*.pdf"))
+    # if pdf_files:
+    #     st.markdown("#### 🔵 PDF Files")
+    #     for file_path in pdf_files:
+    #         with st.expander(f"{file_path.name}"):
+    #             st.write(f"Size: {file_path.stat().st_size / 1024:.2f} KB")
+    #             if st.button(f"🗑️ Delete {file_path.name}"):
+    #                 file_path.unlink()
+    #                 st.success(f"Deleted {file_path.name}")
+    #                 st.rerun()
 
-    st.markdown("---")
+    # st.markdown("---")
     st.markdown("### ➕ Upload More Files")
     more_files = st.file_uploader("Upload additional documents (PDF or HTML)", type=["pdf", "html"], accept_multiple_files=True, key="additional_uploads")
     if more_files:
@@ -581,110 +407,59 @@ with tab_knowledge_base:
             time.sleep(1)
             status_placeholder.success("✅ New documents processed!")
 
-        # st.rerun()
+        st.rerun()
 
     st.markdown("---")
 
     st.markdown("### 📂 Delete Uploaded Documents")
 
     selected_files = []
+
     # === Select All Checkbox ===
-    select_all = st.checkbox("✅ Select All Files")
+    select_all = st.checkbox("✅ Select All Files", key="select_all")
 
     def render_file_list(files, label, file_type):
         st.markdown(f"#### {label}")
         for path in files:
             file_key = f"{file_type}_{path.name}"
-            col1, col2, col3 = st.columns([0.05, 0.75, 0.2])
+
+            # Wrap each row with hover styling container
+            st.markdown('<div class="file-row">', unsafe_allow_html=True)
+
+            col1, col2, col3 = st.columns([0.07, 0.73, 0.2], gap="small")
 
             with col1:
-                checked = st.checkbox("", key=file_key, value=select_all)
+                checked = st.checkbox("", key=file_key, value=select_all, label_visibility="collapsed")
                 if checked:
                     selected_files.append(path)
 
             with col2:
-                st.markdown(f"<div class='file-entry'>{path.name}</div>", unsafe_allow_html=True)
+                st.markdown(f"<div class='file-name'>{path.name}</div>", unsafe_allow_html=True)
 
             with col3:
                 if st.button("🗑️", key=f"del_{file_key}"):
                     path.unlink()
                     st.rerun()
 
-    # Display files
+            st.markdown('</div>', unsafe_allow_html=True)  # Close file-row
+            st.markdown('<hr class="file-divider">', unsafe_allow_html=True)  # Divider between rows
+
+    # Render PDF & HTML files
     render_file_list(list(pdf_upload_dir.glob("*.pdf")), "🔵 PDF Files", "pdf")
     render_file_list(list(html_upload_dir.glob("*.html")), "🟣 HTML Files", "html")
 
-    # === Bulk Delete ===
+    # === Bulk Delete Button ===
     if selected_files and st.button("Delete Selected Files"):
         for file in selected_files:
             file.unlink()
         st.success(f"✅ Deleted {len(selected_files)} file(s).")
         st.rerun()
 
-
-# with tab_knowledge_base:
-#     st.header("📚 Knowledge Base Management")
-    
-#     html_upload_dir = base_dir / "htmls"
-#     pdf_upload_dir = base_dir / "pdfs"
-
-#     html_upload_dir.mkdir(parents=True, exist_ok=True)
-#     pdf_upload_dir.mkdir(parents=True, exist_ok=True)
-
-#     st.markdown("### 📂 Existing Uploaded Documents")
-
-#     # Show HTML files
-#     html_files = list(html_upload_dir.glob("*.html"))
-#     if html_files:
-#         st.markdown("#### 🟣 HTML Files")
-#         for file_path in html_files:
-#             with st.expander(f"{file_path.name}"):
-#                 st.code(file_path.read_text(encoding="utf-8")[:1000] + "..." if file_path.stat().st_size > 1000 else file_path.read_text(encoding="utf-8"), language="html")
-#                 if st.button(f"🗑️ Delete {file_path.name}"):
-#                     file_path.unlink()
-#                     st.success(f"Deleted {file_path.name}")
-#                     st.experimental_rerun()
-
-#     # Show PDF files
-#     pdf_files = list(pdf_upload_dir.glob("*.pdf"))
-#     if pdf_files:
-#         st.markdown("#### 🔵 PDF Files")
-#         for file_path in pdf_files:
-#             with st.expander(f"{file_path.name}"):
-#                 st.write(f"Size: {file_path.stat().st_size / 1024:.2f} KB")
-#                 if st.button(f"🗑️ Delete {file_path.name}"):
-#                     file_path.unlink()
-#                     st.success(f"Deleted {file_path.name}")
-#                     st.experimental_rerun()
-
-#     st.markdown("---")
-#     st.markdown("### ➕ Upload More Files")
-#     more_files = st.file_uploader("Upload additional documents (PDF or HTML)", type=["pdf", "html"], accept_multiple_files=True, key="additional_uploads")
-
-#     if more_files:
-#         for file in more_files:
-#             file_ext = file.name.split(".")[-1].lower()
-#             file_bytes = file.read()
-#             if file_ext == "html":
-#                 save_path = html_upload_dir / file.name
-#             elif file_ext == "pdf":
-#                 save_path = pdf_upload_dir / file.name
-#             else:
-#                 st.warning(f"Unsupported file type: {file.name}")
-#                 continue
-
-#             with open(save_path, "wb") as f:
-#                 f.write(file_bytes)
-#             st.success(f"✅ Uploaded {file.name}")
-#         st.experimental_rerun()
-
 # Tab 3: Step-by-step claims breakdown
 with tab_claims:
     st.header("📑 Claims Breakdown")
 
-    # The initial claims before PLL
     initial_claim_eval = st.session_state.get("claim_eval", {})
-    # The evolution of all claims through the PLL
     pll_logs = st.session_state.get("pll_logs", [])
 
     if not initial_claim_eval:
@@ -695,6 +470,7 @@ with tab_claims:
             final_rephrased = None
             was_locked_pre_pll = False
             was_discarded = False
+            last_seen_index = None
 
             # Step 1: Find the last index where the original claim appears
             for idx, round_log in enumerate(pll_logs):
@@ -703,7 +479,7 @@ with tab_claims:
                         last_seen_index = idx
                         if round_log.get("pll_round") == "Pre-PLL Lock":
                             was_locked_pre_pll = True
-                        break  # Only one match per round
+                        break
 
             # Step 2: Determine final status
             if was_locked_pre_pll:
@@ -716,7 +492,6 @@ with tab_claims:
                         continue
                     for claim_info in next_log["claims"]:
                         if claim_info["claim"] != current_version:
-                            # Found a rephrased version
                             current_version = claim_info["claim"]
                             final_rephrased = current_version
                             decision = claim_info.get("pll_decision", "N/A")
@@ -724,7 +499,7 @@ with tab_claims:
                             final_status = f"🔁 Rephrased → `{decision}` in round {round_label}"
                             if decision.lower().startswith("discarded"):
                                 was_discarded = True
-                            break  # stop inner loop, move to next round
+                            break
                         elif claim_info["claim"] == current_version:
                             decision = claim_info.get("pll_decision", "")
                             if decision.lower().startswith("discarded"):
@@ -733,27 +508,42 @@ with tab_claims:
                                 final_status = f"🗑️ Discarded in round {round_label}"
                             break
 
-            # Render UI
+            # --- Render UI ---
             st.markdown(f"### 📝 Claim: {original_claim}")
+
+            # Grab labels
             label = eval_info.get("label", "N/A")
-            label_class = f"bs-{label}"  # e.g., bs-Supported or bs-Unsupported
-            st.markdown(f"""<div><b>• Initial Evaluation:</b> <span class="{label_class}">{label}</span></div>""", unsafe_allow_html=True)
             confidence = eval_info.get("confidence", "N/A")
-            conf_class = f"confidence-{confidence}"  # e.g., confidence-High
-            st.markdown(f"""<div><b>• Initial Confidence:</b> <span class="{conf_class}">{confidence}</span></div>""", unsafe_allow_html=True)
-            st.markdown(f"""<div><b>• Final PLL Status:</b> {final_status}</div>""", unsafe_allow_html=True)
+
+            # ✅ Render Stat Cards instead of bullet list
+            st.markdown(
+                f"""
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <h4>Evaluation</h4>
+                        <span class="label-tag eval-{label.lower()}">{label}</span>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Confidence</h4>
+                        <span class="label-tag conf-{confidence.lower()}">{confidence}</span>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Final PLL Status</h4>
+                        <span class="pll-status">{final_status}</span>
+                    </div>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
             if was_discarded:
                 st.markdown("❌ **Final Rephrased Claim was discarded by the LLM.**")
             elif final_rephrased:
                 st.markdown(f"""<div><b>• Final Rephrased Claim:</b> {final_rephrased}</div>""", unsafe_allow_html=True)
 
-            # Show PLL trace per claim
+            # PLL Trace
             with st.expander("🔎 PLL Trace"):
-                # Step 1: Build full rephrasing lineage by following `original_claim` links
-                lineage = []
-                seen = set()
-                queue = [original_claim]
-
+                lineage, seen, queue = [], set(), [original_claim]
                 while queue:
                     current = queue.pop(0)
                     if current in seen:
@@ -765,7 +555,6 @@ with tab_claims:
                             if claim_info.get("original_claim") == current:
                                 queue.append(claim_info["claim"])
 
-                # Step 2: Display all rounds where claims in the lineage appear
                 for round_log in pll_logs:
                     round_label = round_log.get("pll_round", "N/A")
                     for claim_info in round_log["claims"]:
@@ -776,6 +565,7 @@ with tab_claims:
                             st.markdown(f"- Action: {claim_info.get('pll_decision', 'N/A')}")
                             st.markdown("---")
 
+            # Supporting Chunks
             with st.expander("📥 Supporting Chunks"):
                 for idx, chunk in enumerate(eval_info.get("supporting_chunks", []), 1):
                     text = chunk.get("text", "").replace("\n", "\n> ")
@@ -993,99 +783,3 @@ with tab_logs:
         with st.expander("✅ Final Locked Claims", expanded=False):
             for c in locked_claims:
                 st.markdown(f"- {c['claim']}")
-# === INPUT INGESTION PROCESS === #
-
-# with tab_metrics:
-#     st.markdown("""
-#         <style>
-#             .metric-card {
-#                 background-color: #1e1e1e;
-#                 padding: 20px;
-#                 border-radius: 16px;
-#                 color: white;
-#                 width: 23%;
-#                 min-width: 200px;
-#                 display: inline-block;
-#                 vertical-align: top;
-#                 margin-right: 1.5%;
-#                 margin-bottom: 20px;
-#             }
-#             .metric-card h4 {
-#                 margin: 0 0 6px 0;
-#                 font-size: 16px;
-#                 font-weight: 500;
-#                 color: #d1d1d1;
-#             }
-#             .metric-card .value {
-#                 font-size: 32px;
-#                 font-weight: bold;
-#                 margin-bottom: 6px;
-#             }
-#             .metric-card .icon {
-#                 font-size: 22px;
-#                 margin-right: 8px;
-#                 color: #c4f000;
-#             }
-#         </style>
-#     """, unsafe_allow_html=True)
-
-#     claim_eval = st.session_state.get("claim_eval", {})
-#     pll_logs = st.session_state.get("pll_logs", [])
-
-#     total_claims = len(claim_eval)
-#     total_pll_rounds = len(pll_logs)
-#     total_claims_in_rounds = sum(len(log["claims"]) for log in pll_logs)
-
-#     st.markdown("""
-#         <div>
-#             <div class='metric-card'>
-#                 <div><span class="icon">📄</span><h4 style='display:inline;'>Total Claims Generated</h4></div>
-#                 <div class='value'>{}</div>
-#             </div>
-#             <div class='metric-card'>
-#                 <div><span class="icon">🔁</span><h4 style='display:inline;'>Total PLL Rounds</h4></div>
-#                 <div class='value'>{}</div>
-#             </div>
-#             <div class='metric-card'>
-#                 <div><span class="icon">📦</span><h4 style='display:inline;'>Total Claims in Rounds</h4></div>
-#                 <div class='value'>{}</div>
-#             </div>
-#         </div>
-#     """.format(total_claims, total_pll_rounds, total_claims_in_rounds), unsafe_allow_html=True)
-
-#     # Label Distribution
-#     label_counts = {}
-#     for info in claim_eval.values():
-#         label = info.get("label", "N/A")
-#         label_counts[label] = label_counts.get(label, 0) + 1
-
-#     if label_counts:
-#         st.markdown("### 🔖 Claim Label Distribution")
-#         fig = px.bar(
-#             x=list(label_counts.keys()),
-#             y=list(label_counts.values()),
-#             labels={'x': 'Label', 'y': 'Count'},
-#             color_discrete_sequence=['#62B6CB']
-#         )
-#         fig.update_layout(
-#             plot_bgcolor='#0e1117',
-#             paper_bgcolor='#0e1117',
-#             font=dict(color='white'),
-#             xaxis=dict(title_font=dict(color='white')),
-#             yaxis=dict(title_font=dict(color='white')),
-#         )
-#         st.plotly_chart(fig, use_container_width=True)
-#     else:
-#         st.info("No claims to display.")
-
-#     st.markdown("### 🪵 PLL Rounds Breakdown")
-#     if not pll_logs:
-#         st.info("No PLL logs available.")
-#     else:
-#         for round_log in pll_logs:
-#             st.markdown(f"""
-#                 <div style='background-color: #1e1e1e; padding: 15px; border-radius: 10px; margin-bottom: 10px;'>
-#                     <span style='color: white; font-weight: bold;'>PLL Round {round_log['pll_round']}</span>
-#                     <br><span style='color: #bbb;'>{len(round_log['claims'])} claims processed</span>
-#                 </div>
-#             """, unsafe_allow_html=True)
