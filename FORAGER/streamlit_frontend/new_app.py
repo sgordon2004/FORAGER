@@ -38,41 +38,242 @@ with st.sidebar:
     st.markdown("### 🚦 Pipeline Status")
     status_placeholder = st.empty()
 
-# Tab 1: Chat & Final Answer
-with tab_chat:
-    st.header("💬 Chat & Final Answer")
+# Tab 1: Chat & Answer
+# with tab_chat:
+#     st.header("💬 Chat & Final Answer")
 
-    # File upload section
+#     # File upload section
+#     uploaded_files = st.file_uploader(
+#         "Upload documents (PDF or HTML)",
+#         type=["pdf", "html"],
+#         accept_multiple_files=True
+#     )
+
+#     # Paths to uploaded files
+#     base_dir = Path("FORAGER_corpus/heterogenous_integration")
+#     html_dir = base_dir / "html"
+#     pdf_dir = base_dir / "pdf"
+
+#     # Begin document processing when button is clicked
+#     if st.button("Process Document(s)"):
+
+#         if not uploaded_files:
+#             status_placeholder.warning("⚠️ No documents uploaded.")
+#         else:
+#             status_placeholder.info("📄 Starting text extraction...")
+#             # Extract text from uploaded files
+#             for file in uploaded_files:
+#                 # Isolate file extension and read bytes
+#                 file_ext = file.name.split(".")[-1].lower()
+#                 file_bytes = file.read()
+
+#                 if file_ext == "html":
+#                     from ingestor import clean_html, html_text_dir, json_dir
+#                     # Temporarily save uploaded file
+#                     html_upload_dir = base_dir / "htmls"
+#                     input_path = html_upload_dir / file.name
+#                     html_upload_dir.mkdir(parents=True, exist_ok=True)
+#                     with open(input_path, "wb") as f:
+#                         f.write(file_bytes)
+#                     clean_html(input_path, html_text_dir, json_dir)
+
+#                 elif file_ext == "pdf":
+#                     # Extract text from PDF
+#                     from extractor import extract_pdf
+#                     from ingestor import dump_pdf_text
+#                     pdf_upload_dir = base_dir / "pdfs"
+#                     input_path = pdf_upload_dir / file.name
+#                     pdf_upload_dir.mkdir(parents=True, exist_ok=True)
+#                     with open(input_path, "wb") as f:
+#                         f.write(file_bytes)
+#                     text = extract_pdf(file.name)
+#                     # Save text to pdf_text + create .json metadata file
+#                     dump_pdf_text(file.name, text)
+#                 else:
+#                     st.warning(f"Unsupported file type: {file.name}")
+#                     continue
+#             time.sleep(1)
+#             status_placeholder.success("✅ Text extraction complete!")
+
+#             status_placeholder.info("🔗 Chunking documents...")
+#             from chunker import main as chunker_main
+#             # Chunk all the .JSON metadata files, chunk them, and save to chunks.jsonl
+#             chunker_main()
+#             time.sleep(1)
+#             status_placeholder.success("✅ Chunking complete!")
+
+#             status_placeholder.info("💾 Initializing FAISS...")
+#             # Initialize FAISS with the new chunks - this will hopefully be the only embedder
+#             # object that needs to be created
+#             from FORAGER.embedder import FAISSEmbedder
+#             embedder = FAISSEmbedder.create_default()
+#             embedder.initialize_faiss()
+#             st.session_state["embedder"] = embedder
+#             time.sleep(1)
+#             status_placeholder.success("✅ FAISS initialized!")
+
+#             st.session_state["documents_processed"] = True
+#             status_placeholder.success("✅ Documents processed!")
+
+#     # Run question process only if documents have been processed
+#     if st.session_state.get("documents_processed"):
+#         # Question input section
+#         st.markdown("### 💬 Ask a Question")
+#         user_question = st.text_input("Query the knowledge base: ")
+
+#         if st.button("Submit Question") and user_question:
+#             st.session_state["submitted"] = True
+#             status_placeholder.info("🤖 Generating answer via LLM...")
+#             embedder = st.session_state.get("embedder")
+#             if embedder is None:
+#                 st.warning("⚠️ Please process documents first to initialize the embedder.")
+#             else:
+#                 from test_pipeline import full_forager_pipeline
+#                 # Run the first portion of the FORAGER pipeline (function name misleading)
+#                 answer, claim_eval = full_forager_pipeline(embedder, user_question)
+#                 # st.markdown(f"full_forager_pipeline() returned `claim_eval`: {claim_eval}")
+#                 st.session_state["answer"] = answer
+#                 st.session_state["claim_eval"] = claim_eval
+
+#                 # Display the summary cards
+#                 answer = st.session_state.get("answer", "❓ No answer available")
+#                 claim_eval = st.session_state.get("claim_eval", {})
+
+#                 if claim_eval:
+#                     final_claim, info = list(claim_eval.items())[0]
+#                     label = info.get("label", "N/A")
+#                     confidence = info.get("confidence", "N/A")
+#                     # similarity = info.get("similarity", "N/A")
+#                     chunks = info.get("supporting_chunks", [])
+#                     scores = [doc.get("score", 0) for doc in chunks if "score" in doc]
+#                     similarity = round(sum(scores) / len(scores), 3) if scores else "N/A"
+
+#                     st.markdown("## 🧾 Answer Summary")
+
+#                     # Dynamic tag colors
+#                     bs_class = f"bs-{label}"
+#                     conf_class = f"confidence-{confidence}"
+#                     try:
+#                         sim_class = (
+#                             "similarity-high" if float(similarity) >= 0.7 else
+#                             "similarity-medium" if float(similarity) >= 0.4 else
+#                             "similarity-low"
+#                         )
+#                     except:
+#                         sim_class = "similarity-low"
+
+#                     # === Tag cards row ===
+#                     col1, col2, col3 = st.columns(3)
+
+#                     with col1:
+#                         st.markdown(f"""
+#                             <div class="tag-card {bs_class}">
+#                                 <h4>🧪 BS Label</h4>
+#                                 <p><b>{label}</b></p>
+#                             </div>
+#                         """, unsafe_allow_html=True)
+
+#                     with col2:
+#                         st.markdown(f"""
+#                             <div class="tag-card {conf_class}">
+#                                 <h4>🔐 Confidence</h4>
+#                                 <p><b>{confidence}</b></p>
+#                             </div>
+#                         """, unsafe_allow_html=True)
+
+#                     with col3:
+#                         st.markdown(f"""
+#                             <div class="tag-card {sim_class}">
+#                                 <h4>📈 Similarity</h4>
+#                                 <p><b>{similarity}</b></p>
+#                             </div>
+#                         """, unsafe_allow_html=True)
+                    
+#                     # Final Claim
+#                     st.markdown(f"""
+#                         <div class="final-claim-card">
+#                             <h4>📝 Final Claim</h4>
+#                             <p style="font-size: 14px;">{answer}</p>
+#                         </div>
+#                     """, unsafe_allow_html=True)
+            
+#                 time.sleep(1)
+
+#                 # Run Prompt Locked Loop as long as question was not marked as irrelevant
+#                 if (answer != "This question is unrelated to the documents in the knowledge base and cannot be answered by them."):
+#                     from pll_controller import prompt_locked_loop
+#                     status_placeholder.info("💾 Initializing Prompt Locked Loop...")
+#                     pll_logs = prompt_locked_loop(embedder, user_question, claim_eval, max_retry=3)
+#                     st.session_state["pll_logs"] = pll_logs
+#                 else:
+#                    print(f"Prompt Locked Loop skipped due to irrelevant question.")
+
+        # TODO: Move this to run after the final answer is locked.
+        # status_placeholder.success("🎉 Full pipeline completed successfully!")
+        # st.balloons()
+
+with tab_chat:
+    st.markdown("""
+        <div class="chat-header" style="text-align: center;">
+            <img src="https://cdn-icons-png.flaticon.com/512/4712/4712137.png" class="chat-logo" width="250" alt="Chat Logo">
+            <h1 class="chat-title">What's on your mind today?</h1>
+        </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="steps-container">
+        <div class="step-card">
+            <div class="step-title">Upload</div>
+            <div class="step-description">Upload your PDFs or HTML files to get started.</div>
+        </div>
+        <div class="step-card">
+            <div class="step-title">Process</div>
+            <div class="step-description">Extract and chunk content for search and retrieval.</div>
+        </div>
+        <div class="step-card">
+            <div class="step-title">Ask</div>
+            <div class="step-description">Submit a question and get an answer with supporting evidence.</div>
+        </div>
+    </div>
+""", unsafe_allow_html=True)
+
+    # === File Upload Section ===
+    st.markdown('<div class="centered-uploader">', unsafe_allow_html=True)
     uploaded_files = st.file_uploader(
         "Upload documents",
         type=["pdf", "html"],
-        accept_multiple_files=True
+        accept_multiple_files=True,
+        label_visibility="collapsed"
     )
+    st.markdown('</div>', unsafe_allow_html=True)
 
-    # Paths to uploaded files
+    # st.markdown('<div class="centered-uploader"><div class="uploader-box">', unsafe_allow_html=True)
+    # uploaded_files = st.file_uploader(
+    #     "Upload documents (PDF or HTML)",
+    #     type=["pdf", "html"],
+    #     accept_multiple_files=True
+    # )
+    # st.markdown('</div></div>', unsafe_allow_html=True)
+
+    # === File Handling & Processing ===
     base_dir = Path("FORAGER_corpus/heterogenous_integration")
     html_dir = base_dir / "html"
     pdf_dir = base_dir / "pdf"
     html_upload_dir = base_dir / "htmls"
     pdf_upload_dir = base_dir / "pdfs"
 
-    # Begin document processing when button is clicked
-    if st.button("Process Document(s)"):
-
+    if st.button("Process"):
         if not uploaded_files:
             status_placeholder.warning("⚠️ No documents uploaded.")
         else:
             status_placeholder.info("📄 Starting text extraction...")
-            # Extract text from uploaded files
             for file in uploaded_files:
-                # Isolate file extension and read bytes
                 file_ext = file.name.split(".")[-1].lower()
                 file_bytes = file.read()
 
                 if file_ext == "html":
                     from ingestor import clean_html, html_text_dir, json_dir
-                    # Temporarily save uploaded file
-                    
+                    html_upload_dir = base_dir / "htmls"
                     input_path = html_upload_dir / file.name
                     html_upload_dir.mkdir(parents=True, exist_ok=True)
                     with open(input_path, "wb") as f:
@@ -80,7 +281,6 @@ with tab_chat:
                     clean_html(input_path, html_text_dir, json_dir)
 
                 elif file_ext == "pdf":
-                    # Extract text from PDF
                     from extractor import extract_pdf
                     from ingestor import dump_pdf_text
                     
@@ -89,7 +289,6 @@ with tab_chat:
                     with open(input_path, "wb") as f:
                         f.write(file_bytes)
                     text = extract_pdf(file.name)
-                    # Save text to pdf_text + create .json metadata file
                     dump_pdf_text(file.name, text)
                 else:
                     st.warning(f"Unsupported file type: {file.name}")
@@ -99,14 +298,11 @@ with tab_chat:
 
             status_placeholder.info("🔗 Chunking documents...")
             from chunker import main as chunker_main
-            # Chunk all the .JSON metadata files, chunk them, and save to chunks.jsonl
             chunker_main()
             time.sleep(1)
             status_placeholder.success("✅ Chunking complete!")
 
             status_placeholder.info("💾 Initializing FAISS...")
-            # Initialize FAISS with the new chunks - this will hopefully be the only embedder
-            # object that needs to be created
             from FORAGER.embedder import FAISSEmbedder
             embedder = FAISSEmbedder.create_default()
             embedder.initialize_faiss()
@@ -123,12 +319,13 @@ with tab_chat:
     if any([list(html_upload_dir.glob("*.html")), list(pdf_upload_dir.glob("*.pdf"))]):
         # Question input section
         st.markdown("### 💬 Ask a Question")
-        user_question = st.text_input("Query the knowledge base: ")
+        user_question = st.text_input("Query the knowledge base:")
 
         if st.button("Submit Question") and user_question:
             st.session_state["submitted"] = True
             status_placeholder.info("🤖 Generating answer via LLM...")
             embedder = st.session_state.get("embedder")
+
             if embedder is None:
                 from FORAGER.embedder import FAISSEmbedder
                 embedder = FAISSEmbedder.create_default()
@@ -139,14 +336,11 @@ with tab_chat:
                     st.warning("⚠️ Could not initialize FAISS index. Please upload and process documents first.")
                     st.stop()
             else:
-                from test_pipeline import generate_and_evaluate_claims
-                # Run the first portion of the FORAGER pipeline (function name misleading)
-                answer, claim_eval = generate_and_evaluate_claims(embedder, user_question)
-                # st.markdown(f"generate_and_evaluate_claims() returned `claim_eval`: {claim_eval}")
+                from test_pipeline import full_forager_pipeline
+                answer, claim_eval = full_forager_pipeline(embedder, user_question)
                 st.session_state["answer"] = answer
                 st.session_state["claim_eval"] = claim_eval
 
-                # Display the summary cards
                 answer = st.session_state.get("answer", "❓ No answer available")
                 claim_eval = st.session_state.get("claim_eval", {})
 
@@ -154,7 +348,6 @@ with tab_chat:
                     final_claim, info = list(claim_eval.items())[0]
                     label = info.get("label", "N/A")
                     confidence = info.get("confidence", "N/A")
-                    # similarity = info.get("similarity", "N/A")
                     chunks = info.get("supporting_chunks", [])
                     scores = [doc.get("score", 0) for doc in chunks if "score" in doc]
                     similarity = round(sum(scores) / len(scores), 3) if scores else "N/A"
@@ -173,7 +366,6 @@ with tab_chat:
                     except:
                         sim_class = "similarity-low"
 
-                    # === Tag cards row ===
                     col1, col2, col3 = st.columns(3)
 
                     with col1:
@@ -208,15 +400,12 @@ with tab_chat:
                             </div>
                         """, unsafe_allow_html=True)
                     
-                    # Final Claim
                     st.markdown(f"""
                         <div class="final-claim-card">
                             <h4>📝 Initial Claim</h4>
                             <p style="font-size: 14px;">{answer}</p>
                         </div>
                     """, unsafe_allow_html=True)
-            
-                time.sleep(1)
 
                 # Run Prompt Locked Loop as long as question was not marked as irrelevant
                 # if (answer != "This question cannot be answered by the information in the knowledge base."):
@@ -256,8 +445,8 @@ with tab_chat:
             st.balloons()
 
 
-# Tab 2: Knowledge Base Management
 with tab_knowledge_base:
+
     st.header("📚 Knowledge Base Management")
     
     html_upload_dir = base_dir / "htmls"
@@ -295,22 +484,14 @@ with tab_knowledge_base:
     st.markdown("---")
     st.markdown("### ➕ Upload More Files")
     more_files = st.file_uploader("Upload additional documents (PDF or HTML)", type=["pdf", "html"], accept_multiple_files=True, key="additional_uploads")
-
     if more_files:
         # Read and store all new file data to prevent .read() issues later
         uploaded_file_data = [(file, file.read()) for file in more_files]
         for file, file_bytes in uploaded_file_data:
             file_ext = file.name.split(".")[-1].lower()
             file_bytes = file.read()
-            if file_ext == "html":
-                save_path = html_upload_dir / file.name
-            elif file_ext == "pdf":
-                save_path = pdf_upload_dir / file.name
-            else:
-                st.warning(f"Unsupported file type: {file.name}")
-                continue
-
-            with open(save_path, "wb") as f:
+            save_dir = html_upload_dir if file_ext == "html" else pdf_upload_dir
+            with open(save_dir / file.name, "wb") as f:
                 f.write(file_bytes)
             st.success(f"✅ Uploaded {file.name}")
         
@@ -369,7 +550,102 @@ with tab_knowledge_base:
 
         # st.rerun()
 
-# Tab 3: Steb-by-step claims breakdown
+    st.markdown("---")
+
+    st.markdown("### 📂 Delete Uploaded Documents")
+
+    selected_files = []
+    # === Select All Checkbox ===
+    select_all = st.checkbox("✅ Select All Files")
+
+    def render_file_list(files, label, file_type):
+        st.markdown(f"#### {label}")
+        for path in files:
+            file_key = f"{file_type}_{path.name}"
+            col1, col2, col3 = st.columns([0.05, 0.75, 0.2])
+
+            with col1:
+                checked = st.checkbox("", key=file_key, value=select_all)
+                if checked:
+                    selected_files.append(path)
+
+            with col2:
+                st.markdown(f"<div class='file-entry'>{path.name}</div>", unsafe_allow_html=True)
+
+            with col3:
+                if st.button("🗑️", key=f"del_{file_key}"):
+                    path.unlink()
+                    st.rerun()
+
+    # Display files
+    render_file_list(list(pdf_upload_dir.glob("*.pdf")), "🔵 PDF Files", "pdf")
+    render_file_list(list(html_upload_dir.glob("*.html")), "🟣 HTML Files", "html")
+
+    # === Bulk Delete ===
+    if selected_files and st.button("Delete Selected Files"):
+        for file in selected_files:
+            file.unlink()
+        st.success(f"✅ Deleted {len(selected_files)} file(s).")
+        st.rerun()
+
+
+# with tab_knowledge_base:
+#     st.header("📚 Knowledge Base Management")
+    
+#     html_upload_dir = base_dir / "htmls"
+#     pdf_upload_dir = base_dir / "pdfs"
+
+#     html_upload_dir.mkdir(parents=True, exist_ok=True)
+#     pdf_upload_dir.mkdir(parents=True, exist_ok=True)
+
+#     st.markdown("### 📂 Existing Uploaded Documents")
+
+#     # Show HTML files
+#     html_files = list(html_upload_dir.glob("*.html"))
+#     if html_files:
+#         st.markdown("#### 🟣 HTML Files")
+#         for file_path in html_files:
+#             with st.expander(f"{file_path.name}"):
+#                 st.code(file_path.read_text(encoding="utf-8")[:1000] + "..." if file_path.stat().st_size > 1000 else file_path.read_text(encoding="utf-8"), language="html")
+#                 if st.button(f"🗑️ Delete {file_path.name}"):
+#                     file_path.unlink()
+#                     st.success(f"Deleted {file_path.name}")
+#                     st.experimental_rerun()
+
+#     # Show PDF files
+#     pdf_files = list(pdf_upload_dir.glob("*.pdf"))
+#     if pdf_files:
+#         st.markdown("#### 🔵 PDF Files")
+#         for file_path in pdf_files:
+#             with st.expander(f"{file_path.name}"):
+#                 st.write(f"Size: {file_path.stat().st_size / 1024:.2f} KB")
+#                 if st.button(f"🗑️ Delete {file_path.name}"):
+#                     file_path.unlink()
+#                     st.success(f"Deleted {file_path.name}")
+#                     st.experimental_rerun()
+
+#     st.markdown("---")
+#     st.markdown("### ➕ Upload More Files")
+#     more_files = st.file_uploader("Upload additional documents (PDF or HTML)", type=["pdf", "html"], accept_multiple_files=True, key="additional_uploads")
+
+#     if more_files:
+#         for file in more_files:
+#             file_ext = file.name.split(".")[-1].lower()
+#             file_bytes = file.read()
+#             if file_ext == "html":
+#                 save_path = html_upload_dir / file.name
+#             elif file_ext == "pdf":
+#                 save_path = pdf_upload_dir / file.name
+#             else:
+#                 st.warning(f"Unsupported file type: {file.name}")
+#                 continue
+
+#             with open(save_path, "wb") as f:
+#                 f.write(file_bytes)
+#             st.success(f"✅ Uploaded {file.name}")
+#         st.experimental_rerun()
+
+# Tab 3: Step-by-step claims breakdown
 with tab_claims:
     st.header("📑 Claims Breakdown")
 
@@ -472,47 +748,166 @@ with tab_claims:
                     text = chunk.get("text", "").replace("\n", "\n> ")
                     st.markdown(f"> **Chunk {idx}:**\n> {text}")
 
+            st.markdown(f"### 📝 Claim: {claim}")
+            st.markdown(f"""
+                <p><strong>Evaluation:</strong> 
+                <span class="label-tag eval-{label}">
+                    {label}
+                </span></p>
+            """, unsafe_allow_html=True)
 
+            st.markdown(f"""
+                <p><strong>Confidence:</strong> 
+                <span class="label-tag conf-{confidence}">
+                    {confidence}
+                </span></p>
+            """, unsafe_allow_html=True)
+
+            with st.expander("📜 Supporting Chunks"):
+                for idx, chunk in enumerate(eval_info.get("supporting_chunks", []), 1):
+                    formatted_chunk = chunk["text"].replace("\n", "\n> ")
+                    st.markdown(f"> **Chunk {idx}:**  \n> {formatted_chunk}")
 
 # Tab 4: Metrics & Performance
+# Tab 4: Metrics & Performance
+import plotly.express as px
+import pandas as pd
+
 with tab_metrics:
-    st.header("📊 Metrics & Performance")
-
-    # Create columns to show high-level Key Performance Indicators (KPIs)
-    col1, col2, col3, col4 = st.columns(4)
-    col1.metric("🔍 Claims Evaluated", len(st.session_state.get("claim_eval", "N/A")))
-    col2.metric("✅ Locked Claims", len(st.session_state.get("locked_claims", "N/A")))
-    col3.metric("♻️ PLL Rounds", len(st.session_state.get("pll_logs", "N/A")) - 2) # Subtract 2 because PLL Logs has Round 0 and Pre-PLL Lock which aren't actual rounds
-    runtime = st.session_state.get("pipeline_runtime", None)
-    if isinstance(runtime, (int, float)):
-        col4.metric("⏱️ Total Runtime", f"{runtime:.2f}s")
-    else:
-        col4.metric("⏱️ Total Runtime", "N/A")
-
+    # Get data
     claim_eval = st.session_state.get("claim_eval", {})
     pll_logs = st.session_state.get("pll_logs", [])
 
     total_claims = len(claim_eval)
     total_pll_rounds = len(pll_logs)
+    total_claims_in_rounds = sum(len(log["claims"]) for log in pll_logs)
 
-    st.metric(label="Total Claims Generated", value=total_claims)
-    st.metric(label="Total PLL Rounds Executed", value=total_pll_rounds)
-
-    # Count labels
+    # Visualization data prep
     label_counts = {}
-    for info in claim_eval.values():
-        label = info.get("label", "N/A")
-        label_counts[label] = label_counts.get(label, 0) + 1
+    confidence_counts = {"High": 0, "Medium": 0, "Low": 0, "Zero": 0}
+    round_label_counts = []
 
-    st.subheader("📊 CLaim Label Distribution")
-    st.bar_chart(label_counts)
-
-    # Optional: Show PLL decision paths
-    st.subheader("🪵 PLL Rounds Breakdown")
     for round_log in pll_logs:
-        st.markdown(f"**PLL Round {round_log['pll_round']}** — {len(round_log['claims'])} claims processed")
+        label_count = {"Round": round_log["pll_round"], "Supported": 0, "Unsupported": 0, "Contradicted": 0}
+        for claim in round_log["claims"]:
+            label = claim.get("label", "N/A")
+            confidence = claim.get("confidence", "N/A")
+            label_counts[label] = label_counts.get(label, 0) + 1
+            confidence_counts[confidence] = confidence_counts.get(confidence, 0) + 1
+            if label in label_count:
+                label_count[label] += 1
+        round_label_counts.append(label_count)
 
-# Tab 5: PLL Logs + Developer's View
+    df_labels = pd.DataFrame.from_dict(label_counts, orient='index', columns=["Count"])
+    df_conf = pd.DataFrame.from_dict(confidence_counts, orient='index', columns=["Count"])
+    df_rounds = pd.DataFrame(round_label_counts)
+
+    # Safeguard against missing columns
+    expected_cols = {"Round", "Supported", "Unsupported", "Contradicted"}
+    if expected_cols.issubset(df_rounds.columns):
+        df_melted = df_rounds.melt(
+            id_vars="Round", 
+            value_vars=["Supported", "Unsupported", "Contradicted"],
+            var_name="Label", value_name="Count"
+        )
+    else:
+        df_melted = pd.DataFrame(columns=["Round", "Label", "Count"])  # Empty fallback
+
+    # Build charts BEFORE columns
+    fig1 = px.bar(
+        df_labels.reset_index(), x='index', y='Count', color='index',
+        labels={'index': 'Label'},
+        color_discrete_sequence=['#62B6CB', '#FFA07A', '#FF6347']
+    )
+    fig1.update_layout(
+        plot_bgcolor='#0e1117',
+        paper_bgcolor='#0e1117',
+        font=dict(color='white')
+    )
+
+    fig2 = px.bar(
+        df_conf.reset_index(), x='index', y='Count', color='index',
+        labels={'index': 'Confidence'},
+        color_discrete_sequence=['#90EE90', '#FFD700', '#FFA07A', '#FF4500']
+    )
+    fig2.update_layout(
+        plot_bgcolor='#0e1117',
+        paper_bgcolor='#0e1117',
+        font=dict(color='white')
+    )
+
+    fig3 = px.bar(
+        df_melted, x='Round', y='Count', color='Label',
+        barmode='group',
+        color_discrete_sequence=['#00BFFF', '#FFA500', '#DC143C']
+    )
+    fig3.update_layout(
+        plot_bgcolor='#0e1117',
+        paper_bgcolor='#0e1117',
+        font=dict(color='white')
+    )
+
+    # Metrics cards
+    st.markdown(f"""
+        <div>
+            <div class='metric-card-container'>
+                <div class='metric-card'>
+                    <div><span class="icon">📄</span><h4 style='display:inline;'>Total Claims Generated</h4></div>
+                    <div class='value'>{total_claims}</div>
+                </div>
+                <div class='metric-card'>
+                    <div><span class="icon">🔁</span><h4 style='display:inline;'>Total PLL Rounds</h4></div>
+                    <div class='value'>{total_pll_rounds}</div>
+                </div>
+                <div class='metric-card'>
+                    <div><span class="icon">📦</span><h4 style='display:inline;'>Total Claims in Rounds</h4></div>
+                    <div class='value'>{total_claims_in_rounds}</div>
+                </div>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+
+    # 3-Column Visualization Section
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.markdown("""
+            <div class='visualization-box'>
+                <div class='visualization-title'>🔖 Claim Label Distribution</div>
+        """, unsafe_allow_html=True)
+        st.plotly_chart(fig1, use_container_width=True)
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    with col2:
+        st.markdown("""
+            <div class='visualization-box'>
+                <div class='visualization-title'>📊 Confidence Level Distribution</div>
+        """, unsafe_allow_html=True)
+        st.plotly_chart(fig2, use_container_width=True)
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    with col3:
+        st.markdown("""
+            <div class='visualization-box'>
+                <div class='visualization-title'>🔁 PLL Round Label Breakdown</div>
+        """, unsafe_allow_html=True)
+        st.plotly_chart(fig3, use_container_width=True)
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    # PLL round breakdowns
+    st.markdown("### 🪵 PLL Rounds Breakdown")
+    if not pll_logs:
+        st.info("No PLL logs available.")
+    else:
+        for round_log in pll_logs:
+            st.markdown(f"""
+                <div style='background-color: #1e1e1e; padding: 15px; border-radius: 10px; margin-bottom: 10px;'>
+                    <span style='color: white; font-weight: bold;'>PLL Round {round_log['pll_round']}</span>
+                    <br><span style='color: #bbb;'>{len(round_log['claims'])} claims processed</span>
+                </div>
+            """, unsafe_allow_html=True)
+
+# Tab 5: PLL Logs
 with tab_logs:
     st.header("🪵 PLL Logs")
 
@@ -567,4 +962,97 @@ with tab_logs:
                 st.markdown(f"- {c['claim']}")
 # === INPUT INGESTION PROCESS === #
 
+# with tab_metrics:
+#     st.markdown("""
+#         <style>
+#             .metric-card {
+#                 background-color: #1e1e1e;
+#                 padding: 20px;
+#                 border-radius: 16px;
+#                 color: white;
+#                 width: 23%;
+#                 min-width: 200px;
+#                 display: inline-block;
+#                 vertical-align: top;
+#                 margin-right: 1.5%;
+#                 margin-bottom: 20px;
+#             }
+#             .metric-card h4 {
+#                 margin: 0 0 6px 0;
+#                 font-size: 16px;
+#                 font-weight: 500;
+#                 color: #d1d1d1;
+#             }
+#             .metric-card .value {
+#                 font-size: 32px;
+#                 font-weight: bold;
+#                 margin-bottom: 6px;
+#             }
+#             .metric-card .icon {
+#                 font-size: 22px;
+#                 margin-right: 8px;
+#                 color: #c4f000;
+#             }
+#         </style>
+#     """, unsafe_allow_html=True)
 
+#     claim_eval = st.session_state.get("claim_eval", {})
+#     pll_logs = st.session_state.get("pll_logs", [])
+
+#     total_claims = len(claim_eval)
+#     total_pll_rounds = len(pll_logs)
+#     total_claims_in_rounds = sum(len(log["claims"]) for log in pll_logs)
+
+#     st.markdown("""
+#         <div>
+#             <div class='metric-card'>
+#                 <div><span class="icon">📄</span><h4 style='display:inline;'>Total Claims Generated</h4></div>
+#                 <div class='value'>{}</div>
+#             </div>
+#             <div class='metric-card'>
+#                 <div><span class="icon">🔁</span><h4 style='display:inline;'>Total PLL Rounds</h4></div>
+#                 <div class='value'>{}</div>
+#             </div>
+#             <div class='metric-card'>
+#                 <div><span class="icon">📦</span><h4 style='display:inline;'>Total Claims in Rounds</h4></div>
+#                 <div class='value'>{}</div>
+#             </div>
+#         </div>
+#     """.format(total_claims, total_pll_rounds, total_claims_in_rounds), unsafe_allow_html=True)
+
+#     # Label Distribution
+#     label_counts = {}
+#     for info in claim_eval.values():
+#         label = info.get("label", "N/A")
+#         label_counts[label] = label_counts.get(label, 0) + 1
+
+#     if label_counts:
+#         st.markdown("### 🔖 Claim Label Distribution")
+#         fig = px.bar(
+#             x=list(label_counts.keys()),
+#             y=list(label_counts.values()),
+#             labels={'x': 'Label', 'y': 'Count'},
+#             color_discrete_sequence=['#62B6CB']
+#         )
+#         fig.update_layout(
+#             plot_bgcolor='#0e1117',
+#             paper_bgcolor='#0e1117',
+#             font=dict(color='white'),
+#             xaxis=dict(title_font=dict(color='white')),
+#             yaxis=dict(title_font=dict(color='white')),
+#         )
+#         st.plotly_chart(fig, use_container_width=True)
+#     else:
+#         st.info("No claims to display.")
+
+#     st.markdown("### 🪵 PLL Rounds Breakdown")
+#     if not pll_logs:
+#         st.info("No PLL logs available.")
+#     else:
+#         for round_log in pll_logs:
+#             st.markdown(f"""
+#                 <div style='background-color: #1e1e1e; padding: 15px; border-radius: 10px; margin-bottom: 10px;'>
+#                     <span style='color: white; font-weight: bold;'>PLL Round {round_log['pll_round']}</span>
+#                     <br><span style='color: #bbb;'>{len(round_log['claims'])} claims processed</span>
+#                 </div>
+#             """, unsafe_allow_html=True)

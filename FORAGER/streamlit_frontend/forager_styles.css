@@ -1,3 +1,100 @@
+.file-entry {
+    font-size: 14px;
+    padding: 6px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+div[class*="stButton"] > button {
+    background-color: #202020;
+    color: white;
+    border-radius: 5px;
+    padding: 3px 10px;
+    font-size: 13px;
+}
+
+div[class*="stButton"] > button:hover {
+    background-color: #444;
+    color: white;
+}
+
+/* Container to center the uploader */
+.centered-uploader {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+/* Force control over the uploader container */
+div[data-testid="stFileUploader"] {
+    width: 880px !important;  /* Set the desired width */
+    max-width: 90vw;
+    height: 120px !important; 
+    margin: 0 auto;
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
+/* Instructional Step Cards */
+.steps-container {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.step-card {
+    background-color: #1e1e1e;
+    border: 1px solid #444;
+    border-radius: 12px;
+    padding: 20px;
+    width: 260px;
+    text-align: left;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.step-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.5rem;
+}
+
+.step-description {
+    font-size: 0.95rem;
+    color: #ccc;
+}
+
+
+.chat-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.chat-logo {
+    width: 80px;
+    margin-bottom: 1rem;
+}
+
+.chat-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 0.5rem;
+}
+
+.chat-subtitle {
+    font-size: 1rem;
+    color: #cfcfcf;
+}
+
 /* Reduce top margin */
 .block-container {
     padding-top: 1rem;
@@ -149,4 +246,190 @@ h1 {
 .confidence-Low {
   color: #e74c3c;
   font-weight: bold;
+.label-tag {
+    display: inline-block;
+    padding: 5px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    color: white;
+    margin-left: 8px;
+}
+
+.label-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    border: 1.5px solid;
+    background-color: transparent;
+}
+
+.label-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+/* Evaluation Tags */
+.eval-Supported {
+    color: #2ECC71;
+    border-color: #2ECC71;
+}
+
+/* .eval-Supported .label-dot {
+    background-color: #2ECC71;
+} */
+
+.eval-Unsupported {
+    color: #E67E22;
+    border-color: #E67E22;
+}
+
+/* .eval-Unsupported .label-dot {
+    background-color: #E67E22;
+} */
+
+.eval-Contradicted {
+    color: #E74C3C;
+    border-color: #E74C3C;
+}
+
+/* .eval-Contradicted .label-dot {
+    background-color: #E74C3C;
+} */
+
+/* Confidence Tags */
+.conf-High {
+    color: #2ECC71;
+    border-color: #2ECC71;
+}
+
+/* .conf-High .label-dot {
+    background-color: #2ECC71;
+} */
+
+.conf-Medium {
+    color: #f39c12;
+    border-color: #f39c12;
+}
+
+/* .conf-Medium .label-dot {
+    background-color: #f39c12;
+} */
+
+.conf-Low {
+    color: #E74C3C;
+    border-color: #E74C3C;
+}
+
+/* .conf-Low .label-dot {
+    background-color: #E74C3C;
+} */
+
+.claim-card {
+    background-color: #1e1e1e;
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 14px;
+    border: 1px solid #333;
+}
+
+.claim-header {
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.claim-meta {
+    margin-bottom: 8px;
+}
+
+.claim-reason {
+    font-size: 0.9rem;
+    color: #cccccc;
+}
+
+.tag {
+    display: inline-block;
+    padding: 4px 12px;
+    margin-right: 8px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.decision {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.confidence.low {
+    background-color: #e57373;
+    color: white;
+}
+
+.confidence.medium {
+    background-color: #ffb74d;
+    color: white;
+}
+
+.confidence.high {
+    background-color: #81c784;
+    color: white;
+}
+
+/* Metrics Tab Styles */
+.metric-card {
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 16px;
+    color: white;
+    width: 23%;
+    min-width: 200px;
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 1.5%;
+    margin-bottom: 20px;
+}
+.metric-card h4 {
+    margin: 0 0 6px 0;
+    font-size: 16px;
+    font-weight: 500;
+    color: #d1d1d1;
+}
+.metric-card .value {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+.metric-card .icon {
+    font-size: 22px;
+    margin-right: 8px;
+    color: #c4f000;
+}
+.metric-card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+}
+
+.visualization-box {
+    /* border: 2px solid red; */
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 16px;
+    margin-bottom: 20px;
+}
+.visualization-title {
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+} 
 }
