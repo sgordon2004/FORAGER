@@ -33,9 +33,15 @@ with open("tests/component/bs_detector/scifact/data/corpus.jsonl") as f:
         corpus_lookup[doc["doc_id"]] = doc["abstract"]
 
 results = []
+from collections import defaultdict
+skipped_claims = 0
+gold_label_counts = defaultdict(int)
 # Run evaluation
 for claim_obj in claims:
     claim = claim_obj["claim"]
+    if not claim_obj["evidence"]:
+        skipped_claims += 1
+        continue
     evidence_dict = claim_obj["evidence"]
 
     for doc_id, evidences in evidence_dict.items():
@@ -47,6 +53,7 @@ for claim_obj in claims:
         for evidence in evidences:
             sent_indices = evidence["sentences"]
             label = evidence["label"]
+            gold_label_counts[label] += 1
             context = [abstract[i] for i in sent_indices if i < len(abstract)]
 
             prediction = detect_bs(embedder, claim, context)
@@ -66,19 +73,31 @@ with open(csv_path, "w", newline="") as csvfile:
     writer.writerows(results)
 print(f"Saved predictions to {csv_path}")
 
-# Normalize predictions
 label_map = {
-    "Supported": "SUPPORT",
-    "Unsupported": "UNSUPPORTED",
-    "Contradicted": "CONTRADICT",
+    "supported": "SUPPORT",
+    "unsupported": "UNSUPPORTED",
     "contradicted": "CONTRADICT"
 }
 
 preds = [row["prediction"] for row in results]
 golds = [row["gold"] for row in results]
-normalized_preds = [label_map.get(p, p) for p in preds]
+
+normalized_preds = [label_map.get(p.strip().lower(), p.strip().upper()) for p in preds]
+
+
 from sklearn.metrics import classification_report
 print(classification_report(golds, normalized_preds, digits=3))
 
+report = classification_report(golds, normalized_preds, digits=3)
+with open("tests/component/bs_detector/results/classification_report.txt", "w") as f:
+    f.write(report)
+print("Saved classification report to results/classification_report.txt")
+
 from collections import Counter
 print("Unique Predictions:", Counter(preds))
+
+unmatched = [p for p in preds if p.strip().lower() not in label_map]
+print("Unmatched predictions:", Counter(unmatched))
+
+print("Gold label distribution (evaluated):", dict(gold_label_counts))
+print("Number of claims skipped due to no evidence:", skipped_claims)
