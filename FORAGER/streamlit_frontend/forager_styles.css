@@ -192,10 +192,9 @@ h1 { text-align: center; }
     padding: 20px;
     border-radius: 16px;
     color: white;
-    width: 23%;
+    flex: 1 1 22%;
     min-width: 200px;
-    display: inline-block;
-    margin-right: 1.5%;
+    max-width: 23%;
     margin-bottom: 20px;
 }
 .metric-card h4 { margin: 0 0 6px 0; font-size: 16px; font-weight: 500; color: #d1d1d1; }
@@ -206,7 +205,7 @@ h1 { text-align: center; }
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    justify-content: flex-start;
+    justify-content: space-between;
 }
 
 /* Visualization Box */
