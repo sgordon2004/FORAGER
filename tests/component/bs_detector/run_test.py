@@ -6,32 +6,79 @@ This module serves as the orchestrator of this test. It loads the dataset, runs 
 
 import sys
 import os
-parent_dir = os.path.abspath(os.path.join(__file__, "../../../"))
-sys.path.append(parent_dir)
+import sys
+import os
+
+# Add the PROJECT root (outer FORAGER folder) to sys.path
+project_root = os.path.abspath(os.path.join(__file__, "../../../../"))
+sys.path.insert(0, project_root)
 from formatter import load_and_format_scifact
 from evaluate import evaluate_predictions
 from FORAGER.bs import detect_bs
 import csv
+import json
+from FORAGER.embedder import FAISSEmbedder
+embedder = FAISSEmbedder.create_default()
+embedder.initialize_faiss()
 
-if __name__ == "__main__":
-    test_claims = load_and_format_scifact(limit=60) # returns List[Dict]
-    predictions = []
+# Load claims
+with open("tests/component/bs_detector/scifact/data/claims_dev.jsonl") as f:
+    claims = [json.loads(line) for line in f]
 
-    #TODO: Initialize FAISS embedder so it can be passed to detect_bs()
-    embedder = None
+# Load corpus
+corpus_lookup = {}
+with open("tests/component/bs_detector/scifact/data/corpus.jsonl") as f:
+    for line in f:
+        doc = json.loads(line)
+        corpus_lookup[doc["doc_id"]] = doc["abstract"]
 
-    for item in test_claims:
-        pred_label = detect_bs(embedder, item["claim"], item["evidence"])
-        predictions.append({
-            "claim": item["claim"],
-            "evidence": item["evidence"],
-            "gold_label": item["label"],
-            "predicted_label": pred_label
-        })
+results = []
+# Run evaluation
+for claim_obj in claims:
+    claim = claim_obj["claim"]
+    evidence_dict = claim_obj["evidence"]
 
-    with open("bs_detector/predictions.csv", "w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=predictions[0].keys)
-        writer.writeheader()
-        writer.writerows(predictions)
+    for doc_id, evidences in evidence_dict.items():
+        doc_id = int(doc_id)
+        if doc_id not in corpus_lookup:
+            continue
+        abstract = corpus_lookup[doc_id]
 
-    evaluate_predictions(predictions)
+        for evidence in evidences:
+            sent_indices = evidence["sentences"]
+            label = evidence["label"]
+            context = [abstract[i] for i in sent_indices if i < len(abstract)]
+
+            prediction = detect_bs(embedder, claim, context)
+            results.append({
+                "claim": claim,
+                "context": " ||| ".join(context),
+                "prediction": prediction,
+                "gold": label
+            })
+
+csv_path = "tests/component/bs_detector/results/predictions.csv"
+os.makedirs(os.path.dirname(csv_path), exist_ok=True)
+
+with open(csv_path, "w", newline="") as csvfile:
+    writer = csv.DictWriter(csvfile, fieldnames=["claim", "context", "prediction", "gold"])
+    writer.writeheader()
+    writer.writerows(results)
+print(f"Saved predictions to {csv_path}")
+
+# Normalize predictions
+label_map = {
+    "Supported": "SUPPORT",
+    "Unsupported": "UNSUPPORTED",
+    "Contradicted": "CONTRADICT",
+    "contradicted": "CONTRADICT"
+}
+
+preds = [row["prediction"] for row in results]
+golds = [row["gold"] for row in results]
+normalized_preds = [label_map.get(p, p) for p in preds]
+from sklearn.metrics import classification_report
+print(classification_report(golds, normalized_preds, digits=3))
+
+from collections import Counter
+print("Unique Predictions:", Counter(preds))

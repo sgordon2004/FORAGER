@@ -13,6 +13,8 @@ paths_to_delete = [
     "FORAGER_corpus/heterogenous_integration/html_text",
     "FORAGER_corpus/heterogenous_integration/pdf_text",
     "FORAGER_corpus/heterogenous_integration/json",
+    "FORAGER_corpus/heterogenous_integration/txts",
+    "FORAGER_corpus/heterogenous_integration/txt_text",
     "../FORAGER/vector_database"
 ]
 
