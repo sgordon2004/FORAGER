@@ -1,0 +1,129 @@
+Early Artemis Missions
+With the powerful Space Launch System (SLS) rocket and Orion spacecraft nearing the end of
+testing and development, the agency has the foundation needed to send humans back to lunar orbit.
+In preparation for the safest earliest possible lunar landing, NASA seeks to make full use of early
+Artemis missions through additional testing for Orion and the Human Landing System (HLS) when
+possible.
+The Gateway is a critical component of the agency’s sustainable lunar operations. NASA will
+integrate the first two pieces on Earth, launching the Power and Propulsion Element (PPE) and
+the Habitation and Logistics Outpost (HALO) together in 2023 on a single rocket, followed by a
+commercial logistics supply launch.
+In 2024, Orion will deliver its crew to lunar orbit. The commercially developed lander that will take
+the crew to the lunar surface will be capable of docking directly to Orion for crew transfer for early
+Artemis missions, but NASA is maintaining flexibility for optional docking to the Gateway. On the
+surface, the crew will wear the new exploration extravehicular mobility unit or xEMU spacesuit as
+they explore the surface for about a week before returning to Orion for the trip home to Earth.
+Sustainable Artemis Missions
+On later Artemis missions crew will arrive at the Gateway aboard Orion. On the Gateway, they
+will be able to conduct research and take trips down to the surface. NASA will work with Artemis
+providers to ensure spacecraft are built to international interoperability standards with as many
+reusable components as possible for long-term sustainability at the Moon.
+Long-standing International Space Station partners are eager to join NASA in lunar orbit. The
+Canadian Space Agency (CSA) has committed to providing advanced robotics for the Gateway, and
+ESA (European Space Agency) plans to provide the International Habitat (IHab) and the ESPRIT
+module, which will deliver additional communications capabilities, a science airlock for deploying
+science payloads and CubeSats, and refueling of the Gateway. The Japan Aerospace Exploration
+Agency (JAXA) plans to contribute habitation components and logistics resupply. The Russian
+Space Agency (Roscosmos) has expressed interest in cooperation on Gateway as well.
+At the lunar South Pole, NASA and its partners will develop an Artemis Base Camp to support
+longer expeditions on the lunar surface. Planned Base Camp elements include a lunar terrain vehicle
+(LTV, or unpressurized rover), a habitable mobility platform (pressurized rover), a lunar foundation
+habitation module, power systems, ad in-situ resource utilization systems.
+This incremental build-up of capabilities on and around the Moon is essential to establishing long-
+term exploration of Earth’s nearest neighbor and preparing for human exploration of Mars.
+10
+Chapter 1: Setting Humanity on a Sustainable Course
+to the Moon
+The Artemis program builds on a half-century of experience and preparation to establish a robust
+human-robotic presence on and around the Moon. With clear direction from the White House,
+coordination among the reestablished National Space Council, strong bipartisan support in
+Congress, and robust participation from industry and international partnerships, Artemis is a
+globally unifying endeavor.
+America will lead the monumental shift that frees humanity from our innate bonds to Earth. This is
+the decade in which the Artemis Generation will teach us how to live on other worlds.
+The Basis for a Lunar Architecture
+NASA was ready for Space Policy Directive-1, the call from the President to return to the Moon
+and get ready for Mars, and was already prepared to offer architectural and hardware solutions to
+leverage the core deep space transportation systems—the SLS rocket, the Orion spacecraft, and the
+supporting Exploration Ground Systems (EGS)—to return humans to the Moon for the first time in
+more than 50 years.
+Through partnerships with U.S. industry, NASA was already developing 21st century deep space
+habitation capabilities and investing in lunar lander technologies. Ongoing spacesuit upgrades
+have resulted in a lunar surface suit that affords more frequent spacewalks through improved
+safety features, custom fitting, simplified maintenance, and better communications. A cross-agency
+11
+SCIENCE
+Initial investigations delivered
+by CLPS providers will
+study the lunar surface and
+resources at the lunar poles.
+NASA originally selected
+nine CLPS providers, but as
+the need to deliver heavier
+payloads became apparent,
+the agency later added five
+more companies.
+In May 2019, NASA awarded
+the first two task awards for
+12 instrument deliveries to
+Astrobotic (Pittsburgh, PA) and
+Intuitive Machines (Houston,
+TX). Those initial flights are
+launching in 2021, and NASA
+is planning for two deliveries
+per year thereafter.
+architecture team also had been formulating plans for a Gateway orbiting the Moon. This plan
+garnered significant support from international partners and was reflected in the Global Exploration
+Roadmap as a collaborative effort that would “open the space frontier for human exploration of the
+Moon, Mars and asteroids as we expand human exploration and commerce into deep space.”
+In 2018, with support from the highest-level national decision makers, NASA proposed a plan to
+return humans to the lunar surface by 2028. This plan included the Gateway from which human
+landers could be deployed. There was strong international support for the orbiting lunar outpost,
+and International Space Station partners proposed additional capabilities they could contribute.
+The Gateway program advanced from formulation to program status in late 2018.
+NASA also established the Commercial Lunar Payload Services or
+CLPS initiative in 2018, encouraging the U.S. commercial space
+industry to introduce new lander technologies to deliver NASA
+and commercial payloads to the surface of the Moon.
+With 14 CLPS providers currently on contract and eligible to bid
+on payload deliveries to the Moon, NASA solicits bids from the
+companies as needed and awards surface task orders for lunar
+surface deliveries. The agency has already awarded multiple
+deliveries and assigned payloads to flights in 2021 as well as the
+first of two planned deliveries slated for 2022. A task order was
+awarded in June 2020 to Astrobotic of Pittsburgh, Pennsylvania,
+to deliver NASA’s Volatiles Investigating Polar Exploration Rover
+or VIPER in 2023. The agency plans to send science instruments
+and technology experiments to the surface at least twice per year
+on CLPS flights.
+NASA has already selected more than two dozen instruments
+to study the Moon and test new technologies for these early
+CLPS flights, including VIPER. The agency also has announced a new process to build an internal
+database of future lunar surface investigations. Through the Payloads and Research Investigations
+on the Surface of the Moon or PRISM, NASA is interested in investigations that maximize basic
+and applied science and technology demonstrations at different lunar locations, as well as
+individual investigation components that would be valuable at multiple locations. The agency will
+use the PRISM information to inform the manifests of future CLPS deliveries beginning in 2023.
+The agency will periodically open up PRISM requests for information to collect new ideas and
+investigations eligible for future CLPS flight opportunities.
+Meanwhile in 2018, NASA began the acquisition process for commercially provided Human
+Landing Systems (HLS) to meet the goal of sending humans back to the Moon. By harnessing new
+technologies and spurring competitive innovation, NASA will work with commercial partners to
+12
+design and develop an HLS capable of accessing any part of the Moon and reusing sections of the
+system to increase affordability.
+The team issued a Broad Agency Announcement (BAA) (NextSTEP Appendix E) to U.S. industry,
+seeking HLS studies, risk reduction, development, and demonstration. Proposals were due March
+25, 2019, one day before Vice President Pence issued a new challenge to NASA: land the first woman
+and next man on the Moon by 2024—four years earlier than originally planned. NASA moved
+quickly to respond to the Vice President’s challenge.
+By May 2019, NASA had selected 11 companies across eight states under NextSTEP Appendix E
+to conduct studies and produce system-level prototypes to reduce risk and advance human lander
+technologies. Appendix E immediately allowed NASA to engage with commercial industry on early
+designs and how to best set up a rapid development approach to meet the 2024 objectives.
+In response to the new, accelerated charge to the Moon, the agency issued a draft solicitation
+(NextSTEP Appendix H) in July 2019, this time seeking feedback on the development and
+demonstration of an integrated HLS to deliver humans to the lunar surface by 2024 and for the
+development and demonstration of a more sustainable HLS by 2026. Following a second draft
+in August and after addressing more than 1,150 comments, the final Appendix H solicitation was
+issued in October 2019. Awards were made to three companies in spring 2020.
