@@ -190,23 +190,36 @@ with tab_chat:
                     with col1:
                         st.markdown(f"""
                             <div class="tag-card {bs_class}">
-                                <div style="display: inline-flex; align-items: center; gap: 6px;">
+                                <div style="display: inline-flex; align-items: center;">
                                     <h4 style="margin: 0;">🧪 BS Label</h4>
-                                    <div class="tooltip" style="cursor: pointer; font-size: 18px; line-height: 1;">ℹ️
-                                        <span class="tooltiptext">This label indicates how well the LLM's claims 
-                                        are supported by the provided knowledge base. Possible labels are "Supported", 
-                                        "Unsupported", or "Contradicted". "Unsupported" or "Contradicted" labels mean 
-                                        that the model may have been inaccurate or hallucinated claims.</span>
+                                    <div class="tooltip" style="margin-left: -14px; cursor: pointer; 
+                                     font-size: 12px; line-height: 1; position: relative; top: -4px;">
+                                        ℹ️
+                                        <span class="tooltiptext">
+                                            This label indicates how well the LLM's claims are supported 
+                                            by the provided knowledge base.
+                                        </span>
                                     </div>
                                 </div>
                                 <p><b>{label}</b></p>
                             </div>
                         """, unsafe_allow_html=True)
 
+
                     with col2:
                         st.markdown(f"""
                             <div class="tag-card {conf_class}">
-                                <h4>🔐 Confidence</h4>
+                                <div style="display: inline-flex; align-items: center;">
+                                    <h4 style="margin: 0;">🔐 Confidence</h4>
+                                    <div class="tooltip" style="margin-left: -14px; cursor: pointer; 
+                                    font-size: 12px; line-height: 1; position: relative; top: -4px;">
+                                        ℹ️
+                                        <span class="tooltiptext">
+                                            This label uses the BS label and the similarity score to
+                                            gague how confident the LLM is in its answer.
+                                        </span>
+                                    </div>
+                                </div>
                                 <p><b>{confidence}</b></p>
                             </div>
                         """, unsafe_allow_html=True)
@@ -214,14 +227,35 @@ with tab_chat:
                     with col3:
                         st.markdown(f"""
                             <div class="tag-card {sim_class}">
-                                <h4>📈 Similarity</h4>
+                                <div style="display: inline-flex; align-items: center;">
+                                    <h4 style="margin: 0;">📈 Similarity</h4>
+                                    <div class="tooltip" style="margin-left: -14px; cursor: pointer; 
+                                    font-size: 12px; line-height: 1; position: relative; top: -4px;">
+                                        ℹ️
+                                        <span class="tooltiptext">
+                                            The similarity score rates the semantic similarity of the LLM's 
+                                            claim to the language in the supporting documents. A 0 indicates 
+                                            no similarity, and a 1 indicates perfect similarity.
+                                        </span>
+                                    </div>
+                                </div>
                                 <p><b>{similarity}</b></p>
                             </div>
                         """, unsafe_allow_html=True)
                     
                     st.markdown(f"""
                         <div class="final-claim-card">
-                            <h4>📝 Initial Claim</h4>
+                            <div style="display: inline-flex; align-items: center;">
+                                <h4 style="margin: 0;">📝 Initial Claim</h4>
+                                <div class="tooltip" style="margin-left: -14px; cursor: pointer; 
+                                font-size: 12px; line-height: 1; position: relative; top: -4px;">
+                                    ℹ️
+                                    <span class="tooltiptext">
+                                        This is the LLM's initial response to the user's prompt 
+                                        before the Prompt-Locked Loop runs.
+                                    </span>
+                                </div>
+                            </div>
                             <p style="font-size: 14px;">{answer}</p>
                         </div>
                     """, unsafe_allow_html=True)
@@ -514,8 +548,27 @@ with tab_claims:
                 for idx, chunk in enumerate(eval_info.get("supporting_chunks", []), 1):
                     title = chunk.get("source_filename", "")
                     text = chunk.get("text", "").replace("\n", "\n> ")
-                    st.markdown(f"**Source {idx}:** {title}")
-                    st.markdown(f"> {text}")
+                    st.markdown(f"> **Chunk {idx}:**\n> {text}")
+
+            st.markdown(f"### 📝 Claim: {original_claim}")
+            st.markdown(f"""
+                <p><strong>Evaluation:</strong> 
+                <span class="label-tag eval-{label}">
+                    {label}
+                </span></p>
+            """, unsafe_allow_html=True)
+
+            st.markdown(f"""
+                <p><strong>Confidence:</strong> 
+                <span class="label-tag conf-{confidence}">
+                    {confidence}
+                </span></p>
+            """, unsafe_allow_html=True)
+
+            with st.expander("📜 Supporting Chunks"):
+                for idx, chunk in enumerate(eval_info.get("supporting_chunks", []), 1):
+                    formatted_chunk = chunk["text"].replace("\n", "\n> ")
+                    st.markdown(f"> **Chunk {idx}:**  \n> {formatted_chunk}")
 
 # Tab 4: Metrics & Performance
 with tab_metrics:
