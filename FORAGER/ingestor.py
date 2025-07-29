@@ -246,7 +246,7 @@ def process_txt_file(input_path: Path, output_dir: Path, json_dir: Path) -> Path
     print(f"[OK] Processed text and JSON for {input_path.name}")
     return output_path
 
-txt_dir = base / "txt"
+txt_dir = base / "txts"
 txt_text_dir = base / "txt_text"
 
 def extract_all_txt():

@@ -141,8 +141,9 @@ with tab_chat:
 
             st.session_state["documents_processed"] = True
             status_placeholder.success("✅ Documents processed!")
+
     # Run question process only if documents have been processed
-    if any([list(html_upload_dir.glob("*.html")), list(pdf_upload_dir.glob("*.pdf"))]):
+    if any([list(html_upload_dir.glob("*.html")), list(pdf_upload_dir.glob("*.pdf")), list(txt_upload_dir.glob("*.txt"))]):
         # Question input section
         st.markdown("### 💬 Ask a Question")
         user_question = st.text_input("Query the knowledge base:")
@@ -544,7 +545,7 @@ with tab_claims:
                                 decision = claim_info.get("pll_decision", "N/A")
                                 
                                 st.markdown(f"**▶️ PLL Round {round_label}**")
-                                st.markdown(f"- **Rephrased:** \{claim_info['claim']}")
+                                st.markdown(f"- **Rephrased:** {claim_info['claim']}")
                                 st.markdown(f"- **BS Label:** `{bs_label}`")
                                 st.markdown(f"- **Confidence:** `{confidence}`")
                                 st.markdown(f"- **Outcome:** `{decision}`")
@@ -555,27 +556,8 @@ with tab_claims:
                 for idx, chunk in enumerate(eval_info.get("supporting_chunks", []), 1):
                     title = chunk.get("source_filename", "")
                     text = chunk.get("text", "").replace("\n", "\n> ")
-                    st.markdown(f"> **Chunk {idx}:**\n> {text}")
-
-            st.markdown(f"### 📝 Claim: {original_claim}")
-            st.markdown(f"""
-                <p><strong>Evaluation:</strong> 
-                <span class="label-tag eval-{label}">
-                    {label}
-                </span></p>
-            """, unsafe_allow_html=True)
-
-            st.markdown(f"""
-                <p><strong>Confidence:</strong> 
-                <span class="label-tag conf-{confidence}">
-                    {confidence}
-                </span></p>
-            """, unsafe_allow_html=True)
-
-            with st.expander("📜 Supporting Chunks"):
-                for idx, chunk in enumerate(eval_info.get("supporting_chunks", []), 1):
-                    formatted_chunk = chunk["text"].replace("\n", "\n> ")
-                    st.markdown(f"> **Chunk {idx}:**  \n> {formatted_chunk}")
+                    st.markdown(f"**Source {idx}:** {title}")
+                    st.markdown(f">{text}")
 
 # Tab 4: Metrics & Performance
 with tab_metrics:
