@@ -171,105 +171,142 @@ with tab_chat:
                 answer = st.session_state.get("answer", "❓ No answer available")
                 claim_eval = st.session_state.get("claim_eval", {})
 
-                if claim_eval:
-                    final_claim, info = list(claim_eval.items())[0]
-                    label = info.get("label", "N/A")
-                    confidence = info.get("confidence", "N/A")
+                results = []
+
+                for final_claim, info in claim_eval.items():
+                    claim_label = info.get("label", "N/A")
+                    claim_confidence = info.get("confidence", "N/A")
                     chunks = info.get("supporting_chunks", [])
                     scores = [doc.get("score", 0) for doc in chunks if "score" in doc]
-                    similarity = round(sum(scores) / len(scores), 3) if scores else "N/A"
-
-                    st.markdown("## 🧾 Answer Summary")
-
-                    # Dynamic tag colors
-                    bs_class = f"bs-{label}"
-                    conf_class = f"confidence-{confidence}"
-                    try:
-                        sim_class = (
-                            "similarity-high" if float(similarity) >= 0.7 else
-                            "similarity-medium" if float(similarity) >= 0.4 else
-                            "similarity-low"
-                        )
-                    except:
-                        sim_class = "similarity-low"
-
-                    col1, col2, col3 = st.columns(3)
-
-                    with col1:
-                        st.markdown(f"""
-                            <div class="tag-card {bs_class}">
-                                <div style="display: inline-flex; align-items: center;">
-                                    <h4 style="margin: 0;">🧪 BS Label</h4>
-                                    <div class="tooltip" style="margin-left: -14px; cursor: pointer; 
-                                     font-size: 12px; line-height: 1; position: relative; top: -4px;">
-                                        ℹ️
-                                        <span class="tooltiptext">
-                                            This label indicates how well the LLM's claims are supported 
-                                            by the provided knowledge base.
-                                        </span>
-                                    </div>
-                                </div>
-                                <p><b>{label}</b></p>
-                            </div>
-                        """, unsafe_allow_html=True)
+                    claim_similarity = round(sum(scores) / len(scores), 3) if scores else "N/A"
+                    results.append({
+                        "claim": final_claim,
+                        "bs_label": claim_label,
+                        "similarity_score": claim_similarity,
+                        "confidence": claim_confidence
+                    })
 
 
-                    with col2:
-                        st.markdown(f"""
-                            <div class="tag-card {conf_class}">
-                                <div style="display: inline-flex; align-items: center;">
-                                    <h4 style="margin: 0;">🔐 Confidence</h4>
-                                    <div class="tooltip" style="margin-left: -14px; cursor: pointer; 
-                                    font-size: 12px; line-height: 1; position: relative; top: -4px;">
-                                        ℹ️
-                                        <span class="tooltiptext">
-                                            This label uses the BS label and the similarity score to
-                                            gague how confident the LLM is in its answer.
-                                        </span>
-                                    </div>
-                                </div>
-                                <p><b>{confidence}</b></p>
-                            </div>
-                        """, unsafe_allow_html=True)
+                # Get stats for BS Label, Confidence Label, and Similarity Score cards
+                label = ""
+                confidence = ""
+                similarity = 0
 
-                    with col3:
-                        st.markdown(f"""
-                            <div class="tag-card {sim_class}">
-                                <div style="display: inline-flex; align-items: center;">
-                                    <h4 style="margin: 0;">📈 Similarity</h4>
-                                    <div class="tooltip" style="margin-left: -14px; cursor: pointer; 
-                                    font-size: 12px; line-height: 1; position: relative; top: -4px;">
-                                        ℹ️
-                                        <span class="tooltiptext">
-                                            The similarity score rates the semantic similarity of the LLM's 
-                                            claim to the language in the supporting documents. A 0 indicates 
-                                            no similarity, and a 1 indicates perfect similarity.
-                                        </span>
-                                    </div>
-                                </div>
-                                <p><b>{similarity}</b></p>
-                            </div>
-                        """, unsafe_allow_html=True)
-                    
+                if results:
+                # Get % Supported
+                    supported_count = sum(1 for item in results if item["bs_label"] == "Supported")
+                    total_count = len(results)
+                    supported_percent = round((supported_count / total_count) * 100)
+                    label = f"{supported_percent}% Supported"
+
+                # Get % Confidence
+                    high_conf_count = sum(1 for item in results if item["confidence"] == "High")
+                    total_count = len(results)
+                    high_conf_percent = round((high_conf_count / total_count) * 100)
+                    confidence = f"{supported_percent}%"
+
+                # Get average similarity score
+                    total_score = sum(item["similarity_score"] for item in results)
+                    average_score = round((total_score / len(results)) * 100)
+                    similarity = f"{average_score}%"
+
+                # Avoid errors if there are no results
+                else:
+                    label = "N/A"
+                    confidence = "N/A"
+                    similarity = 0
+
+
+                st.markdown("## 🧾 Answer Summary")
+
+                # Dynamic tag colors
+                bs_class = f"bs-{label}"
+                conf_class = f"confidence-{confidence}"
+                try:
+                    sim_class = (
+                        "similarity-high" if float(similarity) >= 70 else
+                        "similarity-medium" if float(similarity) >= 40 else
+                        "similarity-low"
+                    )
+                except:
+                    sim_class = "similarity-low"
+
+                col1, col2, col3 = st.columns(3)
+
+                with col1:
                     st.markdown(f"""
-                        <div class="final-claim-card">
+                        <div class="tag-card {bs_class}">
                             <div style="display: inline-flex; align-items: center;">
-                                <h4 style="margin: 0;">📝 Initial Claim</h4>
+                                <h4 style="margin: 0;">🧪 BS Label</h4>
+                                <div class="tooltip" style="margin-left: -14px; cursor: pointer; 
+                                    font-size: 12px; line-height: 1; position: relative; top: -4px;">
+                                    ℹ️
+                                    <span class="tooltiptext">
+                                        This label indicates how well the LLM's claims are supported 
+                                        by the provided knowledge base.
+                                    </span>
+                                </div>
+                            </div>
+                            <p><b>{label}</b></p>
+                        </div>
+                    """, unsafe_allow_html=True)
+
+
+                with col2:
+                    st.markdown(f"""
+                        <div class="tag-card {conf_class}">
+                            <div style="display: inline-flex; align-items: center;">
+                                <h4 style="margin: 0;">🔐 Confidence</h4>
                                 <div class="tooltip" style="margin-left: -14px; cursor: pointer; 
                                 font-size: 12px; line-height: 1; position: relative; top: -4px;">
                                     ℹ️
                                     <span class="tooltiptext">
-                                        This is the LLM's initial response to the user's prompt 
-                                        before the Prompt-Locked Loop runs.
+                                        This label uses the BS label and the similarity score to
+                                        gague how confident the LLM is in its answer.
                                     </span>
                                 </div>
                             </div>
-                            <p style="font-size: 14px;">{answer}</p>
+                            <p><b>{confidence}</b></p>
                         </div>
                     """, unsafe_allow_html=True)
 
-                # Run Prompt Locked Loop as long as question was not marked as irrelevant
-                # if (answer != "This question cannot be answered by the information in the knowledge base."):
+                with col3:
+                    st.markdown(f"""
+                        <div class="tag-card {sim_class}">
+                            <div style="display: inline-flex; align-items: center;">
+                                <h4 style="margin: 0;">📈 Similarity</h4>
+                                <div class="tooltip" style="margin-left: -14px; cursor: pointer; 
+                                font-size: 12px; line-height: 1; position: relative; top: -4px;">
+                                    ℹ️
+                                    <span class="tooltiptext">
+                                        The similarity score rates the semantic similarity of the LLM's 
+                                        claim to the language in the supporting documents. A 0 indicates 
+                                        no similarity, and a 1 indicates perfect similarity.
+                                    </span>
+                                </div>
+                            </div>
+                            <p><b>{similarity}</b></p>
+                        </div>
+                    """, unsafe_allow_html=True)
+                
+                st.markdown(f"""
+                    <div class="final-claim-card">
+                        <div style="display: inline-flex; align-items: center;">
+                            <h4 style="margin: 0;">📝 Initial Claim</h4>
+                            <div class="tooltip" style="margin-left: -14px; cursor: pointer; 
+                            font-size: 12px; line-height: 1; position: relative; top: -2px;">
+                                ℹ️
+                                <span class="tooltiptext">
+                                    This is the LLM's initial response to the user's prompt 
+                                    before the Prompt-Locked Loop runs.
+                                </span>
+                            </div>
+                        </div>
+                        <p style="font-size: 14px;">{answer}</p>
+                    </div>
+                """, unsafe_allow_html=True)
+
+                # Run Prompt Locked Loop
                 from pll_controller import prompt_locked_loop
                 import time
                 status_placeholder.info("🔁 Executing Prompt Locked Loop...")
@@ -280,8 +317,6 @@ with tab_chat:
                 st.session_state["pll_logs"] = pll_logs
                 st.session_state["locked_claims"] = locked_claims
                 st.session_state["medium_confidence_claims"] = medium_confidence_claims
-                # else:
-                #     print(f"Prompt Locked Loop skipped due to unanswerable question.")
 
                 last_round_claims = pll_logs[-1]["claims"]
 
@@ -291,17 +326,38 @@ with tab_chat:
         locked_claims = st.session_state.get("locked_claims", [])
         human_answer = synthesize_final_answer(user_question, [c["claim"] for c in locked_claims])
         if human_answer:
-            st.markdown("## Final Synthesized Answer")
             st.markdown(f"""
-                        <p style="font-size: 14px;">All LLM claims in the answer below were marked as 
-                        Supported and High Confidence.</p>
-                        """, unsafe_allow_html=True)
-            st.markdown(f"> {human_answer}")
-            st.markdown("#### The following claims were also found to likely be true, though with slightly lower confidence: ")
+                        <div class="final-claim-card">
+                            <div style="display: inline-flex; align-items: center;">
+                                <h3 style="margin: 0;">✅ Final Synthesized Answer</h3>
+                                <div class="tooltip" style="margin-left: -14px; cursor: pointer; 
+                                font-size: 12px; line-height: 1; position: relative; top: 2px;">
+                                    ℹ️
+                                    <span class="tooltiptext">
+                                        All LLM claims in the answer below were marked as 
+                                        Supported and High Confidence.
+                                    </span>
+                                </div>
+                            </div>
+                            <p style="font-size: 16px;">{human_answer}</p>
+                        </div>
+                    """, unsafe_allow_html=True)
+            
             medium_confidence_claims = st.session_state.get("medium_confidence_claims", [])
             if medium_confidence_claims:
-                for claim in medium_confidence_claims:
-                    st.markdown(f"- {claim['claim']}")
+                bullet_points_html = "".join(
+                    f"<li>{claim['claim']}</li>" for claim in medium_confidence_claims
+                )
+                st.markdown(f"""
+                        <div class="final-claim-card">
+                            <div style="display: inline-flex; align-items: center;">
+                                <h4 style="margin: 0;">🤔 The following claims were also found to likely be true, 
+                                    though with slightly lower confidence: </h4>
+                            </div>
+                            <p style="font-size: 16px;">{bullet_points_html}</p>
+                        </div>
+                    """, unsafe_allow_html=True)
+                
             status_placeholder.success("🎉 Full pipeline completed successfully!")
             st.balloons()
 
