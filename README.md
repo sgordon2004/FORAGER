@@ -4,6 +4,13 @@
 </p>
 
 _A trust-first RAG pipeline for validating LLM outputs._
+_Developed collaboratively by Syrr Gordon, Abigail Park, Mitchell Palmer, and Aurora Perrius._
+
+## 👥 Contributors  
+- **Syrr Gordon** – Repository maintainer, backend infrastructure, and vector search optimization  
+- **Abigail Park** – Iterative prompt engineering, pipeline integration, and Streamlit dashboards for visualization and metrics  
+- **Mitchell Palmer** – Embedding architecture, FAISS indexing, and performance optimization  
+- **Aurora Perrius** – Confidence scoring, strategic consulting and product marketing, and stakeholder evaluation
 
 ## ❓ What is FORAGER?
 **FORAGER** (Fact-Oriented Responsible AI-Guided Engineering Research) is a verification pipeline designed to improve trust in Large Language Models (LLMs). It combines **Prompt-Locked Looping**, **Retrieval-Augmented Generation (RAG)**, and **Natural Language Inference (NLI)** techniques to validate AI-generated claims against reliable evidence.
