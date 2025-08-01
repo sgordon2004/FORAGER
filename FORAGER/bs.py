@@ -196,7 +196,7 @@ def detect_bs(embedder: FAISSEmbedder, claim: str, supporting_docs: list[str],
         elif label == "entailment":
             entailment_votes += 1
         
-    if contradiction_votes >= len(supporting_docs) / 2 + 1:
+    if contradiction_votes > len(supporting_docs) // 2:
         return "Contradicted"
     elif entailment_votes > 0:
         return "Supported"

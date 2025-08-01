@@ -486,7 +486,7 @@ def prompt_locked_loop(embedder: FAISSEmbedder, question, eval, max_retry=3):
             # Apply the decision and store the rephrased claim (or None or standardized message if the claim could not be supported)
             new_claim, used_chunks = handle_decision(embedder, decision, claim, claim_eval, question)
 
-            if new_claim.strip().lower() in {"❌ claim should be discarded.", "claim should be discarded"}:
+            if new_claim.strip().lower() in {"❌ the claim is not supported by the provided context and should be discarded.", "❌ claim should be discarded.", "claim should be discarded."}:
                 log(f"🗑️ Discarding claim: '{claim}' due to discard signal")
                 round_log["claims"].append({
                     "claim": claim,

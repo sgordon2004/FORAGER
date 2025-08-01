@@ -65,6 +65,7 @@ def generate_and_evaluate_claims(embedder: FAISSEmbedder, question: str, k: int 
         - If the question asks for a **definition**, give a full and accurate definition using exact terms from the context.
         - If the question asks for an **explanation**, provide a clear explanation reflecting the context phrasing.
         - If the question asks for **examples, comparisons, or lists**, answer naturally while strictly staying within the context.
+    - Respond in a full sentence.
 
 
     Question: {question}
