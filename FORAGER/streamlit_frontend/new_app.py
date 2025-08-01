@@ -27,7 +27,7 @@ with open("FORAGER/streamlit_frontend/forager_styles.css", "r") as css_file:
 
 # Set page config (title, icon, layout)
 st.set_page_config(page_title="FORAGER RAG UI", layout="wide")
-st.title("📄🔍 FORAGER")
+st.title("📄🔍 Fact-Oriented Responsible AI-Guided Engineering Research (FORAGER)")
 
 # Create 4 tabs for the app
 tab_chat, tab_knowledge_base, tab_claims, tab_metrics, tab_logs = st.tabs(
@@ -42,10 +42,41 @@ with st.sidebar:
 with tab_chat:
     st.markdown("""
         <div class="chat-header" style="text-align: center;">
-            <img src="https://cdn-icons-png.flaticon.com/512/4712/4712137.png" class="chat-logo" width="250" alt="Chat Logo">
+            <img src="FORAGER/streamlit_frontend/logo.jpeg" class="chat-logo" width="250" alt="Chat Logo">
             <h1 class="chat-title">What's on your mind today?</h1>
         </div>
     """, unsafe_allow_html=True)
+
+
+#     st.markdown(
+#     """
+#     <style>
+#     .chat-header {
+#         display: flex;
+#         flex-direction: column;
+#         align-items: center;
+#         justify-content: center;
+#         margin-top: -30px; /* Adjust vertical spacing */
+#     }
+#     .chat-header img {
+#         display: block;
+#         margin: 0 auto;
+#     }
+#     .chat-title {
+#         text-align: center;
+#         font-size: 28px;
+#         font-weight: bold;
+#         margin-top: 20px;
+#     }
+#     </style>
+
+#     <div class="chat-header">
+#         <img src="FORAGER/streamlit_frontend/logo.PNG" width="250" alt="Chat Logo">
+#         <h1 class="chat-title">What's on your mind today?</h1>
+#     </div>
+#     """,
+#     unsafe_allow_html=True
+# )
 
     st.markdown("""
     <div class="steps-container">
@@ -65,13 +96,55 @@ with tab_chat:
 """, unsafe_allow_html=True)
 
     # === File Upload Section ===
-    st.markdown('<div class="centered-uploader">', unsafe_allow_html=True)
-    uploaded_files = st.file_uploader(
-        "Upload documents",
-        type=["pdf", "html", "txt"],
-        accept_multiple_files=True
-    )
 
+    # just track with session state when that message is shown
+    if "pipeline_complete" not in st.session_state:
+        st.session_state["pipeline_complete"] = False
+    
+    # Initialize process_clicked to avoid undefined reference
+    process_clicked = False
+    uploaded_files = None  # also initialize uploaded_files
+
+    # File uploader
+    if not st.session_state.get("pipeline_complete", False):
+        uploaded_files = st.file_uploader(
+            "Upload documents",
+            type=["pdf", "html", "txt"],
+            accept_multiple_files=True,
+            label_visibility="collapsed"
+        )
+
+        # Process button with existing CSS styling
+        with st.container():
+            st.markdown('<div class="button-container">', unsafe_allow_html=True)
+            process_clicked = st.button("Process", key="process_button")
+            st.markdown('</div>', unsafe_allow_html=True)
+
+    # Process button directly below uploader
+
+    # Optional: Action logic
+    if process_clicked:
+        if not uploaded_files:
+            st.warning("⚠️ No documents uploaded.")
+        else:
+            st.success("✅ Processing started!")
+    
+    # st.markdown('<div class="centered-uploader">', unsafe_allow_html=True)
+    # uploaded_files = st.file_uploader(
+    #     "Upload documents",
+    #     type=["pdf", "html", "txt"],
+    #     accept_multiple_files = True,
+    #     label_visibility = "collapsed"
+    # )
+
+    st.markdown("""
+    <style>
+    div[data-testid="stFileUploader"] {
+        margin-bottom: 125px; /* Adds space below uploader */
+    }
+    </style>
+    """, unsafe_allow_html=True)
+   
     # Paths to uploaded files
     base_dir = Path("FORAGER_corpus/heterogenous_integration")
     html_dir = base_dir / "html"
@@ -80,9 +153,7 @@ with tab_chat:
     pdf_upload_dir = base_dir / "pdfs"
     txt_upload_dir = base_dir / "txts"
 
-
-    # Process documents when Process button is pressed
-    if st.button("Process"):
+    if process_clicked:
         if not uploaded_files:
             status_placeholder.warning("⚠️ No documents uploaded.")
         else:
@@ -143,11 +214,14 @@ with tab_chat:
             status_placeholder.success("✅ FAISS initialized!")
 
             st.session_state["documents_processed"] = True
+            st.session_state["documents_ready"] = True
             status_placeholder.success("✅ Documents processed!")
+            st.session_state["pipeline_complete"] = True
+            st.rerun()
 
 
     # Run question process only if documents have been processed
-    if any([list(html_upload_dir.glob("*.html")), list(pdf_upload_dir.glob("*.pdf")), list(txt_upload_dir.glob("*.txt"))]):
+    if st.session_state.get("documents_ready", False) and any([list(html_upload_dir.glob("*.html")), list(pdf_upload_dir.glob("*.pdf")), list(txt_upload_dir.glob("*.txt"))]):
         # Question input section
         st.markdown("### 💬 Ask a Question")
         user_question = st.text_input("Query the knowledge base:")
@@ -371,7 +445,8 @@ with tab_chat:
                     """, unsafe_allow_html=True)
                 
             status_placeholder.success("🎉 Full pipeline completed successfully!")
-            st.balloons()
+            st.session_state["pipeline_complete"] = True
+            # st.balloons()
 
 
 
@@ -461,7 +536,7 @@ with tab_knowledge_base:
     # Show HTML files
     html_files = list(html_upload_dir.glob("*.html"))
     if html_files:
-        st.markdown("#### 🟣 HTML Files")
+        st.markdown("#### HTML Files")
         for file_path in html_files:
             with st.expander(f"{file_path.name}"):
                 st.code(file_path.read_text(encoding="utf-8")[:1000] + "..." if file_path.stat().st_size > 1000 else file_path.read_text(encoding="utf-8"), language="html")
@@ -473,7 +548,7 @@ with tab_knowledge_base:
     # Show PDF files
     pdf_files = list(pdf_upload_dir.glob("*.pdf"))
     if pdf_files:
-        st.markdown("#### 🔵 PDF Files")
+        st.markdown("#### PDF Files")
         for file_path in pdf_files:
             with st.expander(f"{file_path.name}"):
                 st.write(f"Size: {file_path.stat().st_size / 1024:.2f} KB")
@@ -493,8 +568,6 @@ with tab_knowledge_base:
             file_path.unlink()
         st.success("🗑️ All uploaded documents have been deleted.")
         st.rerun()
-        
-
         
 # Tab 3: Step-by-step claims breakdown
 with tab_claims:
@@ -613,7 +686,7 @@ with tab_claims:
                                 confidence = claim_info.get("confidence_label", "N/A")
                                 decision = claim_info.get("pll_decision", "N/A")
                                 
-                                st.markdown(f"**▶️ PLL Round {round_label}**")
+                                st.markdown(f"**📈 PLL Round {round_label}**")
                                 st.markdown(f"- **Rephrased:** {claim_info['claim']}")
                                 st.markdown(f"- **BS Label:** `{bs_label}`")
                                 st.markdown(f"- **Confidence:** `{confidence}`")
@@ -650,15 +723,22 @@ with tab_metrics:
     for round_log in pll_logs:
         label_count = {"Round": round_log["pll_round"], "Supported": 0, "Unsupported": 0, "Contradicted": 0}
         for claim in round_log["claims"]:
-            label = claim.get("label", "N/A")
-            confidence = claim.get("confidence", "N/A")
+            # Use eval_label & confidence_label if present
+            label = claim.get("eval_label") or claim.get("label", "N/A")
+            confidence = claim.get("confidence_label") or claim.get("confidence", "N/A")
+
             label_counts[label] = label_counts.get(label, 0) + 1
             confidence_counts[confidence] = confidence_counts.get(confidence, 0) + 1
-            if label in label_count:
+
+            if label in ["Supported", "Unsupported", "Contradicted"]:
                 label_count[label] += 1
         round_label_counts.append(label_count)
 
-    df_labels = pd.DataFrame.from_dict(label_counts, orient='index', columns=["Count"])
+    df_labels = pd.DataFrame.from_dict(
+        {k: v for k, v in label_counts.items() if k in ["Supported", "Unsupported", "Contradicted"]},
+        orient='index',
+        columns=["Count"]
+    )
     df_conf = pd.DataFrame.from_dict(confidence_counts, orient='index', columns=["Count"])
     df_rounds = pd.DataFrame(round_label_counts)
 
@@ -672,40 +752,14 @@ with tab_metrics:
         )
     else:
         df_melted = pd.DataFrame(columns=["Round", "Label", "Count"])  # Empty fallback
-
-    # Build charts BEFORE columns
-    fig1 = px.bar(
-        df_labels.reset_index(), x='index', y='Count', color='index',
-        labels={'index': 'Label'},
-        color_discrete_sequence=['#62B6CB', '#FFA07A', '#FF6347']
-    )
-    fig1.update_layout(
-        plot_bgcolor='#0e1117',
-        paper_bgcolor='#0e1117',
-        font=dict(color='white')
-    )
-
-    fig2 = px.bar(
-        df_conf.reset_index(), x='index', y='Count', color='index',
-        labels={'index': 'Confidence'},
-        color_discrete_sequence=['#90EE90', '#FFD700', '#FFA07A', '#FF4500']
-    )
-    fig2.update_layout(
-        plot_bgcolor='#0e1117',
-        paper_bgcolor='#0e1117',
-        font=dict(color='white')
-    )
-
-    fig3 = px.bar(
-        df_melted, x='Round', y='Count', color='Label',
-        barmode='group',
-        color_discrete_sequence=['#00BFFF', '#FFA500', '#DC143C']
-    )
-    fig3.update_layout(
-        plot_bgcolor='#0e1117',
-        paper_bgcolor='#0e1117',
-        font=dict(color='white')
-    )
+    
+    if df_labels.empty:
+        st.info("No claim label data available for visualization.")
+    if df_melted.empty:
+        st.info("No PLL round data available for visualization.")
+    
+    # === Debugging: Show Raw DataFrames ===
+    st.markdown("### 📊 Raw Data for Visualizations")
 
     # Metrics cards
     st.markdown(f"""
@@ -731,51 +785,144 @@ with tab_metrics:
         </div>
     """, unsafe_allow_html=True)
 
-    # 3-Column Visualization Section
-    col1, col2, col3 = st.columns(3)
+    col1, col2 = st.columns(2)
 
+    # === Pie Chart in Card (Donut Only) ===
     with col1:
-        st.markdown("""
-            <div class='visualization-box'>
-                <div class='visualization-title'>🔖 Claim Label Distribution</div>
-        """, unsafe_allow_html=True)
-        st.plotly_chart(fig1, use_container_width=True)
-        st.markdown("</div>", unsafe_allow_html=True)
+        with st.container():
+            st.markdown(
+            """
+            <div style='
+                background-color: #1e1e1e; 
+                padding: 20px; 
+                border-radius: 12px; 
+                height: 450px;
+                display: flex; 
+                flex-direction: column;
+                justify-content: center;
+            '>
+            """,
+            unsafe_allow_html=True,
+        )
 
+            if not df_labels.empty:
+                fig_pie = px.pie(
+                    df_labels.reset_index(),
+                    names="index",
+                    values="Count",
+                    color="index",
+                    color_discrete_map={
+                        "Supported": "#2ecc71",
+                        "Unsupported": "#e74c3c",
+                        "Contradicted": "#f39c12"
+                    }
+                )
+
+                # Adjust layout to control size and spacing
+                fig_pie.update_layout(
+                    plot_bgcolor="#1e1e1e",
+                    paper_bgcolor="#1e1e1e",
+                    font=dict(color="white"),
+                    margin=dict(t=20, b=20, l=20, r=20),
+                    legend=dict(
+                        orientation="h",
+                        y=-0.15,
+                        x=0.5,
+                        xanchor="center"
+                    )
+                )
+
+                # Convert to donut chart
+                fig_pie.update_traces(
+                    textfont=dict(color="white"),
+                    marker=dict(line=dict(color="#1e1e1e", width=2)),
+                    textposition="inside",
+                    hole=0.4
+                )
+
+                st.plotly_chart(fig_pie, use_container_width=True, config={"displayModeBar": False})
+            st.markdown("</div>", unsafe_allow_html=True)
+
+    # === Visualization 2: Grouped Bar Chart ===
     with col2:
-        st.markdown("""
-            <div class='visualization-box'>
-                <div class='visualization-title'>📊 Confidence Level Distribution</div>
-        """, unsafe_allow_html=True)
-        st.plotly_chart(fig2, use_container_width=True)
-        st.markdown("</div>", unsafe_allow_html=True)
+        with st.container():
+            st.markdown(
+            """
+            <div style='
+                background-color: #1e1e1e; 
+                padding: 20px; 
+                border-radius: 12px; 
+                height: 450px;
+                display: flex; 
+                flex-direction: column;
+                justify-content: center;
+            '>
+            """,
+            unsafe_allow_html=True,
+        )
 
-    with col3:
-        st.markdown("""
-            <div class='visualization-box'>
-                <div class='visualization-title'>🔁 PLL Round Label Breakdown</div>
-        """, unsafe_allow_html=True)
-        st.plotly_chart(fig3, use_container_width=True)
-        st.markdown("</div>", unsafe_allow_html=True)
+            if not df_melted.empty:
+                fig_bar = px.bar(
+                    df_melted,
+                    x="Round",
+                    y="Count",
+                    color="Label",
+                    barmode="group",
+                    text="Count",
+                    color_discrete_map={
+                        "Supported": "#2ecc71",
+                        "Unsupported": "#e74c3c",
+                        "Contradicted": "#f39c12"
+                    }
+                )
+                fig_bar.update_layout(
+                    plot_bgcolor="#1e1e1e",
+                    paper_bgcolor="#1e1e1e",
+                    font=dict(color="white"),
+                    margin=dict(t=0, b=0, l=0, r=0),
+                    xaxis=dict(title="PLL Round"),
+                    yaxis=dict(title="Claim Count")
+                )
+                fig_bar.update_traces(textposition="outside")
+                st.plotly_chart(fig_bar, use_container_width=True, config={"displayModeBar": False})
+            else:
+                st.info("No PLL round data available for visualization.")
 
-    # PLL round breakdowns
-    st.markdown("### 🪵 PLL Rounds Breakdown")
+            st.markdown("</div>", unsafe_allow_html=True)
+
+    # === PLL Rounds Breakdown ===
+    st.markdown("### 📖 PLL Rounds Breakdown")
+
     if not pll_logs:
         st.info("No PLL logs available.")
     else:
-        for round_log in pll_logs:
-            st.markdown(f"""
-                <div style='background-color: #1e1e1e; padding: 15px; border-radius: 10px; margin-bottom: 10px;'>
-                    <span style='color: white; font-weight: bold;'>PLL Round {round_log['pll_round']}</span>
-                    <br><span style='color: #bbb;'>{len(round_log['claims'])} claims processed</span>
-                </div>
-            """, unsafe_allow_html=True)
+        # Create one column per round dynamically
+        cols = st.columns(len(pll_logs))
+
+        for col, round_log in zip(cols, pll_logs):
+            with col:
+                st.markdown(f"""
+                    <div style='background-color: #1e1e1e; 
+                                padding: 15px; 
+                                border-radius: 10px; 
+                                text-align: left;
+                                margin-bottom: 15px;>
+                        <span style='color: white; font-weight: bold; font-size:16px;'>
+                            PLL Round {round_log['pll_round']}
+                        </span>
+                        <br>
+                        <span style='color: #bbb; font-size:14px;'>
+                            {len(round_log['claims'])} claims processed
+                        </span>
+                    </div>
+                """, unsafe_allow_html=True)
+    
 
 
 
 # Tab 5: PLL Logs
 with tab_logs:
-    st.header("🪵 PLL Logs")
+    st.header("✍️ PLL Logs")
 
     pll_logs = st.session_state.get("pll_logs", [])
 
@@ -788,7 +935,7 @@ with tab_logs:
 
             round_label = round_log["pll_round"]
             expander_title = "Initial Claim Evaluation (Pre-PLL)" if round_label == 0 else f"PLL Round {round_label}"
-            with st.expander(f"▶️ {expander_title}", expanded=False):
+            with st.expander(f"📈 {expander_title}", expanded=False):
                 for claim_info in round_log["claims"]:
                     claim_text = claim_info.get("claim", "❓")
                     decision = claim_info.get("pll_decision", "N/A")
