@@ -51,10 +51,6 @@ def generate_and_evaluate_claims(embedder: FAISSEmbedder, question: str, k: int 
     retrieved_docs_text = [doc["text"] for doc in retrieved_docs]
     # print(f"Chunks used for answer: {retrieved_docs_text}")
     retrieved_docs_combined = "\n\n".join([doc["text"] for doc in retrieved_docs])
-
-    # Note: I took this part out 
-    # - If the question is **unanswerable from the context**, respond with: 
-    # "This question cannot be answered by the information in the knowledge base."
     
     # Step 2: Feed question and documents to LLM
     prompt = f"""
@@ -81,6 +77,7 @@ def generate_and_evaluate_claims(embedder: FAISSEmbedder, question: str, k: int 
 
     # Step 3: Get the LLM's answer
     answer = get_llm_response(prompt)
+
     # Step 4: Extract atomic claims
     claims = extract_atomic_claims_llm(answer)
 
@@ -90,13 +87,13 @@ def generate_and_evaluate_claims(embedder: FAISSEmbedder, question: str, k: int 
         label = detect_bs(embedder, claim, supporting_docs=retrieved_docs_text)
         eval[claim] = label
 
-    # Run confidence checker
+    # Step 6: Run confidence checker
     updated_eval = {}
     for claim, label in eval.items():
         confidence = check_confidence(embedder, claim, label, retrieved_docs_text)
         updated_eval[claim] = {"label": label, "confidence": confidence, "supporting_chunks": retrieved_docs}
     
-    # Update eval to store the confidence checker results
+    # Step 7: Update eval to store the confidence checker results
     eval = updated_eval
     print("💋")
     print(eval)

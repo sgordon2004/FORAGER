@@ -80,6 +80,8 @@ with tab_chat:
     pdf_upload_dir = base_dir / "pdfs"
     txt_upload_dir = base_dir / "txts"
 
+
+    # Process documents when Process button is pressed
     if st.button("Process"):
         if not uploaded_files:
             status_placeholder.warning("⚠️ No documents uploaded.")
@@ -101,46 +103,48 @@ with tab_chat:
                 elif file_ext == "pdf":
                     from extractor import extract_pdf
                     from ingestor import dump_pdf_text
-                    
                     input_path = pdf_upload_dir / file.name
                     pdf_upload_dir.mkdir(parents=True, exist_ok=True)
                     with open(input_path, "wb") as f:
                         f.write(file_bytes)
                     text = extract_pdf(file.name)
                     dump_pdf_text(file.name, text)
+
                 elif file_ext == "txt":
                     from ingestor import extract_all_txt
-
                     input_path = txt_upload_dir / file.name
                     txt_upload_dir.mkdir(parents=True, exist_ok=True)
                     with open(input_path, "wb") as f:
                         f.write(file_bytes)
                     extract_all_txt()
+
                 else:
                     st.warning(f"Unsupported file type: {file.name}")
                     continue
+
             time.sleep(1)
             status_placeholder.success("✅ Text extraction complete!")
 
+            # Chunk documents
             status_placeholder.info("🔗 Chunking documents...")
             from chunker import main as chunker_main
             chunker_main()
             time.sleep(1)
             status_placeholder.success("✅ Chunking complete!")
 
+            # Initialize FAISS database and embedder object
             status_placeholder.info("💾 Initializing FAISS...")
             from FORAGER.embedder import FAISSEmbedder
             embedder = FAISSEmbedder.create_default()
             embedder.initialize_faiss()
-            # Find best spot for where we should be checking for new chunks
-            # embeddings = embedder.embed_chunks()
-            # embedder.add_to_faiss(embeddings)
+
             st.session_state["embedder"] = embedder
             time.sleep(1)
             status_placeholder.success("✅ FAISS initialized!")
 
             st.session_state["documents_processed"] = True
             status_placeholder.success("✅ Documents processed!")
+
 
     # Run question process only if documents have been processed
     if any([list(html_upload_dir.glob("*.html")), list(pdf_upload_dir.glob("*.pdf")), list(txt_upload_dir.glob("*.txt"))]):
@@ -185,6 +189,7 @@ with tab_chat:
                         "similarity_score": claim_similarity,
                         "confidence": claim_confidence
                     })
+                    print(f"Results dictionary: {results}")
 
 
                 # Get stats for BS Label, Confidence Label, and Similarity Score cards
@@ -197,13 +202,12 @@ with tab_chat:
                     supported_count = sum(1 for item in results if item["bs_label"] == "Supported")
                     total_count = len(results)
                     supported_percent = round((supported_count / total_count) * 100)
-                    label = f"{supported_percent}% Supported"
+                    label = f"{supported_percent}%"
 
                 # Get % Confidence
                     high_conf_count = sum(1 for item in results if item["confidence"] == "High")
-                    total_count = len(results)
                     high_conf_percent = round((high_conf_count / total_count) * 100)
-                    confidence = f"{supported_percent}%"
+                    confidence = f"{high_conf_percent}%"
 
                 # Get average similarity score
                     total_score = sum(item["similarity_score"] for item in results)
@@ -217,6 +221,7 @@ with tab_chat:
                     similarity = 0
 
 
+                # Answer summary and stat cards
                 st.markdown("## 🧾 Answer Summary")
 
                 # Dynamic tag colors
@@ -237,13 +242,16 @@ with tab_chat:
                     st.markdown(f"""
                         <div class="tag-card {bs_class}">
                             <div style="display: inline-flex; align-items: center;">
-                                <h4 style="margin: 0;">🧪 BS Label</h4>
+                                <h4 style="margin: 0;">🧪 Support Level</h4>
                                 <div class="tooltip" style="margin-left: -14px; cursor: pointer; 
                                     font-size: 12px; line-height: 1; position: relative; top: -4px;">
                                     ℹ️
                                     <span class="tooltiptext">
-                                        This label indicates how well the LLM's claims are supported 
-                                        by the provided knowledge base.
+                                        The support level indicates how well the LLM's claims are supported 
+                                        by the provided knowledge base. This is determined by the number of
+                                        claims that initially had a BS Label of "Supported," which indicates
+                                        that the LLM's claim was supported by the documents in the knowledge 
+                                        base.
                                     </span>
                                 </div>
                             </div>
@@ -256,13 +264,14 @@ with tab_chat:
                     st.markdown(f"""
                         <div class="tag-card {conf_class}">
                             <div style="display: inline-flex; align-items: center;">
-                                <h4 style="margin: 0;">🔐 Confidence</h4>
+                                <h4 style="margin: 0;">🔐 Confidence Level</h4>
                                 <div class="tooltip" style="margin-left: -14px; cursor: pointer; 
                                 font-size: 12px; line-height: 1; position: relative; top: -4px;">
                                     ℹ️
                                     <span class="tooltiptext">
-                                        This label uses the BS label and the similarity score to
-                                        gague how confident the LLM is in its answer.
+                                        The confidence level uses the BS label and the similarity score to
+                                        gauge how confident the LLM is in its answer. It is determined by
+                                        the percentage of initial claims that were marked as high confidence.
                                     </span>
                                 </div>
                             </div>
@@ -280,8 +289,9 @@ with tab_chat:
                                     ℹ️
                                     <span class="tooltiptext">
                                         The similarity score rates the semantic similarity of the LLM's 
-                                        claim to the language in the supporting documents. A 0 indicates 
-                                        no similarity, and a 1 indicates perfect similarity.
+                                        claim to the language in the supporting documents pulled from 
+                                        the knowledge base. A 0 indicates no similarity, and a 1 indicates 
+                                        perfect similarity.
                                     </span>
                                 </div>
                             </div>
@@ -306,6 +316,7 @@ with tab_chat:
                     </div>
                 """, unsafe_allow_html=True)
 
+
                 # Run Prompt Locked Loop
                 from pll_controller import prompt_locked_loop
                 import time
@@ -319,30 +330,31 @@ with tab_chat:
                 st.session_state["medium_confidence_claims"] = medium_confidence_claims
 
                 last_round_claims = pll_logs[-1]["claims"]
-
-        # TODO: Move this to run after the final answer is locked.
-        
-        from pll_controller import synthesize_final_answer
-        locked_claims = st.session_state.get("locked_claims", [])
-        human_answer = synthesize_final_answer(user_question, [c["claim"] for c in locked_claims])
-        if human_answer:
-            st.markdown(f"""
-                        <div class="final-claim-card">
-                            <div style="display: inline-flex; align-items: center;">
-                                <h3 style="margin: 0;">✅ Final Synthesized Answer</h3>
-                                <div class="tooltip" style="margin-left: -14px; cursor: pointer; 
-                                font-size: 12px; line-height: 1; position: relative; top: 2px;">
-                                    ℹ️
-                                    <span class="tooltiptext">
-                                        All LLM claims in the answer below were marked as 
-                                        Supported and High Confidence.
-                                    </span>
-                                </div>
-                            </div>
-                            <p style="font-size: 16px;">{human_answer}</p>
-                        </div>
-                    """, unsafe_allow_html=True)
             
+
+            # Synthesize final answer
+            from pll_controller import synthesize_final_answer
+            locked_claims = st.session_state.get("locked_claims", [])
+            human_answer = synthesize_final_answer(user_question, [c["claim"] for c in locked_claims])
+            if human_answer:
+                st.markdown(f"""
+                            <div class="final-claim-card">
+                                <div style="display: inline-flex; align-items: center;">
+                                    <h3 style="margin: 0;">✅ Final Synthesized Answer</h3>
+                                    <div class="tooltip" style="margin-left: -14px; cursor: pointer; 
+                                    font-size: 12px; line-height: 1; position: relative; top: 2px;">
+                                        ℹ️
+                                        <span class="tooltiptext">
+                                            All LLM claims in the answer below were marked as 
+                                            Supported and High Confidence.
+                                        </span>
+                                    </div>
+                                </div>
+                                <p style="font-size: 16px;">{human_answer}</p>
+                            </div>
+                        """, unsafe_allow_html=True)
+            
+            # Show medium confidence claims if there are any
             medium_confidence_claims = st.session_state.get("medium_confidence_claims", [])
             if medium_confidence_claims:
                 bullet_points_html = "".join(
@@ -360,6 +372,8 @@ with tab_chat:
                 
             status_placeholder.success("🎉 Full pipeline completed successfully!")
             st.balloons()
+
+
 
 # Tab 2: Knowledge Base
 with tab_knowledge_base:
@@ -431,7 +445,7 @@ with tab_knowledge_base:
             time.sleep(1)
             status_placeholder.success("✅ Chunking complete!")
             status_placeholder.info("💾 Adding to FAISS...")
-            # Creating temporary second embedder object because I can't access the first one here
+            # Create temporary second embedder object
             from embedder import FAISSEmbedder
             embedder2 = FAISSEmbedder.create_default()
             new_embeddings = embedder2.embed_chunks_from_json()
@@ -482,7 +496,6 @@ with tab_knowledge_base:
         
 
         
-
 # Tab 3: Step-by-step claims breakdown
 with tab_claims:
     st.header("📑 Claims Breakdown")
@@ -614,6 +627,8 @@ with tab_claims:
                     text = chunk.get("text", "").replace("\n", "\n> ")
                     st.markdown(f"**Source {idx}:** {title}")
                     st.markdown(f">{text}")
+
+
 
 # Tab 4: Metrics & Performance
 with tab_metrics:
@@ -755,6 +770,8 @@ with tab_metrics:
                     <br><span style='color: #bbb;'>{len(round_log['claims'])} claims processed</span>
                 </div>
             """, unsafe_allow_html=True)
+
+
 
 # Tab 5: PLL Logs
 with tab_logs:
