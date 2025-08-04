@@ -44,9 +44,10 @@ input[type="checkbox"] {
 /* Wrap button in a container aligned with uploader */
 .button-container {
     display: flex;
-    justify-content: flex-start; /* Left align */
-    width: 700px; /* Match uploader width */
-    margin: 10px auto 0 auto; /* Center container horizontally */
+    justify-content: flex-start;
+    width: 1175px; /* Match uploader width */
+    margin-left: calc((100vw - 1175px) / 2); /* Align with uploader horizontally */
+    margin-top: 10px; /* Keep some spacing above */
 }
 
 /* Button styling */
@@ -87,15 +88,16 @@ div[data-testid="stFileUploader"] {
     display: flex;
     justify-content: center;
     gap: 5rem;
-    margin: 0.25rem 0 1rem 0; /* Added bottom margin for spacing */
+    margin: 2rem 0 2rem 0; /* top | right | bottom | left */
     flex-wrap: wrap;
 }
 
 .step-card {
     background-color: #1e1e1e;
-    border-radius: 12px;
+    border-radius: 10px;
     padding: 20px;
     width: 325px;
+    margin: 2rem 0.5rem 0.5rem 1rem;
     text-align: left;
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
@@ -152,7 +154,7 @@ h1 { text-align: center; }
     padding: 4px 10px;
     font-size: 1.15rem;
     font-weight: 600;
-    border-radius: 12px;
+    border-radius: 10px;
     color: white;
     margin-left: 6px;
 }
@@ -203,7 +205,7 @@ h1 { text-align: center; }
 .metric-card {
     background-color: #1e1e1e;
     padding: 20px;
-    border-radius: 16px;
+    border-radius: 10px;
     color: white;
     flex: 1 1 22%;
     min-width: 200px;
@@ -225,7 +227,7 @@ h1 { text-align: center; }
 .visualization-box {
     background-color: #1e1e1e;
     padding: 20px;
-    border-radius: 16px;
+    border-radius: 10px;
     margin-bottom: 20px;
 }
 .visualization-title {
@@ -235,7 +237,7 @@ h1 { text-align: center; }
     margin-bottom: 10px;
 }
 
-/* Row layout for stats cards */
+/* Stat Row Layout */
 .stats-row {
     display: flex;
     gap: 20px;
@@ -243,32 +245,41 @@ h1 { text-align: center; }
     flex-wrap: wrap;
 }
 
+/* Card title */
+.stat-card h4 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;  /* Vertically center content */
+    align-items: center;      /* Horizontally center content */
+    padding: 10px;
+    font-size: 1rem;
+    color: #cfcfcf;
+    font-weight: 600;
+}
+
 /* Individual stat card */
 .stat-card {
     flex: 1;
     min-width: 180px;
     background-color: #1e1e1e;
-    /* border: 1px solid #333; */
-    border-radius: 12px;
-    padding: 16px;
+    border-radius: 10px;
+    padding: 10px;
     text-align: center;
     box-shadow: 0 2px 6px rgba(0,0,0,0.4);
 }
 
-/* Card title */
-.stat-card h4 {
-    font-size: 1rem;
-    margin-bottom: 10px;
-    color: #cfcfcf;
-    font-weight: 600;
-}
+/* Status Colors */
+.status-red { color: #ff4d4d; font-weight: bold; }      /* Contradicted or Zero */
+.status-orange { color: #ffa500; font-weight: bold; }   /* Unsupported or Medium */
+.status-green { color: #28a745; font-weight: bold; }    /* Supported or High */
+.status-blue { color: #3399ff; font-weight: bold; }     /* Final PLL Status */
 
 /* PLL Status Text */
 .pll-status {
     display: inline-block;
     font-size: 1rem;
     font-weight: bold;
-    color: #9be7ff;
+    color: #ffffff;
 }
 
 /* Tag cards for Answer Summary (grey blocks) */
