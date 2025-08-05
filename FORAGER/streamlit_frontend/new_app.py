@@ -344,13 +344,13 @@ with tab_chat:
                     st.markdown(f"""
                         <div class="tag-card {sim_class}">
                              <div style="display: inline-flex; align-items: center;">
-                                <h4 style="margin: 0;">📈 Similarity</h4>
+                                <h4 style="margin: 0;">📈 Similarity Score</h4>
                                 <div class="tooltip" style="margin-left: -14px; cursor: pointer; 
                                 font-size: 12px; line-height: 1; position: relative; top: -4px;">
                                     ℹ️
                                     <span class="tooltiptext">
-                                        The similarity score rates the semantic similarity of the LLM's 
-                                        claim to the language in the supporting documents pulled from 
+                                        The similarity score rates the average semantic similarity of the LLM's 
+                                        claims to the language in the supporting documents pulled from 
                                         the knowledge base. A 0 indicates no similarity, and a 1 indicates 
                                         perfect similarity.
                                     </span>
