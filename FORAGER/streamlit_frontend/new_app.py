@@ -12,6 +12,8 @@ from PIL import Image
 from PIL import ImageOps
 from bs4 import BeautifulSoup
 from streamlit_pdf_viewer import pdf_viewer
+import requests
+from io import BytesIO
 
 # Suppress tokenizer parallelism warning
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
@@ -70,12 +72,14 @@ with tab_chat:
     """, unsafe_allow_html=True)
 
     # === Logo ===
-    logo = Image.open("FORAGER/streamlit_frontend/finallogo.png")
+    response = requests.get("https://sgordon-demo-s3.s3.us-east-2.amazonaws.com/finallogo.png")
+    logo = Image.open(BytesIO(response.content))
+
     space1, space2, space3 = st.columns(3)
     # with space1:
     #     st.image(booz_padded, use_container_width=True)
     with space2:
-        st.image(logo, width=420)
+        st.image(logo, width=450)
     # with space3:
     #     st.image(allen_padded, use_container_width=True)
     st.markdown(
