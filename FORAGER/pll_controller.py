@@ -650,6 +650,7 @@ def synthesize_final_answer(question: str, locked_claims: list[str]) -> str:
                 - The result should be a single coherent paragraph.
                 - Do NOT include any bullet points or numbered lists in your output.
                 - Do NOT use any outside information at all, whatsoever.
+                - Do NOT preface your response with "Here is the synthesized answer:" or anything of that sort. Only return the synthesized answer itself.
 
                 FINAL ANSWER:
             """
