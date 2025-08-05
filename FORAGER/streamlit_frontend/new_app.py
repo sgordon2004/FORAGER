@@ -43,11 +43,6 @@ st.markdown("<h1 style='font-size: 40px;'>⚛︎ Fact-Oriented Responsible AI-Gu
 tab_chat, tab_knowledge_base, tab_claims, tab_metrics, tab_logs= st.tabs(
     ["💬 Ask Chat", "📚 Document Database", "📑 Claims Breakdown", "📉 Metrics & Visualizations", "📜 PLL Logs"])
 
-# Sidebar for status updates
-# with st.sidebar:
-    # st.markdown("### 🚦 Pipeline Status")
-    # status_placeholder = st.empty()
-
 # Tab 1: Chat Tab (LLM Interaction)
 with tab_chat:
     # === Custom CSS for pipeline status cards ===
@@ -76,12 +71,8 @@ with tab_chat:
     logo = Image.open(BytesIO(response.content))
 
     space1, space2, space3 = st.columns(3)
-    # with space1:
-    #     st.image(booz_padded, use_container_width=True)
     with space2:
-        st.image(logo, width=450)
-    # with space3:
-    #     st.image(allen_padded, use_container_width=True)
+        st.image(logo, width=425)
     st.markdown(
     "<h1 style='text-align:center; margin-top: 10px';>What's on your mind today?</h1>", 
     unsafe_allow_html=True)
@@ -839,8 +830,8 @@ with tab_metrics:
                 }
             )
             fig_pie.update_layout(
-                plot_bgcolor="rgba(0,0,0,0)",   # Transparent background
-                paper_bgcolor="rgba(0,0,0,0)",  # Transparent to match container
+                plot_bgcolor="rgba(0,0,0,0)",
+                paper_bgcolor="rgba(0,0,0,0)",
                 font=dict(color="white"),
                 margin=dict(t=20, b=20, l=20, r=20),
                 legend=dict(
@@ -907,45 +898,6 @@ with tab_metrics:
 
     df_confidence = pd.DataFrame(confidence_data)
     st.dataframe(df_confidence, use_container_width=True)
-
-
-    # # === Prepare Heatmap Data ===
-    # heatmap_data = []
-    # confidence_levels = ["High", "Medium", "Low", "Zero"]
-
-    # for round_log in pll_logs:
-    #     round_num = round_log["pll_round"]
-    #     conf_count = {level: 0 for level in confidence_levels}
-    #     for claim in round_log["claims"]:
-    #         conf_label = claim.get("confidence_label", "N/A")
-    #         if conf_label in confidence_levels:
-    #             conf_count[conf_label] += 1
-    #     for level, count in conf_count.items():
-    #         heatmap_data.append({"Round": round_num, "Confidence": level, "Count": count})
-
-    # df_heatmap = pd.DataFrame(heatmap_data)
-
-    # # === Render Heatmap ===
-    # if not df_heatmap.empty:
-    #     fig_heatmap = px.density_heatmap(
-    #         df_heatmap,
-    #         x="Round",
-    #         y="Confidence",
-    #         z="Count",
-    #         color_continuous_scale="Blues",  # or "Viridis" for a multi-color scale
-    #         text_auto=True
-    #     )
-    #     fig_heatmap.update_layout(
-    #         plot_bgcolor="rgba(0,0,0,0)",
-    #         paper_bgcolor="rgba(0,0,0,0)",
-    #         font=dict(color="white"),
-    #         margin=dict(t=30, b=30, l=30, r=30),
-    #         xaxis=dict(title="PLL Round"),
-    #         yaxis=dict(title="Confidence Level")
-    #     )
-    #     st.plotly_chart(fig_heatmap, use_container_width=True, config={"displayModeBar": False})
-    # else:
-    #     st.info("No confidence data available for heatmap visualization.")
 
     # === PLL Rounds Breakdown ===
     st.markdown("### 📖 PLL Rounds Breakdown")
