@@ -54,12 +54,12 @@ FORAGER is built with a modular, research-focused stack that balances LLM flexib
 
 ### 🖥️ Frontend
 - **Streamlit** – Lightweight, fast-deploy UI for document upload, question input, and claim evaluation display
+- **AWS S3** – Hosting logo and other assets for public display within the UI
 - **JSONL export** – Structured output for easy downstream parsing
 
 ### 🔧 Dev & Tooling
 - **pytest** – Unit testing
 - **black** / **flake8** – Code formatting and linting
-- **AWS S3** – Hosting logo and other assets for public display within the UI
 - **Markdown / YAML** – Configurable prompts and evaluation logs
 
 ## ⚙️ How FORAGER Works
