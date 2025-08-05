@@ -75,7 +75,7 @@ with tab_chat:
     # with space1:
     #     st.image(booz_padded, use_container_width=True)
     with space2:
-        st.image(logo, width=390)
+        st.image(logo, width=420)
     # with space3:
     #     st.image(allen_padded, use_container_width=True)
     st.markdown(
