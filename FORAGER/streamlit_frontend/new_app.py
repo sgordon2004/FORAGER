@@ -277,9 +277,161 @@ with tab_chat:
                     similarity = 0
 
 
-                # Answer summary and stat cards
-                st.markdown("## 🧾 Answer Summary")
+                
+                
+                if answer:
+                    placeholder = st.empty()
+                    # Answer summary and stat cards
+                    # Dynamic tag colors
+                    bs_class = f"bs-{label}"
+                    conf_class = f"confidence-{confidence}"
+                    try:
+                        sim_class = (
+                            "similarity-high" if float(similarity) >= 70 else
+                            "similarity-medium" if float(similarity) >= 40 else
+                            "similarity-low"
+                        )
+                    except:
+                        sim_class = "similarity-low"
+                    
+                    with placeholder.container():
+                        st.markdown("## 🧾 Initial Response Summary")
+                        col1, col2, col3 = st.columns(3)
 
+                        with col1:
+                            st.markdown(f"""
+                                <div class="tag-card {bs_class}">
+                                    <div style="display: inline-flex; align-items: center;">
+                                        <h4 style="margin: 0;">🧪 Support Level</h4>
+                                        <div class="tooltip" style="margin-left: -14px; cursor: pointer; 
+                                            font-size: 12px; line-height: 1; position: relative; top: -4px;">
+                                            ℹ️
+                                            <span class="tooltiptext">
+                                                The support level indicates how well the LLM's claims are supported 
+                                                by the provided knowledge base. This is determined by the number of
+                                                claims that initially had a BS Label of "Supported," which indicates
+                                                that the LLM's claim was supported by the documents in the knowledge 
+                                                base.
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <p><b>{label}</b></p>
+                                </div>
+                            """, unsafe_allow_html=True)
+
+
+                        with col2:
+                            st.markdown(f"""
+                                <div class="tag-card {conf_class}">
+                                    <div style="display: inline-flex; align-items: center;">
+                                        <h4 style="margin: 0;">🔐 Confidence Level</h4>
+                                        <div class="tooltip" style="margin-left: -14px; cursor: pointer; 
+                                        font-size: 12px; line-height: 1; position: relative; top: -4px;">
+                                            ℹ️
+                                            <span class="tooltiptext">
+                                                The confidence level uses the BS label and the similarity score to
+                                                gauge how confident the LLM is in its answer. It is determined by
+                                                the percentage of initial claims that were marked as high confidence.
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <p><b>{confidence}</b></p>
+                                </div>
+                            """, unsafe_allow_html=True)
+
+                        with col3:
+                            st.markdown(f"""
+                                <div class="tag-card {sim_class}">
+                                    <div style="display: inline-flex; align-items: center;">
+                                        <h4 style="margin: 0;">📈 Similarity Score</h4>
+                                        <div class="tooltip" style="margin-left: -14px; cursor: pointer; 
+                                        font-size: 12px; line-height: 1; position: relative; top: -4px;">
+                                            ℹ️
+                                            <span class="tooltiptext">
+                                                The similarity score rates the average semantic similarity of the LLM's 
+                                                claims to the language in the supporting documents pulled from 
+                                                the knowledge base. A 0 indicates no similarity, and a 1 indicates 
+                                                perfect similarity.
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <p><b>{similarity}</b></p>
+                                </div>
+                            """, unsafe_allow_html=True)
+                                
+                        st.markdown(f"""
+                            <div class="final-claim-card">
+                                <div style="display: inline-flex; align-items: center;">
+                                    <h4 style="margin: 0;">📝 Initial Response</h4>
+                                    <div class="tooltip" style="margin-left: -14px; cursor: pointer; 
+                                    font-size: 12px; line-height: 1; position: relative; top: -2px;">
+                                        ℹ️
+                                        <span class="tooltiptext">
+                                            This is the LLM's initial response to the user's prompt 
+                                            before the Prompt-Locked Loop runs.
+                                        </span>
+                                    </div>
+                                </div>
+                                <p style="font-size: 14px;">{answer}</p>
+                            </div>
+                        """, unsafe_allow_html=True)
+
+            # === Display Results ===
+            from pll_controller import prompt_locked_loop
+            # ... (paste your answer summary, PLL loop, final synthesized answer, and medium confidence claims display here exactly as before)
+            import time
+            status_placeholder.markdown("<div class='status-card'><span class='status-icon'></span>🔁 Executing Prompt Locked Loop...</div>", unsafe_allow_html=True)
+            # status_placeholder.info("🔁 Executing Prompt Locked Loop...")
+            start_time = time.perf_counter()
+            pll_logs, locked_claims, medium_confidence_claims = prompt_locked_loop(embedder, user_question, claim_eval, max_retry=3)
+            pipeline_runtime = time.perf_counter() - start_time
+            st.session_state["pipeline_runtime"] = pipeline_runtime
+            st.session_state["pll_logs"] = pll_logs
+            st.session_state["locked_claims"] = locked_claims
+            st.session_state["medium_confidence_claims"] = medium_confidence_claims
+
+            last_round_claims = pll_logs[-1]["claims"]
+
+            # Synthesize final answer
+            from pll_controller import synthesize_final_answer
+            locked_claims = st.session_state.get("locked_claims", [])
+            human_answer = synthesize_final_answer(user_question, [c["claim"] for c in locked_claims])
+            if human_answer:
+                placeholder.empty()
+                st.markdown("## 🏁 Final Response Summary")
+                st.markdown(f"""
+                            <div class="final-claim-card">
+                                <div style="display: inline-flex; align-items: center;">
+                                    <h3 style="margin: 0;">✅ Final Synthesized Answer</h3>
+                                    <div class="tooltip" style="margin-left: -14px; cursor: pointer; 
+                                    font-size: 12px; line-height: 1; position: relative; top: 2px;">
+                                        ℹ️
+                                        <span class="tooltiptext">
+                                            All LLM claims in the answer below were marked as 
+                                            Supported and High Confidence.
+                                        </span>
+                                    </div>
+                                </div>
+                                <p style="font-size: 16px;">{human_answer}</p>
+                            </div>
+                        """, unsafe_allow_html=True)
+            
+                # Show medium confidence claims if there are any
+                medium_confidence_claims = st.session_state.get("medium_confidence_claims", [])
+                if medium_confidence_claims:
+                    bullet_points_html = "".join(
+                        f"<li>{claim['claim']}</li>" for claim in medium_confidence_claims
+                    )
+                    st.markdown(f"""
+                            <div class="final-claim-card">
+                                <div style="display: inline-flex; align-items: center;">
+                                    <h4 style="margin: 0;">🤔 The following claims were also found to likely be true, 
+                                        though with slightly lower confidence: </h4>
+                                </div>
+                                <p style="font-size: 16px;">{bullet_points_html}</p>
+                            </div>
+                        """, unsafe_allow_html=True)
+                st.markdown("## 🚀 Initial Response Summary")
                 # Dynamic tag colors
                 bs_class = f"bs-{label}"
                 conf_class = f"confidence-{confidence}"
@@ -338,7 +490,7 @@ with tab_chat:
                 with col3:
                     st.markdown(f"""
                         <div class="tag-card {sim_class}">
-                             <div style="display: inline-flex; align-items: center;">
+                            <div style="display: inline-flex; align-items: center;">
                                 <h4 style="margin: 0;">📈 Similarity Score</h4>
                                 <div class="tooltip" style="margin-left: -14px; cursor: pointer; 
                                 font-size: 12px; line-height: 1; position: relative; top: -4px;">
@@ -358,7 +510,7 @@ with tab_chat:
                 st.markdown(f"""
                     <div class="final-claim-card">
                         <div style="display: inline-flex; align-items: center;">
-                            <h4 style="margin: 0;">📝 Initial Claim</h4>
+                            <h4 style="margin: 0;">📝 Initial Response</h4>
                             <div class="tooltip" style="margin-left: -14px; cursor: pointer; 
                             font-size: 12px; line-height: 1; position: relative; top: -2px;">
                                 ℹ️
@@ -371,65 +523,12 @@ with tab_chat:
                         <p style="font-size: 14px;">{answer}</p>
                     </div>
                 """, unsafe_allow_html=True)
-
-            # === Display Results ===
-            from pll_controller import prompt_locked_loop
-            # ... (paste your answer summary, PLL loop, final synthesized answer, and medium confidence claims display here exactly as before)
-            import time
-            status_placeholder.markdown("<div class='status-card'><span class='status-icon'>📄</span>🔁 Executing Prompt Locked Loop...</div>", unsafe_allow_html=True)
-            # status_placeholder.info("🔁 Executing Prompt Locked Loop...")
-            start_time = time.perf_counter()
-            pll_logs, locked_claims, medium_confidence_claims = prompt_locked_loop(embedder, user_question, claim_eval, max_retry=3)
-            pipeline_runtime = time.perf_counter() - start_time
-            st.session_state["pipeline_runtime"] = pipeline_runtime
-            st.session_state["pll_logs"] = pll_logs
-            st.session_state["locked_claims"] = locked_claims
-            st.session_state["medium_confidence_claims"] = medium_confidence_claims
-
-            last_round_claims = pll_logs[-1]["claims"]
             
-
-            # Synthesize final answer
-            from pll_controller import synthesize_final_answer
-            locked_claims = st.session_state.get("locked_claims", [])
-            human_answer = synthesize_final_answer(user_question, [c["claim"] for c in locked_claims])
-            if human_answer:
-                st.markdown(f"""
-                            <div class="final-claim-card">
-                                <div style="display: inline-flex; align-items: center;">
-                                    <h3 style="margin: 0;">✅ Final Synthesized Answer</h3>
-                                    <div class="tooltip" style="margin-left: -14px; cursor: pointer; 
-                                    font-size: 12px; line-height: 1; position: relative; top: 2px;">
-                                        ℹ️
-                                        <span class="tooltiptext">
-                                            All LLM claims in the answer below were marked as 
-                                            Supported and High Confidence.
-                                        </span>
-                                    </div>
-                                </div>
-                                <p style="font-size: 16px;">{human_answer}</p>
-                            </div>
-                        """, unsafe_allow_html=True)
             
-            # Show medium confidence claims if there are any
-            medium_confidence_claims = st.session_state.get("medium_confidence_claims", [])
-            if medium_confidence_claims:
-                bullet_points_html = "".join(
-                    f"<li>{claim['claim']}</li>" for claim in medium_confidence_claims
-                )
-                st.markdown(f"""
-                        <div class="final-claim-card">
-                            <div style="display: inline-flex; align-items: center;">
-                                <h4 style="margin: 0;">🤔 The following claims were also found to likely be true, 
-                                    though with slightly lower confidence: </h4>
-                            </div>
-                            <p style="font-size: 16px;">{bullet_points_html}</p>
-                        </div>
-                    """, unsafe_allow_html=True)
-                
-            status_placeholder.success("🎉 Full pipeline completed successfully!")
-            st.session_state["pipeline_complete"] = True
-            # st.balloons()
+        
+        status_placeholder.success("🎉 Full pipeline completed successfully!")
+        st.session_state["pipeline_complete"] = True
+        # st.balloons()
 
 
 # === Directories ===
@@ -579,27 +678,58 @@ with tab_claims:
                 final_status = "🔒 Locked before PLL"
             elif last_seen_index is not None:
                 current_version = original_claim
+                latest_decision = None
+                latest_round = None
+                claim_lineage = set([original_claim])
+
+                # Build claim lineage first
+                for log in pll_logs:
+                    for claim_info in log["claims"]:
+                        if claim_info.get("original_claim") in claim_lineage:
+                            claim_lineage.add(claim_info["claim"])
+
                 for j in range(last_seen_index + 1, len(pll_logs)):
                     next_log = pll_logs[j]
                     if next_log.get("pll_round") == "Pre-PLL Lock":
                         continue
+                    round_label = next_log.get("pll_round", f"index {j}")
+
                     for claim_info in next_log["claims"]:
-                        if claim_info["claim"] != current_version:
-                            current_version = claim_info["claim"]
-                            final_rephrased = current_version
-                            decision = claim_info.get("pll_decision", "N/A")
-                            round_label = next_log.get("pll_round", f"index {j}")
-                            final_status = f"🔁 Rephrased → `{decision}` in round {round_label}"
-                            if decision.lower().startswith("discarded"):
-                                was_discarded = True
-                            break
-                        elif claim_info["claim"] == current_version:
-                            decision = claim_info.get("pll_decision", "")
-                            if decision.lower().startswith("discarded"):
-                                was_discarded = True
-                                round_label = next_log.get("pll_round", f"index {j}")
-                                final_status = f"🗑️ Discarded in round {round_label}"
-                            break
+                        claim = claim_info["claim"]
+                        if claim not in claim_lineage:
+                            continue  # 🛑 skip unrelated claims
+
+                        decision = claim_info.get("pll_decision", "").strip()
+
+                        if claim != current_version:
+                            current_version = claim
+                            final_rephrased = claim
+
+                        # ✅ Ignore blank or reevaluated decisions
+                        if not decision or decision.lower().startswith("reevaluated"):
+                            continue
+
+                        if decision.lower().startswith("discarded"):
+                            latest_decision = decision
+                            latest_round = round_label
+                            was_discarded = True
+                        elif decision.lower().startswith("locked"):
+                            latest_decision = decision
+                            latest_round = round_label
+                        else:
+                            latest_decision = decision
+                            latest_round = round_label
+
+                # After loop, assign final_status
+                if latest_decision:
+                    if latest_decision.lower().startswith("discarded"):
+                        final_status = f"🗑️ Discarded in round {latest_round}"
+                    elif latest_decision.lower().startswith("locked"):
+                        final_status = f"🔒 Locked after rephrasing in round {latest_round}"
+                    else:
+                        final_status = f"🔁 Rephrased → `{latest_decision}` in round {latest_round}"
+                else:
+                    final_status = "♻️ No final decision reached"
 
             # --- Render UI ---
             st.markdown(f"### 📝 Claim: {original_claim}")
