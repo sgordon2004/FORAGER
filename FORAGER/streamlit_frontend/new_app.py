@@ -40,8 +40,8 @@ st.set_page_config(page_title="FORAGER RAG UI", layout="wide")
 st.markdown("<h1 style='font-size: 40px;'>⚛︎ Fact-Oriented Responsible AI-Guided Engineering Research ⚛︎</h1>", unsafe_allow_html=True)
 
 # Create 4 tabs for the app
-tab_chat, tab_knowledge_base, tab_claims, tab_metrics, tab_logs= st.tabs(
-    ["💬 Ask Chat", "📚 Document Database", "📑 Claims Breakdown", "📉 Metrics & Visualizations", "📜 PLL Logs"])
+tab_chat, tab_claims, tab_knowledge_base, tab_logs, tab_metrics = st.tabs(
+    ["💬 Ask Chat", "📑 Claims Breakdown", "📚 Document Database", "📜 PLL Logs", "📉 Metrics & Visualizations"])
 
 # Tab 1: Chat Tab (LLM Interaction)
 with tab_chat:
@@ -530,123 +530,6 @@ with tab_chat:
         st.session_state["pipeline_complete"] = True
         # st.balloons()
 
-
-# === Directories ===
-base_dir = Path("FORAGER_corpus/heterogenous_integration")
-html_upload_dir = base_dir / "htmls"
-pdf_upload_dir = base_dir / "pdfs"
-html_upload_dir.mkdir(parents=True, exist_ok=True)
-pdf_upload_dir.mkdir(parents=True, exist_ok=True)
-
-# === Session State ===
-if "selected_file" not in st.session_state:
-    st.session_state.selected_file = None
-if "selected_files" not in st.session_state:
-    st.session_state.selected_files = set()
-
-with tab_knowledge_base:
-    # === Header ===
-    st.header("📚 Knowledge Base Management")
-
-    # === Upload Files ===
-    st.markdown("### ➕ Upload More Files")
-    uploaded_files = st.file_uploader("Upload documents (PDF or HTML)", type=["pdf", "html"], accept_multiple_files=True)
-
-    if uploaded_files:
-        for file in uploaded_files:
-            file_ext = file.name.split(".")[-1].lower()
-            save_dir = html_upload_dir if file_ext == "html" else pdf_upload_dir
-            with open(save_dir / file.name, "wb") as f:
-                f.write(file.read())
-            st.success(f"✅ Uploaded {file.name}")
-        st.session_state.selected_file = None
-        st.session_state.selected_files.clear()
-        st.rerun()
-
-    # === File List (HTML + PDF) ===
-    html_files = list(html_upload_dir.glob("*.html"))
-    pdf_files = list(pdf_upload_dir.glob("*.pdf"))
-    all_files = [{"name": f.name, "path": f, "type": "HTML"} for f in html_files] + \
-                [{"name": f.name, "path": f, "type": "PDF"} for f in pdf_files]
-
-    # === Search Bar ===
-    search_query = st.text_input("🔍 Search files", placeholder="Type to search by filename...")
-    if search_query:
-        all_files = [f for f in all_files if search_query.lower() in f["name"].lower()]
-
-    # === File List ===
-    if all_files:
-        for file in all_files:
-            cols = st.columns([0.06, 0.55, 0.2, 0.2])
-            with cols[0]:
-                st.markdown(
-                    """
-                    <style>
-                    div[data-testid="stCheckbox"] {
-                        display: flex;
-                        align-items: flex-start;
-                        margin-top: -15px;
-                    }
-                    </style>
-                    """,
-                    unsafe_allow_html=True
-                )
-                checked = st.checkbox("", value=file["name"] in st.session_state.selected_files, key=f"chk_{file['name']}")
-                if checked:
-                    st.session_state.selected_files.add(file["name"])
-                else:
-                    st.session_state.selected_files.discard(file["name"])
-            with cols[1]:
-                st.markdown(f"📄 {file['name']}")
-            with cols[2]:
-                if st.button("👁 Preview", key=f"preview_{file['name']}"):
-                    st.session_state.selected_file = file
-            with cols[3]:
-                if st.button("🗑 Delete", key=f"delete_{file['name']}"):
-                    file["path"].unlink()
-                    st.success(f"🗑 Deleted {file['name']}")
-                    if st.session_state.selected_file and st.session_state.selected_file["name"] == file["name"]:
-                        st.session_state.selected_file = None
-                    st.rerun()
-    else:
-        st.info("No files found. Upload or adjust your search.")
-        # ✅ Reset state if no files remain
-        st.session_state.selected_file = None
-        st.session_state.selected_files.clear()
-
-    # === Bulk Delete Button ===
-    if st.session_state.selected_files:
-        if st.button("🗑 Delete Selected Files"):
-            for file_name in list(st.session_state.selected_files):
-                file_to_delete = next((f for f in all_files if f["name"] == file_name), None)
-                if file_to_delete:
-                    file_to_delete["path"].unlink()
-                    if st.session_state.selected_file and st.session_state.selected_file["name"] == file_name:
-                        st.session_state.selected_file = None
-            st.session_state.selected_files.clear()
-            st.success("🗑 Selected files deleted successfully!")
-            st.rerun()
-
-    # === File Preview Section ===
-    if st.session_state.selected_file:
-        file = st.session_state.selected_file
-        st.markdown(f"### 👁 Preview: {file['name']}")
-
-        if file["type"] == "HTML":
-            html_content = file["path"].read_text(encoding="utf-8")
-            soup = BeautifulSoup(html_content, "html.parser")
-            html_preview = f"""
-            <div style="background-color:white; color:black; padding:20px; border-radius:8px; height:600px; overflow:auto;">
-                {soup}
-            </div>
-            """
-            st.components.v1.html(html_preview, height=600, scrolling=True)
-
-        elif file["type"] == "PDF":
-            with open(file["path"], "rb") as f:
-                pdf_bytes = f.read()
-                pdf_viewer(input=pdf_bytes, width=800, height=900)
-        
 # Tab 3: Step-by-step claims breakdown
 with tab_claims:
     st.header("📑 Claims Breakdown")
@@ -837,7 +720,195 @@ with tab_claims:
                     st.markdown(f">{text}")
 
 
-# Tab 4: Metrics & Visualizations
+# === Directories ===
+base_dir = Path("FORAGER_corpus/heterogenous_integration")
+html_upload_dir = base_dir / "htmls"
+pdf_upload_dir = base_dir / "pdfs"
+html_upload_dir.mkdir(parents=True, exist_ok=True)
+pdf_upload_dir.mkdir(parents=True, exist_ok=True)
+
+# === Session State ===
+if "selected_file" not in st.session_state:
+    st.session_state.selected_file = None
+if "selected_files" not in st.session_state:
+    st.session_state.selected_files = set()
+
+with tab_knowledge_base:
+    # === Header ===
+    st.header("📚 Document Database")
+
+    # === Upload Files ===
+    st.markdown("### ➕ Upload More Files")
+    uploaded_files = st.file_uploader("Upload documents (PDF or HTML)", type=["pdf", "html"], accept_multiple_files=True)
+
+    if uploaded_files:
+        for file in uploaded_files:
+            file_ext = file.name.split(".")[-1].lower()
+            save_dir = html_upload_dir if file_ext == "html" else pdf_upload_dir
+            with open(save_dir / file.name, "wb") as f:
+                f.write(file.read())
+            st.success(f"✅ Uploaded {file.name}")
+        st.session_state.selected_file = None
+        st.session_state.selected_files.clear()
+        st.rerun()
+
+    # === File List (HTML + PDF) ===
+    html_files = list(html_upload_dir.glob("*.html"))
+    pdf_files = list(pdf_upload_dir.glob("*.pdf"))
+    all_files = [{"name": f.name, "path": f, "type": "HTML"} for f in html_files] + \
+                [{"name": f.name, "path": f, "type": "PDF"} for f in pdf_files]
+
+    # === Search Bar ===
+    search_query = st.text_input("🔍 Search files", placeholder="Type to search by filename...")
+    if search_query:
+        all_files = [f for f in all_files if search_query.lower() in f["name"].lower()]
+
+    # === File List ===
+    if all_files:
+        for file in all_files:
+            cols = st.columns([0.06, 0.55, 0.2, 0.2])
+            with cols[0]:
+                st.markdown(
+                    """
+                    <style>
+                    div[data-testid="stCheckbox"] {
+                        display: flex;
+                        align-items: flex-start;
+                        margin-top: -15px;
+                    }
+                    </style>
+                    """,
+                    unsafe_allow_html=True
+                )
+                checked = st.checkbox("", value=file["name"] in st.session_state.selected_files, key=f"chk_{file['name']}")
+                if checked:
+                    st.session_state.selected_files.add(file["name"])
+                else:
+                    st.session_state.selected_files.discard(file["name"])
+            with cols[1]:
+                st.markdown(f"📄 {file['name']}")
+            with cols[2]:
+                if st.button("👁 Preview", key=f"preview_{file['name']}"):
+                    st.session_state.selected_file = file
+            with cols[3]:
+                if st.button("🗑 Delete", key=f"delete_{file['name']}"):
+                    file["path"].unlink()
+                    st.success(f"🗑 Deleted {file['name']}")
+                    if st.session_state.selected_file and st.session_state.selected_file["name"] == file["name"]:
+                        st.session_state.selected_file = None
+                    st.rerun()
+    else:
+        st.info("No files found. Upload or adjust your search.")
+        # ✅ Reset state if no files remain
+        st.session_state.selected_file = None
+        st.session_state.selected_files.clear()
+
+    # === Bulk Delete Button ===
+    if st.session_state.selected_files:
+        if st.button("🗑 Delete Selected Files"):
+            for file_name in list(st.session_state.selected_files):
+                file_to_delete = next((f for f in all_files if f["name"] == file_name), None)
+                if file_to_delete:
+                    file_to_delete["path"].unlink()
+                    if st.session_state.selected_file and st.session_state.selected_file["name"] == file_name:
+                        st.session_state.selected_file = None
+            st.session_state.selected_files.clear()
+            st.success("🗑 Selected files deleted successfully!")
+            st.rerun()
+
+    # === File Preview Section ===
+    if st.session_state.selected_file:
+        file = st.session_state.selected_file
+        st.markdown(f"### 👁 Preview: {file['name']}")
+
+        if file["type"] == "HTML":
+            html_content = file["path"].read_text(encoding="utf-8")
+            soup = BeautifulSoup(html_content, "html.parser")
+            html_preview = f"""
+            <div style="background-color:white; color:black; padding:20px; border-radius:8px; height:600px; overflow:auto;">
+                {soup}
+            </div>
+            """
+            st.components.v1.html(html_preview, height=600, scrolling=True)
+
+        elif file["type"] == "PDF":
+            with open(file["path"], "rb") as f:
+                pdf_bytes = f.read()
+                pdf_viewer(input=pdf_bytes, width=800, height=900)
+
+# Tab 5: PLL Logs
+with tab_logs:
+    st.header("✍️ PLL Logs")
+
+    pll_logs = st.session_state.get("pll_logs", [])
+
+    if not pll_logs:
+        st.info("No PLL logs available. Submit a question in the Chat tab to generate logs.")
+    else:
+        for round_log in pll_logs:
+            if not round_log["claims"]:
+                continue  # Skip rounds with no claims
+
+            round_label = round_log["pll_round"]
+            expander_title = "Initial Claim Evaluation (Pre-PLL)" if round_label == 0 else f"PLL Round {round_label}"
+            with st.expander(f"📈 {expander_title}", expanded=False):
+                for claim_info in round_log["claims"]:
+                    claim_text = claim_info.get("claim", "❓")
+                    decision = claim_info.get("pll_decision", "N/A")
+                    confidence = claim_info.get("confidence_label", "N/A")
+                    label = claim_info.get("eval_label", "N/A")
+                    reason = claim_info.get("reason", "No reason provided.")
+
+                    rephrased_from = claim_info.get("original_claim")
+                    was_rephrased = bool(rephrased_from and rephrased_from != claim_text)
+
+                    # 🔹 Color mapping
+                    label_colors = {
+                        "Contradicted": "red",
+                        "Unsupported": "orange",
+                        "Supported": "green",
+                        "Zero": "red",
+                        "Medium": "orange",
+                        "High": "green",
+                        "Discarded by LLM": "red",
+                        "Unknown": "#4da6ff"  # softer blue
+                    }
+
+                    dec_color = label_colors.get(decision, "white")
+                    conf_color = label_colors.get(confidence, "white")
+                    label_color = label_colors.get(label, "white")
+
+                    # --- Rendering ---
+                    st.markdown(f"---")
+                    st.markdown(f"**📝 Claim:** {claim_text}")
+                    st.markdown(f"- **Decision:** <span style='background-color:#171717; color:{dec_color}; padding:2px 6px; border-radius:4px; font-weight:600;'>{decision}</span>", unsafe_allow_html=True)
+                    st.markdown(f"- **Confidence:** <span style='background-color:#171717; color:{conf_color}; padding:2px 6px; border-radius:4px; font-weight:600;'>{confidence}</span>", unsafe_allow_html=True)
+                    st.markdown(f"- **Label:** <span style='background-color:#171717; color:{label_color}; padding:2px 6px; border-radius:4px; font-weight:600;'>{label}</span>", unsafe_allow_html=True)
+                    
+                    if was_rephrased:
+                        st.markdown(f"- **Rephrased from:** _{rephrased_from}_")
+                    st.markdown(f"- **Reason:** {reason}")
+
+                    # Optional metadata
+                    metadata = claim_info.get("metadata", {})
+                    if metadata:
+                        st.markdown("###### 🧬 Metadata:")
+                        if "similarity_scores" in metadata:
+                            st.markdown(f"- Similarity Scores: {metadata['similarity_scores']}")
+                        if "supporting_chunks" in metadata:
+                            st.markdown(f"- Supporting Chunk IDs: {metadata['supporting_chunks']}")
+                        if "rephrase_count" in metadata:
+                            st.markdown(f"- Rephrase Round Count: {metadata['rephrase_count']}")
+                        if "rerank_method" in metadata:
+                            st.markdown(f"- Rerank Method Used: {metadata['rerank_method']}")
+    locked_claims = st.session_state.get("locked_claims", [])
+    if locked_claims:
+        with st.expander("✅ Final Locked Claims", expanded=False):
+            for c in locked_claims:
+                st.markdown(f"- {c['claim']}")
+
+
+# Tab 5: Metrics & Visualizations
 
 with tab_metrics:
     # Get data
@@ -1055,75 +1126,3 @@ with tab_metrics:
                         </span>
                     </div>
                 """, unsafe_allow_html=True)
-    
-
-# Tab 5: PLL Logs
-with tab_logs:
-    st.header("✍️ PLL Logs")
-
-    pll_logs = st.session_state.get("pll_logs", [])
-
-    if not pll_logs:
-        st.info("No PLL logs available. Submit a question in the Chat tab to generate logs.")
-    else:
-        for round_log in pll_logs:
-            if not round_log["claims"]:
-                continue  # Skip rounds with no claims
-
-            round_label = round_log["pll_round"]
-            expander_title = "Initial Claim Evaluation (Pre-PLL)" if round_label == 0 else f"PLL Round {round_label}"
-            with st.expander(f"📈 {expander_title}", expanded=False):
-                for claim_info in round_log["claims"]:
-                    claim_text = claim_info.get("claim", "❓")
-                    decision = claim_info.get("pll_decision", "N/A")
-                    confidence = claim_info.get("confidence_label", "N/A")
-                    label = claim_info.get("eval_label", "N/A")
-                    reason = claim_info.get("reason", "No reason provided.")
-
-                    rephrased_from = claim_info.get("original_claim")
-                    was_rephrased = bool(rephrased_from and rephrased_from != claim_text)
-
-                    # 🔹 Color mapping
-                    label_colors = {
-                        "Contradicted": "red",
-                        "Unsupported": "orange",
-                        "Supported": "green",
-                        "Zero": "red",
-                        "Medium": "orange",
-                        "High": "green",
-                        "Discarded by LLM": "red",
-                        "Unknown": "#4da6ff"  # softer blue
-                    }
-
-                    dec_color = label_colors.get(decision, "white")
-                    conf_color = label_colors.get(confidence, "white")
-                    label_color = label_colors.get(label, "white")
-
-                    # --- Rendering ---
-                    st.markdown(f"---")
-                    st.markdown(f"**📝 Claim:** {claim_text}")
-                    st.markdown(f"- **Decision:** <span style='background-color:#171717; color:{dec_color}; padding:2px 6px; border-radius:4px; font-weight:600;'>{decision}</span>", unsafe_allow_html=True)
-                    st.markdown(f"- **Confidence:** <span style='background-color:#171717; color:{conf_color}; padding:2px 6px; border-radius:4px; font-weight:600;'>{confidence}</span>", unsafe_allow_html=True)
-                    st.markdown(f"- **Label:** <span style='background-color:#171717; color:{label_color}; padding:2px 6px; border-radius:4px; font-weight:600;'>{label}</span>", unsafe_allow_html=True)
-                    
-                    if was_rephrased:
-                        st.markdown(f"- **Rephrased from:** _{rephrased_from}_")
-                    st.markdown(f"- **Reason:** {reason}")
-
-                    # Optional metadata
-                    metadata = claim_info.get("metadata", {})
-                    if metadata:
-                        st.markdown("###### 🧬 Metadata:")
-                        if "similarity_scores" in metadata:
-                            st.markdown(f"- Similarity Scores: {metadata['similarity_scores']}")
-                        if "supporting_chunks" in metadata:
-                            st.markdown(f"- Supporting Chunk IDs: {metadata['supporting_chunks']}")
-                        if "rephrase_count" in metadata:
-                            st.markdown(f"- Rephrase Round Count: {metadata['rephrase_count']}")
-                        if "rerank_method" in metadata:
-                            st.markdown(f"- Rerank Method Used: {metadata['rerank_method']}")
-    locked_claims = st.session_state.get("locked_claims", [])
-    if locked_claims:
-        with st.expander("✅ Final Locked Claims", expanded=False):
-            for c in locked_claims:
-                st.markdown(f"- {c['claim']}")
