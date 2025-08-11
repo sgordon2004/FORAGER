@@ -1,0 +1,7 @@
+{
+  "Q2": "{\n\"question\": \"At what year did Moore's Law start showing signs of slowdown?\",\n\"options\": [\"2000\", \"2001\", \"2003\", \"2008\", \"2012\"]\n}",
+  "Q3": "{\n\"question\": \"What is the primary form of a modular chip?\",\n\"options\": [\"Standard\", \"Die\", \"Wafer\", \"Chip carrier\", \"Memory\"]\n}",
+  "Q8": "{\n\"question\": \"Compared to conventional packaging approaches, interposers are generally what in terms of cost?\",\n\"options\": [\"Less expensive\", \"More expensive\", \"About the same cost\", \"Only cheaper for wire bonding\", \"Only used in experimental chips\"]\n}",
+  "Q17": "{\n\"question\": \"Which packaging method creates high-density connections without using full through-silicon via (TSV) stacks?\",\n\"options\": [\"Fan-Out Wafer-Level Packaging (FO-WLP)\", \"Chiplet technology\", \"2.5D packaging\", \"Micro-bump bonding\", \"Embedded Multi-die Interconnect Bridge\"]\n}",
+  "Q40": "{\n\"question\": \"What type of heterogeneity is associated with the integration of features that share the same level of abstraction?\",\n\"options\": [\"Surface heterogeneity\", \"Chip heterogeneity\", \"Process-layer heterogeneity\", \"Device-specific heterogeneity\", \"Software heterogeneity\"]\n}"
+}

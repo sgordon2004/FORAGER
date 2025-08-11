@@ -1,0 +1,1916 @@
+{
+    "Batch_1": {
+        "questions": [
+            {
+                "input": "What process node has entered the production stage recently?",
+                "options": [
+                    "14 nm",
+                    "10 nm",
+                    "7 nm",
+                    "3 nm",
+                    "6 nm"
+                ],
+                "answer": "7 nm"
+            },
+            {
+                "input": "When did Moore\u2019s Law show signs of slowdown?",
+                "options": [
+                    "2003",
+                    "2012",
+                    "2008",
+                    "2000",
+                    "2001"
+                ],
+                "answer": "2012"
+            },
+            {
+                "input": "What is the main form of modular chips?",
+                "options": [
+                    "Standard",
+                    "Die",
+                    "Wafer",
+                    "Chip carrier",
+                    "Memory"
+                ],
+                "answer": "Chip carrier"
+            },
+            {
+                "input": "Which company introduced the Agilex FPGA based on chiplet technology?",
+                "options": [
+                    "AMD",
+                    "Intel",
+                    "Synopsys",
+                    "Menta",
+                    "NXP"
+                ],
+                "answer": "Intel"
+            },
+            {
+                "input": "What is DARPA\u2019s CHIPS plan primarily focused on?",
+                "options": [
+                    "Achieving strategic unification and ecological construction for chiplets",
+                    "Creating chips for consumer electronics only",
+                    "Developing a new type of monolithic chip",
+                    "Improving classical CPU architecture only",
+                    "Designing a large technical roadmap"
+                ],
+                "answer": "Achieving strategic unification and ecological construction for chiplets"
+            }
+        ]
+    },
+    "Batch_2": {
+        "questions": [
+            {
+                "input": "What is the primary function of an interposer in 2.5D IC packaging?",
+                "options": [
+                    "To act as a power source",
+                    "To connect multiple dies electrically",
+                    "To cool the chips",
+                    "To manufacture silicon wafers",
+                    "To store data temporarily"
+                ],
+                "answer": "To connect multiple dies electrically"
+            },
+            {
+                "input": "Which two materials are commonly used to make interposers?",
+                "options": [
+                    "Silicon and organic materials",
+                    "Copper and aluminum",
+                    "Plastic and glass",
+                    "Gold and silver",
+                    "Carbon fiber and silicon carbide"
+                ],
+                "answer": "Silicon and organic materials"
+            },
+            {
+                "input": "Compared to conventional packaging approaches, interposers are generally:",
+                "options": [
+                    "Less expensive",
+                    "More expensive",
+                    "About the same cost",
+                    "Only cheaper for wire bonding",
+                    "Only used in experimental chips"
+                ],
+                "answer": "Less expensive"
+            },
+            {
+                "input": "What does TSV stand for, and what is its role in interposers?",
+                "options": [
+                    "Thermal Silicon Valve; for cooling",
+                    "Transient Signal Vector; for timing signals",
+                    "Through-Silicon Via; for vertical signal transmission",
+                    "Thin Silicon Variation; for size adjustment",
+                    "Tuned Signal Voltage; for power regulation"
+                ],
+                "answer": "Through-Silicon Via; for vertical signal transmission"
+            },
+            {
+                "input": "What does 2.5D packaging mainly involve?",
+                "options": [
+                    "Vertical stacking",
+                    "Single monolithic chip",
+                    "Wire bonding only",
+                    "Optical interconnects",
+                    "Side-by-side dies on an interposer"
+                ],
+                "answer": "Side-by-side dies on an interposer"
+            }
+        ]
+    },
+    "Batch_3": {
+        "questions": [
+            {
+                "input": "What is the main advantage of chiplet-based architectures over monolithic chip designs?",
+                "options": [
+                    "Larger die size",
+                    "Reduced manufacturing cost and improved yield",
+                    "More difficult packaging",
+                    "Less modularity",
+                    "Simplified power distribution"
+                ],
+                "answer": "Reduced manufacturing cost and improved yield"
+            },
+            {
+                "input": "What standard has the industry adopted to address die-to-die communication challenges?",
+                "options": [
+                    "PCIe",
+                    "Ethernet",
+                    "USB-C",
+                    "UCIe",
+                    "DDR"
+                ],
+                "answer": "UCIe"
+            },
+            {
+                "input": "Why is crosstalk a concern in chiplet systems?",
+                "options": [
+                    "It increases production cost",
+                    "It causes mechanical vibration",
+                    "It results from electromagnetic interference between adjacent signals",
+                    "It reduces thermal resistance",
+                    "It enhances bandwidth"
+                ],
+                "answer": "It results from electromagnetic interference between adjacent signals"
+            },
+            {
+                "input": "What does VTF measure?",
+                "options": [
+                    "Clock speed",
+                    "Signal loss",
+                    "Power use",
+                    "Heat",
+                    "Latency"
+                ],
+                "answer": "Signal loss"
+            },
+            {
+                "input": "What helps ensure clean signals in UCIe?",
+                "options": [
+                    "Power gating",
+                    "Die shrinks",
+                    "Clock tuning",
+                    "Eye masks",
+                    "Heat sinks"
+                ],
+                "answer": "Eye masks"
+            }
+        ]
+    },
+    "Batch_4": {
+        "questions": [
+            {
+                "input": "What is one main reason the semiconductor industry is shifting towards 3D heterogenous integration?",
+                "options": [
+                    "It allows chips to be manufactured entirely on a single monolithic substrate",
+                    "It enables continued performance scaling beyond the limits of Moore\u00e2\u20ac\u2122s Law",
+                    "It eliminates the need for thermal management in high-density systems",
+                    "It replaces the need for packaging altogether",
+                    "It reduces the number of I/Os in complex devices"
+                ],
+                "answer": "It enables continued performance scaling beyond the limits of Moore\u00e2\u20ac\u2122s Law"
+            },
+            {
+                "input": "Which packaging method creates high-density connections without using full through-silicon via (TSV) stacks?",
+                "options": [
+                    "Fan-Out Wafer-Level Packaging (FO-WLP)",
+                    "Chiplet technology",
+                    "2.5D packaging",
+                    "Micro-bump bonding",
+                    "Embedded Multi-die Interconnect Bridge"
+                ],
+                "answer": "Fan-Out Wafer-Level Packaging (FO-WLP)"
+            },
+            {
+                "input": "Which of the following is an example of a passive element integrated within 3D heterogenous integration?",
+                "options": [
+                    "Microtransformers for galvanic insulation",
+                    "SenseFETs for short circuit protection",
+                    "Anode voltage sensors",
+                    "TSV interposers",
+                    "Chiplets for SoC partitioning"
+                ],
+                "answer": "Microtransformers for galvanic insulation"
+            },
+            {
+                "input": "Compared to System-on-Chip (SoC), heterogenous integration is preferred when:",
+                "options": [
+                    "Reducing feature size is easy and cost-effective",
+                    "The design requires only monolithic integration",
+                    "High pitch, large I/O, and high performance are needed despite scaling limits",
+                    "Only one foundry is available for all components",
+                    "A single-layer PCB is sufficient"
+                ],
+                "answer": "High pitch, large I/O, and high performance are needed despite scaling limits"
+            },
+            {
+                "input": "What is a key challenge specific to 3D stacking in heterogenous integration?",
+                "options": [
+                    "Managing too few interconnects",
+                    "Overheating due to trapped heat",
+                    "Limited bandwidth",
+                    "Excessive wafer-level bonding standards",
+                    "Lack of available TSV technologies"
+                ],
+                "answer": "Overheating due to trapped heat"
+            }
+        ]
+    },
+    "Batch_5": {
+        "questions": [
+            {
+                "input": "Which of these is NOT typically used to improve thermal management in heterogeneous integration?",
+                "options": [
+                    "Embedded fluid channels",
+                    "Thermal chimney structures",
+                    "New liquid thermal interface materials",
+                    "Additional TSV layers",
+                    "Micro heat pipes"
+                ],
+                "answer": "Additional TSV layers"
+            },
+            {
+                "input": "What does the BCD process in smart power ICs stand for?",
+                "options": [
+                    "Bipolar, CMOS, DMOS",
+                    "Bipolar, Chiplet, Die-bonding",
+                    "Bridge, Chip, Die-attach",
+                    "Bonding, CMOS, Direct-etch",
+                    "Bump, Chip, DRAM"
+                ],
+                "answer": "Bipolar, CMOS, DMOS"
+            },
+            {
+                "input": "Which statement about Fan-Out Wafer-Level Packaging (FO-WLP) is correct?",
+                "options": [
+                    "It increases die size to fit more contacts",
+                    "It reduces size and cost by enabling more contacts without enlarging the die",
+                    "It is only suitable for ceramic substrates",
+                    "It requires TSVs for interconnection",
+                    "It is synonymous with monolithic integration"
+                ],
+                "answer": "It reduces size and cost by enabling more contacts without enlarging the die"
+            },
+            {
+                "input": "A designer wants to use a bridge structure instead of TSV interposers to connect chips laterally. Which solution best matches this goal?",
+                "options": [
+                    "TSV interposer",
+                    "Redistribution Layer (RDL) substrate",
+                    "Embedded Multi-die Interconnect Bridge (EMIB)",
+                    "Chiplet",
+                    "Fan-Out Wafer-Level Packaging"
+                ],
+                "answer": "Embedded Multi-die Interconnect Bridge (EMIB)"
+            },
+            {
+                "input": "In the context of functional integration for power electronics, which of the following is a benefit of evolving to 3D heterogeneous functional integration?",
+                "options": [
+                    "Higher voltages and power with less reliable packaging",
+                    "Larger device footprint for easier cooling",
+                    "Integrated control, protection, and cooling in a compact system",
+                    "Elimination of short circuit protection",
+                    "Reduced need for drivers and sensors"
+                ],
+                "answer": "Integrated control, protection, and cooling in a compact system"
+            }
+        ]
+    },
+    "Batch_6": {
+        "questions": [
+            {
+                "input": "Which of the following technologies directly enables high-bandwidth connections in vertically stacked 3D heterogeneous integration?",
+                "options": [
+                    "Microtransformers",
+                    "Redistribution Layer (RDL)",
+                    "Through-Silicon Vias (TSVs)",
+                    "EMIB bridges",
+                    "Micro-bump bonding with capacitors"
+                ],
+                "answer": "Through-Silicon Vias (TSVs)"
+            },
+            {
+                "input": "In a power electronics system, which component is specifically used for short-circuit protection in smart power ICs?",
+                "options": [
+                    "TSV interposer",
+                    "SenseFET",
+                    "Microtransformer",
+                    "Chiplet",
+                    "Fan-Out RDL"
+                ],
+                "answer": "SenseFET"
+            },
+            {
+                "input": "Why is chiplet technology increasingly used in modern heterogenous integration?",
+                "options": [
+                    "It eliminates the need for wafer-level packaging",
+                    "It partitions large SoCs into smaller dies, boosting yield and cost-efficiency",
+                    "It replaces the need for any form of packaging",
+                    "It creates micro-bumps for bonding",
+                    "It enables monolithic integration only"
+                ],
+                "answer": "It partitions large SoCs into smaller dies, boosting yield and cost-efficiency"
+            },
+            {
+                "input": "Which substrate type is most commonly used for heterogeneous integration in smartphones and wearables?",
+                "options": [
+                    "Ceramic substrates",
+                    "Silicon bridges",
+                    "Organic substrates",
+                    "Fan-out RDL only",
+                    "TSV interposers exclusively"
+                ],
+                "answer": "Organic substrates"
+            },
+            {
+                "input": "What combination best describes the BCD process commonly found in integrated low-to-medium voltage power ICs?",
+                "options": [
+                    "CMOS, Chiplet, Direct Bonding",
+                    "Bipolar, CMOS, DMOS",
+                    "Bridge, CMOS, Die-bonding",
+                    "Bipolar, Chiplet, TSV",
+                    "Bump, Control, Drive"
+                ],
+                "answer": "Bipolar, CMOS, DMOS"
+            }
+        ]
+    },
+    "Batch_7": {
+        "questions": [
+            {
+                "input": "Why has heterogeneous integration become more important in recent years?",
+                "options": [
+                    "It allows companies to bypass the need for AI",
+                    "It replaces traditional processors with photonic-only systems",
+                    "Moore\u2019s Law scaling is slowing, limiting gains from transistor miniaturization",
+                    "It removes the need for analog design in chips",
+                    "It avoids the use of chiplets altogether"
+                ],
+                "answer": "Moore\u2019s Law scaling is slowing, limiting gains from transistor miniaturization"
+            },
+            {
+                "input": "What is a chiplet in the context of heterogeneous integration?",
+                "options": [
+                    "A type of wireless communication device",
+                    "A photonic-only chip for fiber optics",
+                    "A simplified user interface for chip design",
+                    "A deprecated transistor model from the 1990s",
+                    "A small functional block that can be integrated with others in a package"
+                ],
+                "answer": "A small functional block that can be integrated with others in a package"
+            },
+            {
+                "input": "What was the primary focus of Phase I in the silicon interposer development program?",
+                "options": [
+                    "Developing a quantum computing architecture",
+                    "Designing a full system-on-chip on a single die",
+                    "Fabricating a 2-metal-layer bridge interposer using a damascene process",
+                    "Incorporating AI algorithms into the interposer",
+                    "Adding on-chip antennas for 5G support"
+                ],
+                "answer": "Fabricating a 2-metal-layer bridge interposer using a damascene process"
+            },
+            {
+                "input": "Which of the following is NOT an advantage of silicon interposers over organic interposers?",
+                "options": [
+                    "Increased mechanical flexibility under strain",
+                    "Compatibility of thermal expansion with silicon chips",
+                    "Ability to use the damascene process to achieve fine features",
+                    "Lower fabrication temperature requirements",
+                    "Much lower material cost"
+                ],
+                "answer": "Much lower material cost"
+            },
+            {
+                "input": "In phase II of the silicon interposer development program, what major structural feature is added to the interposer?",
+                "options": [
+                    "Through-silicon vias (TSVs)",
+                    "Embedded logic cores for real-time control",
+                    "Carbon nanotube interconnects",
+                    "Deep Trench Capacitors",
+                    "High-k dielectric passivation"
+                ],
+                "answer": "Through-silicon vias (TSVs)"
+            }
+        ]
+    },
+    "Batch_8": {
+        "questions": [
+            {
+                "input": "Which electrical test is used to measure sheet resistance?",
+                "options": [
+                    "C4 bump test array",
+                    "Dynamic thermal impedance testing",
+                    "Van der Pauw test",
+                    "Time-Domain Reflectometry (TDR)",
+                    "Comb and chain"
+                ],
+                "answer": "Van der Pauw test"
+            },
+            {
+                "input": "What is the purpose of adding copper pillars and C4 bumps in test silicon interposers?",
+                "options": [
+                    "To test signal integrity at millimeter-wave frequencies",
+                    "To see how reliable a fully assembled exemplar system would be",
+                    "To enable thermal dissipation for the interposer",
+                    "To allow passive RFID tracking of dies",
+                    "To create a vacuum-sealed chip chamber"
+                ],
+                "answer": "To enable thermal dissipation for the interposer"
+            },
+            {
+                "input": "What is the primary goal of heterogeneous integration in semiconductor manufacturing?",
+                "options": [
+                    "To improve performance and functionality by combining different dies in one package",
+                    "To eliminate analog circuitry in chiplet design",
+                    "To increase the transistor count on a single monolithic die",
+                    "To reduce mask layers in lithography",
+                    "To reduce the use of chiplets in high-performance computing"
+                ],
+                "answer": "To improve performance and functionality by combining different dies in one package"
+            },
+            {
+                "input": "What is one benefit of placing high-performance logic and HBM close together using advanced packaging?",
+                "options": [
+                    "It allows for larger wire bonds",
+                    "It simplifies single-die architecture",
+                    "It reduces latency and power consumption",
+                    "It prevents electromagnetic interference in power rails",
+                    "It eliminates the need for copper"
+                ],
+                "answer": "It reduces latency and power consumption"
+            },
+            {
+                "input": "Which type of heterogeneity does feature-level integration have?",
+                "options": [
+                    "Surface heterogeneity",
+                    "Chip heterogeneity",
+                    "Process-layer heterogeneity",
+                    "Device-specific heterogeneity",
+                    "Software heterogeneity"
+                ],
+                "answer": "Feature-level integration"
+            }
+        ]
+    },
+    "Batch_9": {
+        "questions": [
+            {
+                "input": "Which of the following is a reason why the semiconductor industry is pursuing heterogeneous integration?",
+                "options": [
+                    "It allows faster time to market and accelerates power and performance",
+                    "Traditional scaling is still highly cost-effective",
+                    "It prioritizes single-function chip designs",
+                    "It reduces the need for logic and memory components",
+                    "It simplifies binary programming at scale"
+                ],
+                "answer": "It allows faster time to market and accelerates power and performance"
+            },
+            {
+                "input": "What are two major breakthroughs required for heterogeneous integration?",
+                "options": [
+                    "Multi-core design and thermal dissipation",
+                    "Fan-out packaging and PCB routing",
+                    "Hybrid bonding and larger advanced substrates",
+                    "Interposer thinning and via isolation",
+                    "Lithography scaling and transistor doping"
+                ],
+                "answer": "Hybrid bonding and larger advanced substrates"
+            },
+            {
+                "input": "Why has heterogeneous integration become more important in recent years?",
+                "options": [
+                    "It allows companies to bypass the need for AI",
+                    "It replaces traditional processors with photonic-only systems",
+                    "It eliminates the need for silicon interposers",
+                    "Moore\u00e2\u20ac\u2122s Law scaling is slowing, limiting gains from transistor miniaturization",
+                    "It avoids the use of chiplets altogether"
+                ],
+                "answer": "Moore\u00e2\u20ac\u2122s Law scaling is slowing, limiting gains from transistor miniaturization"
+            },
+            {
+                "input": "Which of the following is an example of a real-world application of heterogeneous integration?",
+                "options": [
+                    "Samsung\u00e2\u20ac\u2122s foldable screen display",
+                    "AMD\u00e2\u20ac\u2122s EPYC processors using chiplet architecture",
+                    "Tesla\u00e2\u20ac\u2122s battery management systems",
+                    "Microsoft Excel running on ARM chips",
+                    "Apple\u00e2\u20ac\u2122s iTunes software"
+                ],
+                "answer": "AMD\u00e2\u20ac\u2122s EPYC processors using chiplet architecture"
+            },
+            {
+                "input": "What is the purpose of the Heterogenous Integration Roadmap (HIR)?",
+                "options": [
+                    "To guide and align industry and academic efforts in HI development",
+                    "To promote the exclusive use of silicon photonics",
+                    "To delay the adoption of chiplet architectures",
+                    "To consolidate all foundries into a single provider",
+                    "To stop development of chiplets in favor of monolithic designs"
+                ],
+                "answer": "To guide and align industry and academic efforts in HI development"
+            }
+        ]
+    },
+    "Batch_10": {
+        "questions": [
+            {
+                "input": "Which of the following is a benefit or trend associated with heterogeneous integration?",
+                "options": [
+                    "Eliminating the need for any form of thermal management in high-performance systems",
+                    "Allowing chips to function independently without communication interfaces",
+                    "Reducing the cost of DRAM by using monolithic memory integration exclusively",
+                    "Reducing the system size and the number of components and peripherals needed",
+                    "Phasing out chiplets in favor of single-die SoC designs for all applications"
+                ],
+                "answer": "Reducing the system size and the number of components and peripherals needed"
+            },
+            {
+                "input": "What is heterogenous integration in the context of integrated chips?",
+                "options": [
+                    "The integration of identical components on a chip",
+                    "Incorporating different types of semiconductor components into one chip or package",
+                    "Using only silicon-based technology for all components",
+                    "Replacing memory with sensors in chip design",
+                    "Combining only memory and I/O units"
+                ],
+                "answer": "Incorporating different types of semiconductor components into one chip or package"
+            },
+            {
+                "input": "What key challenge does heterogeneous integration aim to address?",
+                "options": [
+                    "The rising cost of internet services",
+                    "Difficulty scaling transistors in traditional 2D ICs",
+                    "Shortage of skilled semiconductor engineers",
+                    "Transitioning from silicon to plastic chips",
+                    "Decreasing smartphone battery life"
+                ],
+                "answer": "Difficulty scaling transistors in traditional 2D ICs"
+            },
+            {
+                "input": "Which of the following is a major benefit of heterogeneous integration?",
+                "options": [
+                    "It eliminates the need for silicon",
+                    "It allows uniformity in all components",
+                    "It enables performance optimization by using the best technology for each function",
+                    "It replaces all packaging techniques",
+                    "It simplifies software development"
+                ],
+                "answer": "It enables performance optimization by using the best technology for each function"
+            },
+            {
+                "input": "Why is Moore's Law slowing down?",
+                "options": [
+                    "Lack of demand for smaller devices",
+                    "Increased cost and complexity of shrinking gate lengths",
+                    "Silicon is no longer usable",
+                    "Chips are already perfect",
+                    "Rise of quantum computing"
+                ],
+                "answer": "Increased cost and complexity of shrinking gate lengths"
+            }
+        ]
+    },
+    "Batch_11": {
+        "questions": [
+            {
+                "input": "What is one example of heterogeneous integration in everyday technology?",
+                "options": [
+                    "CRT televisions",
+                    "Analog watches",
+                    "Smart thermostats combining sensors, processors, and AI",
+                    "Basic calculators",
+                    "Mechanical keyboards"
+                ],
+                "answer": "Smart thermostats combining sensors, processors, and AI"
+            },
+            {
+                "input": "Which of the following is not a type of heterogeneous integration?",
+                "options": [
+                    "System-on-Chip (SoC)",
+                    "Multi-Chip Module (MCM)",
+                    "Uniform IC replication",
+                    "Wafer-Level Integration (WLI)",
+                    "Logic-only stacking"
+                ],
+                "answer": "Uniform IC replication"
+            },
+            {
+                "input": "What defines a System-on-Chip (SoC)?",
+                "options": [
+                    "Multiple ICs inside one package",
+                    "A chip with only memory and I/O",
+                    "A single chip integrating most or all system functions",
+                    "A chip that uses no silicon",
+                    "A chip dedicated only to sensors"
+                ],
+                "answer": "A single chip integrating most or all system functions"
+            },
+            {
+                "input": "What distinguishes System-in-Package (SiP) from SoC?",
+                "options": [
+                    "SiP has a higher integration level than SoC",
+                    "SiP integrates functions at the package level, not the chip level",
+                    "SoC uses more wires than SiP",
+                    "SiP cannot include memory",
+                    "SoC does not use modern packaging"
+                ],
+                "answer": "SiP integrates functions at the package level, not the chip level"
+            },
+            {
+                "input": "What is the role of an interposer in advanced packaging?",
+                "options": [
+                    "Cooling the chip",
+                    "Storing data",
+                    "Acting as a bridge between chips to provide high-speed data transmission",
+                    "Increasing wire length",
+                    "Replacing the need for substrates"
+                ],
+                "answer": "Acting as a bridge between chips to provide high-speed data transmission"
+            }
+        ]
+    },
+    "Batch_12": {
+        "questions": [
+            {
+                "input": "Through-Silicon Vias (TSVs) are used primarily for what purpose?",
+                "options": [
+                    "Enhancing battery life",
+                    "Making chips waterproof",
+                    "Creating vertical electrical connections between chip layers",
+                    "Connecting chips to the internet",
+                    "Reducing chip temperature"
+                ],
+                "answer": "Creating vertical electrical connections between chip layers"
+            },
+            {
+                "input": "What is a benefit of Fan-Out Wafer Level Packaging (FOWLP)?",
+                "options": [
+                    "Requires traditional substrates",
+                    "Increases packaging cost",
+                    "Offers flexibility and reduced form factor",
+                    "Limits component placement",
+                    "Adds complexity to testing"
+                ],
+                "answer": "Offers flexibility and reduced form factor"
+            },
+            {
+                "input": "Which materials are often integrated with silicon for high-frequency and optical applications?",
+                "options": [
+                    "Plastic and rubber",
+                    "Gallium arsenide (GaAs) and indium phosphide (InP)",
+                    "Gold and copper",
+                    "Carbon nanotubes",
+                    "Nickel and tin"
+                ],
+                "answer": "Gallium arsenide (GaAs) and indium phosphide (InP)"
+            },
+            {
+                "input": "What does MEMS stand for?",
+                "options": [
+                    "Micro-Electrical Multiplexing System",
+                    "Modular Energy Management Software",
+                    "Micro-Electro-Mechanical Systems",
+                    "Maximum Efficiency Memory Systems",
+                    "Macro-Electronic Machine Systems"
+                ],
+                "answer": "Micro-Electro-Mechanical Systems"
+            },
+            {
+                "input": "What is a common advantage of SoC over SiP?",
+                "options": [
+                    "Easier to customize",
+                    "Lower power consumption and smaller form factor",
+                    "Ability to mix different technologies",
+                    "Requires no design tools",
+                    "Can operate underwater"
+                ],
+                "answer": "Lower power consumption and smaller form factor"
+            }
+        ]
+    },
+    "Batch_13": {
+        "questions": [
+            {
+                "input": "Which applications are driving the demand for heterogeneous integration in the future?",
+                "options": [
+                    "Social media and streaming services",
+                    "Traditional desktop PCs",
+                    "Artificial intelligence, HPC, and data centers",
+                    "Basic home appliances",
+                    "Bicycle GPS trackers"
+                ],
+                "answer": "Artificial intelligence, HPC, and data centers"
+            },
+            {
+                "input": "Which technology is an example of 2.5D integration?",
+                "options": [
+                    "Fan-Out Panel-Level Packaging",
+                    "Intel's Foveros",
+                    "CoWoS (Chip-on Wafer-on Substrate)",
+                    "3D NAND",
+                    "TSV-based processors"
+                ],
+                "answer": "Intel's Foveros"
+            },
+            {
+                "input": "What is a major advantage of 3D integration over 2.5D?",
+                "options": [
+                    "Uses organic interposers",
+                    "Reduces data transfer distances and power loss",
+                    "Expands die footprint",
+                    "Requires fewer microbumps",
+                    "Uses only surface-level wiring"
+                ],
+                "answer": "Reduces data transfer distances and power loss"
+            },
+            {
+                "input": "Which memory solution uses 3D integration technology?",
+                "options": [
+                    "HBM",
+                    "DDR2",
+                    "3D NAND Flash",
+                    "SRAM",
+                    "DRAM"
+                ],
+                "answer": "HBM"
+            },
+            {
+                "input": "What do microbumps and hybrid bonding enable in advanced packaging?",
+                "options": [
+                    "Better thermal coating",
+                    "Low-frequency signal routing",
+                    "High-density interconnects for 2.5D and 3D",
+                    "Reusable die components",
+                    "Direct power conversion"
+                ],
+                "answer": "High-density interconnects for 2.5D and 3D"
+            }
+        ]
+    },
+    "Batch_14": {
+        "questions": [
+            {
+                "input": "What distinguishes FOWLP?",
+                "options": [
+                    "Stacks dies vertically",
+                    "Expands interconnects beyond the die footprint",
+                    "Uses no bonding at all",
+                    "Limits I/O density",
+                    "Reduces interposer use"
+                ],
+                "answer": "Expands interconnects beyond the die footprint"
+            },
+            {
+                "input": "What is a key limitation of the traditional technology-push development model?",
+                "options": [
+                    "It prevents module creation entirely",
+                    "Innovations originate from system design only",
+                    "It takes decades for innovations to reach system-level products",
+                    "It eliminates the need for testing and fabrications",
+                    "It results in smaller systems"
+                ],
+                "answer": "It takes decades for innovations to reach system-level products"
+            },
+            {
+                "input": "How can heterogeneous integration (HI) improve time-to-market for new products?",
+                "options": [
+                    "By eliminating the need for circuit design",
+                    "By shifting the development focal point closer to system design",
+                    "By increasing the cost of innovation",
+                    "By extending the technology chain",
+                    "By removing the role of S&T"
+                ],
+                "answer": "By shifting the development focal point closer to system design"
+            },
+            {
+                "input": "What best describes the \"systems-pull\" approach?",
+                "options": [
+                    "Driving innovation through system-level needs",
+                    "Pushing innovations from the bottom of the chain",
+                    "Ignoring requirements from system designers",
+                    "Developing chips in isolation from product design",
+                    "Removing module-level design steps"
+                ],
+                "answer": "Driving innovation through system-level needs"
+            },
+            {
+                "input": "What does HI offer as a development focal point?",
+                "options": [
+                    "A replacement for S&T innovation",
+                    "A way to prevent system-level design",
+                    "An elimination of module design complexity",
+                    "A strategy to eliminate cost from the supply chain",
+                    "A midpoint that can absorb and pass along innovations"
+                ],
+                "answer": "A midpoint that can absorb and pass along innovations"
+            }
+        ]
+    },
+    "Batch_15": {
+        "questions": [
+            {
+                "input": "What is the key benefit of establishing a core competency in heterogeneous integration?",
+                "options": [
+                    "Eliminates fabrication costs",
+                    "Prevents the need for system design",
+                    "Removes dependency on modules",
+                    "Makes the technology chain responsive to both S&T and system innovations",
+                    "Stops obsolescence in manufacturing"
+                ],
+                "answer": "Makes the technology chain responsive to both S&T and system innovations"
+            },
+            {
+                "input": "What does STCO stand for in the context of 3D IC design?",
+                "options": [
+                    "Structured Technology Configuration Optimization",
+                    "Standard Test Circuit Organization",
+                    "System Technology Co-Optimization",
+                    "Silicon Transport Control Operation",
+                    "Substrate Thermal Control Overlay"
+                ],
+                "answer": "System Technology Co-Optimization"
+            },
+            {
+                "input": "Which of the following is not one of the four main types of 3DKs?",
+                "options": [
+                    "Chiplet Design Kits (CDK)",
+                    "Memory Integration Kits (MIK)",
+                    "Material Design Kits (MSK)",
+                    "Package Test Design Kits (PTDK)",
+                    "Package Assembly Design Kits (PADK)"
+                ],
+                "answer": "Package Assembly Design Kits (PADK)"
+            },
+            {
+                "input": "What is the purpose of a Chiplet Design Kit (CDK)?",
+                "options": [
+                    "To test analog signal converters",
+                    "To define wafer-level manufacturing steps",
+                    "To support integration of chiplets into 3D IC packages",
+                    "To design photolithography masks",
+                    "To monitor thermal expansion"
+                ],
+                "answer": "To support integration of chiplets into 3D IC packages"
+            },
+            {
+                "input": "What do PADKs primarily define?",
+                "options": [
+                    "Electrical test pin locations",
+                    "Pitch, spacing, and connectivity rules for chiplets in packages",
+                    "Thermal characteristics of materials",
+                    "Chiplet logic functionality",
+                    "Software drivers for chiplets"
+                ],
+                "answer": "Pitch, spacing, and connectivity rules for chiplets in packages"
+            }
+        ]
+    },
+    "Batch_16": {
+        "questions": [
+            {
+                "input": "What advantage does an electronic catalog of chiplets provide system designers?",
+                "options": [
+                    "Ability to choose the best chiplets based on detailed attributes and models",
+                    "Avoiding any design verification",
+                    "Preventing chiplet reuse",
+                    "Lowering chiplet testing standards",
+                    "Automatically designing the full system"
+                ],
+                "answer": "Ability to choose the best chiplets based on detailed attributes and models"
+            },
+            {
+                "input": "What is one of the main benefits of chiplet integration?",
+                "options": [
+                    "Elimination of IP usage",
+                    "Improved lithography resolution",
+                    "Yield improvement and performance optimization",
+                    "Simplified transistor design",
+                    "Reduced need for advanced packaging"
+                ],
+                "answer": "Yield improvement and performance optimization"
+            },
+            {
+                "input": "What challenge arises when integrating multiple chiplets with different functions?",
+                "options": [
+                    "Reduced transistor count",
+                    "Difficulty in system boot-up",
+                    "Limited clock signal generation",
+                    "Demand for advanced packages with high-density interconnects",
+                    "Excessive power loss from fans"
+                ],
+                "answer": "Demand for advanced packages with high-density interconnects"
+            },
+            {
+                "input": "Why are traditional EDA tools increasingly challenged in chiplet design?",
+                "options": [
+                    "They struggle with high-density, complex connectivity in advanced packaging",
+                    "They are not compatible with silicon materials",
+                    "They require manual wafer slicing",
+                    "They don't support analog circuit design",
+                    "They cannot model flip-chip packages"
+                ],
+                "answer": "They struggle with high-density, complex connectivity in advanced packaging"
+            },
+            {
+                "input": "What design boundary issue is caused by proprietary die-to-die interconnects?",
+                "options": [
+                    "Shortens the interconnect length",
+                    "Reduces chiplet functionality",
+                    "Limits adoption of advanced packaging",
+                    "Forces use of older process nodes",
+                    "Eliminates testing stages"
+                ],
+                "answer": "Limits adoption of advanced packaging"
+            }
+        ]
+    },
+    "Batch_17": {
+        "questions": [
+            {
+                "input": "What speed requirement was met using the UCIe ecosystem and new design platform?",
+                "options": [
+                    "16Gbps",
+                    "24Gbps",
+                    "8Gbps",
+                    "32Gbps",
+                    "64Gbps"
+                ],
+                "answer": "24Gbps"
+            },
+            {
+                "input": "What topology is commonly used in homogeneous chip interconnection architectures?",
+                "options": [
+                    "Star",
+                    "Tree",
+                    "Ring or mesh",
+                    "Hybrid bus",
+                    "Daisy-chain"
+                ],
+                "answer": "Ring or mesh"
+            },
+            {
+                "input": "Which product is an example of homogeneous chiplet integration?",
+                "options": [
+                    "Intel Agilex",
+                    "Apple M1 Ultra",
+                    "AMD Ryzen",
+                    "Google Tensor",
+                    "NVIDIA Grace Hopper"
+                ],
+                "answer": "Apple M1 Ultra"
+            },
+            {
+                "input": "What is the main design concern in homogeneous chip interconnects?",
+                "options": [
+                    "Cost of optoelectronics",
+                    "Latency between modules",
+                    "Low power wake states",
+                    "Wireless data routing",
+                    "Magnetic shielding"
+                ],
+                "answer": "Latency between modules"
+            },
+            {
+                "input": "What makes heterogeneous chiplet interconnection more complex than homogeneous?",
+                "options": [
+                    "Requirement for symmetrical chip modules",
+                    "Need for uniform clock speeds",
+                    "Use of only optical links",
+                    "Diverse functional modules with varied interconnect needs",
+                    "Reliance on deprecated standards"
+                ],
+                "answer": "Diverse functional modules with varied interconnect needs"
+            }
+        ]
+    },
+    "Batch_18": {
+        "questions": [
+            {
+                "input": "Which interface type is not currently practical for mass production in chiplet interconnects?",
+                "options": [
+                    "Parallel wireline communication",
+                    "Wireless inductive coupling",
+                    "SerDes electrical",
+                    "AIB-based I/O",
+                    "Optoelectronic interconnect"
+                ],
+                "answer": "Optoelectronic interconnect"
+            },
+            {
+                "input": "What is true about transistor and die sizes in chips?",
+                "options": [
+                    "Transistors are getting smaller but die sizes are getting bigger",
+                    "Transistors and die sizes are getting bigger",
+                    "Transistors and die sizes are getting smaller",
+                    "Transistors are getting smaller but die sizes are remaining the same",
+                    "Transistors are getting bigger but die sizes are getting smaller"
+                ],
+                "answer": "Transistors are getting smaller but die sizes are remaining the same"
+            },
+            {
+                "input": "Which is true about semiconductor chips in 1995?",
+                "options": [
+                    "There were about 10^9 transistors with a 90 nm node on chips that took up 10 mm\u00c2\u00b2",
+                    "There were about 10^7 transistors with a 1 \u00c2\u00b5m node on chips larger than 1,000 mm\u00c2\u00b2",
+                    "Chips had approximately 10^4 transistors fabricated using a 5 \u00c2\u00b5m node process",
+                    "Chips in 1995 were typically built with a 180 nm node and measured 250 mm\u00c2\u00b2",
+                    "There were about 10^6 transistors with a 0.5 um node on chips that took up a die area of about 100 mm^2"
+                ],
+                "answer": "There were about 10^7 transistors with a 1 \u00c2\u00b5m node on chips larger than 1,000 mm\u00c2\u00b2"
+            },
+            {
+                "input": "Which is true about semiconductor chips in 2020?",
+                "options": [
+                    "There were about 5*10^10 transistors with a 7 nm node on chips that took up a die area of about 800 mm^2",
+                    "Chips in 2020 used 65 nm nodes and had roughly 10^7 transistors over 50 mm\u00c2\u00b2",
+                    "There were approximately 5x10^8 transistors on 22 nm chips with a die size of 500 mm\u00c2\u00b2",
+                    "Chips used in 2020 were built using 14 nm nodes and did not exceed 100 mm\u00c2\u00b2",
+                    "The standard chip in 2020 held 2x10^11 transistors on a 1.5 \u00c2\u00b5m node"
+                ],
+                "answer": "There were about 5*10^10 transistors with a 7 nm node on chips that took up a die area of about 800 mm^2"
+            },
+            {
+                "input": "What is a key reason for the rise of advanced packaging since 2015?",
+                "options": [
+                    "Chiplets were invented in 2015",
+                    "Silicon wafers became significantly cheaper that year",
+                    "Packaging borrowed heavily from silicon technology, enabling finer interconnects and tighter spacing",
+                    "A global shortage of silicon forced packaging to evolve",
+                    "Transistor miniaturization was halted by physical limits"
+                ],
+                "answer": "Packaging borrowed heavily from silicon technology, enabling finer interconnects and tighter spacing"
+            }
+        ]
+    },
+    "Batch_19": {
+        "questions": [
+            {
+                "input": "What is the \"golden regime\" for heterogeneous chiplet dimensions?",
+                "options": [
+                    "Gate pitch of 500 \u00c2\u00b5m and dielet size of 10^4 mm\u00c2\u00b2",
+                    "Interconnect pitch of 2-10 mm and dielet size of 1-100 cm\u00c2\u00b2",
+                    "Interconnect pitch of 2-10 \u00c2\u00b5m and dielet size of 1-100 mm\u00c2\u00b2",
+                    "Gate pitch of 5 mm and dielet size of 0.1-1 mm\u00c2\u00b2",
+                    "Serial channel spacing of 50-100 \u00c2\u00b5m only"
+                ],
+                "answer": "Interconnect pitch of 2-10 \u00c2\u00b5m and dielet size of 1-100 mm\u00c2\u00b2"
+            },
+            {
+                "input": "Which of the following is NOT a major challenge in scaling heterogeneous systems?",
+                "options": [
+                    "EDA (Electronic Design Automation) tools",
+                    "Signaling protocols for short and long haul",
+                    "Clock synchronization",
+                    "Standard bulk wafer fabrication methods",
+                    "Dielet marketplace creation"
+                ],
+                "answer": "Standard bulk wafer fabrication methods"
+            },
+            {
+                "input": "Why is a dielet marketplace important in this ecosystem?",
+                "options": [
+                    "It ensures monopoly control by wafer manufacturers",
+                    "It bypasses the need for packaging and testing",
+                    "It allows stocking of bare dielets",
+                    "It reduces transistor count on each die",
+                    "It increases the heat dissipation of the system"
+                ],
+                "answer": "It allows stocking of bare dielets"
+            },
+            {
+                "input": "Which application area is suggested as a good fit for heterogeneous integration?",
+                "options": [
+                    "Traditional desktop PCs from early 2000s",
+                    "Paper manufacturing systems",
+                    "mm-wave and THz applications",
+                    "Fossil-fuel power plants",
+                    "Diesel engine control units"
+                ],
+                "answer": "mm-wave and THz applications"
+            },
+            {
+                "input": "What time-to-market milestone is there for heterogeneous integration assemblies?",
+                "options": [
+                    "5 years",
+                    "2 years",
+                    "1 year",
+                    "Under 6 months",
+                    "Over 1 year"
+                ],
+                "answer": "Under 6 months"
+            }
+        ]
+    },
+    "Batch_20": {
+        "questions": [
+            {
+                "input": "What does the U.K. company Real Ice hope to do to help fight climate change?",
+                "options": [
+                    "Launch satellites to reflect sunlight away from Earth",
+                    "Use algae to absorb excess carbon dioxide in the atmosphere",
+                    "Inject sulfur aerosols into the stratosphere to cool the planet",
+                    "Construct underwater barriers to prevent warm water from reaching the Arctic",
+                    "Artificially freeze sea ice to make up for ice melting in the Arctic ice cap"
+                ],
+                "answer": "Artificially freeze sea ice to make up for ice melting in the Arctic ice cap"
+            },
+            {
+                "input": "How does Real Ice artificially freeze sea water?",
+                "options": [
+                    "By using drones to spray liquid nitrogen over the ocean surface",
+                    "By seeding clouds to lower atmospheric temperature in polar regions",
+                    "By installing reflective panels on ice sheets to reduce heat absorption",
+                    "By deploying undersea refrigeration units to cool the Arctic Ocean",
+                    "By pumping sea water on top of existing ice, where the cold air freezes it"
+                ],
+                "answer": "By pumping sea water on top of existing ice, where the cold air freezes it"
+            },
+            {
+                "input": "Why is releasing small particles to block sunlight a controversial geoengineering idea?",
+                "options": [
+                    "Because it causes an immediate rise in sea levels",
+                    "Because it creates ozone holes over tropical zones",
+                    "Because it leads to irreversible ice accumulation",
+                    "Because it permanently increases ocean salinity",
+                    "Because it can affect weather patterns"
+                ],
+                "answer": "Because it can affect weather patterns"
+            },
+            {
+                "input": "How much money did the U.K. allocate toward geoengineering research in May 2025?",
+                "options": [
+                    "$7.5 billion",
+                    "\u00c2\u00a375,000",
+                    "$250 million",
+                    "$1 billion",
+                    "$75 million"
+                ],
+                "answer": "$250 million"
+            },
+            {
+                "input": "Which of the following best describes the engineering logic behind pumping seawater onto Arctic ice during winter?",
+                "options": [
+                    "The latent heat from freezing seawater can delay spring melting.",
+                    "Ice volume is maximized by injecting warm water under pressure.",
+                    "Freezing seawater on top creates additional mass that helps insulate and reinforce existing ice.",
+                    "Pumped water increases the albedo of the snow cover.",
+                    "Seawater injection helps dilute brine channels in ice layers."
+                ],
+                "answer": "The latent heat from freezing seawater can delay spring melting."
+            }
+        ]
+    },
+    "Batch_21": {
+        "questions": [
+            {
+                "input": "Why does the presence of salt in the pumped seawater pose a design concern for future geoengineering trials?",
+                "options": [
+                    "Salt interferes with drone navigation systems.",
+                    "Excess salt draws moisture from surrounding snow, causing collapse.",
+                    "Salt can depress the melting point of ice, making it more susceptible to early melt in summer.",
+                    "Salt layers fracture under pressure and destabilize the ice shelf.",
+                    "Salt absorbs more sunlight than freshwater ice, decreasing albedo."
+                ],
+                "answer": null
+            },
+            {
+                "input": "What physical outcome was observed shortly after the seawater was pumped onto the snow?",
+                "options": [
+                    "It caused frost heave and ruptured nearby ice sensors.",
+                    "The water ran off into crevasses rather than freezing.",
+                    "It formed a dense, blue slush layer that started to freeze within hours.",
+                    "Wind dispersed it before it could accumulate.",
+                    "The water flash-froze into brittle ice crystals."
+                ],
+                "answer": null
+            },
+            {
+                "input": "From a systems engineering standpoint, what is the most significant logistical barrier to scaling the Real Ice approach across the Arctic?",
+                "options": [
+                    "Difficulty in sourcing fresh water instead of seawater",
+                    "Coordinating legal agreements across territorial waters",
+                    "Limited electrical conductivity of sea ice impeding equipment",
+                    "The enormous number of robotic units required to cover vast areas effectively",
+                    "Adverse impact on migratory bird flight paths"
+                ],
+                "answer": null
+            },
+            {
+                "input": "What distinguishes Real Ice\u2019s approach from other solar radiation management (SRM) methods?",
+                "options": [
+                    "It uses aircraft to inject aerosols into the stratosphere.",
+                    "It involves space\u2010based reflectors to redirect sunlight.",
+                    "It directly modifies the Earth\u2019s surface energy balance through physical ice thickening.",
+                    "It genetically alters algae to reflect more light.",
+                    "It relies on CO\u00e2\u201a\u201a scrubbing rather than climate forcing."
+                ],
+                "answer": null
+            },
+            {
+                "input": "In terms of climate modeling, what is the projected global benefit if Arctic sea ice lasts just one month longer each year?",
+                "options": [
+                    "Arctic ecosystems will double their resilience index.",
+                    "It would create a radiative forcing effect equal to removing 930 million metric tons of CO\u00e2\u201a\u201a for 20 years.",
+                    "Permafrost thaw would be completely halted.",
+                    "Sea levels would stop rising for a decade.",
+                    "Global temperatures would decrease by 1.5 \u00c2\u00b0C."
+                ],
+                "answer": null
+            }
+        ]
+    },
+    "Batch_22": {
+        "questions": [
+            {
+                "input": "Which of the following best summarizes the ethical hesitation acknowledged by Real Ice\u00e2\u20ac\u2122s team?",
+                "options": [
+                    "Pumping seawater violates indigenous fishing rights.",
+                    "There is a risk of damaging offshore oil infrastructure.",
+                    "The approach could shift political attention away from reducing carbon emissions.",
+                    "Freezing ice alters atmospheric circulation patterns unpredictably.",
+                    "Reflective ice layers could cause aviation hazards."
+                ],
+                "answer": "The approach could shift political attention away from reducing carbon emissions."
+            },
+            {
+                "input": "What is the name of NEO Battery Materials\u2019 advanced silicon EV battery?",
+                "options": [
+                    "S\u2010200G",
+                    "NeoCell X1",
+                    "UltraSilicon V",
+                    "Li\u2010Power Max",
+                    "P\u2010300N"
+                ],
+                "answer": "NeoCell X1"
+            },
+            {
+                "input": "What capacity retention did the P\u2010300N achieve after 300 charge cycles?",
+                "options": [
+                    "50%",
+                    "70%",
+                    "Over 90%",
+                    "60%",
+                    "80%"
+                ],
+                "answer": "Over 90%"
+            },
+            {
+                "input": "What is the primary material used in the anode of the P\u2010300N?",
+                "options": [
+                    "Silane gas",
+                    "Graphite",
+                    "Metallurgical\u2010grade silicon (MG\u2010Si)",
+                    "Lithium metal",
+                    "Silicon nanoparticles"
+                ],
+                "answer": "Metallurgical-grade silicon (MG-Si)"
+            },
+            {
+                "input": "How does MG\u2010Si compare to graphite in terms of cost by weight?",
+                "options": [
+                    "Twice as expensive",
+                    "Same cost",
+                    "Slightly more expensive",
+                    "Approximately half the cost",
+                    "Cost difference is negligible"
+                ],
+                "answer": "Approximately half the cost"
+            }
+        ]
+    },
+    "Batch_23": {
+        "questions": [
+            {
+                "input": "What major testing format did NEO use to simulate realistic battery performance?",
+                "options": [
+                    "Lithium\u2010sulfur cells",
+                    "Half\u2010cells with pure lithium",
+                    "Pouch cells only",
+                    "Full coin cells",
+                    "Supercapacitor trials"
+                ],
+                "answer": "Full coin cells"
+            },
+            {
+                "input": "What issue has historically limited silicon\u00e2\u20ac\u2122s use in lithium\u2010ion battery anodes?",
+                "options": [
+                    "Low electrical conductivity",
+                    "High manufacturing cost",
+                    "Poor safety ratings",
+                    "Volume expansion and particle pulverization",
+                    "Lack of supply chain access"
+                ],
+                "answer": "Volume expansion and particle pulverization"
+            },
+            {
+                "input": "What design phase follows NEO\u00e2\u20ac\u2122s successful coin cell testing?",
+                "options": [
+                    "Industrial rollouts",
+                    "Single\u2010layer pouch cells",
+                    "Supercapacitor modules",
+                    "Sodium\u2010ion conversion",
+                    "Direct\u2010to\u2010market pilot packs"
+                ],
+                "answer": "Single\u2010layer pouch cells"
+            },
+            {
+                "input": "Why are multi\u2010layer pouch cells important in battery development?",
+                "options": [
+                    "They eliminate the need for separators",
+                    "They replicate real\u2010world capacity scaling",
+                    "They lower the temperature of operation",
+                    "They reduce charge times to under 1 minute",
+                    "They eliminate cathode usage entirely"
+                ],
+                "answer": "They replicate real\u2010world capacity scaling"
+            },
+            {
+                "input": "What recent infrastructure upgrade did NEO make to support production scale\u2010up?",
+                "options": [
+                    "Acquired lithium refining plants",
+                    "Installed high\u2010spec processing equipment",
+                    "Purchased a graphite processing line",
+                    "Built a pilot EV manufacturing line",
+                    "Replaced pouch cells with coin cell stations"
+                ],
+                "answer": "Installed high\u2010spec processing equipment"
+            }
+        ]
+    },
+    "Batch_24": {
+        "questions": [
+            {
+                "input": "What markets have shown interest in the P\u2010300N battery platform?",
+                "options": [
+                    "Only Canadian and Chinese firms",
+                    "South Korea, the US, and Germany",
+                    "Just U.S.\u2010based EV startups",
+                    "Only battery recycling companies",
+                    "Aerospace\u2010only defense contractors"
+                ],
+                "answer": "South Korea, the US, and Germany"
+            },
+            {
+                "input": "What does EDA stand for?",
+                "options": [
+                    "Electrical Device Architecture",
+                    "Electronic Device Automation",
+                    "Electromagnetic Data Analysis",
+                    "Electronic Design Automation",
+                    "Engineered Design Algorithms"
+                ],
+                "answer": "Electronic Design Automation"
+            },
+            {
+                "input": "What is one reason EDA has become essential in chip design?",
+                "options": [
+                    "Chip design is now done entirely by hand",
+                    "Chips no longer need testing",
+                    "Modern chips have billions of connections and require teamwork",
+                    "Chips no longer use semiconductors",
+                    "Chips are all identical and don\u2019t need variation"
+                ],
+                "answer": "Modern chips have billions of connections and require teamwork"
+            },
+            {
+                "input": "How has artificial intelligence (AI) affected EDA?",
+                "options": [
+                    "It made manual chip design easier",
+                    "It eliminated the need for simulation",
+                    "It made chips obsolete",
+                    "It enhanced EDA tools from simulation to rollout",
+                    "It replaced silicon with AI processors"
+                ],
+                "answer": "It enhanced EDA tools from simulation to rollout"
+            },
+            {
+                "input": "What are the three main functions of EDA tools?",
+                "options": [
+                    "Debugging, rendering, assembly",
+                    "Simulation, design, and verification",
+                    "Programming, testing, marketing",
+                    "Distribution, logistics, simulation",
+                    "Modeling, packaging, recycling"
+                ],
+                "answer": "Simulation, design, and verification"
+            }
+        ]
+    },
+    "Batch_25": {
+        "questions": [
+            {
+                "input": "Why is EDA simulation important?",
+                "options": [
+                    "It makes chips waterproof",
+                    "It avoids power loss",
+                    "It predicts circuit behavior before real\u2010world testing",
+                    "It generates electricity for circuits",
+                    "It eliminates the need for design"
+                ],
+                "answer": "It predicts circuit behavior before real-world testing"
+            },
+            {
+                "input": "What is the purpose of EDA verification?",
+                "options": [
+                    "To ensure the design works as intended and performs well",
+                    "To shorten the design cycle only",
+                    "To manufacture chips faster",
+                    "To eliminate the use of cathodes",
+                    "To simulate electromagnetic interference"
+                ],
+                "answer": "To ensure the design works as intended and performs well"
+            },
+            {
+                "input": "What does DFM stand for in EDA?",
+                "options": [
+                    "Device Feedback Mechanism",
+                    "Digital Format Management",
+                    "Design for Manufacturability",
+                    "Dynamic Function Module",
+                    "Dual Frequency Modeling"
+                ],
+                "answer": "Design for Manufacturability"
+            },
+            {
+                "input": "What benefit does ML (machine learning) bring to EDA?",
+                "options": [
+                    "Slower but safer design",
+                    "Replaces design teams completely",
+                    "Improves speed, quality, and customer satisfaction",
+                    "Makes chips more expensive",
+                    "Converts analog designs to digital automatically"
+                ],
+                "answer": "Improves speed, quality, and customer satisfaction"
+            },
+            {
+                "input": "What is a result of using EDA tools with AI/ML features?",
+                "options": [
+                    "Lower design complexity",
+                    "Less accurate chips",
+                    "Faster chip production with higher performance",
+                    "Elimination of simulation",
+                    "Manual testing becomes more important"
+                ],
+                "answer": "Faster chip production with higher performance"
+            }
+        ]
+    },
+    "Batch_26": {
+        "questions": [
+            {
+                "input": "What does TCAD in EDA refer to?",
+                "options": [
+                    "Time\u2010Critical Architecture Design",
+                    "Topographical Chip Auto Design",
+                    "Technology Computer\u2010Aided Design",
+                    "Thermal Control and Analysis Development",
+                    "Test Circuit Alignment and Debugging"
+                ],
+                "answer": "Technology Computer-Aided Design"
+            },
+            {
+                "input": "What is the purpose of Design for Manufacturability (DFM)?",
+                "options": [
+                    "To reduce power usage",
+                    "To manage chip packaging",
+                    "To simulate user experience",
+                    "To ensure the chip design meets manufacturing requirements",
+                    "To minimize shipping costs"
+                ],
+                "answer": "To ensure the chip design meets manufacturing requirements"
+            },
+            {
+                "input": "What is Silicon Lifecycle Management (SLM) focused on?",
+                "options": [
+                    "Reducing the number of transistors",
+                    "Monitoring chip performance post\u2010manufacturing",
+                    "Designing more flexible silicon",
+                    "Manufacturing silicon wafers",
+                    "Estimating chip temperature"
+                ],
+                "answer": "Monitoring chip performance post-manufacturing"
+            },
+            {
+                "input": "What is a language commonly used in EDA simulation tools?",
+                "options": [
+                    "Python",
+                    "Verilog or VHDL",
+                    "SQL",
+                    "Java",
+                    "Swift"
+                ],
+                "answer": "Verilog or VHDL"
+            },
+            {
+                "input": "Which of the following best describes place and route in EDA design?",
+                "options": [
+                    "Physically assembling and arranging circuit elements",
+                    "Writing device drivers",
+                    "Encrypting the firmware",
+                    "Programming the FPGA",
+                    "Packaging chips for shipment"
+                ],
+                "answer": "Physically assembling and arranging circuit elements"
+            }
+        ]
+    },
+    "Batch_27": {
+        "questions": [
+            {
+                "input": "What is equivalence checking used for in verification?",
+                "options": [
+                    "To measure chip weight",
+                    "To validate thermal thresholds",
+                    "To compare the implemented design with the original logic",
+                    "To count the number of transistors",
+                    "To generate marketing models"
+                ],
+                "answer": "To compare the implemented design with the original logic"
+            },
+            {
+                "input": "Which of these companies led the third phase of EDA\u00e2\u20ac\u2122s commercial evolution?",
+                "options": [
+                    "Calma, Computervision, Applicon",
+                    "Intel, RCA, Sony",
+                    "Daisy, Valid Logic, Mentor Graphics",
+                    "Synopsys, Cadence, Mentor",
+                    "Bell Labs, Sharp, GE"
+                ],
+                "answer": "Daisy, Valid Logic, Mentor Graphics"
+            },
+            {
+                "input": "Why is EDA essential for modern semiconductor design?",
+                "options": [
+                    "It reduces screen brightness in devices",
+                    "Chips can be patched easily after production",
+                    "Chip complexity is too great to manage without automation",
+                    "It replaces silicon entirely",
+                    "It eliminates the need for testing"
+                ],
+                "answer": "Chip complexity is too great to manage without automation"
+            },
+            {
+                "input": "What is the primary material used in solar cells to convert sunlight into electricity?",
+                "options": [
+                    "Aluminum",
+                    "Copper",
+                    "Silicon",
+                    "Glass",
+                    "Graphite"
+                ],
+                "answer": "Silicon"
+            },
+            {
+                "input": "What is the function of the glass sheet in a solar panel?",
+                "options": [
+                    "Convert sunlight to electricity",
+                    "Increase voltage",
+                    "Protect the silicon cells inside",
+                    "Prevent heat absorption",
+                    "Reflect sunlight back"
+                ],
+                "answer": "Protect the silicon cells inside"
+            }
+        ]
+    },
+    "Batch_28": {
+        "questions": [
+            {
+                "input": "Which type of solar panel is known for its flexibility and is often used in thin\u2010film applications?",
+                "options": [
+                    "Monocrystalline",
+                    "Polycrystalline",
+                    "Amorphous",
+                    "Transparent",
+                    "Nanocrystalline"
+                ],
+                "answer": "Amorphous"
+            },
+            {
+                "input": "What distinguishes n\u2010type solar cells from p\u2010type solar cells?",
+                "options": [
+                    "N\u2010type cells are blue while p\u2010type cells are black",
+                    "P\u2010type uses phosphorus; n\u2010type uses boron",
+                    "N\u2010type cells have a phosphorus base and negative charge",
+                    "N\u2010type cells are more flexible",
+                    "P\u2010type cells do not conduct electricity"
+                ],
+                "answer": "P\u2010type uses phosphorus; n\u2010type uses boron"
+            },
+            {
+                "input": "What is the purpose of the junction box in a solar panel?",
+                "options": [
+                    "To mount the panel",
+                    "To store electricity",
+                    "To prevent reverse electricity flow",
+                    "To reflect light",
+                    "To regulate sunlight intensity"
+                ],
+                "answer": "To prevent reverse electricity flow"
+            },
+            {
+                "input": "What is the final step in the solar panel manufacturing process?",
+                "options": [
+                    "Coating the back sheet",
+                    "Quality testing under Standard Test Conditions",
+                    "Applying the aluminum frame",
+                    "Installing the glass cover",
+                    "Soldering the solar cells"
+                ],
+                "answer": "Quality testing under Standard Test Conditions"
+            },
+            {
+                "input": "Why is insulation inside a solar panel important?",
+                "options": [
+                    "To boost sunlight capture",
+                    "To change the color of the panel",
+                    "To reduce heat and thus maintain efficiency",
+                    "To hold wires in place",
+                    "To help with soldering"
+                ],
+                "answer": "To reduce heat and thus maintain efficiency"
+            }
+        ]
+    },
+    "Batch_29": {
+        "questions": [
+            {
+                "input": "Which solar cell type is generally the most efficient but also the most expensive to produce?",
+                "options": [
+                    "Amorphous",
+                    "Polycrystalline",
+                    "Monocrystalline",
+                    "Organic",
+                    "Transparent oxide"
+                ],
+                "answer": null
+            },
+            {
+                "input": "What is the purpose of bus wires in a solar panel?",
+                "options": [
+                    "Absorb UV rays",
+                    "Act as heat sinks",
+                    "Connect silicon cells in parallel",
+                    "Hold the frame together",
+                    "Store backup electricity"
+                ],
+                "answer": null
+            },
+            {
+                "input": "Which company is known in the U.S. for producing thin\u2010film solar panels?",
+                "options": [
+                    "SunPower",
+                    "SolarCity",
+                    "Tesla",
+                    "First Solar",
+                    "Panasonic"
+                ],
+                "answer": null
+            },
+            {
+                "input": "What is the primary function of a transistor?",
+                "options": [
+                    "Convert AC to DC",
+                    "Measure temperature",
+                    "Amplify signals or act as a switch",
+                    "Store electrical energy",
+                    "Generate magnetic fields"
+                ],
+                "answer": null
+            },
+            {
+                "input": "What distinguishes Bipolar Junction Transistors (BJTs) from Field Effect Transistors (FETs)?",
+                "options": [
+                    "BJTs are voltage\u2010controlled; FETs are current\u2010controlled",
+                    "FETs use both majority and minority carriers",
+                    "BJTs use both majority and minority carriers; FETs use only majority carriers",
+                    "BJTs operate at higher voltages than FETs",
+                    "FETs have only two terminals"
+                ],
+                "answer": null
+            }
+        ]
+    },
+    "Batch_30": {
+        "questions": [
+            {
+                "input": "In an NPN transistor, what type of charge carriers primarily control current flow?",
+                "options": [
+                    "Holes",
+                    "Neutrons",
+                    "Protons",
+                    "Electrons",
+                    "Photons"
+                ],
+                "answer": "Electrons"
+            },
+            {
+                "input": "What is the role of the Gate terminal in a FET?",
+                "options": [
+                    "Provides heat dissipation",
+                    "Connects the device to power supply",
+                    "Controls the size and shape of the channel between Source and Drain",
+                    "Functions as the current output",
+                    "Stores voltage during idle periods"
+                ],
+                "answer": "Controls the size and shape of the channel between Source and Drain"
+            },
+            {
+                "input": "Which type of transistor is preferred for fast switching and high input impedance?",
+                "options": [
+                    "BJT",
+                    "UJT",
+                    "JFET",
+                    "MOSFET",
+                    "Photo\u2010BJT"
+                ],
+                "answer": "MOSFET"
+            },
+            {
+                "input": "Why are N\u2010channel MOSFETs used more often than P\u2010channel MOSFETs?",
+                "options": [
+                    "They are cheaper to produce",
+                    "They operate at lower voltages",
+                    "Electrons have higher mobility than holes",
+                    "They use fewer external components",
+                    "They produce more heat"
+                ],
+                "answer": "Electrons have higher mobility than holes"
+            },
+            {
+                "input": "Which of the following transistors is sensitive to light instead of electric signals?",
+                "options": [
+                    "JFET",
+                    "UJT",
+                    "Photo Transistor",
+                    "MOSFET",
+                    "Power Transistor"
+                ],
+                "answer": "Photo Transistor"
+            }
+        ]
+    },
+    "Batch_31": {
+        "questions": [
+            {
+                "input": "Which transistor type is not suitable for signal amplification?",
+                "options": [
+                    "BJT",
+                    "MOSFET",
+                    "UJT (Uni\u2010Junction Transistor)",
+                    "NPN",
+                    "PNP"
+                ],
+                "answer": "UJT (Uni-Junction Transistor)"
+            },
+            {
+                "input": "What does the hFE value on a small signal transistor indicate?",
+                "options": [
+                    "Thermal stability",
+                    "Switching delay",
+                    "Signal amplification capacity",
+                    "Input voltage",
+                    "Breakdown voltage"
+                ],
+                "answer": "Signal amplification capacity"
+            },
+            {
+                "input": "Which type of transistor is commonly used in high\u2010frequency switching applications like CATV and UHF systems?",
+                "options": [
+                    "Power Transistor",
+                    "Small Signal Transistor",
+                    "High Frequency (RF) Transistor",
+                    "Photo\u2010FET",
+                    "Depletion\u2010mode MOSFET"
+                ],
+                "answer": "High Frequency (RF) Transistor"
+            },
+            {
+                "input": "Which of the following best explains why BJTs are classified as \"bipolar\" devices?",
+                "options": [
+                    "They contain both P\u2010type and N\u2010type materials",
+                    "They can operate in either switching or amplifying modes",
+                    "They rely on both majority and minority charge carriers for conduction",
+                    "They require both voltage and current for activation",
+                    "They include both enhancement and depletion regions"
+                ],
+                "answer": "They contain both P-type and N-type materials"
+            },
+            {
+                "input": "What structural characteristic distinguishes MOSFETs from JFETs?",
+                "options": [
+                    "MOSFETs have only two terminals while JFETs have three",
+                    "JFETs use electron flow while MOSFETs use hole flow exclusively",
+                    "MOSFETs feature an insulated gate separated by a thin oxide layer",
+                    "JFETs operate using the photovoltaic effect",
+                    "MOSFETs require minority carrier injection to switch states"
+                ],
+                "answer": "MOSFETs feature an insulated gate separated by a thin oxide layer"
+            }
+        ]
+    },
+    "Batch_32": {
+        "questions": [
+            {
+                "input": "Why do MOSFETs typically offer higher input impedance than BJTs?",
+                "options": [
+                    "The gate in MOSFETs is insulated, preventing direct current flow",
+                    "MOSFETs use thermal gates that resist AC frequencies",
+                    "BJTs lack a proper emitter region",
+                    "MOSFETs have variable collector current",
+                    "BJTs are voltage\u2010controlled and lack impedance variation"
+                ],
+                "answer": "The gate in MOSFETs is insulated, preventing direct current flow"
+            },
+            {
+                "input": "Which of the following scenarios would most likely require a photo\u2010FET instead of a photo\u2010BJT?",
+                "options": [
+                    "A system requiring a fast on/off switching in the absence of light",
+                    "An application demanding high light sensitivity and voltage\u2010based control",
+                    "A situation with frequent thermal cycling",
+                    "A circuit using only small signal amplification",
+                    "Any system using analog voltage regulation"
+                ],
+                "answer": "An application demanding high light sensitivity and voltage\u2010based control"
+            },
+            {
+                "input": "What is the most likely reason N\u2010channel MOSFETs are more commonly used than P\u2010channel types in modern circuits?",
+                "options": [
+                    "N\u2010channel devices are cheaper to fabricate with higher voltage thresholds",
+                    "P\u2010channel devices have better performance in high\u2010temperature environments",
+                    "Electrons in N\u2010channel devices offer superior mobility over holes in P\u2010channel devices",
+                    "N\u2010channel MOSFETs are less affected by input impedance",
+                    "P\u2010channel MOSFETs require no gate voltage to operate"
+                ],
+                "answer": "Electrons in N\u2010channel devices offer superior mobility over holes in P\u2010channel devices"
+            },
+            {
+                "input": "Which region of operation in a BJT corresponds to its use as a linear amplifier?",
+                "options": [
+                    "Saturation region",
+                    "Cut\u2010off region",
+                    "Active region",
+                    "Reverse breakdown region",
+                    "Depletion region"
+                ],
+                "answer": "Active region"
+            },
+            {
+                "input": "Which of the following differentiates enhancement\u2010mode MOSFETs from depletion\u2010mode ones?",
+                "options": [
+                    "Enhancement\u2010mode requires a gate voltage to form a conductive channel; depletion\u2010mode conducts by default",
+                    "Depletion\u2010mode MOSFETs are always made from polycrystalline silicon",
+                    "Enhancement\u2010mode MOSFETs do not use any doping in the substrate",
+                    "Only enhancement\u2010mode MOSFETs operate in high\u2010frequency applications",
+                    "Depletion\u2010mode transistors use minority carriers for conduction"
+                ],
+                "answer": "Enhancement\u2010mode requires a gate voltage to form a conductive channel; depletion\u2010mode conducts by default"
+            }
+        ]
+    },
+    "Batch_33": {
+        "questions": [
+            {
+                "input": "Which statement most accurately reflects the role of gate voltage in a JFET?",
+                "options": [
+                    "It generates a charge imbalance in the emitter\u2010base junction",
+                    "It controls the depletion layer in the gate\u2010collector interface",
+                    "It varies the width of the conducting channel between source and drain",
+                    "It amplifies the base signal voltage directly",
+                    "It activates the substrate for dual\u2010mode conduction"
+                ],
+                "answer": "It varies the width of the conducting channel between source and drain"
+            },
+            {
+                "input": "A designer needs a transistor capable of handling 15 A of collector current and operating near 100 MHz. Which transistor is most appropriate?",
+                "options": [
+                    "Small signal BJT",
+                    "Photo transistor",
+                    "Power transistor",
+                    "JFET",
+                    "Small switching transistor"
+                ],
+                "answer": "Power transistor"
+            }
+        ]
+    }
+}

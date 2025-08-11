@@ -1,0 +1,114 @@
+What is photosynthesis?
+References
+By Daisy Dobrijevic last updated June 11, 2024
+Photosynthesis is the process plants, algae and some bacteria use to turn sunlight, carbon dioxide and water into sugar and oxygen.
+Photosynthesis is the process used by plants, algae and some bacteria to turn sunlight into energy. The process chemically converts carbon dioxide (CO2) and water into food (sugars) and oxygen. The chemical reaction often relies on a pigment called chlorophyll, which gives plants their green color.  Photosynthesis is also the reason our planet is blanketed in an oxygen-rich atmosphere.
+
+TYPES OF PHOTOSYNTHETIC PROCESSES
+
+There are two types of photosynthesis: oxygenic and anoxygenic. They both follow very similar principles, but the former is the most common and is seen in plants, algae and cyanobacteria. 
+
+During oxygenic photosynthesis, light energy transfers electrons from water (H2O) taken up by plant roots to CO2 to produce carbohydrates. In this transfer, the CO2 is "reduced," or receives electrons, and the water is "oxidized," or loses electrons. Oxygen is produced along with carbohydrates.
+
+Anoxygenic photosynthesis, meanwhile, uses electron donors that are not water and the process does not generate oxygen, according to "Anoxygenic Photosynthetic Bacteria" by LibreTexts. The process typically occurs in bacteria such as green sulfur bacteria and phototrophic purple bacteria. 
+
+THE PHOTOSYNTHESIS EQUATION
+
+Though both types of photosynthesis are complex, multistep affairs, the overall process can be neatly summarized as a chemical equation.
+
+The oxygenic photosynthesis equation is: 
+
+6CO2 + 12H2O + Light Energy → C6H12O6 + 6O2 + 6H2O
+
+Here, six molecules of carbon dioxide (CO2) combine with 12 molecules of water (H2O) using light energy. The end result is the formation of a single carbohydrate molecule (C6H12O6, or glucose) along with six molecules each of oxygen and water.
+
+Similarly, the various anoxygenic photosynthesis reactions can be represented as a single generalized formula:
+
+CO2 + 2H2A + Light Energy → [CH2O] + 2A + H2O
+
+The letter A in the equation is a variable, and H2A represents the potential electron donor. For example, "A" may represent sulfur in the electron donor hydrogen sulfide (H2S), according to medical and life sciences news site News Medical Life Sciences. 
+
+HOW IS CARBON DIOXIDE AND OXYGEN EXCHANGED?
+
+stomata are the gatekeepers of the leaf, allowing gas exchange between the leaf and surrounding air.
+
+Stomata are the gatekeepers of the leaf, allowing gas exchange between the leaf and surrounding air.  (Image credit: Waldo Nell / 500px via Getty Images)
+Plants absorb CO2 from the surrounding air and release water and oxygen via microscopic pores on their leaves called stomata. 
+
+When stomata open, they let in CO2; however, while open, the stomata release oxygen and let water vapor escape. Stomata close to prevent water loss, but that means the plant can no longer gain CO2 for photosynthesis. This tradeoff between CO2 gain and water loss is a particular problem for plants growing in hot, dry environments. 
+
+HOW DO PLANTS ABSORB SUNLIGHT FOR PHOTOSYNTHESIS?
+
+Plants contain special pigments that absorb the light energy needed for photosynthesis.
+
+Chlorophyll is the primary pigment used for photosynthesis and gives plants their green color, according to science education site Nature Education. Chlorophyll absorbs red and blue light and reflects green light. Chlorophyll is a large molecule and takes a lot of resources to make; as such, it breaks down towards the end of the leaf's life, and most of the pigment's nitrogen (one of the building blocks of chlorophyll) is resorbed back into the plant,  When leaves lose their chlorophyll in the fall, other leaf pigments such as carotenoids and anthocyanins begin to show. While carotenoids primarily absorb blue light and reflect yellow, anthocyanins absorb blue-green light and reflect red light, according to Harvard University's The Harvard Forest.
+
+Related: What if humans had photosynthetic skin?
+
+Pigment molecules are associated with proteins, which allow them the flexibility to move toward light and toward one another. A large collection of 100 to 5,000 pigment molecules constitutes an "antenna," according to an article by Wim Vermaas, a professor at Arizona State University. These structures effectively capture light energy from the sun, in the form of photons.
+
+The situation is a little different for bacteria. While cyanobacteria contain chlorophyll, other bacteria, for example, purple bacteria and green sulfur bacteria, contain bacteriochlorophyll to absorb light for anoxygenic photosynthesis, according to "Microbiology for Dummies" (For Dummies, 2019). 
+
+HOW DOES PHOTOSYNTHESIS START?
+
+It was previously hypothesized that just a small number of photons would be needed to kickstart photosynthesis, but researchers never successfully observed this first step. However, in 2023, scientists discovered that photosynthesis appears to begin with a single photon. 
+
+The researchers set up an experiment where a photon source spat out two photons at a time. One was absorbed by a detector, while the other hit a bacteria's chloroplast equivalent. When the second photon hit, photosynthesis began. 
+
+After performing the test over 1.5 million times, the researchers confirmed that just one photon is needed to start photosynthesis.
+
+WHERE IN THE PLANT DOES PHOTOSYNTHESIS TAKE PLACE?
+
+Plants need energy from sunlight for photosynthesis to occur.
+
+Plants need energy from sunlight for photosynthesis to occur. (Image credit: Shutterstock)
+Photosynthesis occurs in chloroplasts, a type of plastid (an organelle with a membrane) that contains chlorophyll and is primarily found in plant leaves. 
+
+Chloroplasts are similar to mitochondria, the energy powerhouses of cells, in that they have their own genome, or collection of genes, contained within circular DNA. These genes encode proteins that are essential to the organelle and to photosynthesis.
+
+Inside chloroplasts are plate-shaped structures called thylakoids that are responsible for harvesting photons of light for photosynthesis, according to the biology terminology website Biology Online. The thylakoids are stacked on top of each other in columns known as grana. In between the grana is the stroma — a fluid containing enzymes, molecules and ions, where sugar formation takes place. 
+
+Ultimately, light energy must be transferred to a pigment-protein complex that can convert it to chemical energy, in the form of electrons. In plants, light energy is transferred to chlorophyll pigments. The conversion to chemical energy is accomplished when a chlorophyll pigment expels an electron, which can then move on to an appropriate recipient. 
+
+The pigments and proteins that convert light energy to chemical energy and begin the process of electron transfer are known as reaction centers.
+
+LIGHT-DEPENDENT REACTIONS
+
+When a photon of light hits the reaction center, a pigment molecule such as chlorophyll releases an electron.
+
+The released electron escapes  through a series of protein complexes linked together, known as an electron transport chain. As it moves through the chain, it generates the energy to produce ATP (adenosine triphosphate, a source of chemical energy for cells) and NADPH — both of which are required in the next stage of photosynthesis in the Calvin cycle. The "electron hole" in the original chlorophyll pigment is filled by taking an electron from water. This splitting of water molecules releases oxygen into the atmosphere.
+
+LIGHT-INDEPENDENT REACTIONS: THE CALVIN CYCLE
+
+Photosynthesis involves a process called the Calvin cycle to use energy stored from the light-dependent reactions to fix CO2 into sugars needed for plant growth.
+
+Photosynthesis involves a process called the Calvin cycle to use energy stored from the light-dependent reactions to fix CO2 into sugars needed for plant growth.  (Image credit: Nagendra Yadav via Getty Images)
+The Calvin cycle is the three-step process that generates sugars for the plant, and is named after Melvin Calvin, the Nobel Prize-winning scientist who discovered it decades ago. The Calvin cycle uses the ATP and NADPH produced in chlorophyll to generate carbohydrates. It takes plate in the plant stroma, the inner space in chloroplasts.
+
+In the first step of this cycle, called carbon fixation, an enzyme called RuBP carboxylase/oxygenase, also known as rubiso, helps incorporate CO2 into an organic molecule called 3-phosphoglyceric acid (3-PGA). In the process, it breaks off a phosphate group on six ATP molecules to convert them to ADP, releasing energy in the process, according to LibreTexts.
+
+In the second step, 3-PGA is reduced, meaning it takes electrons from six NADPH molecules and produces two glyceraldehyde 3-phosphate (G3P) molecules.
+
+One of these G3P molecules leaves the Calvin cycle to do other things in the plant. The remaining G3P molecules go into the third step, which is regenerating rubisco. In between these steps, the plant produces glucose, or sugar.
+
+Three CO2 molecules are needed to produce six G3P molecules, and it takes six turns around the Calvin cycle to make one molecule of carbohydrate, according to educational website Khan Academy.
+
+TYPES OF PHOTOSYNTHESIS
+
+There are three main types of photosynthetic pathways: C3, C4 and CAM. They all produce sugars from CO2 using the Calvin cycle, but each pathway is slightly different.
+
+The three main types of photosynthetic pathways are C3, C4 and CAM.
+
+The three main types of photosynthetic pathways are C3, C4 and CAM. Most plants use C3 photosynthesis, including rice and cotton.  (Image credit: Andrew TB Tan via Getty Images)
+C3 photosynthesis
+
+Most plants use C3 photosynthesis, according to the photosynthesis research project Realizing Increased Photosynthetic Efficiency (RIPE). C3 plants include cereals (wheat and rice), cotton, potatoes and soybeans. This process is named for the three-carbon compound 3-PGA that it uses during the Calvin cycle. 
+
+C4 photosynthesis
+
+Plants such as maize and sugarcane use C4 photosynthesis. This process uses a four-carbon compound intermediate (called oxaloacetate) which is converted to malate, according to Biology Online. Malate is then transported into the bundle sheath where it breaks down and releases CO2, which is then fixed by rubisco and made into sugars in the Calvin cycle (just like C3 photosynthesis). C4 plants are better adapted to hot, dry environments and can continue to fix carbon even when their stomata are closed (as they have a clever storage solution), according to Biology Online. 
+
+CAM photosynthesis
+
+Crassulacean acid metabolism (CAM) is found in plants adapted to very hot and dry environments, such as cacti and pineapples, according to the Khan Academy. When stomata open to take in CO2, they risk losing water to the external environment. Because of this, plants in very arid and hot environments have adapted. One adaptation is CAM, whereby plants open stomata at night (when temperatures are lower and water loss is less of a risk). According to the Khan Academy, CO2 enters the plants via the stomata and is fixed into oxaloacetate and converted into malate or another organic acid (like in the C4 pathway). The CO2 is then available for light-dependent reactions in the daytime, and stomata close, reducing the risk of water loss. 
+

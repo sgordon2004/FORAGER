@@ -1,0 +1,99 @@
+# FORAGER RAG - Full UI Structure (Commented Template)
+# D1.1: Input + Answer + Evaluation Flow (with layout comments)
+# ================================
+
+# import streamlit as st
+# import os
+# import json
+# import requests
+# from dotenv import load_dotenv
+
+# # Load environment variable (your GROQ API key)
+# load_dotenv()
+# GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+
+# # API endpoint and model details
+# GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions"
+# MODEL_NAME = "llama3-8b-8192"
+
+# # Page config
+# st.set_page_config(page_title="FORAGER RAG UI", layout="centered")
+# st.title("📄🔍 FORAGER RAG Document QA")
+
+# # --- Section 1: File Upload ---
+# # Upload a supported document (.pdf, .html, or .md)
+# uploaded_files = st.file_uploader("Upload a document:", type=["pdf", "html", "md"])
+
+# # --- Section 2: Question Input ---
+# # User can ask a question based on the document
+# user_question = st.text_input("Ask a question:")
+
+# # Submit button
+# submit_button = st.button("Submit")
+
+# # --- Section 3: Process Input and Display Answer ---
+# if uploaded_files and user_question and submit_button:
+
+#     st.info("Processing your request...")
+
+#     # Read file content (mock for now)
+#     file_content = uploaded_file.read().decode("utf-8", errors="ignore")
+
+#     # Prompt for the model
+#     prompt = f"""Given the following document:\n\n{file_content}\n\nAnswer the question:\n{user_question}"""
+#     payload = {
+#         "model": MODEL_NAME,
+#         "messages": [
+#             {"role": "system", "content": "You are an expert assistant for document QA."},
+#             {"role": "user", "content": prompt}
+#         ],
+#         "temperature": 0.2
+#     }
+#     headers = {
+#         "Authorization": f"Bearer {GROQ_API_KEY}",
+#         "Content-Type": "application/json"
+#     }
+
+#     # Call the API
+#     try:
+#         with st.spinner("⚙️ Contacting Groq API..."):
+#             response = requests.post(GROQ_ENDPOINT, json=payload, headers=headers)
+#             response.raise_for_status()
+#             result = response.json()
+#             answer = result["choices"][0]["message"]["content"]
+
+#         # Display the answer
+#         st.success("✅ Answer:")
+#         st.write(answer)
+
+#         # --- Section 4: Evaluation Flow ---
+#         st.markdown("---")
+#         st.markdown("### 📝 Help us improve:")
+
+#         # User feedback: thumbs up/down and confidence slider
+#         feedback_col1, feedback_col2 = st.columns(2)
+#         with feedback_col1:
+#             feedback_rating = st.radio("Was this answer helpful?", ["👍 Yes", "👎 No"], key="helpful_rating")
+
+#         with feedback_col2:
+#             feedback_confidence = st.slider("Confidence level:", 0, 100, 50, key="confidence_score")
+
+#         # Optional text feedback
+#         user_comments = st.text_area("Comments or corrections:")
+
+#         # Feedback submission
+#         if st.button("Submit Feedback"):
+#             st.success("✅ Thanks for your feedback!")
+#             # Feedback logging (you can save this to file/database later)
+#             print({
+#                 "question": user_question,
+#                 "answer": answer,
+#                 "helpful": feedback_rating,
+#                 "confidence_score": feedback_confidence,
+#                 "user_comment": user_comments
+#             })
+
+#     except Exception as e:
+#         st.error(f"❌ Error: {e}")
+
+# ---------- End of D1.1 UI Flow -------------
